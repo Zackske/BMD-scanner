@@ -48,6 +48,7 @@ public class ScannerDeviceTest {
     }
     private static void screenshot(String name)throws Exception{
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        Thread.sleep(1000);
         shell("mkdir -p /data/local/tmp/bmd-screenshots");
         shell("screencap -p /data/local/tmp/bmd-screenshots/"+name+".png");
     }
@@ -134,6 +135,47 @@ public class ScannerDeviceTest {
                 screenshot("06-photo-import-result");
             }
         }finally{context.getContentResolver().delete(media,null,null);}
+    }
+
+    @Test public void captureRealPhotoPickerFromHome()throws Exception{
+        android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        android.content.ContentValues metadata=new android.content.ContentValues();
+        metadata.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME,"BMD-camera-test.png");
+        metadata.put(android.provider.MediaStore.MediaColumns.MIME_TYPE,"image/png");
+        metadata.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS);
+        Uri uri=context.getContentResolver().insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,metadata);
+        assertNotNull(uri);
+        try{
+            try(java.io.OutputStream out=context.getContentResolver().openOutputStream(uri)){assertNotNull(out);qr("BMD-REAL-PHOTO-OK").compress(Bitmap.CompressFormat.PNG,100,out);}
+            try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+                androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+                device.waitForIdle();Thread.sleep(1000);
+                androidx.test.uiautomator.UiObject upload=device.findObject(new androidx.test.uiautomator.UiSelector().description("Foto’s uploaden"));
+                assertTrue("Upload button must be visible on Home",upload.waitForExists(5000));upload.click();device.waitForIdle();Thread.sleep(1500);
+                screenshot("05-real-photo-picker");
+                java.io.ByteArrayOutputStream hierarchy=new java.io.ByteArrayOutputStream();device.dumpWindowHierarchy(hierarchy);
+                android.os.ParcelFileDescriptor[] pipe=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("tee /data/local/tmp/bmd-picker.xml");
+                try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])){out.write(hierarchy.toByteArray());}
+                try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipe[0])){while(in.read()!=-1){}}
+                // The generated image is the only shared image in this fresh emulator.
+                androidx.test.uiautomator.UiObject image=device.findObject(new androidx.test.uiautomator.UiSelector().textContains("BMD-camera-test"));
+                if(!image.exists()){
+                    androidx.test.uiautomator.UiObject menu=device.findObject(new androidx.test.uiautomator.UiSelector().descriptionContains("Show roots"));if(menu.exists())menu.click();
+                    androidx.test.uiautomator.UiObject downloads=device.findObject(new androidx.test.uiautomator.UiSelector().text("Downloads"));if(downloads.exists())downloads.click();
+                    device.waitForIdle();screenshot("06-picker-downloads");
+                }
+                if(image.waitForExists(5000))image.click();
+                else{
+                    androidx.test.uiautomator.UiObject thumb=device.findObject(new androidx.test.uiautomator.UiSelector().resourceIdMatches(".*:id/(icon_thumb|icon_thumbnail|thumbnail)"));
+                    if(thumb.exists())thumb.click();
+                    else{throw new AssertionError("No selectable test photo in system picker; see screenshot and hierarchy");}
+                }
+                AtomicBoolean imported=new AtomicBoolean(false);long until=System.currentTimeMillis()+30000;
+                while(!imported.get()&&System.currentTimeMillis()<until){Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-REAL-PHOTO-OK")));}
+                assertTrue("Actual picker selection must produce a QR result",imported.get());
+                InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);screenshot("07-real-photo-result");
+            }
+        }finally{context.getContentResolver().delete(uri,null,null);}
     }
 
 }

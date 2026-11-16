@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         UiArt.Icon art=new UiArt.Icon(this,icon);FrameLayout.LayoutParams artParams=new FrameLayout.LayoutParams(dp(28),dp(28),Gravity.CENTER);frame.addView(art,artParams);clickable(frame,label,action);return frame;
     }
     private void base(String title){
-        FrameLayout shell=new FrameLayout(this);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));
+        FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(0xff001127);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));
         root=column();root.setPadding(dp(18),dp(8),dp(18),dp(22));shell.addView(root,new FrameLayout.LayoutParams(-1,-1));
         ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;});
         setContentView(shell);ViewCompat.requestApplyInsets(shell);
