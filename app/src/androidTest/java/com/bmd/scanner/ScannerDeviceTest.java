@@ -25,6 +25,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import static org.junit.Assert.*;
 
+@androidx.test.filters.SdkSuppress(minSdkVersion=31)
 @RunWith(AndroidJUnit4.class)
 public class ScannerDeviceTest {
     private static View tagged(View view,String tag){
@@ -42,8 +43,12 @@ public class ScannerDeviceTest {
     private static void screenshot(String name)throws Exception{
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Bitmap bitmap=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();assertNotNull(bitmap);
-        File dir=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(null),"screenshots");assertTrue(dir.isDirectory()||dir.mkdirs());
-        try(FileOutputStream stream=new FileOutputStream(new File(dir,name+".png"))){bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);}bitmap.recycle();
+        android.os.ParcelFileDescriptor[] pipes=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("sh -c 'mkdir -p /data/local/tmp/bmd-screenshots && cat > /data/local/tmp/bmd-screenshots/"+name+".png'");
+        try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipes[1])){
+            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG,100,out));
+        }
+        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipes[0])){while(in.read()!=-1){}}
+        bitmap.recycle();
     }
     @Test public void homeShowsOnlyFourActionsAndSettingsOpen()throws Exception{
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
