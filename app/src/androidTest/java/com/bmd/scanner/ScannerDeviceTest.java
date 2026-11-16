@@ -43,12 +43,12 @@ public class ScannerDeviceTest {
     private static void screenshot(String name)throws Exception{
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         Bitmap bitmap=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();assertNotNull(bitmap);
-        android.os.ParcelFileDescriptor[] pipes=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("sh -c 'mkdir -p /data/local/tmp/bmd-screenshots && cat > /data/local/tmp/bmd-screenshots/"+name+".png'");
-        try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipes[1])){
-            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG,100,out));
-        }
-        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipes[0])){while(in.read()!=-1){}}
+        File file=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),name+".png");
+        try(FileOutputStream out=new FileOutputStream(file)){assertTrue("PNG compression failed",bitmap.compress(Bitmap.CompressFormat.PNG,100,out));}
         bitmap.recycle();
+        String command="mkdir -p /data/local/tmp/bmd-screenshots && run-as com.bmd.scanner cat cache/"+name+".png > /data/local/tmp/bmd-screenshots/"+name+".png";
+        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))){while(in.read()!=-1){}}
+
     }
     @Test public void homeShowsOnlyFourActionsAndSettingsOpen()throws Exception{
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
@@ -93,9 +93,9 @@ public class ScannerDeviceTest {
         android.content.ContentValues values=new android.content.ContentValues();
         values.put(android.provider.MediaStore.Images.Media.DISPLAY_NAME,"BMD-virtual-photo.png");
         values.put(android.provider.MediaStore.Images.Media.MIME_TYPE,"image/png");
-        values.put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,"Pictures/BMD Scanner Test");
+        values.put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS);
         values.put(android.provider.MediaStore.Images.Media.IS_PENDING,1);
-        Uri media=context.getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        Uri media=context.getContentResolver().insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,values);
         assertNotNull(media);
         try{
             try(java.io.OutputStream output=context.getContentResolver().openOutputStream(media)){
@@ -106,8 +106,16 @@ public class ScannerDeviceTest {
                 scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"photo").performClick());
                 androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
                 androidx.test.uiautomator.UiObject file=device.findObject(new androidx.test.uiautomator.UiSelector().textContains("BMD-virtual-photo"));
-                assertTrue("The photo must be visible in the Android image picker",file.waitForExists(15000));
-                screenshot("05-android-photo-picker");file.click();
+                if(!file.waitForExists(5000)){
+                    androidx.test.uiautomator.UiObject roots=device.findObject(new androidx.test.uiautomator.UiSelector().descriptionContains("Show roots"));
+                    if(roots.exists())roots.click();
+                    androidx.test.uiautomator.UiObject downloads=device.findObject(new androidx.test.uiautomator.UiSelector().text("Downloads"));
+                    if(downloads.waitForExists(5000))downloads.click();
+                }
+                screenshot("05-android-photo-picker");
+                java.io.ByteArrayOutputStream hierarchy=new java.io.ByteArrayOutputStream();device.dumpWindowHierarchy(hierarchy);System.out.println("PICKER_HIERARCHY: "+hierarchy.toString("UTF-8"));
+                assertTrue("The photo must be visible in the Android image picker",file.waitForExists(10000));
+                file.click();
                 AtomicBoolean imported=new AtomicBoolean(false);long end=System.currentTimeMillis()+45000;
                 while(!imported.get()&&System.currentTimeMillis()<end){
                     Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-PHOTO-PICKER-OK")));
