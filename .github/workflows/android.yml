@@ -85,6 +85,18 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back emulated -camera-front none
           script: bash ci/android-device-tests.sh
 
+      - name: Publish tested APK download
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
+          tag="v${version}-build.${GITHUB_RUN_NUMBER}"
+          cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
+          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and active Android emulator tests passed. Camera hardware, physical vibration and email delivery still require testing on a real phone."
+
       - name: Prepare real Android screen recording
         if: always()
         shell: bash

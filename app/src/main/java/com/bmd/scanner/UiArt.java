@@ -54,7 +54,8 @@ final class UiArt {
         }
     }
     static class NameText extends androidx.appcompat.widget.AppCompatTextView {
-        NameText(Context c){super(c);setTextColor(CYAN);}
+        NameText(Context c){super(c);setTextColor(CYAN);setPadding(0,0,(int)(14*getResources().getDisplayMetrics().density),0);}
+        @Override protected void onDraw(Canvas canvas){super.onDraw(canvas);float d=getResources().getDisplayMetrics().density,x=getWidth()-7*d,y=getHeight()*.35f,r=4*d;Paint star=new Paint(3);star.setColor(0xffffd34d);Path path=new Path();path.moveTo(x,y-r);path.quadTo(x+1*d,y-1*d,x+r,y);path.quadTo(x+1*d,y+1*d,x,y+r);path.quadTo(x-1*d,y+1*d,x-r,y);path.quadTo(x-1*d,y-1*d,x,y-r);canvas.drawPath(path,star);}
         @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){super.onSizeChanged(w,h,oldw,oldh);getPaint().setShader(new LinearGradient(0,0,Math.max(1,w),0,new int[]{0xff73f7fa,0xffb8c8ff,0xffe5a1ee},null,Shader.TileMode.CLAMP));}
     }
     static class Wave extends View {
