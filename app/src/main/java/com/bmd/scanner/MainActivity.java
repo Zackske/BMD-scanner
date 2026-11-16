@@ -155,10 +155,16 @@ public class MainActivity extends AppCompatActivity {
     }
     private void showHome(){
         stopCamera();screen="home";base("");LinearLayout content=column();
-        content.addView(new UiArt.Brand(this),new LinearLayout.LayoutParams(-1,dp(112)));gap(content,12);
-        LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.addView(new UiArt.Icon(this,"qr"),new LinearLayout.LayoutParams(dp(62),dp(62)));
-        LinearLayout names=column();names.setPadding(dp(12),0,0,0);TextView name=text("BMD",46,true);name.setTypeface(Typeface.create("sans-serif-black",Typeface.BOLD_ITALIC));names.addView(name);
-        TextView subtitle=text(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"),20,true);subtitle.setTextColor(BLUE);names.addView(subtitle);hero.addView(names);content.addView(hero);gap(content,14);
+        content.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.setTag("home-identity");
+        hero.addView(new UiArt.ScannerMark(this),new LinearLayout.LayoutParams(dp(74),dp(80)));
+        LinearLayout names=column();names.setPadding(dp(12),0,0,0);
+        TextView name=text("BMD",50,true);name.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD));name.setMaxLines(1);names.addView(name);
+        UiArt.NameText subtitle=new UiArt.NameText(this);subtitle.setText(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"));subtitle.setTextSize(24);subtitle.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD_ITALIC));subtitle.setIncludeFontPadding(false);subtitle.setMaxLines(1);subtitle.setAutoSizeTextTypeUniformWithConfiguration(14,24,1,android.util.TypedValue.COMPLEX_UNIT_SP);names.addView(subtitle,new LinearLayout.LayoutParams(-1,-2));
+        hero.addView(names,new LinearLayout.LayoutParams(0,-2,1));
+        LinearLayout.LayoutParams heroParams=new LinearLayout.LayoutParams(-1,dp(116));heroParams.setMargins(dp(22),0,dp(14),0);content.addView(hero,heroParams);
+        content.addView(new UiArt.Wave(this),new LinearLayout.LayoutParams(-1,dp(18)));
+        View upperSpace=new View(this);content.addView(upperSpace,new LinearLayout.LayoutParams(1,dp(18),1));
         int height=getResources().getConfiguration().screenHeightDp<700?152:176;
         LinearLayout first=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));
         homeCard(first,"qr",t("scan"),"Batch",0xff0098fa,0xff003aa0,BLUE,this::openCamera);
@@ -166,7 +172,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout second=row();content.addView(second,new LinearLayout.LayoutParams(-1,dp(height)));
         homeCard(second,"list",t("results"),"",0xffc62dff,0xff4a007e,0xffec91ff,this::showResults);
         homeCard(second,"settings",t("settings"),"",0xffffb800,0xffa54300,0xffffdf63,this::showSettings);
-        busyText=text("",14,false);busyText.setGravity(Gravity.CENTER);content.addView(busyText);scrollPage(content);
+        View lowerSpace=new View(this);content.addView(lowerSpace,new LinearLayout.LayoutParams(1,dp(18),1));
+        UiArt.Brand brand=new UiArt.Brand(this);brand.setTag("home-brand");LinearLayout.LayoutParams brandParams=new LinearLayout.LayoutParams(dp(238),dp(70));brandParams.gravity=Gravity.CENTER_HORIZONTAL;content.addView(brand,brandParams);
+        busyText=text("",14,false);busyText.setGravity(Gravity.CENTER);content.addView(busyText);gap(content,24);scrollPage(content);
+
     }
     private void openCamera(){if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)showScanner();else cameraPermission.launch(Manifest.permission.CAMERA);}
     private void setting(LinearLayout parent,String icon,String title,String subtitle,int color,Runnable action){

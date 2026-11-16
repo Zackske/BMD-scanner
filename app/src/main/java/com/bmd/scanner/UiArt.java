@@ -30,20 +30,42 @@ final class UiArt {
             p.setStrokeWidth(1);p.setColor(Color.WHITE);c.drawPath(wave,p);p.setStyle(Paint.Style.FILL);
         }
     }
-    static class Brand extends View {
-        private final Paint p=new Paint(3);
-        Brand(Context c){super(c);setContentDescription("Blue Medical, A Translumina Group Company");}
+    // Only the two approved illustration regions are decoded; controls and translated
+    // app names remain native views. No screenshot UI is used as an interactive page.
+    private static Bitmap scannerArt,brandArt;
+    private static synchronized Bitmap artwork(Context context,boolean scanner){
+        Bitmap cached=scanner?scannerArt:brandArt;if(cached!=null)return cached;
+        try(java.io.InputStream in=context.getAssets().open("approved-home-artwork.png")){
+            BitmapRegionDecoder decoder=BitmapRegionDecoder.newInstance(in,false);
+            float sx=decoder.getWidth()/941f,sy=decoder.getHeight()/1670f;
+            Rect region=scanner?new Rect((int)(130*sx),(int)(138*sy),(int)(312*sx),(int)(316*sy)):new Rect((int)(174*sx),(int)(1270*sy),(int)(767*sx),(int)(1442*sy));
+            Bitmap bitmap=decoder.decodeRegion(region,new BitmapFactory.Options());decoder.recycle();
+            if(scanner)scannerArt=bitmap;else brandArt=bitmap;return bitmap;
+        }catch(java.io.IOException e){throw new IllegalStateException("Bundled brand artwork missing",e);}
+    }
+    static class ScannerMark extends View {
+        private final Paint p=new Paint(3);private final Bitmap art;
+        ScannerMark(Context c){super(c);art=artwork(c,true);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas c){
-            float w=getWidth(),h=getHeight();
-            p.setShader(new RadialGradient(w*.5f,h*.35f,w*.65f,new int[]{0xffffffff,0xffbbdcff,0xff00386a},null,Shader.TileMode.CLAMP));
-            c.drawRoundRect(0,0,w,h-12,16,16,p);p.setShader(null);
-            p.setColor(0xff073d91);p.setTypeface(Typeface.create("sans-serif-black",Typeface.BOLD_ITALIC));p.setTextAlign(Paint.Align.CENTER);
-            p.setTextSize(w*.083f);c.drawText("BLUE MEDICAL",w/2,h*.49f,p);
-            p.setStrokeWidth(2);c.drawLine(w*.08f,h*.18f,w*.92f,h*.18f,p);c.drawLine(w*.06f,h*.59f,w*.94f,h*.59f,p);
-            p.setTypeface(Typeface.create("sans-serif",Typeface.NORMAL));p.setTextSize(w*.036f);c.drawText("A Translumina Group Company",w/2,h*.79f,p);
-            Path wave=new Path();wave.moveTo(0,h-17);wave.cubicTo(w*.3f,h-46,w*.6f,h+15,w,h-29);
-            p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(5);p.setColor(CYAN);c.drawPath(wave,p);p.setStyle(Paint.Style.FILL);
+            float size=Math.min(getWidth(),getHeight()),x=(getWidth()-size)/2,y=(getHeight()-size)/2;
+            int layer=c.saveLayer(x,y,x+size,y+size,null);
+            c.drawBitmap(art,null,new RectF(x,y,x+size,y+size),p);
+            p.setShader(new RadialGradient(x+size/2,y+size/2,size*.7f,new int[]{Color.WHITE,Color.WHITE,Color.TRANSPARENT},new float[]{0,.65f,1},Shader.TileMode.CLAMP));p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));c.drawRect(x,y,x+size,y+size,p);p.setShader(null);p.setXfermode(null);c.restoreToCount(layer);
         }
+    }
+    static class NameText extends androidx.appcompat.widget.AppCompatTextView {
+        NameText(Context c){super(c);setTextColor(CYAN);}
+        @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){super.onSizeChanged(w,h,oldw,oldh);getPaint().setShader(new LinearGradient(0,0,Math.max(1,w),0,new int[]{0xff73f7fa,0xffb8c8ff,0xffe5a1ee},null,Shader.TileMode.CLAMP));}
+    }
+    static class Wave extends View {
+        private final Paint p=new Paint(3);
+        Wave(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(CYAN);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
+    }
+    static class Brand extends View {
+        private final Paint p=new Paint(3);private final Bitmap art;
+        Brand(Context c){super(c);art=artwork(c,false);setContentDescription("Blue Medical, A Translumina Group Company");}
+        @Override protected void onDraw(Canvas c){float scale=Math.min((float)getWidth()/art.getWidth(),(float)getHeight()/art.getHeight());float w=art.getWidth()*scale,h=art.getHeight()*scale;c.drawBitmap(art,null,new RectF((getWidth()-w)/2,(getHeight()-h)/2,(getWidth()+w)/2,(getHeight()+h)/2),p);}
     }
     static class Icon extends View {
         private final String kind;private final int color;private final Paint p=new Paint(3);
