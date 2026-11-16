@@ -88,4 +88,36 @@ public class ScannerDeviceTest {
             InstrumentationRegistry.getInstrumentation().waitForIdleSync();screenshot("04-csv-saved");
         }
     }
+    @Test public void photoButtonAndAndroidPickerImportRealImage()throws Exception{
+        android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
+        android.content.ContentValues values=new android.content.ContentValues();
+        values.put(android.provider.MediaStore.Images.Media.DISPLAY_NAME,"BMD-virtual-photo.png");
+        values.put(android.provider.MediaStore.Images.Media.MIME_TYPE,"image/png");
+        values.put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,"Pictures/BMD Scanner Test");
+        values.put(android.provider.MediaStore.Images.Media.IS_PENDING,1);
+        Uri media=context.getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+        assertNotNull(media);
+        try{
+            try(java.io.OutputStream output=context.getContentResolver().openOutputStream(media)){
+                assertNotNull(output);assertTrue(qr("BMD-PHOTO-PICKER-OK").compress(Bitmap.CompressFormat.PNG,100,output));
+            }
+            values.clear();values.put(android.provider.MediaStore.Images.Media.IS_PENDING,0);context.getContentResolver().update(media,values,null,null);
+            try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+                scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"photo").performClick());
+                androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
+                androidx.test.uiautomator.UiObject file=device.findObject(new androidx.test.uiautomator.UiSelector().textContains("BMD-virtual-photo"));
+                assertTrue("The photo must be visible in the Android image picker",file.waitForExists(15000));
+                screenshot("05-android-photo-picker");file.click();
+                AtomicBoolean imported=new AtomicBoolean(false);long end=System.currentTimeMillis()+45000;
+                while(!imported.get()&&System.currentTimeMillis()<end){
+                    Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-PHOTO-PICKER-OK")));
+                }
+                assertTrue("Selecting a photo must add its QR code to Results",imported.get());
+                InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+                InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);
+                screenshot("06-photo-import-result");
+            }
+        }finally{context.getContentResolver().delete(media,null,null);}
+    }
+
 }
