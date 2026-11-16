@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         View upperSpace=new View(this);content.addView(upperSpace,new LinearLayout.LayoutParams(1,dp(18),1));
         int height=getResources().getConfiguration().screenHeightDp<700?152:176;
         LinearLayout first=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));
-        homeCard(first,"qr",t("scan"),"Batch",0xff0098fa,0xff003aa0,BLUE,this::openCamera);
+        homeCard(first,"qr",t("scan"),"",0xff0098fa,0xff003aa0,BLUE,this::openCamera);
         homeCard(first,"photo",photoText("choose"),"",0xff00d960,0xff006525,0xff2eff8b,this::choosePhotos);
         LinearLayout second=row();content.addView(second,new LinearLayout.LayoutParams(-1,dp(height)));
         homeCard(second,"list",t("results"),"",0xffc62dff,0xff4a007e,0xffec91ff,this::showResults);
