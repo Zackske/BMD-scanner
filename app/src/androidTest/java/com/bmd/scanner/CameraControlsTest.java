@@ -48,6 +48,7 @@ public class CameraControlsTest {
                 tagged(activity.getWindow().getDecorView(),"camera-settings").performClick();Dialog dialog=(Dialog)get(activity,"cameraSettingsDialog");View settings=dialog.getWindow().getDecorView();radio(settings,"Foto").performClick();description(settings,"Toepassen").performClick();});
             ready(scenario);
             scenario.onActivity(activity->{View root=activity.getWindow().getDecorView();assertNull(tagged(root,"camera-start"));assertNull(tagged(root,"camera-stop"));assertNotNull(tagged(root,"camera-capture"));});
+            scenario.recreate();ready(scenario);
             shot("09-photo-shutter");
             scenario.onActivity(activity->{View shutter=tagged(activity.getWindow().getDecorView(),"camera-capture");assertEquals(shutter.getWidth(),shutter.getHeight());shutter.performClick();assertTrue((Boolean)get(activity,"captureBusy"));});
             AtomicBoolean busy=new AtomicBoolean(true);long until=System.currentTimeMillis()+45000;
@@ -61,9 +62,9 @@ public class CameraControlsTest {
         prepare();
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
             scenario.onActivity(activity->call(activity,"showScanner",new Class<?>[]{}));ready(scenario);
-            scenario.onActivity(activity->{androidx.camera.core.Camera camera=(androidx.camera.core.Camera)get(activity,"activeCamera");assertEquals(camera.getCameraInfo().hasFlashUnit(),((View)get(activity,"flashButton")).isEnabled());call(activity,"changeZoom",new Class<?>[]{float.class},1000f);});
+            scenario.onActivity(activity->{androidx.camera.core.Camera camera=(androidx.camera.core.Camera)get(activity,"activeCamera");assertEquals(camera.getCameraInfo().hasFlashUnit(),((View)get(activity,"flashButton")).isEnabled());if(camera.getCameraInfo().hasFlashUnit())((View)get(activity,"flashButton")).performClick();call(activity,"changeZoom",new Class<?>[]{float.class},1000f);});
             Thread.sleep(500);
-            scenario.onActivity(activity->{androidx.camera.core.Camera camera=(androidx.camera.core.Camera)get(activity,"activeCamera");androidx.camera.core.ZoomState zoom=camera.getCameraInfo().getZoomState().getValue();assertNotNull(zoom);assertTrue((Float)get(activity,"zoomRatio")<=zoom.getMaxZoomRatio());
+            scenario.onActivity(activity->{androidx.camera.core.Camera camera=(androidx.camera.core.Camera)get(activity,"activeCamera");androidx.camera.core.ZoomState zoom=camera.getCameraInfo().getZoomState().getValue();assertNotNull(zoom);assertTrue((Float)get(activity,"zoomRatio")<=zoom.getMaxZoomRatio());if(camera.getCameraInfo().hasFlashUnit()){assertEquals(true,get(activity,"torch"));assertEquals(Integer.valueOf(androidx.camera.core.TorchState.ON),camera.getCameraInfo().getTorchState().getValue());}
                 tagged(activity.getWindow().getDecorView(),"camera-settings").performClick();Dialog dialog=(Dialog)get(activity,"cameraSettingsDialog");View settings=dialog.getWindow().getDecorView();radio(settings,"Foto").performClick();assertFalse(radio(settings,"Laag").isEnabled());radio(settings,"Video").performClick();radio(settings,"Laag").performClick();((Spinner)description(settings,"Resolutie")).setSelection(0);((androidx.appcompat.widget.SwitchCompat)tagged(settings,"scan-vibration")).setChecked(false);description(settings,"Toepassen").performClick();
                 assertEquals("video",get(activity,"scanMode"));assertEquals(0,get(activity,"resolutionChoice"));assertEquals(2,get(activity,"sensitivity"));assertEquals(false,get(activity,"vibrateAfterScan"));});
             scenario.recreate();ready(scenario);

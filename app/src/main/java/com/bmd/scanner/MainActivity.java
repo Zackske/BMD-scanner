@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private int resolutionChoice=1,sensitivity=1;
     private boolean vibrateAfterScan=true,cameraReady=false,captureBusy=false;
     private float zoomRatio=1f;
+    private String actualResolution="";
     private ImageCapture imageCapture;
     private View startButton,stopButton,shutterButton,flashButton;
     private SeekBar zoomSlider;
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void stopCamera(){
-        scanning=false;cameraReady=false;cameraSession++;preview=null;imageCapture=null;captureBusy=false;
+        scanning=false;cameraReady=false;actualResolution="";cameraSession++;preview=null;imageCapture=null;captureBusy=false;
         if(activeCamera!=null)activeCamera.getCameraControl().enableTorch(false);
         activeCamera=null;torch=false;confirmation.reset();
         if(cameraSettingsDialog!=null){cameraSettingsDialog.dismiss();cameraSettingsDialog=null;}
@@ -272,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable refreshSensitivity=()->{boolean enabled=modes.getCheckedRadioButtonId()==video.getId();sensitivityGroup.setAlpha(enabled?1f:.45f);for(int i=0;i<3;i++)sensitivityGroup.getChildAt(i).setEnabled(enabled);};refreshSensitivity.run();modes.setOnCheckedChangeListener((group,id)->refreshSensitivity.run());
         gap(panel,12);androidx.appcompat.widget.SwitchCompat vibration=new androidx.appcompat.widget.SwitchCompat(this);vibration.setText(cameraText("vibrate"));vibration.setTextColor(WHITE);vibration.setTextSize(18);vibration.setChecked(vibrateAfterScan);vibration.setTag("scan-vibration");panel.addView(vibration,new LinearLayout.LayoutParams(-1,dp(48)));
         panel.addView(text(tr("Korte trilling per toegevoegde QR-code","A short vibration for each added QR code","Eklenen her QR kod için kısa titreşim","Коротка вібрація для кожного доданого QR-коду"),12,false));gap(panel,12);
-        TextView deviceNote=text(tr("Resolutie en camerafuncties verschillen per toestel.","Resolution and camera controls depend on the device.","Çözünürlük ve kamera özellikleri cihaza bağlıdır.","Можливості камери залежать від пристрою."),12,false);panel.addView(deviceNote);gap(panel,12);
+        TextView deviceNote=text((actualResolution.isEmpty()?"":tr("Actief: ","Active: ","Etkin: ","Активно: ")+actualResolution+"\n")+tr("Resolutie en camerafuncties verschillen per toestel.","Resolution and camera controls depend on the device.","Çözünürlük ve kamera özellikleri cihaza bağlıdır.","Можливості камери залежать від пристрою."),12,false);panel.addView(deviceNote);gap(panel,12);
         View apply=action("check",cameraText("apply"),0xff007de5,0xff003c87,()->{
             scanMode=modes.getCheckedRadioButtonId()==photo.getId()?"photo":"video";resolutionChoice=resolution.getSelectedItemPosition();for(int i=0;i<3;i++)if(sensitivityGroup.getCheckedRadioButtonId()==sensitivityIds[i])sensitivity=i;vibrateAfterScan=vibration.isChecked();
             getPreferences(MODE_PRIVATE).edit().putString("scanMode",scanMode).putInt("cameraResolution",resolutionChoice).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibrateAfterScan).apply();scanFeedback.setEnabled(vibrateAfterScan);dialog.dismiss();cameraSettingsDialog=null;showScanner();
@@ -375,8 +376,15 @@ public class MainActivity extends AppCompatActivity {
     private androidx.camera.core.resolutionselector.ResolutionSelector cameraResolution(){
         androidx.camera.core.resolutionselector.ResolutionStrategy strategy=resolutionChoice==2?androidx.camera.core.resolutionselector.ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY:
             new androidx.camera.core.resolutionselector.ResolutionStrategy(resolutionChoice==0?new android.util.Size(1280,720):new android.util.Size(1920,1080),androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER);
-        return new androidx.camera.core.resolutionselector.ResolutionSelector.Builder().setResolutionStrategy(strategy).build();
+        androidx.camera.core.resolutionselector.ResolutionSelector.Builder builder=new androidx.camera.core.resolutionselector.ResolutionSelector.Builder().setResolutionStrategy(strategy);
+        if(resolutionChoice!=2)builder.setAspectRatioStrategy(androidx.camera.core.resolutionselector.AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY);
+        else{
+            if(isPhotoMode())builder.setAllowedResolutionMode(androidx.camera.core.resolutionselector.ResolutionSelector.PREFER_HIGHER_RESOLUTION_OVER_CAPTURE_RATE);
+            builder.setResolutionFilter((sizes,rotation)->{List<android.util.Size> sorted=new ArrayList<>(sizes);sorted.sort((first,second)->Long.compare((long)second.getWidth()*second.getHeight(),(long)first.getWidth()*first.getHeight()));return sorted;});
+        }
+        return builder.build();
     }
+    private void recordResolution(androidx.camera.core.ResolutionInfo info){if(info!=null)actualResolution=info.getResolution().getWidth()+" × "+info.getResolution().getHeight();}
     private void startCamera(){
         final int session=cameraSession;final PreviewView cameraPreview=preview;
         ListenableFuture<ProcessCameraProvider> future=ProcessCameraProvider.getInstance(this);
@@ -386,10 +394,10 @@ public class MainActivity extends AppCompatActivity {
                 cameraProvider=future.get();Preview previewUseCase=new Preview.Builder().build();previewUseCase.setSurfaceProvider(cameraPreview.getSurfaceProvider());cameraProvider.unbindAll();
                 if(isPhotoMode()){
                     imageCapture=new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).setResolutionSelector(cameraResolution()).build();
-                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,imageCapture);
+                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,imageCapture);recordResolution(imageCapture.getResolutionInfo());
                 }else{
                     ImageAnalysis analysis=new ImageAnalysis.Builder().setResolutionSelector(cameraResolution()).setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();analysis.setAnalyzer(cameraExecutor,proxy->analyze(proxy,session));
-                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,analysis);
+                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,analysis);recordResolution(analysis.getResolutionInfo());
                 }
                 cameraReady=true;flashButton.setEnabled(activeCamera.getCameraInfo().hasFlashUnit());flashButton.setAlpha(flashButton.isEnabled()?1f:.4f);
                 androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();zoomSlider.setEnabled(state!=null&&state.getMaxZoomRatio()>state.getMinZoomRatio());changeZoom(zoomRatio);updateScanButtons();
