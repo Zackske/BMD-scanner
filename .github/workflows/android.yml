@@ -50,8 +50,14 @@ jobs:
           gradle --version
           gradle --version | grep -Fx 'Gradle 8.9'
 
+      - name: Keep debug signing key for subsequent test builds
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: bmd-debug-keystore-v1
+
       - name: Build and lint Debug APK
-        run: gradle --no-daemon --stacktrace :app:assembleDebug :app:lintDebug
+        run: gradle --no-daemon --stacktrace :app:assembleDebug :app:lintDebug :app:testDebugUnitTest
 
       - name: Verify APK
         run: test -s app/build/outputs/apk/debug/app-debug.apk
@@ -63,6 +69,31 @@ jobs:
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Enable emulator acceleration
+        run: |
+          sudo chmod 666 /dev/kvm
+
+      - name: Test navigation, photo decoding and CSV on Android 35
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
+          script: |
+            gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest
+            adb pull /sdcard/Android/data/com.bmd.scanner/files/screenshots device-screenshots
+
+      - name: Upload device screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMD-device-screenshots
+          path: device-screenshots/
+          if-no-files-found: ignore
 
       - name: Upload diagnostic reports
         if: always()
