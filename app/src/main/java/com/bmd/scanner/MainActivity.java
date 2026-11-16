@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<String> cameraPermission=registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted->{if(granted) showScanner();else Toast.makeText(this,t("permission"),Toast.LENGTH_LONG).show();});
     private final ActivityResultLauncher<String> saveCsv=registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), uri->{if(uri!=null) writeCsv(uri);});
 
-    @Override public void onCreate(Bundle state){super.onCreate(state);lang=getPreferences(MODE_PRIVATE).getString("language","nl");scanner=BarcodeScanning.getClient();showHome();}
+    @Override public void onCreate(Bundle state){super.onCreate(state);lang=getPreferences(MODE_PRIVATE).getString("language","nl");scanner=BarcodeScanning.getClient();getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){@Override public void handleOnBackPressed(){showHome();}});showHome();}
     private String t(String key){
         String[] keys={"title","subtitle","scan","export","share","settings","language","back","clear","confirm","empty","permission","results","start","stop","saved","error","select"};
         String[][] values={
@@ -77,6 +77,5 @@ public class MainActivity extends AppCompatActivity {
     private void writeCsv(Uri uri){try(OutputStream stream=getContentResolver().openOutputStream(uri)){if(stream==null)throw new IOException("No output stream");stream.write(csvBytes());Toast.makeText(this,t("saved"),Toast.LENGTH_SHORT).show();}catch(Exception e){Toast.makeText(this,t("error")+": "+e.getMessage(),Toast.LENGTH_LONG).show();}}
     private void exportCsv(){if(results.isEmpty()){Toast.makeText(this,t("empty"),Toast.LENGTH_SHORT).show();return;}saveCsv.launch("BMD-Scanner-results.csv");}
     private void shareCsv(){if(results.isEmpty()){Toast.makeText(this,t("empty"),Toast.LENGTH_SHORT).show();return;}try{File directory=new File(getCacheDir(),"exports");if(!directory.exists()&&!directory.mkdirs())throw new IOException("Cannot create export directory");File file=new File(directory,"BMD-Scanner-results.csv");try(FileOutputStream stream=new FileOutputStream(file)){stream.write(csvBytes());}Uri uri=androidx.core.content.FileProvider.getUriForFile(this,getPackageName()+".provider",file);Intent intent=new Intent(Intent.ACTION_SEND);intent.setType("text/csv");intent.putExtra(Intent.EXTRA_STREAM,uri);intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);intent.setClipData(ClipData.newUri(getContentResolver(),"CSV",uri));startActivity(Intent.createChooser(intent,t("share")));}catch(Exception e){Toast.makeText(this,t("error")+": "+e.getMessage(),Toast.LENGTH_LONG).show();}}
-    @Override public void onBackPressed(){showHome();}
     @Override protected void onDestroy(){stopCamera();scanner.close();cameraExecutor.shutdown();super.onDestroy();}
 }
