@@ -105,7 +105,7 @@ jobs:
             exit 0
           fi
           mkdir -p docs/screenshots
-          cp device-screenshots/*.png docs/screenshots/
+          find device-screenshots -type f -name "*.png" -exec cp {} docs/screenshots/ \;
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/screenshots
