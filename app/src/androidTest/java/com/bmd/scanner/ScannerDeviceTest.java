@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.Assert.*;
 
 @androidx.test.filters.SdkSuppress(minSdkVersion=31)
@@ -77,10 +78,12 @@ public class ScannerDeviceTest {
         ArrayDeque<Uri> queue=new ArrayDeque<>();queue.add(photo(pair,"pair.png"));queue.add(photo(qr(third),"single.png"));
         Bitmap blank=Bitmap.createBitmap(480,480,Bitmap.Config.ARGB_8888);blank.eraseColor(Color.WHITE);queue.add(photo(blank,"blank.png"));
         File invalid=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),"broken.png");try(FileOutputStream out=new FileOutputStream(invalid)){out.write(new byte[]{1,2,3});}queue.add(Uri.fromFile(invalid));
+        AtomicInteger successfulPulses=new AtomicInteger();
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(activity->call(activity,"scanPhotos",new Class<?>[]{ArrayDeque.class,int.class,int.class},queue,0,0));
+            scenario.onActivity(activity->{try{Field feedback=MainActivity.class.getDeclaredField("scanFeedback");feedback.setAccessible(true);feedback.set(activity,new ScanFeedback(new android.os.Handler(android.os.Looper.getMainLooper()),successfulPulses::incrementAndGet));}catch(Exception error){throw new AssertionError(error);}call(activity,"scanPhotos",new Class<?>[]{ArrayDeque.class,int.class,int.class},queue,0,0);});
             AtomicBoolean busy=new AtomicBoolean(true);long end=System.currentTimeMillis()+60000;
             while(busy.get()&&System.currentTimeMillis()<end){Thread.sleep(100);scenario.onActivity(activity->busy.set((Boolean)field(activity,"photoBusy")));}assertFalse("Photo import timed out",busy.get());
+            long pulseDeadline=System.currentTimeMillis()+3000;while(successfulPulses.get()<3&&System.currentTimeMillis()<pulseDeadline)Thread.sleep(20);assertEquals("One haptic event for each imported QR, none for blank/broken photos",3,successfulPulses.get());
             scenario.onActivity(activity->{List<?> values=(List<?>)field(activity,"results");assertEquals(3,values.size());assertTrue(values.containsAll(Arrays.asList(first,second,third)));});
             InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);scenario.recreate();screenshot("02-results");
             File exported=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),"export.csv");

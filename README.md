@@ -1,10 +1,13 @@
 # BMD Scanner
 
-Android QR batch scanner — version 1.2.0.
+Android QR batch scanner — version 1.3.0.
 
 ## App flow
 - Home has exactly four actions: Scan, Upload photos, Results, Settings.
-- Scan uses the bundled offline ML Kit QR detector, CameraX 1280×720 target analysis, tap-to-focus, flashlight (when available), and a configurable repeat interval.
+- Scan opens an idle preview. In Video, Start begins continuous QR decoding and Stop pauses decoding while keeping the preview. In Foto, a single round shutter captures one still image and decodes its QR values. No image-upload or results buttons appear on the scanner.
+- The scanner gear contains Video/Foto mode, HD / Full HD / highest-supported capture/analysis resolution, High/Normal/Low video confirmation (1/2/3 consecutive processed frames), and vibration after a successful code. Settings persist. CameraX falls back to supported device resolutions.
+- Flash and zoom remain directly accessible on the preview. Unsupported flash/zoom are disabled; zoom is clamped to hardware limits. Automatic focus and tap-to-focus are retained.
+- Every accepted QR value requests one short haptic pulse, including multiple codes in a photo. Pulses are spaced to avoid overwriting each other; blank/failed images and unconfirmed/cooldown-filtered live detections do not trigger them. The app toggle and Android's device haptic settings are respected. Haptics stop when the app goes into the background.
 - Upload photos opens Android's document picker with multi-selection. Photos are decoded locally, never uploaded to a server. All QR values from each selected image are added to Results; unreadable images are reported.
 - Results contains CSV creation and clearing. CSV is UTF-8 with BOM, quoted values and CRLF, one scan per row. Repeated scan contents are preserved.
 - After the CSV is saved, Send opens Android's share chooser for that saved file; choose Outlook or another installed app. Sending requires a user action in that app.

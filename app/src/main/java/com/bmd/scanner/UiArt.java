@@ -46,11 +46,12 @@ final class UiArt {
         }
     }
     static class Icon extends View {
-        private final String kind;private final Paint p=new Paint(3);
-        Icon(Context c,String kind){super(c);this.kind=kind;setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        private final String kind;private final int color;private final Paint p=new Paint(3);
+        Icon(Context c,String kind){this(c,kind,Color.WHITE);}
+        Icon(Context c,String kind,int color){super(c);this.kind=kind;this.color=color;setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas canvas){
             float size=Math.min(getWidth(),getHeight());canvas.save();canvas.translate((getWidth()-size)/2,(getHeight()-size)/2);canvas.scale(size/64,size/64);
-            p.setColor(Color.WHITE);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
+            p.setColor(color);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
             switch(kind){
                 case "qr":
                     cbox(canvas,8,8);cbox(canvas,38,8);cbox(canvas,8,38);
@@ -67,6 +68,10 @@ final class UiArt {
                     Path page=new Path();page.moveTo(14,6);page.lineTo(39,6);page.lineTo(53,20);page.lineTo(53,58);page.lineTo(14,58);page.close();canvas.drawPath(page,p);
                     canvas.drawLine(38,7,38,21,p);canvas.drawLine(38,21,52,21,p);p.setStyle(Paint.Style.FILL);p.setTypeface(Typeface.DEFAULT_BOLD);p.setTextSize(15);canvas.drawText("CSV",18,44,p);break;
                 case "back":canvas.drawLine(49,32,14,32,p);canvas.drawLine(14,32,29,17,p);canvas.drawLine(14,32,29,47,p);break;
+                case "camera":canvas.drawRoundRect(7,18,57,53,6,6,p);canvas.drawCircle(32,35,11,p);canvas.drawLine(21,18,24,10,p);canvas.drawLine(24,10,40,10,p);canvas.drawLine(40,10,43,18,p);break;
+                case "play":Path play=new Path();play.moveTo(20,10);play.lineTo(52,32);play.lineTo(20,54);play.close();p.setStyle(Paint.Style.FILL);canvas.drawPath(play,p);break;
+                case "minus":canvas.drawLine(15,32,49,32,p);break;
+                case "plus":canvas.drawLine(15,32,49,32,p);canvas.drawLine(32,15,32,49,p);break;
                 case "stop":p.setStyle(Paint.Style.FILL);canvas.drawRoundRect(18,16,46,46,4,4,p);break;
                 case "flash":Path bolt=new Path();bolt.moveTo(38,5);bolt.lineTo(15,36);bolt.lineTo(31,36);bolt.lineTo(25,59);bolt.lineTo(50,27);bolt.lineTo(34,27);bolt.close();canvas.drawPath(bolt,p);break;
                 case "check":canvas.drawLine(13,33,26,46,p);canvas.drawLine(26,46,52,18,p);break;
