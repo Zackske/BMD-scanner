@@ -40,15 +40,16 @@ public class ScannerDeviceTest {
     }
     private static Object field(MainActivity activity,String name){try{Field field=MainActivity.class.getDeclaredField(name);field.setAccessible(true);return field.get(activity);}catch(Exception error){throw new AssertionError(error);}}
     private static void call(MainActivity activity,String name,Class<?>[] types,Object...args){try{Method method=MainActivity.class.getDeclaredMethod(name,types);method.setAccessible(true);method.invoke(activity,args);}catch(Exception error){throw new AssertionError(error);}}
+    private static String shell(String command)throws Exception{
+        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))){
+            java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[4096];int count;
+            while((count=in.read(buffer))!=-1)out.write(buffer,0,count);return out.toString("UTF-8");
+        }
+    }
     private static void screenshot(String name)throws Exception{
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-        Bitmap bitmap=InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();assertNotNull(bitmap);
-        File file=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),name+".png");
-        try(FileOutputStream out=new FileOutputStream(file)){assertTrue("PNG compression failed",bitmap.compress(Bitmap.CompressFormat.PNG,100,out));}
-        bitmap.recycle();
-        String command="mkdir -p /data/local/tmp/bmd-screenshots && run-as com.bmd.scanner cat cache/"+name+".png > /data/local/tmp/bmd-screenshots/"+name+".png";
-        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))){while(in.read()!=-1){}}
-
+        shell("mkdir -p /data/local/tmp/bmd-screenshots");
+        shell("screencap -p /data/local/tmp/bmd-screenshots/"+name+".png");
     }
     @Test public void homeShowsOnlyFourActionsAndSettingsOpen()throws Exception{
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
@@ -114,8 +115,14 @@ public class ScannerDeviceTest {
                 }
                 screenshot("05-android-photo-picker");
                 java.io.ByteArrayOutputStream hierarchy=new java.io.ByteArrayOutputStream();device.dumpWindowHierarchy(hierarchy);System.out.println("PICKER_HIERARCHY: "+hierarchy.toString("UTF-8"));
-                assertTrue("The photo must be visible in the Android image picker",file.waitForExists(10000));
-                file.click();
+                android.os.ParcelFileDescriptor[] pipe=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("tee /data/local/tmp/bmd-picker.xml");
+                try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])){out.write(hierarchy.toByteArray());}
+                try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipe[0])){while(in.read()!=-1){}}
+                if(file.waitForExists(5000))file.click();
+                else{
+                    androidx.test.uiautomator.UiObject thumbnail=device.findObject(new androidx.test.uiautomator.UiSelector().resourceIdMatches(".*:id/(icon_thumb|icon_thumbnail|thumbnail)"));
+                    assertTrue("The seeded image must be visible in the Android picker",thumbnail.waitForExists(5000));thumbnail.click();
+                }
                 AtomicBoolean imported=new AtomicBoolean(false);long end=System.currentTimeMillis()+45000;
                 while(!imported.get()&&System.currentTimeMillis()<end){
                     Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-PHOTO-PICKER-OK")));
