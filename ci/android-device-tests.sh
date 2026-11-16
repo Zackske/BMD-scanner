@@ -2,6 +2,8 @@
 set -uo pipefail
 status=0
 gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest || status=$?
+mkdir -p device-demo
+adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 || true
 adb shell ls -l /data/local/tmp/bmd-screenshots || true
 mkdir -p device-screenshots
 adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true

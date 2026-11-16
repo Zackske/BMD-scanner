@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private androidx.camera.core.Camera activeCamera;
     private boolean photoBusy=false;
     private String screen="home";
-    private boolean torch=false;
+    private boolean torch=false,torchChanging=false;
     private String scanMode="video";
     private int resolutionChoice=1,sensitivity=1;
     private boolean vibrateAfterScan=true,cameraReady=false,captureBusy=false;
@@ -139,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void stopCamera(){
-        scanning=false;cameraReady=false;actualResolution="";cameraSession++;preview=null;imageCapture=null;captureBusy=false;
+        scanning=false;cameraReady=false;actualResolution="";cameraSession++;if(preview!=null)preview.getPreviewStreamState().removeObservers(this);preview=null;imageCapture=null;captureBusy=false;
         if(activeCamera!=null)activeCamera.getCameraControl().enableTorch(false);
-        activeCamera=null;torch=false;confirmation.reset();
+        activeCamera=null;torch=false;torchChanging=false;confirmation.reset();
         if(cameraSettingsDialog!=null){cameraSettingsDialog.dismiss();cameraSettingsDialog=null;}
         if(cameraProvider!=null)cameraProvider.unbindAll();
     }
@@ -290,12 +290,18 @@ public class MainActivity extends AppCompatActivity {
     private void startVideoScan(){if(!cameraReady||isPhotoMode())return;confirmation.reset();scanning=true;resultText.setVisibility(View.GONE);updateScanButtons();}
     private void pauseVideoScan(){scanning=false;confirmation.reset();updateScanButtons();}
     private void toggleTorch(){
-        if(activeCamera==null||!activeCamera.getCameraInfo().hasFlashUnit())return;
-        final boolean next=!torch;final int session=cameraSession;ListenableFuture<Void> change=activeCamera.getCameraControl().enableTorch(next);
-        change.addListener(()->{if(session!=cameraSession)return;try{change.get();torch=next;flashButton.setBackground(card(torch?0xff00a4c5:0xff075b86,0xdd001329,BLUE));}catch(Exception error){showScanError(error);}},ContextCompat.getMainExecutor(this));
+        if(!cameraReady||torchChanging||activeCamera==null||!activeCamera.getCameraInfo().hasFlashUnit())return;
+        torchChanging=true;flashButton.setEnabled(false);final boolean next=!torch;final int session=cameraSession;
+        ListenableFuture<Void> change=activeCamera.getCameraControl().enableTorch(next);
+        change.addListener(()->{
+            if(session!=cameraSession)return;
+            try{change.get();torch=next;flashButton.setBackground(card(torch?0xff00a4c5:0xff075b86,0xdd001329,BLUE));}
+            catch(Exception error){showScanError(error);}
+            finally{torchChanging=false;flashButton.setEnabled(cameraReady&&activeCamera!=null&&activeCamera.getCameraInfo().hasFlashUnit());}
+        },ContextCompat.getMainExecutor(this));
     }
     private void changeZoom(float requested){
-        if(activeCamera==null)return;androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();if(state==null)return;
+        if(!cameraReady||activeCamera==null)return;androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();if(state==null)return;
         final float value=Math.max(state.getMinZoomRatio(),Math.min(state.getMaxZoomRatio(),requested));final int session=cameraSession;ListenableFuture<Void> change=activeCamera.getCameraControl().setZoomRatio(value);
         change.addListener(()->{if(session!=cameraSession)return;try{change.get();zoomRatio=value;zoomLabel.setText(String.format(Locale.getDefault(),"%.1f×",value));float range=state.getMaxZoomRatio()-state.getMinZoomRatio();zoomSlider.setProgress(range>0?Math.round((value-state.getMinZoomRatio())*100/range):0);}catch(Exception error){showScanError(error);}},ContextCompat.getMainExecutor(this));
     }
@@ -403,9 +409,15 @@ public class MainActivity extends AppCompatActivity {
                     ImageAnalysis analysis=new ImageAnalysis.Builder().setResolutionSelector(cameraResolution()).setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();analysis.setAnalyzer(cameraExecutor,proxy->analyze(proxy,session));
                     activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,analysis);recordResolution(analysis.getResolutionInfo());
                 }
-                cameraReady=true;flashButton.setEnabled(activeCamera.getCameraInfo().hasFlashUnit());flashButton.setAlpha(flashButton.isEnabled()?1f:.4f);
-                androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();zoomSlider.setEnabled(state!=null&&state.getMaxZoomRatio()>state.getMinZoomRatio());changeZoom(zoomRatio);updateScanButtons();
-                cameraPreview.setOnTouchListener((view,event)->{if(event.getAction()==android.view.MotionEvent.ACTION_UP&&activeCamera!=null){FocusMeteringAction focus=new FocusMeteringAction.Builder(cameraPreview.getMeteringPointFactory().createPoint(event.getX(),event.getY())).build();activeCamera.getCameraControl().startFocusAndMetering(focus);view.performClick();}return true;});
+                cameraReady=false;final boolean[] zoomApplied={false};
+                cameraPreview.getPreviewStreamState().observe(this,state->{
+                    if(session!=cameraSession||activeCamera==null)return;
+                    cameraReady=state==PreviewView.StreamState.STREAMING;
+                    flashButton.setEnabled(cameraReady&&!torchChanging&&activeCamera.getCameraInfo().hasFlashUnit());flashButton.setAlpha(flashButton.isEnabled()?1f:.4f);
+                    androidx.camera.core.ZoomState zoom=activeCamera.getCameraInfo().getZoomState().getValue();zoomSlider.setEnabled(cameraReady&&zoom!=null&&zoom.getMaxZoomRatio()>zoom.getMinZoomRatio());
+                    updateScanButtons();if(cameraReady&&!zoomApplied[0]){zoomApplied[0]=true;changeZoom(zoomRatio);}
+                });
+                cameraPreview.setOnTouchListener((view,event)->{if(event.getAction()==android.view.MotionEvent.ACTION_UP&&cameraReady&&activeCamera!=null){FocusMeteringAction focus=new FocusMeteringAction.Builder(cameraPreview.getMeteringPointFactory().createPoint(event.getX(),event.getY())).build();activeCamera.getCameraControl().startFocusAndMetering(focus);view.performClick();}return true;});
             }catch(Exception error){cameraReady=false;updateScanButtons();showScanError(error);}
         },ContextCompat.getMainExecutor(this));
     }
