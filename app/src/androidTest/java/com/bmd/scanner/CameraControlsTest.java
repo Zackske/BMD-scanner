@@ -83,4 +83,25 @@ public class CameraControlsTest {
             scenario.onActivity(activity->assertEquals(4,((List<?>)get(activity,"results")).size()));
         }
     }
+    @Test public void fullHdAndHighestResolutionBindInBothScanModes()throws Exception{
+        prepare();
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            for(int resolution:new int[]{1,2})for(String mode:new String[]{"video","photo"}){
+                final int selected=resolution;final String selectedMode=mode;
+                scenario.onActivity(activity->{set(activity,"resolutionChoice",selected);set(activity,"scanMode",selectedMode);call(activity,"showScanner",new Class<?>[]{});});
+                ready(scenario);
+                scenario.onActivity(activity->{assertFalse("Active resolution should be reported",((String)get(activity,"actualResolution")).isEmpty());});
+                if(mode.equals("photo")){
+                    scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"camera-capture").performClick());
+                    AtomicBoolean busy=new AtomicBoolean(true);long until=System.currentTimeMillis()+45000;
+                    while(busy.get()&&System.currentTimeMillis()<until){Thread.sleep(100);scenario.onActivity(activity->busy.set((Boolean)get(activity,"captureBusy")));}
+                    assertFalse("Capture at resolution option "+resolution+" must finish",busy.get());
+                    scenario.onActivity(activity->assertTrue(((TextView)get(activity,"resultText")).getText().toString().startsWith("Geen QR-code gevonden")));
+                }else{
+                    scenario.onActivity(activity->{tagged(activity.getWindow().getDecorView(),"camera-start").performClick();assertTrue((Boolean)get(activity,"scanning"));tagged(activity.getWindow().getDecorView(),"camera-stop").performClick();assertFalse((Boolean)get(activity,"scanning"));});
+                }
+            }
+        }
+    }
+
 }
