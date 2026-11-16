@@ -1,10 +1,9 @@
 
-name: BMD Scanner APK
+name: BMD Multi QR Scanner APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,6 +13,7 @@ jobs:
   build:
     name: Build Android APK
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -25,20 +25,83 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Locate Android project
+        id: project
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Set up Gradle 8.9
+          PROJECT=""
+
+          if [[ -f settings.gradle ||
+                -f settings.gradle.kts ]]; then
+            PROJECT="."
+          else
+            while IFS= read -r file; do
+              PROJECT="$(dirname "$file")"
+              break
+            done < <(
+              find . -maxdepth 3 -type f \
+                \( -name settings.gradle \
+                -o -name settings.gradle.kts \) \
+                | sort
+            )
+          fi
+
+          if [[ -z "$PROJECT" ]]; then
+            echo "::error::No Android Gradle project found"
+            exit 1
+          fi
+
+          echo "dir=$PROJECT" >> "$GITHUB_OUTPUT"
+          echo "Android project: $PROJECT"
+
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
 
       - name: Build Debug APK
-        run: gradle --no-daemon --stacktrace assembleDebug
+        shell: bash
+        env:
+          PROJECT_DIR: ${{ steps.project.outputs.dir }}
+        run: |
+          set -euo pipefail
+          cd "$PROJECT_DIR"
+
+          if [[ -f gradlew ]]; then
+            chmod +x gradlew
+            ./gradlew --no-daemon \
+              --stacktrace assembleDebug
+          else
+            echo "Gradle wrapper missing."
+            echo "Using installed Gradle 8.9."
+
+            gradle --version || true
+
+            gradle --no-daemon \
+              --stacktrace assembleDebug
+          fi
+
+      - name: Verify APK
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find . -type f -name "*.apk" \
+            -path "*/build/outputs/apk/*" \
+            -print
+
+          if ! find . -type f -name "*.apk" \
+            -path "*/build/outputs/apk/*" \
+            | grep -q .; then
+            echo "::error::APK not found"
+            exit 1
+          fi
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: BMD-Scanner-APK
-          path: app/build/outputs/apk/debug/*.apk
+          name: BMD-Multi-QR-Scanner-APK
+          path: |
+            **/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+          retention-days: 30
