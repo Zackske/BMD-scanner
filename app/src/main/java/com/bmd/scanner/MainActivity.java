@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private byte[] pendingCsv;
     private TextView busyText;
     private long repeatDelay=1500;
-    private String csvFilename="BMD-Scanner-results.csv";
+    private String csvFilename="BMD-ScanTovenaar-results.csv";
     private final ActivityResultLauncher<String[]> pickPhotos=registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(), uris->{if(!uris.isEmpty()){showHome();scanPhotos(new ArrayDeque<>(uris),0,0);}});
     private final ActivityResultLauncher<String> cameraPermission=registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted->{if(granted) showScanner();else Toast.makeText(this,t("permission"),Toast.LENGTH_LONG).show();});
     private final ActivityResultLauncher<String> saveCsv=registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), uri->{if(uri!=null)writeCsv(uri);else pendingCsv=null;});
@@ -79,13 +79,13 @@ public class MainActivity extends AppCompatActivity {
         lang=getPreferences(MODE_PRIVATE).getString("language","nl");
         repeatDelay=getPreferences(MODE_PRIVATE).getLong("repeatDelay",1500);
         scanMode=getPreferences(MODE_PRIVATE).getString("scanMode","video");
-        resolutionChoice=getPreferences(MODE_PRIVATE).getInt("cameraResolution",1);
+        resolutionChoice=Math.max(0,Math.min(CameraResolutionOptions.TARGETS.length-1,getPreferences(MODE_PRIVATE).getInt("cameraResolution",1)));
         sensitivity=getPreferences(MODE_PRIVATE).getInt("sensitivity",1);
         vibrateAfterScan=getPreferences(MODE_PRIVATE).getBoolean("vibrateAfterScan",true);
         scanFeedback=new ScanFeedback(new android.os.Handler(android.os.Looper.getMainLooper()),()->{
             if(root!=null&&getLifecycle().getCurrentState().isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED))root.performHapticFeedback(android.os.Build.VERSION.SDK_INT>=30?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.CLOCK_TICK);
         });scanFeedback.setEnabled(vibrateAfterScan);
-        csvFilename=getPreferences(MODE_PRIVATE).getString("csvFilename","BMD-Scanner-results.csv");
+        csvFilename=getPreferences(MODE_PRIVATE).getString("csvFilename","BMD-ScanTovenaar-results.csv");
         if(state!=null){ArrayList<String> saved=state.getStringArrayList("results");if(saved!=null)results.addAll(saved);pendingCsv=state.getByteArray("pendingCsv");}
         scanner=BarcodeScanning.getClient(new com.google.mlkit.vision.barcode.BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build());
         getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){@Override public void handleOnBackPressed(){if(screen.equals("home"))finish();else showHome();}});
@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
     private String t(String key){
         String[] keys={"title","subtitle","scan","export","share","settings","language","back","clear","confirm","empty","permission","results","start","stop","saved","error","select"};
         String[][] values={
-            {"BMD Scanner","Batch QR-scanner","Scannen","CSV maken","Verzenden","Instellingen","Taal","Terug","Resultaten wissen","Alle resultaten wissen?","Nog geen scanresultaten","Cameratoegang nodig","Resultaten","Start camera","Stop camera","CSV opgeslagen","Export mislukt","Selecteer taal"},
-            {"BMD Scanner","Batch QR scanner","Scan","Create CSV","Send","Settings","Language","Back","Clear results","Clear all results?","No scan results yet","Camera permission required","Scan results","Start camera","Stop camera","CSV saved","Export failed","Select language"},
-            {"BMD Scanner","Toplu QR tarayıcı","Tara","CSV oluştur","Gönder","Ayarlar","Dil","Geri","Sonuçları sil","Tüm sonuçlar silinsin mi?","Henüz sonuç yok","Kamera izni gerekli","Tarama sonuçları","Kamerayı başlat","Kamerayı durdur","CSV kaydedildi","Dışa aktarma başarısız","Dil seçin"},
-            {"BMD Scanner","Пакетний QR-сканер","Сканувати","Створити CSV","Надіслати","Налаштування","Мова","Назад","Очистити результати","Видалити всі результати?","Результатів поки немає","Потрібен дозвіл на камеру","Результати сканування","Увімкнути камеру","Зупинити камеру","CSV збережено","Помилка експорту","Виберіть мову"}
+            {"BMD ScanTovenaar","Batch QR-scanner","Scannen","CSV maken","Verzenden","Instellingen","Taal","Terug","Resultaten wissen","Alle resultaten wissen?","Nog geen scanresultaten","Cameratoegang nodig","Resultaten","Start camera","Stop camera","CSV opgeslagen","Export mislukt","Selecteer taal"},
+            {"BMD ScanMagician","Batch QR scanner","Scan","Create CSV","Send","Settings","Language","Back","Clear results","Clear all results?","No scan results yet","Camera permission required","Scan results","Start camera","Stop camera","CSV saved","Export failed","Select language"},
+            {"BMD Tarama Büyücüsü","Toplu QR tarayıcı","Tara","CSV oluştur","Gönder","Ayarlar","Dil","Geri","Sonuçları sil","Tüm sonuçlar silinsin mi?","Henüz sonuç yok","Kamera izni gerekli","Tarama sonuçları","Kamerayı başlat","Kamerayı durdur","CSV kaydedildi","Dışa aktarma başarısız","Dil seçin"},
+            {"BMD СканЧарівник","Пакетний QR-сканер","Сканувати","Створити CSV","Надіслати","Налаштування","Мова","Назад","Очистити результати","Видалити всі результати?","Результатів поки немає","Потрібен дозвіл на камеру","Результати сканування","Увімкнути камеру","Зупинити камеру","CSV збережено","Помилка експорту","Виберіть мову"}
         };
         int index=Arrays.asList(keys).indexOf(key);if(index<0)return key;
         int locale=lang.equals("en")?1:lang.equals("tr")?2:lang.equals("uk")?3:0;
@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         content.addView(new UiArt.Brand(this),new LinearLayout.LayoutParams(-1,dp(112)));gap(content,12);
         LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.addView(new UiArt.Icon(this,"qr"),new LinearLayout.LayoutParams(dp(62),dp(62)));
         LinearLayout names=column();names.setPadding(dp(12),0,0,0);TextView name=text("BMD",46,true);name.setTypeface(Typeface.create("sans-serif-black",Typeface.BOLD_ITALIC));names.addView(name);
-        TextView subtitle=text("Multi QR Scanner",20,true);subtitle.setTextColor(BLUE);names.addView(subtitle);hero.addView(names);content.addView(hero);gap(content,14);
+        TextView subtitle=text(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"),20,true);subtitle.setTextColor(BLUE);names.addView(subtitle);hero.addView(names);content.addView(hero);gap(content,14);
         int height=getResources().getConfiguration().screenHeightDp<700?152:176;
         LinearLayout first=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));
         homeCard(first,"qr",t("scan"),"Batch",0xff0098fa,0xff003aa0,BLUE,this::openCamera);
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.setOnShowListener(ignored->dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(button->{String value=name.getText().toString().trim();if(value.isEmpty()||value.contains("/")||value.contains("\\")){name.setError(tr("Kies een geldige bestandsnaam","Choose a valid file name","Geçerli dosya adı seçin","Виберіть коректну назву"));return;}csvFilename=value.toLowerCase(Locale.ROOT).endsWith(".csv")?value:value+".csv";getPreferences(MODE_PRIVATE).edit().putString("csvFilename",csvFilename).apply();dialog.dismiss();showSettings();}));dialog.show();
         });
         setting(content,"share",tr("E-mail (Outlook)","Email (Outlook)","E-posta (Outlook)","Е-пошта (Outlook)"),tr("CSV delen via Outlook / Hotmail","Share CSV via Outlook / Hotmail","CSV dosyasını Outlook ile paylaş","Поділитися CSV через Outlook"),0xffa04b04,()->{if(results.isEmpty())Toast.makeText(this,t("empty"),Toast.LENGTH_SHORT).show();else exportCsv();});
-        setting(content,"settings",tr("Weergave","Appearance","Görünüm","Вигляд"),"Blue Medical · BMD Scanner 1.3.0",0xff4b1679,null);
+        setting(content,"settings",tr("Weergave","Appearance","Görünüm","Вигляд"),"Blue Medical · "+t("title")+" 1.3.0",0xff4b1679,null);
         gap(content,18);content.addView(new UiArt.Brand(this),new LinearLayout.LayoutParams(-1,dp(104)));scrollPage(content);
     }
     private View action(String icon,String title,int top,int bottom,Runnable run){
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         View gear=iconButton("settings",cameraText("settings"),this::showCameraSettings);gear.setTag("camera-settings");header.addView(gear,new LinearLayout.LayoutParams(dp(48),dp(54)));root.addView(header);gap(root,8);
         preview=new PreviewView(this);preview.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);preview.setContentDescription(t("scan"));
         FrameLayout frame=new FrameLayout(this);frame.setBackgroundColor(0xff000a16);root.addView(frame,new LinearLayout.LayoutParams(-1,0,1));frame.addView(preview,new FrameLayout.LayoutParams(-1,-1));frame.addView(new ScanOverlay(this,!isPhotoMode()),new FrameLayout.LayoutParams(-1,-1));
-        TextView mode=text(isPhotoMode()?"Foto":"Video",16,true);mode.setPadding(dp(14),dp(8),dp(14),dp(8));mode.setBackground(card(0xff075b86,0xdd001329,BLUE));FrameLayout.LayoutParams modeParams=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START);modeParams.setMargins(dp(10),dp(10),0,0);frame.addView(mode,modeParams);
+        TextView mode=text(modeLabel(isPhotoMode()),16,true);mode.setPadding(dp(14),dp(8),dp(14),dp(8));mode.setBackground(card(0xff075b86,0xdd001329,BLUE));FrameLayout.LayoutParams modeParams=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START);modeParams.setMargins(dp(10),dp(10),0,0);frame.addView(mode,modeParams);
         flashButton=iconButton("flash",cameraText("flash"),this::toggleTorch);flashButton.setTag("camera-flash");flashButton.setBackground(card(0xff075b86,0xdd001329,BLUE));FrameLayout.LayoutParams flashParams=new FrameLayout.LayoutParams(dp(52),dp(48),Gravity.TOP|Gravity.END);flashParams.setMargins(0,dp(8),dp(10),0);frame.addView(flashButton,flashParams);flashButton.setEnabled(false);
         LinearLayout zoom=row();zoom.setPadding(dp(8),dp(4),dp(8),dp(4));zoom.setBackground(card(0xcc06395b,0xdd001020,0xff3c8299));
         zoom.addView(iconButton("minus",cameraText("zoomout"),()->changeZoom(zoomRatio-.25f)),new LinearLayout.LayoutParams(dp(44),dp(44)));
@@ -258,13 +258,14 @@ public class MainActivity extends AppCompatActivity {
             default:return key;
         }
     }
-    private String[] resolutionLabels(){return new String[]{"HD · 1280 × 720","Full HD · 1920 × 1080",tr("Hoogste ondersteunde resolutie","Highest supported resolution","En yüksek desteklenen çözünürlük","Найвища підтримувана роздільна здатність")};}
+    private String[] resolutionLabels(){return CameraResolutionOptions.labels(tr("Hoogste ondersteunde resolutie","Highest supported resolution","En yüksek desteklenen çözünürlük","Найвища підтримувана роздільна здатність"));}
+    private String modeLabel(boolean photo){return photo?tr("Foto","Photo","Fotoğraf","Фото"):tr("Video","Video","Video","Відео");}
     private void showCameraSettings(){
         pauseVideoScan();
         android.app.Dialog dialog=new android.app.Dialog(this);cameraSettingsDialog=dialog;
         LinearLayout panel=column();panel.setPadding(dp(18),dp(16),dp(18),dp(16));panel.setBackground(card(0xff06375d,0xff001228,BLUE));
         TextView title=text(cameraText("settings"),23,true);panel.addView(title);gap(panel,14);panel.addView(text(cameraText("mode"),18,true));
-        RadioGroup modes=new RadioGroup(this);modes.setOrientation(RadioGroup.HORIZONTAL);RadioButton video=new RadioButton(this),photo=new RadioButton(this);video.setId(View.generateViewId());photo.setId(View.generateViewId());video.setText("Video");photo.setText("Foto");video.setTextColor(WHITE);photo.setTextColor(WHITE);video.setContentDescription("Video");photo.setContentDescription("Foto");modes.addView(video,new RadioGroup.LayoutParams(0,dp(48),1));modes.addView(photo,new RadioGroup.LayoutParams(0,dp(48),1));modes.check(isPhotoMode()?photo.getId():video.getId());panel.addView(modes);
+        RadioGroup modes=new RadioGroup(this);modes.setOrientation(RadioGroup.HORIZONTAL);RadioButton video=new RadioButton(this),photo=new RadioButton(this);video.setId(View.generateViewId());photo.setId(View.generateViewId());video.setText(modeLabel(false));photo.setText(modeLabel(true));video.setTextColor(WHITE);photo.setTextColor(WHITE);video.setContentDescription(modeLabel(false));photo.setContentDescription(modeLabel(true));modes.addView(video,new RadioGroup.LayoutParams(0,dp(48),1));modes.addView(photo,new RadioGroup.LayoutParams(0,dp(48),1));modes.check(isPhotoMode()?photo.getId():video.getId());panel.addView(modes);
         TextView modeHint=text(tr("Video: continu · Foto: één opname","Video: continuous scan · Photo: one capture","Video: sürekli tara · Fotoğraf: tek çekim","Відео: безперервно · Фото: один знімок"),12,false);panel.addView(modeHint);gap(panel,12);
         panel.addView(text(cameraText("resolution"),18,true));Spinner resolution=new Spinner(this);resolution.setContentDescription(cameraText("resolution"));android.widget.ArrayAdapter<String> options=new android.widget.ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,resolutionLabels());resolution.setAdapter(options);resolution.setSelection(resolutionChoice);panel.addView(resolution,new LinearLayout.LayoutParams(-1,dp(48)));
         gap(panel,10);panel.addView(text(cameraText("sensitivity"),18,true));RadioGroup sensitivityGroup=new RadioGroup(this);sensitivityGroup.setOrientation(RadioGroup.HORIZONTAL);int[] sensitivityIds=new int[3];String[] labels={tr("Hoog","High","Yüksek","Висока"),tr("Normaal","Normal","Normal","Звичайна"),tr("Laag","Low","Düşük","Низька")};
@@ -273,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         Runnable refreshSensitivity=()->{boolean enabled=modes.getCheckedRadioButtonId()==video.getId();sensitivityGroup.setAlpha(enabled?1f:.45f);for(int i=0;i<3;i++)sensitivityGroup.getChildAt(i).setEnabled(enabled);};refreshSensitivity.run();modes.setOnCheckedChangeListener((group,id)->refreshSensitivity.run());
         gap(panel,12);androidx.appcompat.widget.SwitchCompat vibration=new androidx.appcompat.widget.SwitchCompat(this);vibration.setText(cameraText("vibrate"));vibration.setTextColor(WHITE);vibration.setTextSize(18);vibration.setChecked(vibrateAfterScan);vibration.setTag("scan-vibration");panel.addView(vibration,new LinearLayout.LayoutParams(-1,dp(48)));
         panel.addView(text(tr("Korte trilling per toegevoegde QR-code","A short vibration for each added QR code","Eklenen her QR kod için kısa titreşim","Коротка вібрація для кожного доданого QR-коду"),12,false));gap(panel,12);
-        TextView deviceNote=text((actualResolution.isEmpty()?"":tr("Actief: ","Active: ","Etkin: ","Активно: ")+actualResolution+"\n")+tr("Resolutie en camerafuncties verschillen per toestel.","Resolution and camera controls depend on the device.","Çözünürlük ve kamera özellikleri cihaza bağlıdır.","Можливості камери залежать від пристрою."),12,false);panel.addView(deviceNote);gap(panel,12);
+        TextView deviceNote=text((actualResolution.isEmpty()?"":tr("Actief: ","Active: ","Etkin: ","Активно: ")+actualResolution+"\n")+tr("Gewenste maat. Zo nodig gebruikt de camera de dichtstbijzijnde ondersteunde resolutie.","Requested size. The camera falls back to its closest supported resolution.","İstenen boyut. Kamera gerekirse en yakın desteklenen çözünürlüğü kullanır.","Бажаний розмір. Камера за потреби вибирає найближчу підтримувану роздільну здатність."),12,false);panel.addView(deviceNote);gap(panel,12);
         View apply=action("check",cameraText("apply"),0xff007de5,0xff003c87,()->{
             scanMode=modes.getCheckedRadioButtonId()==photo.getId()?"photo":"video";resolutionChoice=resolution.getSelectedItemPosition();for(int i=0;i<3;i++)if(sensitivityGroup.getCheckedRadioButtonId()==sensitivityIds[i])sensitivity=i;vibrateAfterScan=vibration.isChecked();
             getPreferences(MODE_PRIVATE).edit().putString("scanMode",scanMode).putInt("cameraResolution",resolutionChoice).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibrateAfterScan).apply();scanFeedback.setEnabled(vibrateAfterScan);dialog.dismiss();cameraSettingsDialog=null;showScanner();
@@ -374,13 +375,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private androidx.camera.core.resolutionselector.ResolutionSelector cameraResolution(){
-        androidx.camera.core.resolutionselector.ResolutionStrategy strategy=resolutionChoice==2?androidx.camera.core.resolutionselector.ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY:
-            new androidx.camera.core.resolutionselector.ResolutionStrategy(resolutionChoice==0?new android.util.Size(1280,720):new android.util.Size(1920,1080),androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER);
-        androidx.camera.core.resolutionselector.ResolutionSelector.Builder builder=new androidx.camera.core.resolutionselector.ResolutionSelector.Builder().setResolutionStrategy(strategy);
-        if(resolutionChoice!=2)builder.setAspectRatioStrategy(androidx.camera.core.resolutionselector.AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY);
-        else{
+        androidx.camera.core.resolutionselector.ResolutionSelector.Builder builder=new androidx.camera.core.resolutionselector.ResolutionSelector.Builder();
+        if(resolutionChoice==CameraResolutionOptions.HIGHEST){
+            builder.setResolutionStrategy(androidx.camera.core.resolutionselector.ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY);
             if(isPhotoMode())builder.setAllowedResolutionMode(androidx.camera.core.resolutionselector.ResolutionSelector.PREFER_HIGHER_RESOLUTION_OVER_CAPTURE_RATE);
             builder.setResolutionFilter((sizes,rotation)->{List<android.util.Size> sorted=new ArrayList<>(sizes);sorted.sort((first,second)->Long.compare((long)second.getWidth()*second.getHeight(),(long)first.getWidth()*first.getHeight()));return sorted;});
+        }else{
+            CameraResolutionOptions.Target target=CameraResolutionOptions.TARGETS[resolutionChoice];
+            builder.setResolutionStrategy(new androidx.camera.core.resolutionselector.ResolutionStrategy(new android.util.Size(target.longEdge(),target.shortEdge()),androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER));
+            if(resolutionChoice<3)builder.setAspectRatioStrategy(androidx.camera.core.resolutionselector.AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY);
+            else builder.setResolutionFilter((sizes,rotation)->{List<android.util.Size> sorted=new ArrayList<>(sizes);sorted.sort((first,second)->Double.compare(CameraResolutionOptions.distance(first.getWidth(),first.getHeight(),target),CameraResolutionOptions.distance(second.getWidth(),second.getHeight(),target)));return sorted;});
         }
         return builder.build();
     }

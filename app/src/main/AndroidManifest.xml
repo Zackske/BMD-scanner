@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <application android:icon="@drawable/ic_launcher" android:theme="@style/AppTheme" android:label="BMD Scanner" android:usesCleartextTraffic="false">
+    <application android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:theme="@style/AppTheme" android:label="@string/app_name" android:usesCleartextTraffic="false">
         <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.provider" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" /></provider>
         <activity android:name=".MainActivity" android:exported="true" android:screenOrientation="unspecified">
             <intent-filter>

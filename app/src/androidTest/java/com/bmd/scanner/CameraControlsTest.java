@@ -70,6 +70,9 @@ public class CameraControlsTest {
             scenario.recreate();ready(scenario);
             scenario.onActivity(activity->{assertEquals(2,get(activity,"sensitivity"));assertEquals(false,get(activity,"vibrateAfterScan"));tagged(activity.getWindow().getDecorView(),"camera-settings").performClick();});
             shot("11-camera-settings-video");
+            scenario.onActivity(activity->{Dialog dialog=(Dialog)get(activity,"cameraSettingsDialog");((Spinner)description(dialog.getWindow().getDecorView(),"Resolutie")).performClick();});
+            androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());device.waitForIdle();shot("16-resolution-options-top");
+            androidx.test.uiautomator.UiScrollable list=new androidx.test.uiautomator.UiScrollable(new androidx.test.uiautomator.UiSelector().className("android.widget.ListView"));if(list.exists())list.scrollToEnd(10);shot("17-resolution-options-bottom");device.pressBack();device.waitForIdle();
             scenario.onActivity(activity->{Dialog dialog=(Dialog)get(activity,"cameraSettingsDialog");View settings=dialog.getWindow().getDecorView();radio(settings,"Foto").performClick();((androidx.appcompat.widget.SwitchCompat)tagged(settings,"scan-vibration")).setChecked(true);});
             shot("12-camera-settings-photo");
         }
@@ -100,6 +103,25 @@ public class CameraControlsTest {
                 }else{
                     scenario.onActivity(activity->{tagged(activity.getWindow().getDecorView(),"camera-start").performClick();assertTrue((Boolean)get(activity,"scanning"));tagged(activity.getWindow().getDecorView(),"camera-stop").performClick();assertFalse((Boolean)get(activity,"scanning"));});
                 }
+            }
+        }
+    }
+
+    @Test public void allTenAdditionalRequestedResolutionsWorkWithNativeFallback()throws Exception{
+        prepare();
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            for(int resolution=3;resolution<CameraResolutionOptions.TARGETS.length;resolution++)for(String mode:new String[]{"video","photo"}){
+                final int selected=resolution;final String selectedMode=mode;
+                scenario.onActivity(activity->{set(activity,"resolutionChoice",selected);set(activity,"scanMode",selectedMode);call(activity,"showScanner",new Class<?>[]{});});
+                ready(scenario);
+                scenario.onActivity(activity->assertFalse("The actual native camera size must be shown for option "+selected,((String)get(activity,"actualResolution")).isEmpty()));
+                if(mode.equals("photo")){
+                    scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"camera-capture").performClick());
+                    AtomicBoolean busy=new AtomicBoolean(true);long until=System.currentTimeMillis()+45000;
+                    while(busy.get()&&System.currentTimeMillis()<until){Thread.sleep(100);scenario.onActivity(activity->busy.set((Boolean)get(activity,"captureBusy")));}
+                    assertFalse("Requested photo size "+selected+" must finish",busy.get());
+                    scenario.onActivity(activity->assertTrue("The native fallback must produce a decodable image",((TextView)get(activity,"resultText")).getText().toString().startsWith("Geen QR-code gevonden")));
+                }else scenario.onActivity(activity->{tagged(activity.getWindow().getDecorView(),"camera-start").performClick();assertTrue((Boolean)get(activity,"scanning"));tagged(activity.getWindow().getDecorView(),"camera-stop").performClick();});
             }
         }
     }

@@ -62,8 +62,7 @@ final class UiArt {
                 case "list":
                     for(int y=16;y<=48;y+=16){canvas.drawCircle(10,y,2,p);canvas.drawLine(23,y,55,y,p);}break;
                 case "settings":
-                    canvas.drawCircle(32,32,17,p);canvas.drawCircle(32,32,7,p);
-                    for(int i=0;i<8;i++){canvas.save();canvas.rotate(i*45,32,32);canvas.drawLine(32,8,32,15,p);canvas.restore();}break;
+                    Path gear=new Path();for(int i=0;i<32;i++){double angle=i*Math.PI/16-Math.PI/2;float radius=i%4<2?26:21;float x=32+(float)Math.cos(angle)*radius,y=32+(float)Math.sin(angle)*radius;if(i==0)gear.moveTo(x,y);else gear.lineTo(x,y);}gear.close();canvas.drawPath(gear,p);canvas.drawCircle(32,32,9,p);break;
                 case "csv":
                     Path page=new Path();page.moveTo(14,6);page.lineTo(39,6);page.lineTo(53,20);page.lineTo(53,58);page.lineTo(14,58);page.close();canvas.drawPath(page,p);
                     canvas.drawLine(38,7,38,21,p);canvas.drawLine(38,21,52,21,p);p.setStyle(Paint.Style.FILL);p.setTypeface(Typeface.DEFAULT_BOLD);p.setTextSize(15);canvas.drawText("CSV",18,44,p);break;
