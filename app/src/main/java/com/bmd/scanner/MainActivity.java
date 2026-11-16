@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
         hero.addView(new UiArt.ScannerMark(this),new LinearLayout.LayoutParams(dp(74),dp(80)));
         LinearLayout names=column();names.setPadding(dp(12),0,0,0);
         TextView name=text("BMD",50,true);name.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD));name.setMaxLines(1);names.addView(name);
-        UiArt.NameText subtitle=new UiArt.NameText(this);subtitle.setText(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"));subtitle.setTextSize(24);subtitle.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD_ITALIC));subtitle.setIncludeFontPadding(false);subtitle.setMaxLines(1);subtitle.setAutoSizeTextTypeUniformWithConfiguration(14,24,1,android.util.TypedValue.COMPLEX_UNIT_SP);names.addView(subtitle,new LinearLayout.LayoutParams(-1,-2));
+        UiArt.NameText subtitle=new UiArt.NameText(this);subtitle.setText(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"));subtitle.setTextSize(24);subtitle.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD_ITALIC));subtitle.setIncludeFontPadding(false);subtitle.setMaxLines(1);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(subtitle,14,24,1,android.util.TypedValue.COMPLEX_UNIT_SP);names.addView(subtitle,new LinearLayout.LayoutParams(-1,-2));
         hero.addView(names,new LinearLayout.LayoutParams(0,-2,1));
         LinearLayout.LayoutParams heroParams=new LinearLayout.LayoutParams(-1,dp(116));heroParams.setMargins(dp(22),0,dp(14),0);content.addView(hero,heroParams);
         content.addView(new UiArt.Wave(this),new LinearLayout.LayoutParams(-1,dp(18)));
