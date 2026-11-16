@@ -7,6 +7,7 @@ adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 || t
 adb shell ls -l /data/local/tmp/bmd-screenshots || true
 mkdir -p device-screenshots
 adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
+adb pull /sdcard/Android/data/com.bmd.scanner/files/screenshots/. device-screenshots/ || true
 adb shell cat /data/local/tmp/bmd-picker.xml || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
