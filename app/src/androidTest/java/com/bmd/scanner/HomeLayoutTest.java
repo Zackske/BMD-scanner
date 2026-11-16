@@ -32,8 +32,31 @@ public class HomeLayoutTest {
                 assertEquals((scan.left+photo.right)/2f,brand.exactCenterX(),2f);
                 assertTrue("Photo button must be actionable",tagged(root,"photo").isClickable());
                 assertTrue("Results button must be actionable",tagged(root,"list").isClickable());
+                assertTrue("Brand must have visible dimensions",brand.width()>100&&brand.height()>40);
                 assertTrue("Brand must stay within viewport",brand.bottom<root.getHeight());
+                View footer=tagged(root,"home-brand");
+                android.graphics.Bitmap pixels=android.graphics.Bitmap.createBitmap(footer.getWidth(),footer.getHeight(),android.graphics.Bitmap.Config.ARGB_8888);
+                footer.draw(new android.graphics.Canvas(pixels));
+                int bright=0;for(int y=0;y<pixels.getHeight();y+=5)for(int x=0;x<pixels.getWidth();x+=5){int color=pixels.getPixel(x,y);if(android.graphics.Color.red(color)>120&&android.graphics.Color.green(color)>120)bright++;}
+                assertTrue("Approved Blue Medical artwork must be rendered",bright>100);pixels.recycle();
             });
+            java.util.concurrent.CountDownLatch ready=new java.util.concurrent.CountDownLatch(1);
+            android.graphics.Bitmap[] captured=new android.graphics.Bitmap[1];int[] status={-1};
+            scenario.onActivity(activity->{
+                View decor=activity.getWindow().getDecorView();decor.invalidate();
+                decor.postOnAnimation(()->decor.postOnAnimation(()->{
+                    captured[0]=android.graphics.Bitmap.createBitmap(decor.getWidth(),decor.getHeight(),android.graphics.Bitmap.Config.ARGB_8888);
+                    android.view.PixelCopy.request(activity.getWindow(),captured[0],result->{status[0]=result;ready.countDown();},new android.os.Handler(android.os.Looper.getMainLooper()));
+                }));
+            });
+            assertTrue(ready.await(10,java.util.concurrent.TimeUnit.SECONDS));assertEquals(android.view.PixelCopy.SUCCESS,status[0]);
+            scenario.onActivity(activity->{
+                View footer=tagged(activity.getWindow().getDecorView(),"home-brand");Rect rect=bounds(footer);int[] origin=new int[2];activity.getWindow().getDecorView().getLocationOnScreen(origin);rect.offset(-origin[0],-origin[1]);int bright=0;
+                for(int y=rect.top;y<rect.bottom;y+=5)for(int x=rect.left;x<rect.right;x+=5){int color=captured[0].getPixel(x,y);if(android.graphics.Color.red(color)>120&&android.graphics.Color.green(color)>120)bright++;}
+                assertTrue("Footer must be visible in the actual displayed app window",bright>100);
+            });
+            java.io.File dir=new java.io.File(context.getExternalFilesDir(null),"screenshots");dir.mkdirs();
+            try(java.io.FileOutputStream out=new java.io.FileOutputStream(new java.io.File(dir,"20-home-verified.png"))){captured[0].compress(android.graphics.Bitmap.CompressFormat.PNG,100,out);}captured[0].recycle();
         }
     }
 }

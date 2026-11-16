@@ -63,10 +63,8 @@ final class UiArt {
         Wave(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(CYAN);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
-    static class Brand extends View {
-        private final Paint p=new Paint(3);private final Bitmap art;
-        Brand(Context c){super(c);art=artwork(c,false);setContentDescription("Blue Medical, A Translumina Group Company");}
-        @Override protected void onDraw(Canvas c){float scale=Math.min((float)getWidth()/art.getWidth(),(float)getHeight()/art.getHeight());float w=art.getWidth()*scale,h=art.getHeight()*scale;c.drawBitmap(art,null,new RectF((getWidth()-w)/2,(getHeight()-h)/2,(getWidth()+w)/2,(getHeight()+h)/2),p);}
+    static class Brand extends androidx.appcompat.widget.AppCompatImageView {
+        Brand(Context c){super(c);setImageBitmap(artwork(c,false));setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
     }
     static class Icon extends View {
         private final String kind;private final int color;private final Paint p=new Paint(3);
