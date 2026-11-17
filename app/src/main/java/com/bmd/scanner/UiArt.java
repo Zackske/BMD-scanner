@@ -44,6 +44,7 @@ final class UiArt {
             if(scanner)scannerArt=bitmap;else brandArt=bitmap;return bitmap;
         }catch(java.io.IOException e){throw new IllegalStateException("Bundled brand artwork missing",e);}
     }
+    static Drawable mist(){return new Drawable(){private final Paint p=new Paint(3);@Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();canvas.save();canvas.translate(r.left,r.top);for(int i=0;i<4;i++){Path wave=new Path();float y=h*(.28f+i*.16f);wave.moveTo(w*.04f,y);wave.cubicTo(w*.32f,y-h*.45f,w*.45f,y+h*.35f,w*.65f,y-h*.03f);wave.cubicTo(w*.8f,y-h*.35f,w*.83f,y-h*.28f,w*.97f,y-h*.4f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);for(int glow=10;glow>=1;glow--){p.setStrokeWidth(h*.018f*glow);p.setShader(new LinearGradient(0,y,w,y-h*.3f,new int[]{0x0000baff,0x04009fcc,0x0908caff,0x0000bbff},null,Shader.TileMode.CLAMP));canvas.drawPath(wave,p);}p.setShader(null);}canvas.restore();}@Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}};}
     static class ScannerMark extends View {
         private final Paint p=new Paint(3);private final Bitmap art;
         ScannerMark(Context c){super(c);art=artwork(c,true);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
@@ -65,7 +66,7 @@ final class UiArt {
         @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(CYAN);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
     static class Brand extends androidx.appcompat.widget.AppCompatImageView {
-        Brand(Context c){super(c);setImageResource(R.drawable.blue_medical_logo);setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
+        Brand(Context c){super(c);float d=getResources().getDisplayMetrics().density;GradientDrawable frame=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{0xff525456,0xff0b0d10,0xff000000});frame.setCornerRadius(8*d);frame.setStroke(Math.max(1,Math.round(d*.6f)),0xff656565);setBackground(frame);int inset=Math.round(2*d);setPadding(inset,inset,inset,inset);setElevation(3*d);setClipToOutline(true);setImageResource(R.drawable.blue_medical_logo);setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
     }
     static class Icon extends View {
         private final String kind;private final int color;private final Paint p=new Paint(3);
