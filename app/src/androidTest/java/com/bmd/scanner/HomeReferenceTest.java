@@ -17,7 +17,7 @@ public class HomeReferenceTest {
     @Test public void homeBackgroundSpansFullHeightAndControlsStayVisible()throws Exception{
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
             Thread.sleep(800);scenario.onActivity(a->{View home=DeviceSupport.tag(a.getWindow().getDecorView(),"reference-home");assertNotNull(home);
-                HomeGeometry g=new HomeGeometry(home.getWidth(),home.getHeight());assertEquals(0,g.y(106),.01f);assertEquals(home.getHeight(),g.y(1564),.01f);
+                HomeGeometry g=new HomeGeometry(home.getWidth(),home.getHeight());assertEquals(0,g.y(0),.01f);assertEquals(home.getHeight(),g.y(1812),.01f);
                 for(String tag:new String[]{"qr","photo","list","settings","home-identity","home-brand"}){View v=DeviceSupport.tag(home,tag);assertTrue(v.getLeft()>=0&&v.getTop()>=0&&v.getRight()<=home.getWidth()&&v.getBottom()<=home.getHeight());}
             });
         }
