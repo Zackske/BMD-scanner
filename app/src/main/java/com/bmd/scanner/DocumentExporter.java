@@ -14,7 +14,7 @@ final class DocumentExporter {
         PdfDocument doc=new PdfDocument();try(ByteArrayOutputStream bytes=new ByteArrayOutputStream()){
             TextPaint paint=new TextPaint(Paint.ANTI_ALIAS_FLAG);paint.setColor(Color.rgb(3,30,60));paint.setTextSize(12);PdfDocument.Page page=null;int y=0,number=0;
             List<String> lines=new ArrayList<>();lines.add("BMD");lines.add(String.join("   |   ",headings));for(ScanTracker.Item i:rows)lines.add(i.id+"   |   "+i.kind+"   |   "+i.value);
-            for(String text:lines){StaticLayout layout=StaticLayout.Builder.obtain(text,0,text.length(),paint,515).setIncludePad(false).setBreakStrategy(android.text.Layout.BREAK_STRATEGY_HIGH_QUALITY).build();
+            for(String text:lines){StaticLayout layout=StaticLayout.Builder.obtain(text,0,text.length(),paint,515).setIncludePad(false).build();
                 for(int line=0;line<layout.getLineCount();line++){int height=layout.getLineBottom(line)-layout.getLineTop(line);if(page==null||y+height>800){if(page!=null)doc.finishPage(page);page=doc.startPage(new PdfDocument.PageInfo.Builder(595,842,++number).create());y=40;}Canvas c=page.getCanvas();c.save();c.clipRect(40,y,555,y+height);c.translate(40,y-layout.getLineTop(line));layout.draw(c);c.restore();y+=height;}y+=10;
             }if(page!=null)doc.finishPage(page);doc.writeTo(bytes);return bytes.toByteArray();
         }finally{doc.close();}
