@@ -1,13 +1,13 @@
 # Goedgekeurd scannerontwerp — 16 november 2026
 
-Status: ontwerpvoorbeelden; nog niet in APK/GitHub geïmplementeerd. Huidige gepubliceerde APK is 1.4.0 build 37.
+Status: geïmplementeerd in versie 2.0.0. De concrete verificatie en resterende hardwarecontroles staan in [het testrapport](verification-2.0.md).
 
-Tijdens implementatie goedgekeurd: home-tegels verhoogd/glanzend 3D met subtiele indrukanimatie (voorbeeld exec-a8397667-4d72-48ac-b7a1-2ca2ca1d35b6.png). Bedrijfsnaam blijft uitsluitend BLUE MEDICAL, met bestaande ondertitel; eerdere B.V./DEVICES-varianten vervallen. Blue Medical-banner iets kleiner en gecentreerd. De vier hoofdkoppen behouden hun formaat.
+Home: vier verhoogde 3D-tegels met indruk-animatie, dezelfde afmetingen en positie. BMD ScanTovenaar met vrijstaand scannerbeeld en subtiele bewegende rook bovenaan. Het originele aangeleverde Blue Medical-webplogo staat kleiner en gecentreerd onderaan, op een witte achtergrond met een dunne zwarte opstaande rand. Afbeeldingskleuren en bronbestand zijn behouden. Eerdere B.V./Devices-naamvarianten vervallen. ‘Batch’ is verwijderd en Scannen staat op dezelfde tekstlijn als de andere tegels.
 
 ## Talen
 
 Bestaand: Nederlands, Engels, Oekraïens, Turks.
-Toevoegen bij volgende implementatie: Italiaans (eerder afgesproken naam BMD Mago dello Scan), Duits, Frans, Spaans, Hindi, Portugees. Totaal tien talen. Alle schermteksten, instellingen, keuzemenu's, meldingen, toegankelijkheidslabels en appnamen lokaliseren; scanwaarden en productcodes nooit vertalen. Deze zes talen zijn nog niet in de gepubliceerde APK ingebouwd.
+Toegevoegd: Italiaans (eerder afgesproken naam BMD Mago dello Scan), Duits, Frans, Spaans, Hindi, Portugees. Totaal tien talen. Alle schermteksten, instellingen, keuzemenu's, meldingen, toegankelijkheidslabels en appnamen lokaliseren; scanwaarden en productcodes nooit vertalen. Alle tien talen zijn in de 2.0.0-broncode opgenomen.
 Algemene instellingen: taalkeuze toont alle tien talen met eigen taalnamen, in deze volgorde: Nederlands, English, Українська, Türkçe, Italiano, Deutsch, Français, Español, Português, हिन्दी. Portugees staat direct boven Hindi. Na selectie gehele interface vertalen, ook scannerinstellingen, detectieformaten, opslaan/delen en correctiemenu. Taalnamen in de kiezer blijven herkenbaar in hun eigen taal.
 Kleine vlag naast elke taalnaam in de taalkeuze: Nederland, Verenigd Koninkrijk, Oekraïne, Turkije, Italië, Duitsland, Frankrijk, Spanje, India, Portugal. Taalnaam blijft zichtbaar; vlag is aanvullende visuele herkenning.
 

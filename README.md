@@ -1,37 +1,53 @@
 # BMD ScanTovenaar
 
-Android QR batch scanner — version 1.3.0.
+Native Android scanner with local QR/barcode recognition. Android 8.0+ (API 26); package `com.bmd.scanner`.
 
-## App flow
-- Home has exactly four actions: Scan, Upload photos, Results, Settings.
-- Scan opens an idle preview. In Video, Start begins continuous QR decoding and Stop pauses decoding while keeping the preview. In Foto, a single round shutter captures one still image and decodes its QR values. No image-upload or results buttons appear on the scanner.
-- The scanner gear contains Video/Foto mode, HD / Full HD / highest-supported capture/analysis resolution, High/Normal/Low video confirmation (1/2/3 consecutive processed frames), and vibration after a successful code. Settings persist. CameraX falls back to supported device resolutions.
-- Flash and zoom remain directly accessible on the preview. Unsupported flash/zoom are disabled; zoom is clamped to hardware limits. Automatic focus and tap-to-focus are retained.
-- Every accepted QR value requests one short haptic pulse, including multiple codes in a photo. Pulses are spaced to avoid overwriting each other; blank/failed images and unconfirmed/cooldown-filtered live detections do not trigger them. The app toggle and Android's device haptic settings are respected. Haptics stop when the app goes into the background.
-- Upload photos opens Android's document picker with multi-selection. Photos are decoded locally, never uploaded to a server. All QR values from each selected image are added to Results; unreadable images are reported.
-- Results contains CSV creation and clearing. CSV is UTF-8 with BOM, quoted values and CRLF, one scan per row. Repeated scan contents are preserved.
-- After the CSV is saved, Send opens Android's share chooser for that saved file; choose Outlook or another installed app. Sending requires a user action in that app.
-- Settings offers Dutch, English, Turkish and Ukrainian, repeat delay, and CSV filename.
-- The native vector artwork recreates the approved navy/cyan wave style and four colored home tiles. The Blue Medical header is a text recreation from the supplied visual, not an official logo asset.
-- Results survive activity recreation/rotation. They are not a permanent scan archive; export before ending the session.
+[Download the latest tested APK](https://github.com/Zackske/BMD-scanner/releases/latest/download/BMD-ScanTovenaar.apk)
 
-## Build and download
-Run **Actions → Build BMD ScanTovenaar APK** or push to main. Download **BMD-ScanTovenaar-APK** from a successful run. The ZIP contains a debug-signed APK suitable for installation/testing, not a Play Store release.
+## Home and settings
 
-CI pins Gradle 8.9, Java 17, Android SDK 35, Build Tools 34.0.0 and Android Gradle Plugin 8.6.1. No wrapper is committed; local builds require an installed Gradle 8.9 and ANDROID_HOME or local.properties.
+Four raised, animated home tiles: Scannen, Foto’s uploaden, Resultaten and Instellingen. The original supplied Blue Medical logo is preserved, with a subtle dark raised rim. The title has a gentle smoke animation. Android's disabled-animation preference is respected.
 
-```text
+General settings contain Language, Scanner, Document type and About. About opens an animated “Made by Jack with ♥” canvas.
+
+The ten interface languages are Nederlands, English, Українська, Türkçe, Italiano, Deutsch, Français, Español, Português and हिन्दी. Language names have flags; code contents are never translated.
+
+## Live scanner
+
+- Continuous live detection starts with the camera. There is no Video/Foto mode or Start/Stop control.
+- The small live-detection gear selects QR + barcodes, QR only or barcodes only without discarding existing results.
+- Numbered cyan markers follow physical label positions. Separate visible labels with identical decoded text count separately. A tracked label is counted once per session, including after edits or deletion.
+- The counter shows total physical instances and separate QR/barcode totals. The list opens for individual corrections and deletion.
+- Vertical zoom is on the right; the lamp above it shows off/on with matching icon, color and animation. Controls respect actual camera capabilities.
+- The round shutter captures only when pressed. The captured still image remains frozen, including after activity recreation. After capture, choose local saving of the annotated photo plus document, native Android sharing, or scan again.
+- Reset clears the current session, not previously saved documents/photos.
+- The camera gear offers thirteen requested resolutions with native fallback, low/normal/high confirmation sensitivity (3/2/1 processed frames), and one queued haptic pulse per newly accepted instance. Android's system haptic preference is respected.
+
+Keep the batch in view until capture. Physical identity cannot be guaranteed after indistinguishable labels leave the frame entirely, swap positions or are completely occluded. Review the editable list before saving. Hardware focus, lighting, blur, label size and quiet zones affect recognition.
+
+Requested screen-like resolution dimensions are camera preferences, not a promise of unsupported sensor modes. The camera settings show the actual selected analysis size.
+
+## Photos and exports
+
+Photo import uses Android's multi-select document picker and processes images locally. No account or server upload is required. Importing separate photos adds their detections as separate rows.
+
+Results export as UTF-8 CSV, real Excel XLSX, Word DOCX or PDF. Duplicate product rows, leading zeros, Unicode and individual corrections are preserved. CSV spreadsheet-formula prefixes are escaped. The file extension follows the selected document type.
+
+Android's document/folder picker lets the user choose where files are saved. Annotated photos are downsampled for reliable memory use; the selected camera input size and exported photo size can differ. Android sharing grants temporary read access to the selected receiving app; email/social delivery is completed by the user in that app.
+
+## Build and verification
+
+GitHub Actions pins Temurin Java 17 and Gradle 8.9. It builds the APK, runs Android lint and JVM tests, then installs the app on an Android 35 emulator with real code images supplied to the virtual camera. A release download is published only after these checks pass.
+
+Tests cover identical code instances and rotation, tracker stability and corrections, a regression image captured from the real emulator camera, confirmation on slow processed frames, real photo decoding, actual camera binding for all thirteen preferences, zoom/capture behavior, format filters, settings and ten languages, four export formats, Android file pickers and share URI grants. Emulator screenshots and a screen recording are retained as workflow artifacts; screenshots are also saved in `docs/screenshots`.
+
+Physical Samsung camera quality, actual lamp brightness, the felt vibration and delivery through installed email/social apps still require testing on a phone. The downloadable APK is a debug-signed installable test build; CI caches its signing key to permit subsequent updates.
+
+Locally, with the Android SDK, Java 17 and Gradle 8.9 installed:
+
+```sh
 gradle --no-daemon :app:assembleDebug :app:lintDebug :app:testDebugUnitTest
 gradle --no-daemon :app:connectedDebugAndroidTest
 ```
 
-CI also runs Android 35 emulator tests: four home actions and navigation, multiple QR codes across photos, blank/broken images, results through recreation, CSV file contents. Device screenshots and reports are uploaded as artifacts. Live physical-camera scanning, autofocus/torch hardware, the system photo picker, and Outlook delivery still require testing on a real phone.
-
-The CI debug signing key is cached for subsequent builds. If Android rejects an update from an older APK signed with a different debug key, export existing results, uninstall that older app and install this APK. A stable release signing key is needed for production distribution.
-
-## Name, icon and requested portrait sizes
-The supplied launcher artwork is bundled as an adaptive Android icon, with density-specific legacy assets. The original is preserved in [docs/branding/icon-source.jpg](docs/branding/icon-source.jpg).
-
-Localized names: Nederlands **BMD ScanTovenaar**; English **BMD ScanMagician**; Українська **BMD СканЧарівник**; Türkçe **BMD Tarama Büyücüsü**. The in-app name follows the chosen app language; Android launcher labels use the Android resource language.
-
-The resolution menu additionally offers the requested portrait targets: 720×1600, 720×1612, 1080×1920, 1080×2340, 1080×2400, 1080×2424, 1220×2712, 1280×2856, 1440×3120 and 1440×3200. These are desired sizes, not a promise of sensor support. CameraX selects the nearest available native output if an exact size is absent; the gear panel reports the active native resolution. Images are never artificially upscaled to pretend that the sensor supports a screen resolution. Existing HD, Full HD and highest-supported selections remain compatible with saved settings.
+The recognition engine uses [ZXing](https://github.com/zxing/zxing), licensed under Apache 2.0.
