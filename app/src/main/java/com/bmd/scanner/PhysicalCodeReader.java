@@ -26,7 +26,7 @@ final class PhysicalCodeReader {
         try{Result result=reader.decodeWithState(bitmap(x,y,w,h));ScanTracker.Detection d=add(result,x,y,true);if(d==null)return;
             int l=Math.max(x,(int)(d.left*width)-4),t=Math.max(y,(int)(d.top*height)-4),r=Math.min(x+w,(int)Math.ceil(d.right*width)+4),b=Math.min(y+h,(int)Math.ceil(d.bottom*height)+4);
             region(reader,x,y,w,t-y,depth+1);region(reader,x,b,w,y+h-b,depth+1);region(reader,x,t,l-x,b-t,depth+1);region(reader,r,t,x+w-r,b-t,depth+1);
-        }catch(ReaderException ignored){if(depth<2){if(h>=w){int half=h/2;region(reader,x,y,w,half,depth+1);region(reader,x,y+half,w,h-half,depth+1);}else{int half=w/2;region(reader,x,y,half,h,depth+1);region(reader,x+half,y,w-half,h,depth+1);}}}finally{reader.reset();}
+        }catch(ReaderException ignored){if(depth<4){int half=h/2;region(reader,x,y,w,half,depth+1);region(reader,x,y+half,w,h-half,depth+1);}}finally{reader.reset();}
     }
     private ScanTracker.Detection add(Result result,int ox,int oy,boolean linear){
         ResultPoint[] points=result.getResultPoints();if(points==null||points.length<2||result.getText()==null)return null;
