@@ -1,5 +1,5 @@
-# Home layout 2.3.1
+# Home layout 2.3.2
 
-The homepage now fills the native Android content area. The previous single-picture fit and its embedded margins were replaced by independently laid-out title, four navigation tiles and footer logo. The navy background and cyan waves fill the page. Tile icons and labels retain their proportions, with native click targets aligned to each tile. The logo remains centered near the lower wave. Translation bands follow each component.
+Restores the intact owner-provided picture after the 2.3.1 sliced-layout regression. Uses reference image content rectangle (31,106)-(910,1564), excluding screenshot system bars and baked outer inset. Applies a single uniform scale to preserve all artwork proportions, with real navigation hit targets transformed by the same scale and translation. Portrait phone layouts fit the content width, so the cyan lines reach both screen edges. Spare vertical space contains extensions of the source background edge rows only; the title, tiles, text and logo are never stretched. Short/wide layouts fit the complete image within the viewport instead of cropping it.
 
-Build, lint, JVM unit tests and APK signature validation run in Actions. The previous whole-picture pixel test has been replaced by responsive bounds assertions for future device runs. No new emulator or physical-device test is claimed for this phone-testing build.
+Verified reference dimensions and tall-portrait geometry locally. GitHub Actions runs build, lint, JVM unit tests and APK signature verification. Whole-image pixel and navigation device tests are updated but are not executed by this phone-testing workflow. No new native emulator or physical phone test is claimed.

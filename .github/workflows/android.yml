@@ -83,7 +83,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
-          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. Responsive full-screen home layout. Background fills available content area; title, four tiles and centered logo retain their proportions with responsive spacing. Owner will test camera behavior and appearance on the phone; no emulator/device test was run for this build."
+          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. Home restored from the owner-provided image. Uniform scaling preserves its ratio; screenshot system bars and outer inset are excluded, so cyan waves meet screen edges on portrait phones. Only background edge rows extend vertically. Owner will test camera behavior and appearance on the phone; no emulator/device test was run for this build."
 
       - name: Upload diagnostic reports
         if: always()
