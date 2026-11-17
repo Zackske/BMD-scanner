@@ -30,19 +30,19 @@ final class ScanTracker {
         float dx=0,dy=0;
         // Unambiguous payloads supply a common camera translation for duplicate labels.
         List<Float> xs=new ArrayList<>(),ys=new ArrayList<>();
-        for(Detection d:detections){Item only=null;int old=0,fresh=0;for(Item i:tracks)if(i.raw.equals(d.value)&&i.kind.equals(d.kind)&&now-i.seen<1200){old++;only=i;}for(Detection e:detections)if(e.value.equals(d.value)&&e.kind.equals(d.kind))fresh++;if(old==1&&fresh==1){xs.add(d.x()-only.x());ys.add(d.y()-only.y());}}
+        for(Detection d:detections){Item only=null;int old=0,fresh=0;for(Item i:tracks)if(i.raw.equals(d.value)&&i.kind.equals(d.kind)&&i.seen==lastFrame){old++;only=i;}for(Detection e:detections)if(e.value.equals(d.value)&&e.kind.equals(d.kind))fresh++;if(old==1&&fresh==1){xs.add(d.x()-only.x());ys.add(d.y()-only.y());}}
         if(!xs.isEmpty()){Collections.sort(xs);Collections.sort(ys);dx=xs.get(xs.size()/2);dy=ys.get(ys.size()/2);}
         final float motionX=dx,motionY=dy;
         class Match {Item item;int index;float score;Match(Item i,int n,float s){item=i;index=n;score=s;}}
         List<Match> matches=new ArrayList<>();
         for(Item i:tracks)for(int n=0;n<detections.size();n++){
             Detection d=detections.get(n);if(!i.raw.equals(d.value)||!i.kind.equals(d.kind))continue;
-            float x=i.x()+(now-i.seen<1200?motionX:0),y=i.y()+(now-i.seen<1200?motionY:0);
+            float x=i.x()+(i.seen==lastFrame?motionX:0),y=i.y()+(i.seen==lastFrame?motionY:0);
             float distance=(float)Math.hypot(x-d.x(),y-d.y());float extent=Math.max(Math.max(i.right-i.left,i.bottom-i.top),Math.max(d.right-d.left,d.bottom-d.top));
             float gate=Math.max(.055f,Math.min(.22f,extent*.8f));if(distance<=gate)matches.add(new Match(i,n,distance));
         }
         matches.sort(Comparator.comparingDouble(m->m.score));Set<Integer> used=new HashSet<>();Set<Item> assigned=new HashSet<>();int added=0;
-        for(Match m:matches){if(used.contains(m.index)||assigned.contains(m.item))continue;Item i=m.item;Detection d=detections.get(m.index);boolean consecutive=now-i.seen<1200&&lastFrame-i.seen<100;i.hits=consecutive?i.hits+1:1;i.update(d,now);used.add(m.index);assigned.add(i);if(!i.confirmed&&!i.deleted&&i.hits>=required){i.confirmed=true;added++;}}
+        for(Match m:matches){if(used.contains(m.index)||assigned.contains(m.item))continue;Item i=m.item;Detection d=detections.get(m.index);boolean consecutive=i.seen==lastFrame;i.hits=consecutive?i.hits+1:1;i.update(d,now);used.add(m.index);assigned.add(i);if(!i.confirmed&&!i.deleted&&i.hits>=required){i.confirmed=true;added++;}}
         for(int n=0;n<detections.size();n++)if(!used.contains(n)){Item i=new Item(next++,detections.get(n),now);i.confirmed=required<=1;tracks.add(i);if(i.confirmed)added++;}
         // Keep confirmed/deleted instances for the whole session; discard only unconfirmed noise.
         tracks.removeIf(i->!i.confirmed&&!i.deleted&&now-i.seen>1800);lastFrame=now;return added;

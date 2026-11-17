@@ -17,13 +17,13 @@ final class PhysicalCodeReader {
         if(!mode.equals("qr")){
             hints.remove(DecodeHintType.TRY_HARDER);
             hints.put(DecodeHintType.POSSIBLE_FORMATS,Arrays.asList(BarcodeFormat.CODE_128,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93,BarcodeFormat.CODABAR,BarcodeFormat.EAN_13,BarcodeFormat.EAN_8,BarcodeFormat.ITF,BarcodeFormat.UPC_A,BarcodeFormat.UPC_E,BarcodeFormat.RSS_14,BarcodeFormat.RSS_EXPANDED,BarcodeFormat.DATA_MATRIX,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417));
-            MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);matrixRows=true;attempts=0;region(reader,0,0,width,height,0);
+            MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);
         }
         found.sort(Comparator.comparingDouble((ScanTracker.Detection d)->d.top).thenComparingDouble(d->d.left));
     }
     private void region(MultiFormatReader reader,int x,int y,int w,int h,int depth){
         if(w<32||h<24||depth>18||attempts++>512)return;
-        try{Result result=reader.decodeWithState(bitmap(x,y,w,h));ScanTracker.Detection d=add(result,x,y,true);if(d==null)return;
+        try{Result result;matrixRows=true;try{result=reader.decodeWithState(bitmap(x,y,w,h));}catch(ReaderException adaptiveFailure){reader.reset();matrixRows=false;result=reader.decodeWithState(bitmap(x,y,w,h));}ScanTracker.Detection d=add(result,x,y,true);if(d==null)return;
             int l=Math.max(x,(int)(d.left*width)-4),t=Math.max(y,(int)(d.top*height)-4),r=Math.min(x+w,(int)Math.ceil(d.right*width)+4),b=Math.min(y+h,(int)Math.ceil(d.bottom*height)+4);
             region(reader,x,y,w,t-y,depth+1);region(reader,x,b,w,y+h-b,depth+1);region(reader,x,t,l-x,b-t,depth+1);region(reader,r,t,x+w-r,b-t,depth+1);
         }catch(ReaderException ignored){if(depth<4){int half=h/2;region(reader,x,y,w,half,depth+1);region(reader,x,y+half,w,h-half,depth+1);}}finally{reader.reset();}
