@@ -26,18 +26,19 @@ final class ScanTracker {
     void remove(int id){for(Item i:tracks)if(i.id==id)i.deleted=true;}
     void restore(List<Item> saved){reset();for(Item i:saved){tracks.add(i.copy());next=Math.max(next,i.id+1);}}
     void importCode(Detection d,long now){Item item=new Item(next++,d,now);item.confirmed=true;tracks.add(item);}
+    private boolean recent(Item i,long now){return i.seen==lastFrame||now-i.seen<1200;}
     int update(List<Detection> detections,long now,int required){
         float dx=0,dy=0;
         // Unambiguous payloads supply a common camera translation for duplicate labels.
         List<Float> xs=new ArrayList<>(),ys=new ArrayList<>();
-        for(Detection d:detections){Item only=null;int old=0,fresh=0;for(Item i:tracks)if(i.raw.equals(d.value)&&i.kind.equals(d.kind)&&i.seen==lastFrame){old++;only=i;}for(Detection e:detections)if(e.value.equals(d.value)&&e.kind.equals(d.kind))fresh++;if(old==1&&fresh==1){xs.add(d.x()-only.x());ys.add(d.y()-only.y());}}
+        for(Detection d:detections){Item only=null;int old=0,fresh=0;for(Item i:tracks)if(i.raw.equals(d.value)&&i.kind.equals(d.kind)&&recent(i,now)){old++;only=i;}for(Detection e:detections)if(e.value.equals(d.value)&&e.kind.equals(d.kind))fresh++;if(old==1&&fresh==1){xs.add(d.x()-only.x());ys.add(d.y()-only.y());}}
         if(!xs.isEmpty()){Collections.sort(xs);Collections.sort(ys);dx=xs.get(xs.size()/2);dy=ys.get(ys.size()/2);}
         final float motionX=dx,motionY=dy;
         class Match {Item item;int index;float score;Match(Item i,int n,float s){item=i;index=n;score=s;}}
         List<Match> matches=new ArrayList<>();
         for(Item i:tracks)for(int n=0;n<detections.size();n++){
             Detection d=detections.get(n);if(!i.raw.equals(d.value)||!i.kind.equals(d.kind))continue;
-            float x=i.x()+(i.seen==lastFrame?motionX:0),y=i.y()+(i.seen==lastFrame?motionY:0);
+            float x=i.x()+(recent(i,now)?motionX:0),y=i.y()+(recent(i,now)?motionY:0);
             float distance=(float)Math.hypot(x-d.x(),y-d.y());float extent=Math.max(Math.max(i.right-i.left,i.bottom-i.top),Math.max(d.right-d.left,d.bottom-d.top));
             float gate=Math.max(.055f,Math.min(.22f,extent*.8f));if(distance<=gate)matches.add(new Match(i,n,distance));
         }
