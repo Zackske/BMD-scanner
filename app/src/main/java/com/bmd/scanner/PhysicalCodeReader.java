@@ -8,16 +8,16 @@ import java.util.*;
 /** Finds physical symbols; equal text on separate labels remains separate. */
 final class PhysicalCodeReader {
     private final List<ScanTracker.Detection> found=new ArrayList<>();
-    private byte[] pixels;private int width,height,attempts;private String mode;
+    private boolean matrixRows=false;private byte[] pixels;private int width,height,attempts;private String mode;
     static List<ScanTracker.Detection> decode(byte[] pixels,int width,int height,String mode){PhysicalCodeReader r=new PhysicalCodeReader();r.pixels=pixels;r.width=width;r.height=height;r.mode=mode;r.read();if(!mode.equals("qr")){byte[] rotated=new byte[pixels.length];for(int y=0;y<height;y++)for(int x=0;x<width;x++)rotated[(width-1-x)*height+y]=pixels[y*width+x];PhysicalCodeReader other=new PhysicalCodeReader();other.pixels=rotated;other.width=height;other.height=width;other.mode="bar";other.read();for(ScanTracker.Detection d:other.found){ScanTracker.Detection mapped=new ScanTracker.Detection(d.value,d.kind,1-d.bottom,d.left,1-d.top,d.right);boolean duplicate=false;for(ScanTracker.Detection old:r.found)if(old.value.equals(mapped.value)&&old.kind.equals(mapped.kind)&&Math.abs(old.x()-mapped.x())<Math.max(.015f,(old.right-old.left)*.3f)&&Math.abs(old.y()-mapped.y())<Math.max(.015f,(old.bottom-old.top)*.3f)){duplicate=true;break;}if(!duplicate)r.found.add(mapped);}}return r.found;}
-    private BinaryBitmap bitmap(int x,int y,int w,int h){return new BinaryBitmap(new HybridBinarizer(new PlanarYUVLuminanceSource(pixels,width,height,x,y,w,h,false)));}
+    private BinaryBitmap bitmap(int x,int y,int w,int h){LuminanceSource source=new PlanarYUVLuminanceSource(pixels,width,height,x,y,w,h,false);return new BinaryBitmap(matrixRows?new MatrixRows(source):new HybridBinarizer(source));}
     private void read(){
         Map<DecodeHintType,Object> hints=new EnumMap<>(DecodeHintType.class);hints.put(DecodeHintType.TRY_HARDER,Boolean.TRUE);
         if(!mode.equals("bar"))try{for(Result result:new QRCodeMultiReader().decodeMultiple(bitmap(0,0,width,height),hints))add(result,0,0,false);}catch(NotFoundException ignored){}
         if(!mode.equals("qr")){
             hints.remove(DecodeHintType.TRY_HARDER);
             hints.put(DecodeHintType.POSSIBLE_FORMATS,Arrays.asList(BarcodeFormat.CODE_128,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93,BarcodeFormat.CODABAR,BarcodeFormat.EAN_13,BarcodeFormat.EAN_8,BarcodeFormat.ITF,BarcodeFormat.UPC_A,BarcodeFormat.UPC_E,BarcodeFormat.RSS_14,BarcodeFormat.RSS_EXPANDED,BarcodeFormat.DATA_MATRIX,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417));
-            MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);
+            MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);matrixRows=true;attempts=0;region(reader,0,0,width,height,0);
         }
         found.sort(Comparator.comparingDouble((ScanTracker.Detection d)->d.top).thenComparingDouble(d->d.left));
     }
@@ -44,4 +44,12 @@ final class PhysicalCodeReader {
         found.add(d);return d;
     }
     private boolean similarRow(int a,int b,int l,int r){int same=0,total=0;for(int x=l;x<=r;x+=2){if(((pixels[a*width+x]&255)<128)==((pixels[b*width+x]&255)<128))same++;total++;}return same>total*.88;}
+    /** Adaptive matrix rows avoid edge sharpening that distorts resampled narrow bars. */
+    private static final class MatrixRows extends Binarizer {
+        private final HybridBinarizer delegate;
+        MatrixRows(LuminanceSource source){super(source);delegate=new HybridBinarizer(source);}
+        @Override public com.google.zxing.common.BitArray getBlackRow(int y,com.google.zxing.common.BitArray row)throws NotFoundException{return delegate.getBlackMatrix().getRow(y,row);}
+        @Override public com.google.zxing.common.BitMatrix getBlackMatrix()throws NotFoundException{return delegate.getBlackMatrix();}
+        @Override public Binarizer createBinarizer(LuminanceSource source){return new MatrixRows(source);}
+    }
 }
