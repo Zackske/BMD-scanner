@@ -74,7 +74,7 @@ jobs:
         run: |
           sudo chmod 666 /dev/kvm
 
-      - name: Test navigation, photo decoding and CSV on Android 35
+      - name: Test live codes, menus, ten languages and four export formats
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -uo pipefail
 status=0
-gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest || status=$?
+timeout 12m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest || status=$?
 mkdir -p device-demo
 adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 || true
 adb shell ls -l /data/local/tmp/bmd-screenshots || true
@@ -9,8 +9,9 @@ mkdir -p device-screenshots
 adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
 adb pull /sdcard/Android/data/com.bmd.scanner/files/screenshots/. device-screenshots/ || true
 adb shell cat /data/local/tmp/bmd-picker.xml || true
+adb logcat -d > device-screenshots/device-logcat.txt || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
-  adb logcat -d -s System.out:I AndroidRuntime:E
+  adb logcat -d -s System.out:I AndroidRuntime:E BMD:W BMD-test:E
 fi
 exit "$status"

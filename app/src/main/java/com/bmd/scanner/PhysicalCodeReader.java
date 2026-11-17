@@ -15,17 +15,18 @@ final class PhysicalCodeReader {
         Map<DecodeHintType,Object> hints=new EnumMap<>(DecodeHintType.class);hints.put(DecodeHintType.TRY_HARDER,Boolean.TRUE);
         if(!mode.equals("bar"))try{for(Result result:new QRCodeMultiReader().decodeMultiple(bitmap(0,0,width,height),hints))add(result,0,0,false);}catch(NotFoundException ignored){}
         if(!mode.equals("qr")){
+            hints.remove(DecodeHintType.TRY_HARDER);
             hints.put(DecodeHintType.POSSIBLE_FORMATS,Arrays.asList(BarcodeFormat.CODE_128,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93,BarcodeFormat.CODABAR,BarcodeFormat.EAN_13,BarcodeFormat.EAN_8,BarcodeFormat.ITF,BarcodeFormat.UPC_A,BarcodeFormat.UPC_E,BarcodeFormat.RSS_14,BarcodeFormat.RSS_EXPANDED,BarcodeFormat.DATA_MATRIX,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417));
             MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);
         }
         found.sort(Comparator.comparingDouble((ScanTracker.Detection d)->d.top).thenComparingDouble(d->d.left));
     }
     private void region(MultiFormatReader reader,int x,int y,int w,int h,int depth){
-        if(w<32||h<24||depth>9||attempts++>80)return;
+        if(w<32||h<24||depth>18||attempts++>512)return;
         try{Result result=reader.decodeWithState(bitmap(x,y,w,h));ScanTracker.Detection d=add(result,x,y,true);if(d==null)return;
             int l=Math.max(x,(int)(d.left*width)-4),t=Math.max(y,(int)(d.top*height)-4),r=Math.min(x+w,(int)Math.ceil(d.right*width)+4),b=Math.min(y+h,(int)Math.ceil(d.bottom*height)+4);
             region(reader,x,y,w,t-y,depth+1);region(reader,x,b,w,y+h-b,depth+1);region(reader,x,t,l-x,b-t,depth+1);region(reader,r,t,x+w-r,b-t,depth+1);
-        }catch(ReaderException ignored){}finally{reader.reset();}
+        }catch(ReaderException ignored){if(depth<2){if(h>=w){int half=h/2;region(reader,x,y,w,half,depth+1);region(reader,x,y+half,w,h-half,depth+1);}else{int half=w/2;region(reader,x,y,half,h,depth+1);region(reader,x+half,y,w-half,h,depth+1);}}}finally{reader.reset();}
     }
     private ScanTracker.Detection add(Result result,int ox,int oy,boolean linear){
         ResultPoint[] points=result.getResultPoints();if(points==null||points.length<2||result.getText()==null)return null;
