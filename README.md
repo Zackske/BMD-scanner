@@ -18,8 +18,8 @@ The ten interface languages are Nederlands, English, Українська, Türk
 - The small live-detection gear selects QR + barcodes, QR only or barcodes only without discarding existing results.
 - Numbered cyan markers follow physical label positions. Separate visible labels with identical decoded text count separately. A tracked label is counted once per session, including after edits or deletion.
 - The counter shows total physical instances and separate QR/barcode totals. The list opens for individual corrections and deletion.
-- Vertical zoom is on the right; the lamp above it shows off/on with matching icon, color and animation. Controls respect actual camera capabilities.
-- The round shutter captures only when pressed. The captured still image remains frozen, including after activity recreation. After capture, choose local saving of the annotated photo plus document, native Android sharing, or scan again.
+- Compact vertical zoom is on the right with 1× / 2× / 3× stops, clamped to actual camera capabilities. The top toolbar contains Flash, camera switching and scanner settings. Flash shows off/on status and a short activation glow.
+- The centered Scan control captures only when pressed. The left list and right reset remain utility controls; History and Create tabs are removed. The floating gallery button imports photos and resumes the camera when cancelled. The captured still image remains frozen, including after activity recreation. After capture, choose local saving of the annotated photo plus document, native Android sharing, or scan again.
 - Reset clears the current session, not previously saved documents/photos.
 - The camera gear offers thirteen requested resolutions with native fallback, low/normal/high confirmation sensitivity (3/2/1 processed frames), and one queued haptic pulse per newly accepted instance. Android's system haptic preference is respected.
 
@@ -37,7 +37,7 @@ Android's document/folder picker lets the user choose where files are saved. Ann
 
 ## Build and verification
 
-GitHub Actions builds the APK with Java 17 and Gradle 8.9, runs Android lint and JVM tests, and verifies the APK signature and package. Android 35 homepage tests then compare the displayed pixels against the supplied image and check the native buttons and translated navigation. A release is published only after these checks pass. Actual camera hardware remains a phone test.
+GitHub Actions builds the APK with Java 17 and Gradle 8.9, runs Android lint and JVM tests, and verifies the APK signature and package. For version 2.2 the owner tests the scanner layout and camera behavior on the phone; no emulator/device-test result is claimed for this release. The separately recorded 2.1 homepage pixel comparison remains documented. See [scanner 2.2](docs/scanner-layout-2.2.md).
 
 Recognition accepts QR codes and linear barcodes only. Data Matrix, Aztec and PDF417 are excluded. Tests cover accepted codes, separate identical labels, format filters and rejection of excluded matrix formats.
 
