@@ -2,6 +2,7 @@
 set -uo pipefail
 status=0
 mkdir -p device-demo device-screenshots
+cp camera-fixture.png device-screenshots/input-camera-fixture.png
 # Keep diagnostic evidence on the host even if the emulator exits.
 adb logcat -v threadtime > device-screenshots/device-logcat.txt 2>&1 &
 log_pid=$!
