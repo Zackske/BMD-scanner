@@ -85,4 +85,6 @@
     <string name="ui_detected">%1$d कोड पहचाने गए</string>
     <string name="ui_scan_button">स्कैन</string>
     <string name="ui_switch_camera">कैमरा बदलें</string>
+    <string name="ui_camera_mode" formatted="false">कैमरा मोड</string>
+    <string name="ui_save_scan" formatted="false">स्कैन सहेजें</string>
 </resources>

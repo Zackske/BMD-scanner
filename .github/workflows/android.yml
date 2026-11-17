@@ -1,4 +1,4 @@
-name: Build BMD ScanTovenaar APK
+name: Build BMD Scan APK
 
 on:
   push:
@@ -57,7 +57,7 @@ jobs:
           key: bmd-debug-keystore-v1
 
       - name: Build and lint Debug APK
-        run: gradle --no-daemon --stacktrace :app:assembleDebug :app:lintDebug :app:testDebugUnitTest
+        run: gradle --no-daemon --stacktrace :app:assembleDebug :app:assembleDebugAndroidTest :app:lintDebug :app:testDebugUnitTest
 
       - name: Verify APK package and signature
         run: |
@@ -73,6 +73,47 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Enable emulator acceleration
+        run: sudo chmod 666 /dev/kvm
+
+      - name: Verify native design, languages and live scanner on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          ram-size: 1536M
+          heap-size: 256M
+          emulator-boot-timeout: 240
+          disable-animations: false
+          emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
+          script: bash ci/design-tests.sh
+
+      - name: Upload native screenshots and test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMD-Scan-native-checks
+          path: device-screenshots/
+          if-no-files-found: ignore
+
+      - name: Save verified native screenshots
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p docs/screenshots/build3
+          find device-screenshots -name 'build3-*.png' -exec cp {} docs/screenshots/build3/ \;
+          git fetch origin main
+          if [[ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]]; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/screenshots/build3
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "docs: save native design and language checks [skip ci]"
+          git push origin HEAD:main
+
       - name: Publish APK for phone testing
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
@@ -82,8 +123,8 @@ jobs:
           set -euo pipefail
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
-          cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
-          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. Approved choice 2 homepage: larger lowered tiles, clean lettering, darker purple title and slightly raised Blue Medical logo. Foreground proportions are preserved with full-height coverage. Owner will test appearance and camera behavior on the phone; no emulator/device test was run for this build."
+          cp app/build/outputs/apk/debug/app-debug.apk BMD-Scan.apk
+          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes "BMD Scan Android APK. Approved home/scanner updates, clean native translations, QR/Barcode/combined modes, spring+ripple zoom, raised Save scan button and new scanner-and-sparks icon. Build, lint, JVM tests, Android emulator checks, and APK signature verification passed. No physical-phone test was performed."
 
       - name: Upload diagnostic reports
         if: always()
@@ -95,4 +136,6 @@ jobs:
             build/reports/
           if-no-files-found: ignore
           retention-days: 7
+
+
 

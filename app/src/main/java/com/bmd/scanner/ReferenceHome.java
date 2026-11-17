@@ -23,10 +23,10 @@ final class ReferenceHome extends FrameLayout {
     private final View[] targets=new View[6];
     private final RectF[] boxes={new RectF(38,477,430,899),new RectF(439,477,831,899),new RectF(38,909,430,1331),new RectF(439,909,831,1331),new RectF(125,40,766,245),new RectF(190,1490,678,1648)};
     private final boolean dutch;private final String[] labels;private final String name;
-    private final Bitmap[] localizedBands;
-    ReferenceHome(Context context,String language,String[] labels,String name,Runnable[] actions){super(context);setTag("reference-home");setWillNotDraw(false);setLayerType(View.LAYER_TYPE_SOFTWARE,null);this.labels=labels;this.name=name;dutch=language.equals("nl");
-        synchronized(ReferenceHome.class){if(artwork==null)try(InputStream in=context.getAssets().open("home-reference-2-4.png")){BitmapFactory.Options options=new BitmapFactory.Options();options.inScaled=false;artwork=BitmapFactory.decodeStream(in,null,options);if(artwork==null)throw new IOException("Artwork");}catch(IOException error){throw new IllegalStateException("Home artwork missing",error);}}
-        source=new Rect(LEFT,TOP,RIGHT,BOTTOM);localizedBands=dutch?null:new Bitmap[5];
+    
+    ReferenceHome(Context context,String language,String[] labels,String name,Runnable[] actions){super(context);setTag("reference-home");setWillNotDraw(false);setLayerType(View.LAYER_TYPE_SOFTWARE,null);this.labels=labels;this.name=name;dutch=false;
+        synchronized(ReferenceHome.class){if(artwork==null)try(InputStream in=context.getAssets().open("home-clean-3-0.png")){BitmapFactory.Options options=new BitmapFactory.Options();options.inScaled=false;artwork=BitmapFactory.decodeStream(in,null,options);if(artwork==null)throw new IOException("Artwork");}catch(IOException error){throw new IllegalStateException("Home artwork missing",error);}}
+        source=new Rect(LEFT,TOP,RIGHT,BOTTOM);
         String[] tags={"qr","photo","list","settings","home-identity","home-brand"};
         for(int i=0;i<targets.length;i++){final int index=i;View v;if(i<4){Button button=new Button(context);button.setAllCaps(false);button.setText("");button.setPadding(0,0,0,0);button.setMinimumWidth(0);button.setMinimumHeight(0);GradientDrawable mask=new GradientDrawable();mask.setColor(Color.WHITE);mask.setCornerRadius(22*getResources().getDisplayMetrics().density);button.setBackground(new RippleDrawable(ColorStateList.valueOf(0x44ffffff),null,mask));button.setStateListAnimator(null);button.setElevation(0);button.setContentDescription(labels[i]);button.setOnClickListener(view->actions[index].run());v=button;}else{v=new View(context);v.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);v.setContentDescription(i==4?"BMD "+name:"Blue Medical, A Translumina Group Company");}v.setTag(tags[i]);targets[i]=v;addView(v,new FrameLayout.LayoutParams(1,1));}
         setBackgroundColor(MainActivity.NAVY);
@@ -41,12 +41,12 @@ final class ReferenceHome extends FrameLayout {
             RectF dst=new RectF(destination.left,screenEdges[segment],destination.right,screenEdges[segment+1]);
             canvas.drawBitmap(artwork,src,dst,paint);
             if(!dutch){canvas.save();canvas.clipRect(dst);canvas.translate(dst.left,dst.top);canvas.scale(dst.width()/src.width(),dst.height()/src.height());canvas.translate(-LEFT,-src.top);
-                for(int i=0;i<bands.length;i++){Rect band=bands[i];if(band.top>=src.top&&band.bottom<=src.bottom){if(localizedBands[i]==null)localizedBands[i]=backgroundBand(band);canvas.drawBitmap(localizedBands[i],null,new RectF(band),paint);drawLabel(canvas,band,i<4?labels[i]:name,i==4);}}
+                for(int i=0;i<bands.length;i++){Rect band=bands[i];if(band.top>=src.top&&band.bottom<=src.bottom){drawLabel(canvas,band,i<4?labels[i]:name,i==4);}}
                 canvas.restore();}
         }
     }
-    private Bitmap backgroundBand(Rect rect){int w=128,h=48;Bitmap bitmap=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);int[] colors={artwork.getPixel(rect.left,rect.top),artwork.getPixel(rect.right,rect.top),artwork.getPixel(rect.left,rect.bottom),artwork.getPixel(rect.right,rect.bottom)};for(int y=0;y<h;y++)for(int x=0;x<w;x++){float fx=x/(float)(w-1),fy=y/(float)(h-1);int c=Color.rgb(channel(colors,16,fx,fy),channel(colors,8,fx,fy),channel(colors,0,fx,fy));bitmap.setPixel(x,y,c);}return bitmap;}
-    private int channel(int[] c,int shift,float x,float y){return Math.round((((c[0]>>shift)&255)*(1-x)+((c[1]>>shift)&255)*x)*(1-y)+(((c[2]>>shift)&255)*(1-x)+((c[3]>>shift)&255)*x)*y);}
     private void drawLabel(Canvas canvas,Rect rect,String text,boolean title){TextPaint p=new TextPaint(Paint.ANTI_ALIAS_FLAG);p.setColor(title?0xffa6e7ff:Color.WHITE);p.setTypeface(Typeface.create("sans-serif",title?Typeface.BOLD_ITALIC:Typeface.BOLD));if(title)p.setShader(new LinearGradient(0,0,rect.width(),0,new int[]{0xff7af4ee,0xff9656e6},null,Shader.TileMode.CLAMP));StaticLayout layout=null;for(int size=title?62:46;size>=24;size--){p.setTextSize(size);layout=StaticLayout.Builder.obtain(text,0,text.length(),p,rect.width()).setAlignment(Layout.Alignment.ALIGN_CENTER).setIncludePad(false).build();if(layout.getHeight()<=rect.height()-8&&layout.getLineCount()<=2)break;}if(layout!=null){canvas.save();canvas.translate(rect.left,rect.top+(rect.height()-layout.getHeight())/2f);layout.draw(canvas);canvas.restore();}}
 }
+
+
 

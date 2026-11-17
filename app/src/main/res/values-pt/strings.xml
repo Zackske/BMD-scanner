@@ -85,4 +85,6 @@
     <string name="ui_detected">%1$d códigos detetados</string>
     <string name="ui_scan_button">Digitalizar</string>
     <string name="ui_switch_camera">Mudar câmara</string>
+    <string name="ui_camera_mode" formatted="false">Modo de câmara</string>
+    <string name="ui_save_scan" formatted="false">Guardar digitalização</string>
 </resources>

@@ -79,6 +79,9 @@ final class UiArt {
                 case "qr":
                     cbox(canvas,8,8);cbox(canvas,38,8);cbox(canvas,8,38);
                     canvas.drawLine(39,39,48,39,p);canvas.drawLine(39,39,39,48,p);canvas.drawLine(48,48,57,48,p);canvas.drawLine(48,48,48,57,p);canvas.drawLine(39,57,42,57,p);canvas.drawLine(57,38,57,41,p);break;
+                case "barcode":p.setStyle(Paint.Style.FILL);for(int x=7;x<58;x+=6)canvas.drawRect(x,12,x+(x%3==0?3:2),52,p);break;
+                case "both":
+                    canvas.save();canvas.scale(.56f,.56f);cbox(canvas,5,8);cbox(canvas,35,8);cbox(canvas,5,38);canvas.drawLine(36,40,50,40,p);canvas.drawLine(40,50,54,50,p);canvas.restore();p.setStyle(Paint.Style.FILL);for(int x=39;x<61;x+=4)canvas.drawRect(x,12,x+2,52,p);break;
                 case "photo":
                     canvas.drawRoundRect(7,10,57,54,5,5,p);canvas.drawCircle(43,23,4,p);
                     Path mountain=new Path();mountain.moveTo(9,48);mountain.lineTo(26,29);mountain.lineTo(38,43);mountain.lineTo(46,36);mountain.lineTo(56,48);canvas.drawPath(mountain,p);break;
@@ -109,3 +112,5 @@ final class UiArt {
         private void cbox(Canvas c,float x,float y){c.drawRoundRect(x,y,x+18,y+18,1,1,p);p.setStyle(Paint.Style.FILL);c.drawRect(x+6,y+6,x+12,y+12,p);p.setStyle(Paint.Style.STROKE);}
     }
 }
+
+

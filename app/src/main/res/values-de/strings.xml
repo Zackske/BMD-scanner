@@ -85,4 +85,6 @@
     <string name="ui_detected">%1$d Codes erkannt</string>
     <string name="ui_scan_button">Scannen</string>
     <string name="ui_switch_camera">Kamera wechseln</string>
+    <string name="ui_camera_mode" formatted="false">Kameramodus</string>
+    <string name="ui_save_scan" formatted="false">Scan speichern</string>
 </resources>
