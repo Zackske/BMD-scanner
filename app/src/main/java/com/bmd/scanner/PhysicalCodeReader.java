@@ -9,7 +9,7 @@ import java.util.*;
 final class PhysicalCodeReader {
     private final List<ScanTracker.Detection> found=new ArrayList<>();
     private byte[] pixels;private int width,height,attempts;private String mode;
-    static List<ScanTracker.Detection> decode(byte[] pixels,int width,int height,String mode){PhysicalCodeReader r=new PhysicalCodeReader();r.pixels=pixels;r.width=width;r.height=height;r.mode=mode;r.read();return r.found;}
+    static List<ScanTracker.Detection> decode(byte[] pixels,int width,int height,String mode){PhysicalCodeReader r=new PhysicalCodeReader();r.pixels=pixels;r.width=width;r.height=height;r.mode=mode;r.read();if(!mode.equals("qr")){byte[] rotated=new byte[pixels.length];for(int y=0;y<height;y++)for(int x=0;x<width;x++)rotated[(width-1-x)*height+y]=pixels[y*width+x];PhysicalCodeReader other=new PhysicalCodeReader();other.pixels=rotated;other.width=height;other.height=width;other.mode="bar";other.read();for(ScanTracker.Detection d:other.found){ScanTracker.Detection mapped=new ScanTracker.Detection(d.value,d.kind,1-d.bottom,d.left,1-d.top,d.right);boolean duplicate=false;for(ScanTracker.Detection old:r.found)if(old.value.equals(mapped.value)&&old.kind.equals(mapped.kind)&&Math.abs(old.x()-mapped.x())<Math.max(.015f,(old.right-old.left)*.3f)&&Math.abs(old.y()-mapped.y())<Math.max(.015f,(old.bottom-old.top)*.3f)){duplicate=true;break;}if(!duplicate)r.found.add(mapped);}}return r.found;}
     private BinaryBitmap bitmap(int x,int y,int w,int h){return new BinaryBitmap(new HybridBinarizer(new PlanarYUVLuminanceSource(pixels,width,height,x,y,w,h,false)));}
     private void read(){
         Map<DecodeHintType,Object> hints=new EnumMap<>(DecodeHintType.class);hints.put(DecodeHintType.TRY_HARDER,Boolean.TRUE);
