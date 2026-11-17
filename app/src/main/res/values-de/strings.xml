@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">Produkte bis zur Aufnahme im Bild behalten</string>
     <string name="ui_confirm_reset" formatted="false">Aktuelle Scansitzung löschen?</string>
     <string name="ui_delete_question" formatted="false">Diesen Scan entfernen?</string>
+    <string name="ui_flash">Blitz</string>
+    <string name="ui_camera">Kamera</string>
+    <string name="ui_gallery">Aus Galerie scannen</string>
+    <string name="ui_detected">%1$d Codes erkannt</string>
+    <string name="ui_scan_button">Scannen</string>
+    <string name="ui_switch_camera">Kamera wechseln</string>
 </resources>

@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">Fotoğrafı çekene kadar ürünleri kadrajda tutun</string>
     <string name="ui_confirm_reset" formatted="false">Geçerli tarama oturumu silinsin mi?</string>
     <string name="ui_delete_question" formatted="false">Bu tarama kaldırılsın mı?</string>
+    <string name="ui_flash">Flaş</string>
+    <string name="ui_camera">Kamera</string>
+    <string name="ui_gallery">Galeriden tara</string>
+    <string name="ui_detected">%1$d kod tanındı</string>
+    <string name="ui_scan_button">Tara</string>
+    <string name="ui_switch_camera">Kamerayı değiştir</string>
 </resources>

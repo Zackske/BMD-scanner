@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">Тримайте вироби в кадрі до знімка</string>
     <string name="ui_confirm_reset" formatted="false">Очистити поточний сеанс?</string>
     <string name="ui_delete_question" formatted="false">Видалити цей запис?</string>
+    <string name="ui_flash">Спалах</string>
+    <string name="ui_camera">Камера</string>
+    <string name="ui_gallery">Сканувати з галереї</string>
+    <string name="ui_detected">Розпізнано кодів: %1$d</string>
+    <string name="ui_scan_button">Сканувати</string>
+    <string name="ui_switch_camera">Змінити камеру</string>
 </resources>

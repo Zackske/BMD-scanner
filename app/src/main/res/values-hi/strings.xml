@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">फ़ोटो लेने तक उत्पादों को फ़्रेम में रखें</string>
     <string name="ui_confirm_reset" formatted="false">मौजूदा स्कैन सत्र साफ़ करें?</string>
     <string name="ui_delete_question" formatted="false">यह स्कैन हटाएँ?</string>
+    <string name="ui_flash">फ़्लैश</string>
+    <string name="ui_camera">कैमरा</string>
+    <string name="ui_gallery">गैलरी से स्कैन करें</string>
+    <string name="ui_detected">%1$d कोड पहचाने गए</string>
+    <string name="ui_scan_button">स्कैन</string>
+    <string name="ui_switch_camera">कैमरा बदलें</string>
 </resources>

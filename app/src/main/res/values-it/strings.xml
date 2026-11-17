@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">Mantieni i prodotti in vista fino alla foto</string>
     <string name="ui_confirm_reset" formatted="false">Cancellare la sessione corrente?</string>
     <string name="ui_delete_question" formatted="false">Rimuovere questa scansione?</string>
+    <string name="ui_flash">Flash</string>
+    <string name="ui_camera">Fotocamera</string>
+    <string name="ui_gallery">Scansiona dalla galleria</string>
+    <string name="ui_detected">%1$d codici rilevati</string>
+    <string name="ui_scan_button">Scansiona</string>
+    <string name="ui_switch_camera">Cambia fotocamera</string>
 </resources>

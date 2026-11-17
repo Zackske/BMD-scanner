@@ -73,47 +73,6 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Enable Android emulator acceleration
-        run: sudo chmod 666 /dev/kvm
-
-      - name: Verify exact homepage artwork and native buttons on Android
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          target: google_apis
-          arch: x86_64
-          profile: pixel_2
-          ram-size: 1536M
-          heap-size: 256M
-          emulator-boot-timeout: 240
-          disable-animations: false
-          emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back emulated -camera-front none
-          script: bash ci/home-reference-tests.sh
-
-      - name: Upload homepage screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: BMD-homepage-reference
-          path: home-screenshots/
-          if-no-files-found: ignore
-
-      - name: Save verified homepage screenshots
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p docs/screenshots
-          find home-screenshots -name '*.png' -exec cp {} docs/screenshots/ \;
-          git fetch origin main
-          if [[ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]]; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/screenshots
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "docs: save pixel-verified homepage [skip ci]"
-          git push origin HEAD:main
-
       - name: Publish APK for phone testing
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
@@ -124,7 +83,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
-          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. Android 35 homepage pixel comparison, translated buttons and navigation passed. Camera hardware still requires phone testing."
+          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. New BMD scanner layout and compact 1x/2x/3x zoom. Owner will test camera behavior and appearance on the phone; no emulator/device test was run for this build."
 
       - name: Upload diagnostic reports
         if: always()

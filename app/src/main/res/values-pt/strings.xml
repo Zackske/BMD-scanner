@@ -79,4 +79,10 @@
     <string name="ui_tracking_note" formatted="false">Mantenha os produtos visíveis até tirar a fotografia</string>
     <string name="ui_confirm_reset" formatted="false">Limpar a sessão atual?</string>
     <string name="ui_delete_question" formatted="false">Remover esta leitura?</string>
+    <string name="ui_flash">Flash</string>
+    <string name="ui_camera">Câmara</string>
+    <string name="ui_gallery">Digitalizar da galeria</string>
+    <string name="ui_detected">%1$d códigos detetados</string>
+    <string name="ui_scan_button">Digitalizar</string>
+    <string name="ui_switch_camera">Mudar câmara</string>
 </resources>

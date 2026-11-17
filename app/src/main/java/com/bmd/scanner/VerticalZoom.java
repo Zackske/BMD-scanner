@@ -1,24 +1,19 @@
 package com.bmd.scanner;
-
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.*;
 import android.view.*;
 import java.util.Locale;
-
 final class VerticalZoom extends View {
     interface Listener{void change(float value);}
-    private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);private float min=1,max=4,value=1;private Listener listener;private Locale locale=Locale.getDefault();
+    private final Paint p=new Paint(3);private float min=1,max=3,value=1,display=1,glow=0;private float pending=Float.NaN;private Listener listener;private Locale locale=Locale.getDefault();private ValueAnimator motion,pulse;
     VerticalZoom(Context c){super(c);setFocusable(true);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);}
-    void setup(float min,float max,float value,Locale locale,Listener listener){this.min=min;this.max=max;this.value=value;this.locale=locale;this.listener=listener;invalidate();}
-    void value(float v){value=v;setStateDescriptionCompat();invalidate();}
-    private void setStateDescriptionCompat(){if(android.os.Build.VERSION.SDK_INT>=30)setStateDescription(String.format(locale,"%.1f×",value));}
-    @Override protected void onDraw(Canvas c){float d=getResources().getDisplayMetrics().density,w=getWidth(),h=getHeight(),x=w-21*d,top=35*d,bottom=h-35*d;
-        p.setColor(0xdd052744);p.setStyle(Paint.Style.FILL);c.drawRoundRect(w-42*d,0,w,h,21*d,21*d,p);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(d);p.setColor(0xff6d91b2);c.drawRoundRect(w-42*d,0,w,h,21*d,21*d,p);
-        p.setStrokeWidth(2*d);p.setStrokeCap(Paint.Cap.ROUND);p.setColor(Color.WHITE);c.drawLine(x-6*d,17*d,x+6*d,17*d,p);c.drawLine(x,11*d,x,23*d,p);c.drawLine(x-6*d,h-17*d,x+6*d,h-17*d,p);p.setColor(UiArt.CYAN);c.drawLine(x,top,x,bottom,p);
-        float y=bottom-(max>min?(value-min)/(max-min):0)*(bottom-top);p.setStyle(Paint.Style.FILL);p.setColor(0x4400eaff);c.drawCircle(x,y,16*d,p);p.setColor(UiArt.CYAN);c.drawCircle(x,y,10*d,p);p.setColor(Color.WHITE);c.drawCircle(x,y,3*d,p);
-        String label=String.format(locale,"%.1f×",value);p.setTextSize(12*d);p.setTypeface(Typeface.DEFAULT_BOLD);float labelWidth=p.measureText(label)+14*d;p.setColor(0xee001c35);c.drawRoundRect(x-18*d-labelWidth,y-13*d,x-15*d,y+13*d,12*d,12*d,p);p.setColor(Color.WHITE);c.drawText(label,x-11*d-labelWidth,y+4*d,p);
-    }
-    @Override public boolean onTouchEvent(MotionEvent e){if(!isEnabled())return false;float d=getResources().getDisplayMetrics().density;if(e.getAction()==MotionEvent.ACTION_DOWN||e.getAction()==MotionEvent.ACTION_MOVE){getParent().requestDisallowInterceptTouchEvent(true);float v;if(e.getY()<30*d)v=value+.2f;else if(e.getY()>getHeight()-30*d)v=value-.2f;else v=min+(1-(e.getY()-35*d)/(getHeight()-70*d))*(max-min);if(listener!=null)listener.change(Math.max(min,Math.min(max,v)));return true;}if(e.getAction()==MotionEvent.ACTION_UP){performClick();getParent().requestDisallowInterceptTouchEvent(false);return true;}return true;}
+    void setup(float min,float max,float value,Locale locale,Listener listener){this.min=Math.max(1,min);this.max=Math.max(this.min,Math.min(3,max));this.value=value;display=value;this.locale=locale;this.listener=listener;invalidate();}
+    void value(float next){pending=Float.NaN;value=next;if(android.os.Build.VERSION.SDK_INT>=30)setStateDescription(String.format(locale,"%.1f×",value));if(motion!=null)motion.cancel();if(ValueAnimator.areAnimatorsEnabled()){motion=ValueAnimator.ofFloat(display,next);motion.setDuration(160);motion.addUpdateListener(a->{display=(Float)a.getAnimatedValue();invalidate();});motion.start();if(pulse!=null)pulse.cancel();pulse=ValueAnimator.ofFloat(1,0);pulse.setDuration(320);pulse.addUpdateListener(a->{glow=(Float)a.getAnimatedValue();invalidate();});pulse.start();}else{display=next;invalidate();}}
+    @Override protected void onDraw(Canvas c){float d=getResources().getDisplayMetrics().density,w=getWidth(),h=getHeight(),x=w*.36f,top=38*d,bottom=h-38*d;p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(0,0,w,h,new int[]{0xe51b4862,0xef001c32},null,Shader.TileMode.CLAMP));c.drawRoundRect(1,1,w-1,h-1,w/2,w/2,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(d);p.setColor(0xff3d98bd);c.drawRoundRect(1,1,w-1,h-1,w/2,w/2,p);p.setStrokeWidth(2*d);p.setStrokeCap(Paint.Cap.ROUND);p.setColor(Color.WHITE);float cx=w/2;c.drawLine(cx-6*d,16*d,cx+6*d,16*d,p);c.drawLine(cx,10*d,cx,22*d,p);c.drawLine(cx-6*d,h-16*d,cx+6*d,h-16*d,p);p.setColor(0xff2fa8c7);c.drawLine(x,top,x,bottom,p);p.setStyle(Paint.Style.FILL);p.setTextSize(12*d);p.setTypeface(Typeface.DEFAULT_BOLD);for(int n=1;n<=3;n++){float y=bottom-(n-1)/2f*(bottom-top);p.setColor(n<=max?0xff2fa8c7:0xff486573);c.drawCircle(x,y,2.8f*d,p);p.setColor(n<=max?Color.WHITE:0xff79909f);c.drawText(n+"×",x+7*d,y+4*d,p);}float y=bottom-(Math.max(1,Math.min(3,display))-1)/2*(bottom-top);p.setColor((Math.round(50+glow*50)<<24)|0x0000eaff);c.drawCircle(x,y,(12+glow*3)*d,p);p.setColor(MainActivity.CYAN);c.drawCircle(x,y,6*d,p);}
+    private void request(float v){float next=Math.max(min,Math.min(max,v));if(Math.abs(next-value)<.01f||(!Float.isNaN(pending)&&Math.abs(next-pending)<.01f))return;pending=next;if(listener!=null)listener.change(next);}
+    @Override public boolean onTouchEvent(MotionEvent e){if(!isEnabled())return false;float d=getResources().getDisplayMetrics().density;if(e.getAction()==MotionEvent.ACTION_DOWN||e.getAction()==MotionEvent.ACTION_MOVE){getParent().requestDisallowInterceptTouchEvent(true);float y=e.getY();request(y<30*d?(float)Math.floor(value+.01f)+1:y>getHeight()-30*d?(float)Math.ceil(value-.01f)-1:Math.round(1+2*(1-(y-38*d)/(getHeight()-76*d))));return true;}if(e.getAction()==MotionEvent.ACTION_UP){performClick();getParent().requestDisallowInterceptTouchEvent(false);}return true;}
     @Override public boolean performClick(){super.performClick();return true;}
-    @Override public boolean onKeyDown(int key,KeyEvent e){if(listener!=null&&(key==KeyEvent.KEYCODE_DPAD_UP||key==KeyEvent.KEYCODE_DPAD_DOWN)){listener.change(Math.max(min,Math.min(max,value+(key==KeyEvent.KEYCODE_DPAD_UP?.2f:-.2f))));return true;}return super.onKeyDown(key,e);}
+    @Override public boolean onKeyDown(int key,KeyEvent e){if(isEnabled()&&(key==KeyEvent.KEYCODE_DPAD_UP||key==KeyEvent.KEYCODE_DPAD_DOWN)){request(value+(key==KeyEvent.KEYCODE_DPAD_UP?1:-1));return true;}return super.onKeyDown(key,e);}
+    @Override protected void onDetachedFromWindow(){if(motion!=null)motion.cancel();if(pulse!=null)pulse.cancel();super.onDetachedFromWindow();}
 }
