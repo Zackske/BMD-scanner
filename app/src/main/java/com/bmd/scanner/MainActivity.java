@@ -1,18 +1,16 @@
 package com.bmd.scanner;
 
 import android.Manifest;
+import android.animation.*;
 import android.content.*;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.Drawable;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowCompat;
-import android.graphics.Typeface;
+import android.content.res.Configuration;
+import android.graphics.*;
+import android.graphics.drawable.*;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.SystemClock;
+import android.os.*;
+import android.provider.DocumentsContract;
+import android.util.Size;
 import android.view.*;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,452 +18,134 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.*;
+import androidx.camera.core.resolutionselector.*;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.camera.view.transform.*;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.view.*;
+import androidx.exifinterface.media.ExifInterface;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.barcode.BarcodeScanner;
-import com.google.mlkit.vision.barcode.BarcodeScanning;
+import com.google.mlkit.vision.barcode.*;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
+import org.json.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+@android.annotation.SuppressLint({"UnsafeOptInUsageError", "SetTextI18n"})
 public class MainActivity extends AppCompatActivity {
-    private static final int BG=0xff001027, TILE=0xff063568, WHITE=Color.WHITE, BLUE=0xff00eaff;
-    private final ArrayList<String> results=new ArrayList<>();
-    private final ScanConfirmation confirmation=new ScanConfirmation();
-    private final AtomicBoolean processing=new AtomicBoolean(false);
-    private final ExecutorService cameraExecutor=Executors.newSingleThreadExecutor();
-    private BarcodeScanner scanner;
-    private ProcessCameraProvider cameraProvider;
-    private PreviewView preview;
-    private LinearLayout root;
-    private TextView countText, resultText;
-    private String lang="nl";
-    private volatile boolean scanning=false;
-    private volatile int cameraSession=0;
-    private androidx.camera.core.Camera activeCamera;
-    private boolean photoBusy=false;
-    private String screen="home";
-    private boolean torch=false,torchChanging=false;
-    private String scanMode="video";
-    private int resolutionChoice=1,sensitivity=1;
-    private boolean vibrateAfterScan=true,cameraReady=false,captureBusy=false;
-    private float zoomRatio=1f;
-    private String actualResolution="";
-    private ImageCapture imageCapture;
-    private View startButton,stopButton,shutterButton,flashButton;
-    private SeekBar zoomSlider;
-    private TextView zoomLabel;
-    private ScanFeedback scanFeedback;
-    private android.app.Dialog cameraSettingsDialog;
-    private byte[] pendingCsv;
-    private TextView busyText;
-    private long repeatDelay=1500;
-    private String csvFilename="BMD-ScanTovenaar-results.csv";
-    private final ActivityResultLauncher<String[]> pickPhotos=registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(), uris->{if(!uris.isEmpty()){showHome();scanPhotos(new ArrayDeque<>(uris),0,0);}});
-    private final ActivityResultLauncher<String> cameraPermission=registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted->{if(granted) showScanner();else Toast.makeText(this,t("permission"),Toast.LENGTH_LONG).show();});
-    private final ActivityResultLauncher<String> saveCsv=registerForActivityResult(new ActivityResultContracts.CreateDocument("text/csv"), uri->{if(uri!=null)writeCsv(uri);else pendingCsv=null;});
+    static final int CYAN=0xff00e4f5,WHITE=Color.WHITE,NAVY=0xff001b32;
+    static final String[] LANGS={"nl","en","uk","tr","it","de","fr","es","pt","hi"};
+    static final String[] LANG_NAMES={"🇳🇱 Nederlands","🇬🇧 English","🇺🇦 Українська","🇹🇷 Türkçe","🇮🇹 Italiano","🇩🇪 Deutsch","🇫🇷 Français","🇪🇸 Español","🇵🇹 Português","🇮🇳 हिन्दी"};
+    final ScanTracker tracker=new ScanTracker();
+    private final ExecutorService worker=Executors.newSingleThreadExecutor();
+    private final AtomicBoolean processing=new AtomicBoolean();
+    private final Handler handler=new Handler(Looper.getMainLooper());
+    private Context words;private String lang="nl",screen="home",codeMode="both",actualResolution="";
+    private LinearLayout root,inlineResults;private TextView countText,splitText,modeText,lampLabel,statusText;
+    private PreviewView preview;private ScanOverlay overlay;private VerticalZoom zoomView;private View shutter,flashButton,resetButton;
+    private ProcessCameraProvider provider;private androidx.camera.core.Camera camera;private ImageCapture capture;private BarcodeScanner detector;
+    private int frameEpoch=0,zoomRequest=0;private boolean zoomChanging=false;private PopupWindow formatPopup;
+    private int generation=0,resolutionChoice=1,sensitivity=1,documentFormat=0;private float zoomRatio=1;
+    private boolean cameraReady=false,scanning=false,capturing=false,torch=false,torchChanging=false,vibrate=true,importing=false;
+    private android.app.Dialog dialog;private ScanFeedback feedback;private File capturedPhoto,preparedDocument;private List<ScanTracker.Item> captureRows=new ArrayList<>();private boolean exportPhoto=false;private String baseName="BMD-scanresultaten";
+    private final Runnable persistJob=this::persist;
+    private final ActivityResultLauncher<String> permission=registerForActivityResult(new ActivityResultContracts.RequestPermission(),ok->{if(ok)showScanner();else toast(s("permission"));});
+    private final ActivityResultLauncher<String[]> picker=registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(),uris->{if(!uris.isEmpty()){importing=true;scanPhotos(new ArrayDeque<>(uris),0);}});
+    private final ActivityResultLauncher<Intent> saveDocument=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),result->{if(result.getResultCode()==RESULT_OK&&result.getData()!=null&&result.getData().getData()!=null)writeSingle(result.getData().getData());});
+    private final ActivityResultLauncher<Uri> saveFolder=registerForActivityResult(new ActivityResultContracts.OpenDocumentTree(),uri->{if(uri!=null)writeFolder(uri);});
 
-    @Override public void onCreate(Bundle state){
-        super.onCreate(state);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
-        WindowCompat.getInsetsController(getWindow(),getWindow().getDecorView()).setAppearanceLightStatusBars(false);
-        WindowCompat.getInsetsController(getWindow(),getWindow().getDecorView()).setAppearanceLightNavigationBars(false);
-        lang=getPreferences(MODE_PRIVATE).getString("language","nl");
-        repeatDelay=getPreferences(MODE_PRIVATE).getLong("repeatDelay",1500);
-        scanMode=getPreferences(MODE_PRIVATE).getString("scanMode","video");
-        resolutionChoice=Math.max(0,Math.min(CameraResolutionOptions.TARGETS.length-1,getPreferences(MODE_PRIVATE).getInt("cameraResolution",1)));
-        sensitivity=getPreferences(MODE_PRIVATE).getInt("sensitivity",1);
-        vibrateAfterScan=getPreferences(MODE_PRIVATE).getBoolean("vibrateAfterScan",true);
-        scanFeedback=new ScanFeedback(new android.os.Handler(android.os.Looper.getMainLooper()),()->{
-            if(root!=null&&getLifecycle().getCurrentState().isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED))root.performHapticFeedback(android.os.Build.VERSION.SDK_INT>=30?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.CLOCK_TICK);
-        });scanFeedback.setEnabled(vibrateAfterScan);
-        csvFilename=getPreferences(MODE_PRIVATE).getString("csvFilename","BMD-ScanTovenaar-results.csv");
-        if(state!=null){ArrayList<String> saved=state.getStringArrayList("results");if(saved!=null)results.addAll(saved);pendingCsv=state.getByteArray("pendingCsv");}
-        scanner=BarcodeScanning.getClient(new com.google.mlkit.vision.barcode.BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build());
-        getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){@Override public void handleOnBackPressed(){if(screen.equals("home"))finish();else showHome();}});
-        showHome();
-        if(state!=null&&"results".equals(state.getString("screen")))showResults();
-        if(state!=null&&"camera".equals(state.getString("screen")))showScanner();
+    @Override public void onCreate(Bundle state){super.onCreate(state);WindowCompat.setDecorFitsSystemWindows(getWindow(),false);WindowCompat.getInsetsController(getWindow(),getWindow().getDecorView()).setAppearanceLightStatusBars(false);WindowCompat.getInsetsController(getWindow(),getWindow().getDecorView()).setAppearanceLightNavigationBars(false);
+        lang=getPreferences(0).getString("language","nl");if(!Arrays.asList(LANGS).contains(lang))lang="nl";updateWords();codeMode=getPreferences(0).getString("codeMode","both");resolutionChoice=Math.max(0,Math.min(12,getPreferences(0).getInt("cameraResolution",1)));sensitivity=Math.max(0,Math.min(2,getPreferences(0).getInt("sensitivity",1)));vibrate=getPreferences(0).getBoolean("vibrateAfterScan",true);documentFormat=Math.max(0,Math.min(3,getPreferences(0).getInt("documentFormat",0)));baseName=getPreferences(0).getString("documentName","BMD-scanresultaten");
+        feedback=new ScanFeedback(handler,()->{if(root!=null&&getLifecycle().getCurrentState().isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED))root.performHapticFeedback(Build.VERSION.SDK_INT>=30?HapticFeedbackConstants.CONFIRM:HapticFeedbackConstants.CLOCK_TICK);});feedback.setEnabled(vibrate);detector=BarcodeScanning.getClient(new BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_ALL_FORMATS).build());restore();
+        if(state!=null){String file=state.getString("capturedPhoto");if(file!=null&&new File(file).isFile())capturedPhoto=new File(file);String prepared=state.getString("preparedDocument");if(prepared!=null&&new File(prepared).isFile())preparedDocument=new File(prepared);exportPhoto=state.getBoolean("exportPhoto");captureRows=readRows(state.getString("captureRows","[]"));}
+        getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){@Override public void handleOnBackPressed(){if(dialog!=null&&dialog.isShowing())dialog.dismiss();else if(screen.equals("home"))finish();else showHome();}});
+        showHome();if(state!=null){String previous=state.getString("screen","home");if(previous.equals("camera"))openCamera();else if(previous.equals("settings"))showSettings();else if(previous.equals("results"))showResults();}
     }
-    @Override protected void onSaveInstanceState(@NonNull Bundle state){
-        state.putStringArrayList("results",new ArrayList<>(results));state.putString("screen",screen);state.putByteArray("pendingCsv",pendingCsv);super.onSaveInstanceState(state);
+    private void updateWords(){Configuration configuration=new Configuration(getResources().getConfiguration());configuration.setLocale(Locale.forLanguageTag(lang));words=createConfigurationContext(configuration);}
+    @android.annotation.SuppressLint("DiscouragedApi") String s(String key,Object...args){int id=getResources().getIdentifier("ui_"+key,"string",getPackageName());if(id==0)return key;return args.length==0?words.getString(id):words.getString(id,args);}
+    String t(String key){return s(key.equals("title")?"brand":key);}
+    private int dp(float v){return Math.round(v*getResources().getDisplayMetrics().density);}
+    private TextView text(String value,int size,boolean bold){TextView t=new TextView(this);t.setText(value);t.setTextColor(WHITE);t.setTextSize(size);t.setIncludeFontPadding(false);t.setTypeface(Typeface.create("sans-serif",bold?Typeface.BOLD:Typeface.NORMAL));return t;}
+    private LinearLayout column(){LinearLayout l=new LinearLayout(this);l.setOrientation(LinearLayout.VERTICAL);return l;}
+    private LinearLayout row(){LinearLayout l=new LinearLayout(this);l.setGravity(Gravity.CENTER_VERTICAL);return l;}
+    private Drawable card(int top,int bottom,int edge){return UiArt.card(top,bottom,edge,dp(18));}
+    private void gap(LinearLayout l,int height){l.addView(new View(this),new LinearLayout.LayoutParams(1,dp(height)));}
+    private void base(String page,String title){stopCamera();screen=page;FrameLayout shell=new FrameLayout(this);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));root=column();root.setPadding(dp(16),dp(8),dp(16),dp(14));shell.addView(root,new FrameLayout.LayoutParams(-1,-1));ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;});setContentView(shell);ViewCompat.requestApplyInsets(shell);
+        if(!title.isEmpty()){LinearLayout header=row();header.addView(iconButton("back",s("back"),this::showHome),new LinearLayout.LayoutParams(dp(44),dp(48)));TextView heading=text(title,24,true);heading.setGravity(Gravity.CENTER_VERTICAL);header.addView(heading,new LinearLayout.LayoutParams(0,-1,1));if(page.equals("camera"))header.addView(iconButton("settings",s("scanner_settings"),this::cameraSettings),new LinearLayout.LayoutParams(dp(44),dp(48)));root.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));}
     }
-    private String tr(String nl,String en,String turkish,String uk){return lang.equals("en")?en:lang.equals("tr")?turkish:lang.equals("uk")?uk:nl;}
-    private String t(String key){
-        String[] keys={"title","subtitle","scan","export","share","settings","language","back","clear","confirm","empty","permission","results","start","stop","saved","error","select"};
-        String[][] values={
-            {"BMD ScanTovenaar","Batch QR-scanner","Scannen","CSV maken","Verzenden","Instellingen","Taal","Terug","Resultaten wissen","Alle resultaten wissen?","Nog geen scanresultaten","Cameratoegang nodig","Resultaten","Start camera","Stop camera","CSV opgeslagen","Export mislukt","Selecteer taal"},
-            {"BMD ScanMagician","Batch QR scanner","Scan","Create CSV","Send","Settings","Language","Back","Clear results","Clear all results?","No scan results yet","Camera permission required","Scan results","Start camera","Stop camera","CSV saved","Export failed","Select language"},
-            {"BMD Tarama Büyücüsü","Toplu QR tarayıcı","Tara","CSV oluştur","Gönder","Ayarlar","Dil","Geri","Sonuçları sil","Tüm sonuçlar silinsin mi?","Henüz sonuç yok","Kamera izni gerekli","Tarama sonuçları","Kamerayı başlat","Kamerayı durdur","CSV kaydedildi","Dışa aktarma başarısız","Dil seçin"},
-            {"BMD СканЧарівник","Пакетний QR-сканер","Сканувати","Створити CSV","Надіслати","Налаштування","Мова","Назад","Очистити результати","Видалити всі результати?","Результатів поки немає","Потрібен дозвіл на камеру","Результати сканування","Увімкнути камеру","Зупинити камеру","CSV збережено","Помилка експорту","Виберіть мову"}
-        };
-        int index=Arrays.asList(keys).indexOf(key);if(index<0)return key;
-        int locale=lang.equals("en")?1:lang.equals("tr")?2:lang.equals("uk")?3:0;
-        return values[locale][index];
-    }
-    private int dp(float value){return (int)(value*getResources().getDisplayMetrics().density+0.5f);}
-    private TextView text(String value,int size,boolean bold){
-        TextView view=new TextView(this);view.setText(value);view.setTextSize(size);view.setTextColor(WHITE);
-        view.setTypeface(Typeface.create("sans-serif",bold?Typeface.BOLD:Typeface.NORMAL));view.setIncludeFontPadding(false);return view;
-    }
-    private LinearLayout column(){LinearLayout view=new LinearLayout(this);view.setOrientation(LinearLayout.VERTICAL);return view;}
-    private LinearLayout row(){LinearLayout view=new LinearLayout(this);view.setGravity(Gravity.CENTER_VERTICAL);return view;}
-    private void gap(LinearLayout parent,int height){parent.addView(new View(this),new LinearLayout.LayoutParams(1,dp(height)));}
-    private Drawable card(int top,int bottom,int edge){return UiArt.card(top,bottom,edge,dp(22));}
-    private void clickable(View view,String label,Runnable action){
-        view.setContentDescription(label);view.setFocusable(true);view.setClickable(true);
-        android.util.TypedValue value=new android.util.TypedValue();getTheme().resolveAttribute(android.R.attr.selectableItemBackground,value,true);
-        view.setForeground(ContextCompat.getDrawable(this,value.resourceId));view.setOnClickListener(v->{if(!photoBusy)action.run();else Toast.makeText(this,photoText("busy"),Toast.LENGTH_SHORT).show();});
-    }
-    private View iconButton(String icon,String label,Runnable action){
-        FrameLayout frame=new FrameLayout(this);frame.setMinimumWidth(dp(48));frame.setMinimumHeight(dp(48));
-        UiArt.Icon art=new UiArt.Icon(this,icon);FrameLayout.LayoutParams artParams=new FrameLayout.LayoutParams(dp(28),dp(28),Gravity.CENTER);frame.addView(art,artParams);clickable(frame,label,action);return frame;
-    }
-    private void base(String title){
-        FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(0xff001127);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));
-        root=column();root.setPadding(dp(18),dp(8),dp(18),dp(22));shell.addView(root,new FrameLayout.LayoutParams(-1,-1));
-        ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;});
-        setContentView(shell);ViewCompat.requestApplyInsets(shell);
-        if(!title.isEmpty()){
-            LinearLayout header=row();header.addView(iconButton("back",t("back"),this::showHome),new LinearLayout.LayoutParams(dp(48),dp(52)));
-            TextView heading=text(title,25,true);header.addView(heading,new LinearLayout.LayoutParams(0,dp(52),1));heading.setGravity(Gravity.CENTER_VERTICAL);root.addView(header);
-            View line=new View(this);line.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,new int[]{0x0000dcff,BLUE,0x0000dcff}));root.addView(line,new LinearLayout.LayoutParams(-1,dp(2)));gap(root,14);
-        }
-    }
-    private void stopCamera(){
-        scanning=false;cameraReady=false;actualResolution="";cameraSession++;if(preview!=null)preview.getPreviewStreamState().removeObservers(this);preview=null;imageCapture=null;captureBusy=false;
-        if(activeCamera!=null)activeCamera.getCameraControl().enableTorch(false);
-        activeCamera=null;torch=false;torchChanging=false;confirmation.reset();
-        if(cameraSettingsDialog!=null){cameraSettingsDialog.dismiss();cameraSettingsDialog=null;}
-        if(cameraProvider!=null)cameraProvider.unbindAll();
-    }
-    private void scrollPage(LinearLayout content){ScrollView scroll=new ScrollView(this);scroll.setFillViewport(true);scroll.setClipToPadding(false);scroll.addView(content);root.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));}
-    private void homeCard(LinearLayout parent,String icon,String title,String detail,int top,int bottom,int edge,Runnable action){
-        LinearLayout button=column();button.setGravity(Gravity.CENTER);button.setPadding(dp(12),dp(16),dp(12),dp(16));button.setBackground(card(top,bottom,edge));
-        UiArt.Icon art=new UiArt.Icon(this,icon);button.addView(art,new LinearLayout.LayoutParams(dp(48),dp(48)));gap(button,10);
-        TextView label=text(title,21,true);label.setGravity(Gravity.CENTER);button.addView(label);
-        if(!detail.isEmpty()){gap(button,6);TextView hint=text(detail,13,false);hint.setGravity(Gravity.CENTER);hint.setTextColor(0xffe3f4ff);button.addView(hint);}
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0,-1,1);params.setMargins(dp(5),dp(5),dp(5),dp(5));parent.addView(button,params);clickable(button,title,action);button.setTag(icon);
-    }
-    private void showHome(){
-        stopCamera();screen="home";base("");LinearLayout content=column();
-        content.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.setTag("home-identity");
-        hero.addView(new UiArt.ScannerMark(this),new LinearLayout.LayoutParams(dp(74),dp(80)));
-        LinearLayout names=column();names.setPadding(dp(12),0,0,0);
-        TextView name=text("BMD",50,true);name.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD));name.setMaxLines(1);names.addView(name);
-        UiArt.NameText subtitle=new UiArt.NameText(this);subtitle.setText(tr("ScanTovenaar","ScanMagician","Tarama Büyücüsü","СканЧарівник"));subtitle.setTextSize(24);subtitle.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD_ITALIC));subtitle.setIncludeFontPadding(false);subtitle.setMaxLines(1);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(subtitle,14,24,1,android.util.TypedValue.COMPLEX_UNIT_SP);names.addView(subtitle,new LinearLayout.LayoutParams(-1,-2));
-        hero.addView(names,new LinearLayout.LayoutParams(0,-2,1));
-        LinearLayout.LayoutParams heroParams=new LinearLayout.LayoutParams(-1,dp(116));heroParams.setMargins(dp(22),0,dp(14),0);content.addView(hero,heroParams);
-        content.addView(new UiArt.Wave(this),new LinearLayout.LayoutParams(-1,dp(18)));
-        View upperSpace=new View(this);content.addView(upperSpace,new LinearLayout.LayoutParams(1,dp(18),1));
-        int height=getResources().getConfiguration().screenHeightDp<700?152:176;
-        LinearLayout first=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));
-        homeCard(first,"qr",t("scan"),"",0xff0098fa,0xff003aa0,BLUE,this::openCamera);
-        homeCard(first,"photo",photoText("choose"),"",0xff00d960,0xff006525,0xff2eff8b,this::choosePhotos);
-        LinearLayout second=row();content.addView(second,new LinearLayout.LayoutParams(-1,dp(height)));
-        homeCard(second,"list",t("results"),"",0xffc62dff,0xff4a007e,0xffec91ff,this::showResults);
-        homeCard(second,"settings",t("settings"),"",0xffffb800,0xffa54300,0xffffdf63,this::showSettings);
-        View lowerSpace=new View(this);content.addView(lowerSpace,new LinearLayout.LayoutParams(1,dp(18),1));
-        UiArt.Brand brand=new UiArt.Brand(this);brand.setTag("home-brand");LinearLayout.LayoutParams brandParams=new LinearLayout.LayoutParams(dp(238),dp(70));brandParams.gravity=Gravity.CENTER_HORIZONTAL;content.addView(brand,brandParams);
-        busyText=text("",14,false);busyText.setGravity(Gravity.CENTER);content.addView(busyText);gap(content,24);scrollPage(content);
+    private void page(LinearLayout content){ScrollView scroll=new ScrollView(this);scroll.setFillViewport(true);scroll.addView(content);root.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));}
+    private void click(View v,String label,Runnable action){v.setContentDescription(label);v.setClickable(true);v.setFocusable(true);v.setOnClickListener(view->{if(!importing)action.run();else toast(s("busy"));});}
+    private View iconButton(String icon,String label,Runnable action){FrameLayout v=new FrameLayout(this);UiArt.Icon art=new UiArt.Icon(this,icon);v.addView(art,new FrameLayout.LayoutParams(dp(26),dp(26),Gravity.CENTER));click(v,label,()->{if(icon.equals("settings"))spin(art);action.run();});return v;}
+    private View action(String label,Runnable action){TextView v=text(label,17,true);v.setPadding(dp(12),dp(12),dp(12),dp(12));v.setGravity(Gravity.CENTER);v.setBackground(card(0xff00cde7,0xff007aa0,CYAN));click(v,label,action);return v;}
+    private void pulse(View v){if(!ValueAnimator.areAnimatorsEnabled())return;v.animate().cancel();v.setScaleX(.9f);v.setScaleY(.9f);v.animate().scaleX(1).scaleY(1).setDuration(260).start();}
+    private void spin(View v){if(ValueAnimator.areAnimatorsEnabled())v.animate().rotationBy(360).setDuration(450).start();}
+    private void toast(String message){Toast.makeText(this,message,Toast.LENGTH_LONG).show();}
+    private void failure(Exception error){if(isDestroyed())return;toast(s("error")+": "+String.valueOf(error.getMessage()));}
 
-    }
-    private void openCamera(){if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)showScanner();else cameraPermission.launch(Manifest.permission.CAMERA);}
-    private void setting(LinearLayout parent,String icon,String title,String subtitle,int color,Runnable action){
-        LinearLayout entry=row();entry.setPadding(dp(12),dp(14),dp(12),dp(14));entry.setBackground(card(color,0xff00152e,0xff008edc));
-        entry.addView(new UiArt.Icon(this,icon),new LinearLayout.LayoutParams(dp(40),dp(40)));LinearLayout labels=column();labels.setPadding(dp(12),0,dp(4),0);labels.addView(text(title,20,true));gap(labels,6);TextView description=text(subtitle,13,false);description.setTextColor(0xffcfdfef);labels.addView(description);entry.addView(labels,new LinearLayout.LayoutParams(0,-2,1));
-        if(action!=null){entry.addView(text("›",30,false));clickable(entry,title,action);}parent.addView(entry,new LinearLayout.LayoutParams(-1,-2));gap(parent,14);
-    }
-    private void showSettings(){
-        stopCamera();screen="settings";base(t("settings"));LinearLayout content=column();
-        setting(content,"language","Taal / Language","Nederlands, English, Türkçe, Українська",0xff006fe6,()->{
-            String[] names={"Nederlands","English","Türkçe","Українська"},codes={"nl","en","tr","uk"};
-            new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(t("language")).setSingleChoiceItems(names,Arrays.asList(codes).indexOf(lang),(dialog,which)->{lang=codes[which];getPreferences(MODE_PRIVATE).edit().putString("language",lang).apply();dialog.dismiss();showSettings();}).setNegativeButton(android.R.string.cancel,null).show();
-        });
-        setting(content,"qr",tr("Scanner","Scanner","Tarayıcı","Сканер"),tr("Tijd tussen herhaalde codes: ","Repeat interval: ","Tekrar aralığı: ","Інтервал повторення: ")+(repeatDelay/1000.0)+" s",0xff064a77,()->{
-            String[] labels={"1.5 s","3 s","5 s"};long[] delays={1500,3000,5000};
-            new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(t("scan")).setItems(labels,(dialog,which)->{repeatDelay=delays[which];getPreferences(MODE_PRIVATE).edit().putLong("repeatDelay",repeatDelay).apply();showSettings();}).show();
-        });
-        setting(content,"csv",tr("CSV-instellingen","CSV settings","CSV ayarları","Налаштування CSV"),csvFilename,0xff006d38,()->{
-            EditText name=new EditText(this);name.setSingleLine(true);name.setText(csvFilename);name.setSelectAllOnFocus(true);
-            androidx.appcompat.app.AlertDialog dialog=new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(tr("Bestandsnaam","File name","Dosya adı","Назва файлу")).setView(name).setPositiveButton(android.R.string.ok,null).setNegativeButton(android.R.string.cancel,null).create();
-            dialog.setOnShowListener(ignored->dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(button->{String value=name.getText().toString().trim();if(value.isEmpty()||value.contains("/")||value.contains("\\")){name.setError(tr("Kies een geldige bestandsnaam","Choose a valid file name","Geçerli dosya adı seçin","Виберіть коректну назву"));return;}csvFilename=value.toLowerCase(Locale.ROOT).endsWith(".csv")?value:value+".csv";getPreferences(MODE_PRIVATE).edit().putString("csvFilename",csvFilename).apply();dialog.dismiss();showSettings();}));dialog.show();
-        });
-        setting(content,"share",tr("E-mail (Outlook)","Email (Outlook)","E-posta (Outlook)","Е-пошта (Outlook)"),tr("CSV delen via Outlook / Hotmail","Share CSV via Outlook / Hotmail","CSV dosyasını Outlook ile paylaş","Поділитися CSV через Outlook"),0xffa04b04,()->{if(results.isEmpty())Toast.makeText(this,t("empty"),Toast.LENGTH_SHORT).show();else exportCsv();});
-        setting(content,"settings",tr("Weergave","Appearance","Görünüm","Вигляд"),"Blue Medical · "+t("title")+" 1.3.0",0xff4b1679,null);
-        gap(content,18);content.addView(new UiArt.Brand(this),new LinearLayout.LayoutParams(-1,dp(104)));scrollPage(content);
-    }
-    private View action(String icon,String title,int top,int bottom,Runnable run){
-        LinearLayout button=row();button.setGravity(Gravity.CENTER);button.setPadding(dp(16),dp(15),dp(16),dp(15));button.setBackground(card(top,bottom,BLUE));button.addView(new UiArt.Icon(this,icon),new LinearLayout.LayoutParams(dp(34),dp(34)));TextView label=text(title,22,true);label.setPadding(dp(14),0,0,0);button.addView(label);clickable(button,title,run);return button;
-    }
-    private void showResults(){
-        stopCamera();screen="results";base(t("results"));TextView summary=text(results.size()+" QR-codes",19,false);summary.setGravity(Gravity.CENTER);root.addView(summary);gap(root,14);
-        LinearLayout items=column();if(results.isEmpty()){TextView empty=text(t("empty"),17,false);empty.setGravity(Gravity.CENTER);empty.setPadding(dp(8),dp(40),dp(8),dp(40));items.addView(empty);}
-        for(int i=0;i<results.size();i++){
-            LinearLayout result=row();result.setPadding(dp(14),dp(16),dp(14),dp(16));result.setBackground(card(0xff073e66,0xff00142b,0xff087fba));result.addView(new UiArt.Icon(this,"qr"),new LinearLayout.LayoutParams(dp(28),dp(28)));
-            TextView value=text((i+1)+".  "+results.get(i),16,false);value.setTextIsSelectable(true);value.setPadding(dp(12),0,0,0);result.addView(value,new LinearLayout.LayoutParams(0,-2,1));items.addView(result);gap(items,10);
-        }
-        scrollPage(items);gap(root,12);View csv=action("csv",t("export"),0xff00ce59,0xff006327,this::exportCsv);csv.setTag("csv");root.addView(csv,new LinearLayout.LayoutParams(-1,-2));gap(root,10);
-        TextView clear=text(t("clear"),16,true);clear.setGravity(Gravity.CENTER);clear.setPadding(dp(12),dp(16),dp(12),dp(16));clear.setBackground(card(0xff06416a,0xff00142b,0xff087fba));root.addView(clear);clickable(clear,t("clear"),()->new androidx.appcompat.app.AlertDialog.Builder(this).setMessage(t("confirm")).setPositiveButton(android.R.string.ok,(dialog,which)->{results.clear();confirmation.reset();showResults();}).setNegativeButton(android.R.string.cancel,null).show());
-    }
-    private void showScanner(){
-        stopCamera();screen="camera";base("");
-        LinearLayout header=row();header.addView(iconButton("back",t("back"),this::showHome),new LinearLayout.LayoutParams(dp(48),dp(54)));
-        TextView title=text(t("scan"),25,true);header.addView(title,new LinearLayout.LayoutParams(0,-2,1));
-        View gear=iconButton("settings",cameraText("settings"),this::showCameraSettings);gear.setTag("camera-settings");header.addView(gear,new LinearLayout.LayoutParams(dp(48),dp(54)));root.addView(header);gap(root,8);
-        preview=new PreviewView(this);preview.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);preview.setContentDescription(t("scan"));
-        FrameLayout frame=new FrameLayout(this);frame.setBackgroundColor(0xff000a16);root.addView(frame,new LinearLayout.LayoutParams(-1,0,1));frame.addView(preview,new FrameLayout.LayoutParams(-1,-1));frame.addView(new ScanOverlay(this,!isPhotoMode()),new FrameLayout.LayoutParams(-1,-1));
-        TextView mode=text(modeLabel(isPhotoMode()),16,true);mode.setPadding(dp(14),dp(8),dp(14),dp(8));mode.setBackground(card(0xff075b86,0xdd001329,BLUE));FrameLayout.LayoutParams modeParams=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.START);modeParams.setMargins(dp(10),dp(10),0,0);frame.addView(mode,modeParams);
-        flashButton=iconButton("flash",cameraText("flash"),this::toggleTorch);flashButton.setTag("camera-flash");flashButton.setBackground(card(0xff075b86,0xdd001329,BLUE));FrameLayout.LayoutParams flashParams=new FrameLayout.LayoutParams(dp(52),dp(48),Gravity.TOP|Gravity.END);flashParams.setMargins(0,dp(8),dp(10),0);frame.addView(flashButton,flashParams);flashButton.setEnabled(false);
-        LinearLayout zoom=row();zoom.setPadding(dp(8),dp(4),dp(8),dp(4));zoom.setBackground(card(0xcc06395b,0xdd001020,0xff3c8299));
-        zoom.addView(iconButton("minus",cameraText("zoomout"),()->changeZoom(zoomRatio-.25f)),new LinearLayout.LayoutParams(dp(44),dp(44)));
-        zoomSlider=new SeekBar(this);zoomSlider.setMax(100);zoomSlider.setContentDescription(cameraText("zoom"));zoomSlider.setTag("camera-zoom");zoomSlider.setEnabled(false);zoom.addView(zoomSlider,new LinearLayout.LayoutParams(0,dp(44),1));
-        zoomLabel=text("1.0×",14,true);zoomLabel.setMinWidth(dp(42));zoomLabel.setGravity(Gravity.CENTER);zoom.addView(zoomLabel);
-        zoom.addView(iconButton("plus",cameraText("zoomin"),()->changeZoom(zoomRatio+.25f)),new LinearLayout.LayoutParams(dp(44),dp(44)));
-        FrameLayout.LayoutParams zoomParams=new FrameLayout.LayoutParams(-1,dp(52),Gravity.BOTTOM);zoomParams.setMargins(dp(8),0,dp(8),dp(8));frame.addView(zoom,zoomParams);
-        zoomSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){public void onProgressChanged(SeekBar bar,int value,boolean user){if(user&&activeCamera!=null){androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();if(state!=null)changeZoom(state.getMinZoomRatio()+(state.getMaxZoomRatio()-state.getMinZoomRatio())*value/100f);}}public void onStartTrackingTouch(SeekBar bar){}public void onStopTrackingTouch(SeekBar bar){}});
-        if(!isPhotoMode()){
-            gap(root,10);LinearLayout status=row();status.setPadding(dp(12),dp(12),dp(12),dp(12));status.setBackground(card(0xff08548c,0xff00182f,BLUE));status.addView(new UiArt.Icon(this,"check"),new LinearLayout.LayoutParams(dp(30),dp(30)));countText=text(cameraText("scanned")+": "+results.size(),22,true);countText.setPadding(dp(10),0,0,0);status.addView(countText);root.addView(status);
-        }else countText=null;
-        resultText=text("",13,false);resultText.setMaxLines(2);resultText.setPadding(dp(6),dp(5),dp(6),dp(5));resultText.setVisibility(View.GONE);root.addView(resultText);
-        gap(root,10);startButton=null;stopButton=null;shutterButton=null;
-        if(isPhotoMode()){
-            FrameLayout holder=new FrameLayout(this);root.addView(holder,new LinearLayout.LayoutParams(-1,dp(96)));
-            FrameLayout shutter=new FrameLayout(this);android.graphics.drawable.GradientDrawable ring=new android.graphics.drawable.GradientDrawable();ring.setShape(android.graphics.drawable.GradientDrawable.OVAL);ring.setColor(0xff00142a);ring.setStroke(dp(3),BLUE);shutter.setBackground(ring);
-            View center=new View(this);android.graphics.drawable.GradientDrawable fill=new android.graphics.drawable.GradientDrawable();fill.setShape(android.graphics.drawable.GradientDrawable.OVAL);fill.setColor(Color.WHITE);center.setBackground(fill);FrameLayout.LayoutParams centerParams=new FrameLayout.LayoutParams(dp(66),dp(66),Gravity.CENTER);shutter.addView(center,centerParams);
-            shutter.addView(new UiArt.Icon(this,"camera",0xff00142a),new FrameLayout.LayoutParams(dp(36),dp(36),Gravity.CENTER));
-            clickable(shutter,cameraText("capture"),this::takeScanPhoto);shutter.setTag("camera-capture");holder.addView(shutter,new FrameLayout.LayoutParams(dp(84),dp(84),Gravity.CENTER));shutterButton=shutter;
-        }else{
-            LinearLayout controls=row();root.addView(controls);
-            startButton=action("play","Start",0xff00cb59,0xff006327,this::startVideoScan);startButton.setTag("camera-start");LinearLayout.LayoutParams left=new LinearLayout.LayoutParams(0,dp(64),1);left.setMargins(0,0,dp(6),0);controls.addView(startButton,left);
-            stopButton=action("stop","Stop",0xfffb3b64,0xffa70024,this::pauseVideoScan);stopButton.setTag("camera-stop");LinearLayout.LayoutParams right=new LinearLayout.LayoutParams(0,dp(64),1);right.setMargins(dp(6),0,0,0);controls.addView(stopButton,right);
-        }
-        updateScanButtons();startCamera();
-    }
-    private boolean isPhotoMode(){return "photo".equals(scanMode);}
-    private String cameraText(String key){
-        switch(key){
-            case "settings":return tr("Camera-instellingen","Camera settings","Kamera ayarları","Налаштування камери");
-            case "mode":return tr("Scanmodus","Scan mode","Tarama modu","Режим сканування");
-            case "resolution":return tr("Resolutie","Resolution","Çözünürlük","Роздільна здатність");
-            case "sensitivity":return tr("Scangevoeligheid","Scan sensitivity","Tarama hassasiyeti","Чутливість сканування");
-            case "vibrate":return tr("Trillen na scan","Vibrate after scan","Taramadan sonra titreşim","Вібрація після сканування");
-            case "capture":return tr("Foto maken","Take photo","Fotoğraf çek","Зробити фото");
-            case "scanned":return tr("Gescand","Scanned","Tarandı","Відскановано");
-            case "flash":return tr("Flitser aan/uit","Toggle flashlight","Feneri aç/kapat","Ліхтарик");
-            case "zoom":return "Zoom";
-            case "zoomin":return tr("Inzoomen","Zoom in","Yakınlaştır","Збільшити");
-            case "zoomout":return tr("Uitzoomen","Zoom out","Uzaklaştır","Зменшити");
-            case "apply":return tr("Toepassen","Apply","Uygula","Застосувати");
-            default:return key;
-        }
-    }
-    private String[] resolutionLabels(){return CameraResolutionOptions.labels(tr("Hoogste ondersteunde resolutie","Highest supported resolution","En yüksek desteklenen çözünürlük","Найвища підтримувана роздільна здатність"));}
-    private String modeLabel(boolean photo){return photo?tr("Foto","Photo","Fotoğraf","Фото"):tr("Video","Video","Video","Відео");}
-    private void showCameraSettings(){
-        pauseVideoScan();
-        android.app.Dialog dialog=new android.app.Dialog(this);cameraSettingsDialog=dialog;
-        LinearLayout panel=column();panel.setPadding(dp(18),dp(16),dp(18),dp(16));panel.setBackground(card(0xff06375d,0xff001228,BLUE));
-        TextView title=text(cameraText("settings"),23,true);panel.addView(title);gap(panel,14);panel.addView(text(cameraText("mode"),18,true));
-        RadioGroup modes=new RadioGroup(this);modes.setOrientation(RadioGroup.HORIZONTAL);RadioButton video=new RadioButton(this),photo=new RadioButton(this);video.setId(View.generateViewId());photo.setId(View.generateViewId());video.setText(modeLabel(false));photo.setText(modeLabel(true));video.setTextColor(WHITE);photo.setTextColor(WHITE);video.setContentDescription(modeLabel(false));photo.setContentDescription(modeLabel(true));modes.addView(video,new RadioGroup.LayoutParams(0,dp(48),1));modes.addView(photo,new RadioGroup.LayoutParams(0,dp(48),1));modes.check(isPhotoMode()?photo.getId():video.getId());panel.addView(modes);
-        TextView modeHint=text(tr("Video: continu · Foto: één opname","Video: continuous scan · Photo: one capture","Video: sürekli tara · Fotoğraf: tek çekim","Відео: безперервно · Фото: один знімок"),12,false);panel.addView(modeHint);gap(panel,12);
-        panel.addView(text(cameraText("resolution"),18,true));Spinner resolution=new Spinner(this);resolution.setContentDescription(cameraText("resolution"));android.widget.ArrayAdapter<String> options=new android.widget.ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,resolutionLabels());resolution.setAdapter(options);resolution.setSelection(resolutionChoice);panel.addView(resolution,new LinearLayout.LayoutParams(-1,dp(48)));
-        gap(panel,10);panel.addView(text(cameraText("sensitivity"),18,true));RadioGroup sensitivityGroup=new RadioGroup(this);sensitivityGroup.setOrientation(RadioGroup.HORIZONTAL);int[] sensitivityIds=new int[3];String[] labels={tr("Hoog","High","Yüksek","Висока"),tr("Normaal","Normal","Normal","Звичайна"),tr("Laag","Low","Düşük","Низька")};
-        for(int i=0;i<3;i++){RadioButton item=new RadioButton(this);item.setId(View.generateViewId());sensitivityIds[i]=item.getId();item.setText(labels[i]);item.setTextSize(13);item.setTextColor(WHITE);sensitivityGroup.addView(item,new RadioGroup.LayoutParams(0,dp(48),1));}sensitivityGroup.check(sensitivityIds[sensitivity]);panel.addView(sensitivityGroup);
-        TextView note=text(tr("Alleen voor Video · Laag = meer bevestiging","Video only · More confirmation = steadier scanning","Yalnızca Video · Daha fazla onay = daha sakin tarama","Лише відео · Більше підтверджень"),12,false);panel.addView(note);
-        Runnable refreshSensitivity=()->{boolean enabled=modes.getCheckedRadioButtonId()==video.getId();sensitivityGroup.setAlpha(enabled?1f:.45f);for(int i=0;i<3;i++)sensitivityGroup.getChildAt(i).setEnabled(enabled);};refreshSensitivity.run();modes.setOnCheckedChangeListener((group,id)->refreshSensitivity.run());
-        gap(panel,12);androidx.appcompat.widget.SwitchCompat vibration=new androidx.appcompat.widget.SwitchCompat(this);vibration.setText(cameraText("vibrate"));vibration.setTextColor(WHITE);vibration.setTextSize(18);vibration.setChecked(vibrateAfterScan);vibration.setTag("scan-vibration");panel.addView(vibration,new LinearLayout.LayoutParams(-1,dp(48)));
-        panel.addView(text(tr("Korte trilling per toegevoegde QR-code","A short vibration for each added QR code","Eklenen her QR kod için kısa titreşim","Коротка вібрація для кожного доданого QR-коду"),12,false));gap(panel,12);
-        TextView deviceNote=text((actualResolution.isEmpty()?"":tr("Actief: ","Active: ","Etkin: ","Активно: ")+actualResolution+"\n")+tr("Gewenste maat. Zo nodig gebruikt de camera de dichtstbijzijnde ondersteunde resolutie.","Requested size. The camera falls back to its closest supported resolution.","İstenen boyut. Kamera gerekirse en yakın desteklenen çözünürlüğü kullanır.","Бажаний розмір. Камера за потреби вибирає найближчу підтримувану роздільну здатність."),12,false);panel.addView(deviceNote);gap(panel,12);
-        View apply=action("check",cameraText("apply"),0xff007de5,0xff003c87,()->{
-            scanMode=modes.getCheckedRadioButtonId()==photo.getId()?"photo":"video";resolutionChoice=resolution.getSelectedItemPosition();for(int i=0;i<3;i++)if(sensitivityGroup.getCheckedRadioButtonId()==sensitivityIds[i])sensitivity=i;vibrateAfterScan=vibration.isChecked();
-            getPreferences(MODE_PRIVATE).edit().putString("scanMode",scanMode).putInt("cameraResolution",resolutionChoice).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibrateAfterScan).apply();scanFeedback.setEnabled(vibrateAfterScan);dialog.dismiss();cameraSettingsDialog=null;showScanner();
-        });apply.setContentDescription(cameraText("apply"));panel.addView(apply);
-        panel.removeView(apply);ScrollView scroll=new ScrollView(this);scroll.setTag("camera-settings-scroll");scroll.addView(panel);
-        LinearLayout outer=column();outer.setBackground(card(0xff06375d,0xff001228,BLUE));outer.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));LinearLayout.LayoutParams applyParams=new LinearLayout.LayoutParams(-1,dp(60));applyParams.setMargins(dp(18),dp(8),dp(18),dp(16));outer.addView(apply,applyParams);dialog.setContentView(outer);android.view.Window window=dialog.getWindow();if(window!=null){window.setBackgroundDrawableResource(android.R.color.transparent);window.setDimAmount(.65f);window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);window.setGravity(Gravity.BOTTOM);window.setLayout(-1,-2);}dialog.show();if(window!=null){window.setLayout(-1,Math.min(dp(660),(int)(getResources().getDisplayMetrics().heightPixels*.86f)));window.setGravity(Gravity.BOTTOM);}
-    }
-    private void updateScanButtons(){
-        if(startButton!=null){startButton.setEnabled(cameraReady&&!scanning);startButton.setAlpha(startButton.isEnabled()?1f:.45f);}
-        if(stopButton!=null){stopButton.setEnabled(scanning);stopButton.setAlpha(stopButton.isEnabled()?1f:.45f);}
-        if(shutterButton!=null){shutterButton.setEnabled(cameraReady&&!captureBusy);shutterButton.setAlpha(shutterButton.isEnabled()?1f:.45f);}
-    }
-    private void startVideoScan(){if(!cameraReady||isPhotoMode())return;confirmation.reset();scanning=true;resultText.setVisibility(View.GONE);updateScanButtons();}
-    private void pauseVideoScan(){scanning=false;confirmation.reset();updateScanButtons();}
-    private void toggleTorch(){
-        if(!cameraReady||torchChanging||activeCamera==null||!activeCamera.getCameraInfo().hasFlashUnit())return;
-        torchChanging=true;flashButton.setEnabled(false);final boolean next=!torch;final int session=cameraSession;
-        ListenableFuture<Void> change=activeCamera.getCameraControl().enableTorch(next);
-        change.addListener(()->{
-            if(session!=cameraSession)return;
-            try{change.get();torch=next;flashButton.setBackground(card(torch?0xff00a4c5:0xff075b86,0xdd001329,BLUE));}
-            catch(Exception error){showScanError(error);}
-            finally{torchChanging=false;flashButton.setEnabled(cameraReady&&activeCamera!=null&&activeCamera.getCameraInfo().hasFlashUnit());}
-        },ContextCompat.getMainExecutor(this));
-    }
-    private void changeZoom(float requested){
-        if(!cameraReady||activeCamera==null)return;androidx.camera.core.ZoomState state=activeCamera.getCameraInfo().getZoomState().getValue();if(state==null)return;
-        final float value=Math.max(state.getMinZoomRatio(),Math.min(state.getMaxZoomRatio(),requested));final int session=cameraSession;ListenableFuture<Void> change=activeCamera.getCameraControl().setZoomRatio(value);
-        change.addListener(()->{if(session!=cameraSession)return;try{change.get();zoomRatio=value;zoomLabel.setText(String.format(Locale.getDefault(),"%.1f×",value));float range=state.getMaxZoomRatio()-state.getMinZoomRatio();zoomSlider.setProgress(range>0?Math.round((value-state.getMinZoomRatio())*100/range):0);}catch(Exception error){showScanError(error);}},ContextCompat.getMainExecutor(this));
-    }
-    private void showScanError(Exception error){if(!"camera".equals(screen)||isDestroyed())return;resultText.setVisibility(View.VISIBLE);resultText.setText(photoText("error")+": "+error.getMessage());}
-    private void appendScanResults(List<String> values){
-        for(String value:values){if(value==null)continue;results.add(value);scanFeedback.success();}
-        if("camera".equals(screen)&&!values.isEmpty()){
-            if(countText!=null)countText.setText(cameraText("scanned")+": "+results.size());
-            resultText.setVisibility(View.VISIBLE);resultText.setText(values.get(values.size()-1));
-        }
-    }
-    private List<String> qrValues(List<Barcode> codes){List<String> values=new ArrayList<>();for(Barcode code:codes)if(code.getFormat()==Barcode.FORMAT_QR_CODE&&code.getRawValue()!=null)values.add(code.getRawValue());return values;}
-    private void takeScanPhoto(){
-        if(!cameraReady||imageCapture==null||captureBusy||!isPhotoMode())return;
-        captureBusy=true;updateScanButtons();final int session=cameraSession;final File file;
-        try{file=File.createTempFile("bmd-capture-",".jpg",getCacheDir());}catch(IOException error){captureBusy=false;updateScanButtons();showScanError(error);return;}
-        imageCapture.takePicture(new ImageCapture.OutputFileOptions.Builder(file).build(),ContextCompat.getMainExecutor(this),new ImageCapture.OnImageSavedCallback(){
-            @Override public void onError(@NonNull ImageCaptureException error){file.delete();if(session==cameraSession){captureBusy=false;updateScanButtons();showScanError(error);}}
-            @Override public void onImageSaved(@NonNull ImageCapture.OutputFileResults output){
-                if(session!=cameraSession||isDestroyed()){file.delete();return;}
-                cameraExecutor.execute(()->{try{InputImage image=InputImage.fromFilePath(MainActivity.this,Uri.fromFile(file));
-                    scanner.process(image).addOnSuccessListener(codes->{if(session!=cameraSession||isDestroyed())return;List<String> values=qrValues(codes);appendScanResults(values);if(values.isEmpty()){resultText.setVisibility(View.VISIBLE);resultText.setText(photoText("none"));}})
-                        .addOnFailureListener(error->{if(session==cameraSession)showScanError(error);})
-                        .addOnCompleteListener(task->{file.delete();if(session==cameraSession){captureBusy=false;updateScanButtons();}});
-                }catch(Exception error){file.delete();runOnUiThread(()->{if(session==cameraSession){captureBusy=false;updateScanButtons();showScanError(error);}});}});
-            }
-        });
-    }
-    private static class ScanOverlay extends View{
-        private final android.graphics.Paint paint=new android.graphics.Paint(3);
-        private final boolean video;
-        ScanOverlay(android.content.Context context,boolean video){super(context);this.video=video;setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onDraw(android.graphics.Canvas canvas){
-            float w=getWidth(),h=getHeight(),side=Math.min(w*.76f,h*.76f),left=(w-side)/2,top=(h-side)/2,right=left+side,bottom=top+side,len=side*.18f;
-            paint.setStyle(android.graphics.Paint.Style.FILL);paint.setColor(0x55001024);canvas.drawRect(0,0,w,top,paint);canvas.drawRect(0,bottom,w,h,paint);canvas.drawRect(0,top,left,bottom,paint);canvas.drawRect(right,top,w,bottom,paint);
-            paint.setStyle(android.graphics.Paint.Style.STROKE);paint.setStrokeCap(android.graphics.Paint.Cap.ROUND);android.graphics.Path path=new android.graphics.Path();
-            path.moveTo(left,top+len);path.lineTo(left,top);path.lineTo(left+len,top);path.moveTo(right-len,top);path.lineTo(right,top);path.lineTo(right,top+len);path.moveTo(left,bottom-len);path.lineTo(left,bottom);path.lineTo(left+len,bottom);path.moveTo(right-len,bottom);path.lineTo(right,bottom);path.lineTo(right,bottom-len);
-            float density=getResources().getDisplayMetrics().density;paint.setStrokeWidth(9*density);paint.setColor(0x7700baff);canvas.drawPath(path,paint);paint.setStrokeWidth(4*density);paint.setColor(0xff00eeff);canvas.drawPath(path,paint);paint.setStrokeWidth(density);paint.setColor(Color.WHITE);canvas.drawPath(path,paint);
-            if(video){paint.setStrokeWidth(7*density);paint.setColor(0x5500ff64);canvas.drawLine(left,h/2,right,h/2,paint);paint.setStrokeWidth(2*density);paint.setColor(0xff24ff70);canvas.drawLine(left,h/2,right,h/2,paint);}
-        }
-    }
-    private String photoText(String key){
-        String[] codes={"nl","en","tr","uk"};
-        int locale=Arrays.asList(codes).indexOf(lang);if(locale<0)locale=0;
-        switch(key){
-            case "choose":return new String[]{"Foto’s uploaden","Upload photos","Fotoğraf seç","Вибрати фото"}[locale];
-            case "photo":return new String[]{"Foto’s","Photos","Fotoğraf","Фото"}[locale];
-            case "busy":return new String[]{"Foto’s verwerken…","Reading photos…","Fotoğraflar okunuyor…","Обробка фото…"}[locale];
-            case "none":return new String[]{"Geen QR-code gevonden. Kies een scherpe foto waarop de volledige code zichtbaar is.","No QR code found. Choose a sharp photo showing the entire code.","QR kod bulunamadı. Kodun tamamını gösteren net bir fotoğraf seçin.","QR-код не знайдено. Виберіть чітке фото з повним кодом."}[locale];
-            case "failed":return new String[]{"Foto’s niet leesbaar","Photos could not be read","Fotoğraflar okunamadı","Не вдалося прочитати фото"}[locale];
-            default:return new String[]{"Scannerfout","Scanner error","Tarayıcı hatası","Помилка сканера"}[locale];
-        }
-    }
-    private void choosePhotos(){
-        if(photoBusy){Toast.makeText(this,photoText("busy"),Toast.LENGTH_SHORT).show();return;}
-        showHome();pickPhotos.launch(new String[]{"image/*"});
-    }
-    private void scanPhotos(ArrayDeque<Uri> queue,int found,int failed){
-        if(isDestroyed())return;
-        photoBusy=true;if(busyText!=null)busyText.setText(photoText("busy"));
-        if(queue.isEmpty()){
-            photoBusy=false;showResults();
-            String message=found==0?photoText("none"):t("results")+": +"+found;
-            if(failed>0)message+="\n"+photoText("failed")+": "+failed;
-            new androidx.appcompat.app.AlertDialog.Builder(this).setMessage(message).setPositiveButton(android.R.string.ok,null).show();
-            return;
-        }
-        Uri uri=queue.removeFirst();
-        cameraExecutor.execute(()->{
-            try{
-                InputImage input=InputImage.fromFilePath(this,uri);
-                scanner.process(input).addOnSuccessListener(barcodes->{
-                    List<String> values=qrValues(barcodes);appendScanResults(values);int added=values.size();
-                    scanPhotos(queue,found+added,failed);
-                }).addOnFailureListener(error->scanPhotos(queue,found,failed+1));
-            }catch(Exception error){runOnUiThread(()->scanPhotos(queue,found,failed+1));}
-        });
-    }
-    private androidx.camera.core.resolutionselector.ResolutionSelector cameraResolution(){
-        androidx.camera.core.resolutionselector.ResolutionSelector.Builder builder=new androidx.camera.core.resolutionselector.ResolutionSelector.Builder();
-        if(resolutionChoice==CameraResolutionOptions.HIGHEST){
-            builder.setResolutionStrategy(androidx.camera.core.resolutionselector.ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY);
-            if(isPhotoMode())builder.setAllowedResolutionMode(androidx.camera.core.resolutionselector.ResolutionSelector.PREFER_HIGHER_RESOLUTION_OVER_CAPTURE_RATE);
-            builder.setResolutionFilter((sizes,rotation)->{List<android.util.Size> sorted=new ArrayList<>(sizes);sorted.sort((first,second)->Long.compare((long)second.getWidth()*second.getHeight(),(long)first.getWidth()*first.getHeight()));return sorted;});
-        }else{
-            CameraResolutionOptions.Target target=CameraResolutionOptions.TARGETS[resolutionChoice];
-            builder.setResolutionStrategy(new androidx.camera.core.resolutionselector.ResolutionStrategy(new android.util.Size(target.longEdge(),target.shortEdge()),androidx.camera.core.resolutionselector.ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER));
-            if(resolutionChoice<3)builder.setAspectRatioStrategy(androidx.camera.core.resolutionselector.AspectRatioStrategy.RATIO_16_9_FALLBACK_AUTO_STRATEGY);
-            else builder.setResolutionFilter((sizes,rotation)->{List<android.util.Size> sorted=new ArrayList<>(sizes);sorted.sort((first,second)->Double.compare(CameraResolutionOptions.distance(first.getWidth(),first.getHeight(),target),CameraResolutionOptions.distance(second.getWidth(),second.getHeight(),target)));return sorted;});
-        }
-        return builder.build();
-    }
-    private void recordResolution(androidx.camera.core.ResolutionInfo info){if(info!=null)actualResolution=info.getResolution().getWidth()+" × "+info.getResolution().getHeight();}
-    private void startCamera(){
-        final int session=cameraSession;final PreviewView cameraPreview=preview;
-        ListenableFuture<ProcessCameraProvider> future=ProcessCameraProvider.getInstance(this);
-        future.addListener(()->{
-            if(session!=cameraSession||cameraPreview==null||isDestroyed())return;
-            try{
-                cameraProvider=future.get();Preview previewUseCase=new Preview.Builder().build();previewUseCase.setSurfaceProvider(cameraPreview.getSurfaceProvider());cameraProvider.unbindAll();
-                if(isPhotoMode()){
-                    imageCapture=new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).setResolutionSelector(cameraResolution()).build();
-                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,imageCapture);recordResolution(imageCapture.getResolutionInfo());
-                }else{
-                    ImageAnalysis analysis=new ImageAnalysis.Builder().setResolutionSelector(cameraResolution()).setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();analysis.setAnalyzer(cameraExecutor,proxy->analyze(proxy,session));
-                    activeCamera=cameraProvider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,previewUseCase,analysis);recordResolution(analysis.getResolutionInfo());
-                }
-                cameraReady=false;final boolean[] zoomApplied={false};
-                cameraPreview.getPreviewStreamState().observe(this,state->{
-                    if(session!=cameraSession||activeCamera==null)return;
-                    cameraReady=state==PreviewView.StreamState.STREAMING;
-                    flashButton.setEnabled(cameraReady&&!torchChanging&&activeCamera.getCameraInfo().hasFlashUnit());flashButton.setAlpha(flashButton.isEnabled()?1f:.4f);
-                    androidx.camera.core.ZoomState zoom=activeCamera.getCameraInfo().getZoomState().getValue();zoomSlider.setEnabled(cameraReady&&zoom!=null&&zoom.getMaxZoomRatio()>zoom.getMinZoomRatio());
-                    updateScanButtons();if(cameraReady&&!zoomApplied[0]){zoomApplied[0]=true;changeZoom(zoomRatio);}
-                });
-                cameraPreview.setOnTouchListener((view,event)->{if(event.getAction()==android.view.MotionEvent.ACTION_UP&&cameraReady&&activeCamera!=null){FocusMeteringAction focus=new FocusMeteringAction.Builder(cameraPreview.getMeteringPointFactory().createPoint(event.getX(),event.getY())).build();activeCamera.getCameraControl().startFocusAndMetering(focus);view.performClick();}return true;});
-            }catch(Exception error){cameraReady=false;updateScanButtons();showScanError(error);}
-        },ContextCompat.getMainExecutor(this));
-    }
-    @androidx.annotation.OptIn(markerClass = androidx.camera.core.ExperimentalGetImage.class)
-    private void analyze(@NonNull ImageProxy proxy,int session){
-        if(!scanning||session!=cameraSession||!processing.compareAndSet(false,true)){proxy.close();return;}
-        try{
-            android.media.Image image=proxy.getImage();
-            if(image==null){processing.set(false);proxy.close();return;}
-            InputImage input=InputImage.fromMediaImage(image,proxy.getImageInfo().getRotationDegrees());
-            scanner.process(input).addOnSuccessListener(barcodes->{
-                if(!scanning||session!=cameraSession)return;
-                appendScanResults(confirmation.acceptFrame(qrValues(barcodes),SystemClock.elapsedRealtime(),sensitivity+1,repeatDelay));
-            }).addOnFailureListener(error->{if(scanning&&session==cameraSession)showScanError(error);})
-              .addOnCompleteListener(task->{processing.set(false);proxy.close();});
-        }catch(Exception error){
-            processing.set(false);proxy.close();
-            runOnUiThread(()->{if(scanning&&session==cameraSession)showScanError(error);});
-        }
-    }
-    private byte[] csvBytes(){return CsvData.encode(results);}
-    private void writeCsv(Uri uri){
-        final byte[] data=pendingCsv!=null?pendingCsv:csvBytes();pendingCsv=null;
-        cameraExecutor.execute(()->{
-            try{
-                try(OutputStream stream=getContentResolver().openOutputStream(uri)){if(stream==null)throw new IOException("No output stream");stream.write(data);}
-                runOnUiThread(()->{if(!isDestroyed()&&!isFinishing())new androidx.appcompat.app.AlertDialog.Builder(this).setMessage(t("saved")).setPositiveButton(t("share"),(dialog,which)->shareCsv(uri)).setNegativeButton(android.R.string.ok,null).show();});
-            }catch(Exception error){runOnUiThread(()->{if(!isDestroyed())Toast.makeText(this,t("error")+": "+error.getMessage(),Toast.LENGTH_LONG).show();});}
-        });
-    }
-    private void exportCsv(){if(results.isEmpty()){Toast.makeText(this,t("empty"),Toast.LENGTH_SHORT).show();return;}pendingCsv=csvBytes();saveCsv.launch(csvFilename);}
-    private void shareCsv(Uri uri){
-        try{
-            Intent intent=new Intent(Intent.ACTION_SEND);intent.setType("text/csv");
-            intent.putExtra(Intent.EXTRA_STREAM,uri);intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setClipData(ClipData.newUri(getContentResolver(),"CSV",uri));
-            startActivity(Intent.createChooser(intent,t("share")));
-        }catch(Exception error){Toast.makeText(this,t("error")+": "+error.getMessage(),Toast.LENGTH_LONG).show();}
-    }
-    @Override protected void onPause(){pauseVideoScan();if(scanFeedback!=null)scanFeedback.cancel();super.onPause();}
-    @Override protected void onDestroy(){stopCamera();if(scanFeedback!=null)scanFeedback.cancel();scanner.close();cameraExecutor.shutdown();super.onDestroy();}
+    private void homeCard(LinearLayout parent,String icon,String title,int top,int bottom,int edge,Runnable action){LinearLayout tile=column();tile.setGravity(Gravity.CENTER);tile.setPadding(dp(9),dp(12),dp(9),dp(12));tile.setBackground(UiArt.raised(top,bottom,edge,dp(22)));tile.setElevation(dp(7));tile.setOnTouchListener((v,event)->{if(ValueAnimator.areAnimatorsEnabled()){if(event.getAction()==MotionEvent.ACTION_DOWN)v.animate().scaleX(.98f).scaleY(.98f).translationY(dp(3)).setDuration(100).start();else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL)v.animate().scaleX(1).scaleY(1).translationY(0).setDuration(170).start();}return false;});tile.addView(new UiArt.Icon(this,icon),new LinearLayout.LayoutParams(dp(48),dp(48)));gap(tile,12);TextView label=text(title,20,true);label.setGravity(Gravity.CENTER);label.setMaxLines(2);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(label,14,20,1,android.util.TypedValue.COMPLEX_UNIT_SP);tile.addView(label,new LinearLayout.LayoutParams(-1,dp(48)));LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,-1,1);p.setMargins(dp(5),dp(5),dp(5),dp(5));parent.addView(tile,p);tile.setTag(icon);click(tile,title,action);}
+    void showHome(){base("home","");LinearLayout content=column();content.setGravity(Gravity.CENTER_HORIZONTAL);LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.setTag("home-identity");hero.addView(new UiArt.ScannerMark(this),new LinearLayout.LayoutParams(dp(74),dp(80)));LinearLayout names=column();names.setPadding(dp(12),0,0,0);TextView bmd=text("BMD",48,true);bmd.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD));names.addView(bmd);UiArt.NameText name=new UiArt.NameText(this);name.setText(s("short_name"));name.setTypeface(Typeface.create("sans-serif-rounded",Typeface.BOLD_ITALIC));name.setIncludeFontPadding(false);name.setMaxLines(1);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(name,13,24,1,android.util.TypedValue.COMPLEX_UNIT_SP);names.addView(name,new LinearLayout.LayoutParams(-1,dp(35)));hero.addView(names,new LinearLayout.LayoutParams(0,-2,1));LinearLayout.LayoutParams hp=new LinearLayout.LayoutParams(-1,dp(112));hp.setMargins(dp(18),0,dp(10),0);content.addView(hero,hp);content.addView(new UiArt.Wave(this),new LinearLayout.LayoutParams(-1,dp(18)));content.addView(new View(this),new LinearLayout.LayoutParams(1,dp(16),1));int height=getResources().getConfiguration().screenHeightDp<700?152:176;LinearLayout first=row(),second=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));homeCard(first,"qr",s("scan"),0xff0098fa,0xff003aa0,CYAN,this::openCamera);homeCard(first,"photo",s("photos"),0xff00d960,0xff006525,0xff2eff8b,this::choosePhotos);content.addView(second,new LinearLayout.LayoutParams(-1,dp(height)));homeCard(second,"list",s("results"),0xffc62dff,0xff4a007e,0xffec91ff,this::showResults);homeCard(second,"settings",s("settings"),0xffffb800,0xffa54300,0xffffdf63,this::showSettings);content.addView(new View(this),new LinearLayout.LayoutParams(1,dp(16),1));UiArt.Brand brand=new UiArt.Brand(this);brand.setTag("home-brand");LinearLayout.LayoutParams bp=new LinearLayout.LayoutParams(dp(220),dp(72));bp.gravity=Gravity.CENTER_HORIZONTAL;content.addView(brand,bp);gap(content,22);page(content);}
+
+    private void settingsTile(LinearLayout content,String icon,String title,String detail,String tag,Runnable action){LinearLayout tile=row();tile.setBackground(card(0xff0a4267,0xff00213b,0xff477a98));tile.setPadding(dp(16),dp(18),dp(16),dp(18));tile.setMinimumHeight(dp(94));tile.addView(new UiArt.Icon(this,icon,CYAN),new LinearLayout.LayoutParams(dp(38),dp(38)));LinearLayout labels=column();labels.setPadding(dp(16),0,dp(8),0);labels.addView(text(title,21,true));gap(labels,8);labels.addView(text(detail,14,false));tile.addView(labels,new LinearLayout.LayoutParams(0,-2,1));tile.addView(text("›",28,false));click(tile,title,action);tile.setTag(tag);content.addView(tile,new LinearLayout.LayoutParams(-1,-2));gap(content,14);}
+    void showSettings(){base("settings",s("brand"));LinearLayout content=column();gap(content,16);TextView title=text("⚙  "+s("settings"),30,true);content.addView(title);gap(content,24);int index=Arrays.asList(LANGS).indexOf(lang);settingsTile(content,"language",s("language"),LANG_NAMES[index],"language",this::languages);settingsTile(content,"qr",s("scanner"),s("scanner_hint"),"scanner-settings",this::cameraSettings);settingsTile(content,"document",s("document_type"),s("formats"),"document-settings",this::documentSettings);settingsTile(content,"info",s("about"),s("brand"),"about",this::about);page(content);}
+    private LinearLayout sheet(String title){if(dialog!=null)dialog.dismiss();boolean resume=scanning;scanning=false;LinearLayout panel=column();panel.setPadding(dp(20),dp(16),dp(20),dp(20));panel.setBackground(card(0xff073654,0xff00182e,CYAN));LinearLayout heading=row();if(!title.isEmpty())heading.addView(text(title,23,true),new LinearLayout.LayoutParams(0,-2,1));else heading.addView(new View(this),new LinearLayout.LayoutParams(0,1,1));heading.addView(iconButton("close",s("close"),()->dialog.dismiss()),new LinearLayout.LayoutParams(dp(44),dp(44)));panel.addView(heading);gap(panel,12);dialog=new android.app.Dialog(this);ScrollView scroll=new ScrollView(this){@Override protected void onMeasure(int width,int height){super.onMeasure(width,View.MeasureSpec.makeMeasureSpec((int)(getResources().getDisplayMetrics().heightPixels*.86f),View.MeasureSpec.AT_MOST));}};scroll.setFillViewport(false);scroll.addView(panel);dialog.setContentView(scroll);dialog.setOnDismissListener(d->{if(screen.equals("camera")&&cameraReady&&!capturing&&capturedPhoto==null&&resume)scanning=true;});dialog.show();Window w=dialog.getWindow();if(w!=null){w.setBackgroundDrawableResource(android.R.color.transparent);w.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);w.setDimAmount(.6f);w.setGravity(Gravity.BOTTOM);w.setLayout(-1,-2);scroll.requestLayout();}if(ValueAnimator.areAnimatorsEnabled()){panel.setTranslationY(dp(30));panel.setAlpha(0);panel.animate().translationY(0).alpha(1).setDuration(240).start();}return panel;}
+    private void languages(){LinearLayout panel=sheet(s("choose_language"));for(int i=0;i<LANGS.length;i++){final int n=i;TextView item=text(LANG_NAMES[i]+(lang.equals(LANGS[i])?"  ✓":""),18,false);item.setPadding(dp(12),dp(10),dp(12),dp(10));if(lang.equals(LANGS[i]))item.setTextColor(CYAN);click(item,LANG_NAMES[i],()->{lang=LANGS[n];updateWords();getPreferences(0).edit().putString("language",lang).apply();dialog.dismiss();showSettings();});panel.addView(item);}}
+    private void about(){LinearLayout panel=sheet("");LinearLayout line=row();line.setGravity(Gravity.CENTER);TextView credit=text("Made by Jack with ",24,true),heart=text("♥",30,true);heart.setTextColor(0xffff405b);line.addView(credit);line.addView(heart);line.setPadding(0,dp(28),0,dp(48));panel.addView(line);if(ValueAnimator.areAnimatorsEnabled()){ObjectAnimator a=ObjectAnimator.ofPropertyValuesHolder(heart,PropertyValuesHolder.ofFloat(View.SCALE_X,1,1.15f,1),PropertyValuesHolder.ofFloat(View.SCALE_Y,1,1.15f,1));a.setDuration(650);a.setRepeatCount(2);a.start();}}
+    private void documentSettings(){LinearLayout panel=sheet(s("document_settings"));panel.addView(text(s("choose_format"),15,false));RadioGroup formats=new RadioGroup(this);String[] names={"CSV (.csv)","Excel (.xlsx)","Word (.docx)","PDF (.pdf)"};int[] ids=new int[4];for(int i=0;i<4;i++){RadioButton b=new RadioButton(this);ids[i]=View.generateViewId();b.setId(ids[i]);b.setText(names[i]);b.setTextColor(WHITE);b.setButtonTintList(android.content.res.ColorStateList.valueOf(CYAN));formats.addView(b);if(documentFormat==i)formats.check(ids[i]);}panel.addView(formats);gap(panel,12);panel.addView(text(s("filename"),17,true));EditText name=new EditText(this);name.setSingleLine();name.setText(baseName.replaceAll("(?i)\\.(csv|xlsx|docx|pdf)$",""));name.setTextColor(WHITE);name.setContentDescription(s("filename"));panel.addView(name);panel.addView(text(s("extension_hint"),12,false));gap(panel,16);panel.addView(action(s("save"),()->{for(int i=0;i<4;i++)if(formats.getCheckedRadioButtonId()==ids[i])documentFormat=i;baseName=DocumentExporter.filename(name.getText().toString(),documentFormat).replaceAll("\\.[^.]+$","");getPreferences(0).edit().putInt("documentFormat",documentFormat).putString("documentName",baseName).apply();dialog.dismiss();}));}
+    private String[] resolutionLabels(){return CameraResolutionOptions.labels(s("highest"));}
+    void cameraSettings(){LinearLayout panel=sheet(s("scanner_settings"));panel.addView(text(s("resolution"),18,true));Spinner resolution=new Spinner(this);resolution.setTag("resolution-choice");ArrayAdapter<String> adapter=new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,resolutionLabels());resolution.setAdapter(adapter);resolution.setSelection(resolutionChoice);panel.addView(resolution);TextView actual=text(s("actual")+": "+(actualResolution.isEmpty()?"—":actualResolution),12,false);panel.addView(actual);panel.addView(text(s("fallback"),12,false));gap(panel,18);panel.addView(text(s("sensitivity"),18,true));panel.addView(text(s("stability"),12,false));RadioGroup group=new RadioGroup(this);group.setOrientation(LinearLayout.HORIZONTAL);int[] ids=new int[3];String[] levels={s("low"),s("normal"),s("high")};for(int i=0;i<3;i++){RadioButton b=new RadioButton(this);ids[i]=View.generateViewId();b.setId(ids[i]);b.setText(levels[i]);b.setTextColor(WHITE);b.setButtonTintList(android.content.res.ColorStateList.valueOf(CYAN));group.addView(b,new RadioGroup.LayoutParams(0,-2,1));if(sensitivity==i)group.check(ids[i]);}panel.addView(group);gap(panel,16);Switch vibration=new Switch(this);vibration.setText(s("vibrate"));vibration.setTextColor(WHITE);vibration.setChecked(vibrate);vibration.setTag("vibration-toggle");panel.addView(vibration);panel.addView(text(s("vibrate_hint"),12,false));gap(panel,18);panel.addView(action(s("done"),()->{int previous=resolutionChoice;resolutionChoice=resolution.getSelectedItemPosition();for(int i=0;i<3;i++)if(group.getCheckedRadioButtonId()==ids[i])sensitivity=i;vibrate=vibration.isChecked();feedback.setEnabled(vibrate);getPreferences(0).edit().putInt("cameraResolution",resolutionChoice).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibrate).apply();dialog.dismiss();if(screen.equals("camera")&&resolutionChoice!=previous)showScanner();}));}
+
+    void openCamera(){if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)showScanner();else permission.launch(Manifest.permission.CAMERA);}
+    void showScanner(){base("camera",s("scan"));capturedPhoto=null;capturing=false;LinearLayout mode=row();mode.setGravity(Gravity.CENTER);modeText=text(s("live")+"\n"+modeLabel(),14,true);modeText.setGravity(Gravity.CENTER);modeText.setTextColor(CYAN);mode.addView(modeText,new LinearLayout.LayoutParams(0,dp(46),1));View filter=iconButton("settings",s("code_filter"),this::formatMenu);filter.setTag("code-filter");mode.addView(filter,new LinearLayout.LayoutParams(dp(44),dp(44)));root.addView(mode);boolean landscape=getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE;LinearLayout body=landscape?row():column();root.addView(body,new LinearLayout.LayoutParams(-1,0,1));FrameLayout cameraFrame=new FrameLayout(this);preview=new PreviewView(this);preview.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);preview.setScaleType(PreviewView.ScaleType.FILL_CENTER);cameraFrame.addView(preview,new FrameLayout.LayoutParams(-1,-1));overlay=new ScanOverlay(this);cameraFrame.addView(overlay,new FrameLayout.LayoutParams(-1,-1));
+        LinearLayout rail=column();rail.setGravity(Gravity.CENTER);flashButton=iconButton("flash",s("lamp"),this::toggleTorch);flashButton.setTag("lamp-button");rail.addView(flashButton,new LinearLayout.LayoutParams(dp(44),dp(44)));lampLabel=text(s("off"),10,true);lampLabel.setGravity(Gravity.CENTER);rail.addView(lampLabel);gap(rail,5);zoomView=new VerticalZoom(this);zoomView.setContentDescription(s("zoom"));zoomView.setTag("vertical-zoom");rail.addView(zoomView,new LinearLayout.LayoutParams(dp(83),0,1));FrameLayout.LayoutParams rp=new FrameLayout.LayoutParams(dp(86),-1,Gravity.END);rp.setMargins(0,dp(8),dp(4),dp(8));cameraFrame.addView(rail,rp);body.addView(cameraFrame,new LinearLayout.LayoutParams(landscape?0:-1,landscape?-1:0,1));
+        LinearLayout info=column();if(landscape)body.addView(info,new LinearLayout.LayoutParams(dp(238),-1));else body.addView(info,new LinearLayout.LayoutParams(-1,-2));LinearLayout counter=column();counter.setPadding(dp(12),dp(9),dp(12),dp(9));counter.setBackground(card(0xff0b476b,0xff002740,0xff174f69));countText=text("",24,true);splitText=text("",12,false);counter.addView(countText);counter.addView(splitText);info.addView(counter);inlineResults=column();info.addView(inlineResults);View all=action(s("all_results"),this::showCodeList);all.setTag("all-results");info.addView(all);LinearLayout controls=row();controls.setGravity(Gravity.CENTER);View list=round("list",s("list"),false,this::showCodeList);list.setTag("list-button");controls.addView(list,new LinearLayout.LayoutParams(0,dp(62),1));shutter=round("shutter",s("capture"),true,this::takeScanPhoto);shutter.setTag("photo-shutter");controls.addView(shutter,new LinearLayout.LayoutParams(dp(80),dp(80)));resetButton=round("reset",s("reset"),false,this::resetScan);resetButton.setTag("reset-button");controls.addView(resetButton,new LinearLayout.LayoutParams(0,dp(62),1));info.addView(controls);TextView label=text(s("capture"),13,true);label.setGravity(Gravity.CENTER);info.addView(label);statusText=text("",12,false);info.addView(statusText);refresh();final int session=generation;preview.post(()->bindCamera(session));}
+    private View round(String icon,String label,boolean main,Runnable action){FrameLayout frame=new FrameLayout(this);FrameLayout inner=new FrameLayout(this);GradientDrawable bg=new GradientDrawable();bg.setShape(GradientDrawable.OVAL);bg.setColor(main?Color.WHITE:0xff002440);bg.setStroke(dp(main?3:1.5f),main?CYAN:Color.WHITE);inner.setBackground(bg);int size=dp(main?70:48);FrameLayout.LayoutParams ip=new FrameLayout.LayoutParams(size,size,Gravity.CENTER);frame.addView(inner,ip);if(!main)inner.addView(new UiArt.Icon(this,icon),new FrameLayout.LayoutParams(dp(27),dp(27),Gravity.CENTER));click(frame,label,()->{if(icon.equals("reset"))spin(inner);else pulse(inner);action.run();});return frame;}
+    private String modeLabel(){return s(codeMode.equals("qr")?"qr_only":codeMode.equals("bar")?"bar_only":"both");}
+    private void formatMenu(){LinearLayout panel=column();panel.setPadding(dp(12),dp(10),dp(12),dp(10));panel.setBackground(card(0xff063957,0xff001a30,CYAN));panel.addView(text(s("code_filter"),18,true));gap(panel,8);formatPopup=new PopupWindow(panel,dp(250),-2,true);formatPopup.setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(Color.TRANSPARENT));formatPopup.setElevation(dp(10));String[] modes={"both","qr","bar"},keys={"both","qr_only","bar_only"};for(int i=0;i<3;i++){final String m=modes[i];TextView item=text(s(keys[i])+(m.equals(codeMode)?" ✓":""),17,true);item.setPadding(dp(8),dp(12),dp(8),dp(12));click(item,s(keys[i]),()->{codeMode=m;frameEpoch++;getPreferences(0).edit().putString("codeMode",m).apply();formatPopup.dismiss();modeText.setText(s("live")+"\n"+modeLabel());});panel.addView(item);}View anchor=root.findViewWithTag("code-filter");formatPopup.showAsDropDown(anchor,-dp(205),0);if(ValueAnimator.areAnimatorsEnabled()){panel.setAlpha(0);panel.setTranslationY(-dp(12));panel.animate().alpha(1).translationY(0).setDuration(220).start();}}
+    private boolean allowed(Barcode b){return codeMode.equals("both")||codeMode.equals("qr")== (b.getFormat()==Barcode.FORMAT_QR_CODE);}
+    private ResolutionSelector resolution(){ResolutionSelector.Builder b=new ResolutionSelector.Builder();if(resolutionChoice==2)b.setResolutionStrategy(ResolutionStrategy.HIGHEST_AVAILABLE_STRATEGY);else{CameraResolutionOptions.Target target=CameraResolutionOptions.TARGETS[resolutionChoice];b.setResolutionStrategy(new ResolutionStrategy(new Size(target.longEdge(),target.shortEdge()),ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER));}if(resolutionChoice>=3)b.setResolutionFilter((sizes,rotation)->{List<Size> sorted=new ArrayList<>(sizes);CameraResolutionOptions.Target t=CameraResolutionOptions.TARGETS[resolutionChoice];sorted.sort(Comparator.comparingDouble(size->CameraResolutionOptions.distance(size.getWidth(),size.getHeight(),t)));return sorted;});return b.build();}
+    private void bindCamera(int session){ListenableFuture<ProcessCameraProvider> future=ProcessCameraProvider.getInstance(this);future.addListener(()->{if(session!=generation||!screen.equals("camera"))return;try{provider=future.get();if(!provider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA))throw new IllegalStateException(s("no_camera"));int rotation=preview.getDisplay()==null?Surface.ROTATION_0:preview.getDisplay().getRotation();Preview cameraPreview=new Preview.Builder().setResolutionSelector(resolution()).setTargetRotation(rotation).build();ImageAnalysis analysis=new ImageAnalysis.Builder().setResolutionSelector(resolution()).setTargetRotation(rotation).setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST).build();capture=new ImageCapture.Builder().setResolutionSelector(resolution()).setTargetRotation(rotation).setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();cameraPreview.setSurfaceProvider(preview.getSurfaceProvider());analysis.setAnalyzer(worker,proxy->analyze(proxy,session));UseCaseGroup.Builder group=new UseCaseGroup.Builder().addUseCase(cameraPreview).addUseCase(analysis).addUseCase(capture);ViewPort vp=preview.getViewPort();if(vp!=null)group.setViewPort(vp);provider.unbindAll();camera=provider.bindToLifecycle(this,CameraSelector.DEFAULT_BACK_CAMERA,group.build());preview.getPreviewStreamState().observe(this,state->{if(session!=generation||state!=PreviewView.StreamState.STREAMING)return;cameraReady=true;scanning=dialog==null||!dialog.isShowing();shutter.setEnabled(true);flashButton.setEnabled(camera.getCameraInfo().hasFlashUnit());Size size=analysis.getResolutionInfo()==null?null:analysis.getResolutionInfo().getResolution();actualResolution=size==null?"":size.getWidth()+" × "+size.getHeight();ZoomState zoom=camera.getCameraInfo().getZoomState().getValue();if(zoom!=null){zoomRatio=Math.max(zoom.getMinZoomRatio(),Math.min(zoom.getMaxZoomRatio(),zoomRatio));zoomView.setup(zoom.getMinZoomRatio(),zoom.getMaxZoomRatio(),zoomRatio,Locale.forLanguageTag(lang),this::changeZoom);changeZoom(zoomRatio);}});shutter.setEnabled(false);
+        }catch(Exception error){cameraReady=false;failure(error);}},ContextCompat.getMainExecutor(this));}
+    @androidx.camera.core.ExperimentalGetImage
+    private void analyze(ImageProxy proxy,int session){if(!scanning||capturing||zoomChanging||session!=generation||!processing.compareAndSet(false,true)){proxy.close();return;}android.media.Image image=proxy.getImage();if(image==null){processing.set(false);proxy.close();return;}ImageProxyTransformFactory factory=new ImageProxyTransformFactory();factory.setUsingRotationDegrees(true);factory.setUsingCropRect(true);final int epoch=frameEpoch;OutputTransform source=factory.getOutputTransform(proxy);InputImage input=InputImage.fromMediaImage(image,proxy.getImageInfo().getRotationDegrees());detector.process(input).addOnSuccessListener(codes->{if(session!=generation||epoch!=frameEpoch||!scanning||preview==null)return;OutputTransform target=preview.getOutputTransform();if(target==null)return;CoordinateTransform transform=new CoordinateTransform(source,target);List<ScanTracker.Detection> detections=new ArrayList<>();for(Barcode b:codes){if(b.getRawValue()==null||b.getBoundingBox()==null||!allowed(b))continue;RectF box=new RectF(b.getBoundingBox());transform.mapRect(box);detections.add(new ScanTracker.Detection(b.getRawValue(),b.getFormat()==Barcode.FORMAT_QR_CODE?"QR":"Barcode",box.left/preview.getWidth(),box.top/preview.getHeight(),box.right/preview.getWidth(),box.bottom/preview.getHeight()));}accept(detections,requiredHits());}).addOnFailureListener(error->{if(statusText!=null&&session==generation)statusText.setText(s("error"));}).addOnCompleteListener(task->{proxy.close();processing.set(false);});}
+    private int requiredHits(){return sensitivity==0?3:sensitivity==2?1:2;}
+    void accept(List<ScanTracker.Detection> detections,int required){int added=tracker.update(detections,SystemClock.elapsedRealtime(),required);for(int i=0;i<added;i++)feedback.success();if(added>0)schedulePersist();refresh();}
+    private void refresh(){List<ScanTracker.Item> rows=tracker.items();if(countText==null||!screen.equals("camera"))return;int qr=0;for(ScanTracker.Item i:rows)if(i.kind.equals("QR"))qr++;countText.setText(s("count",rows.size()));splitText.setText(s("split",qr,rows.size()-qr));inlineResults.removeAllViews();for(ScanTracker.Item i:rows.subList(Math.max(0,rows.size()-2),rows.size())){TextView line=text("✓ "+i.id+"   "+i.value,14,false);line.setMaxLines(1);line.setEllipsize(android.text.TextUtils.TruncateAt.END);line.setPadding(dp(8),dp(3),dp(8),dp(3));inlineResults.addView(line);}if(overlay!=null)overlay.update(tracker.visible(SystemClock.elapsedRealtime()));}
+    private void toggleTorch(){if(!cameraReady||camera==null||torchChanging)return;if(!camera.getCameraInfo().hasFlashUnit()){toast(s("no_lamp"));return;}boolean next=!torch;torchChanging=true;final int session=generation;ListenableFuture<Void> change=camera.getCameraControl().enableTorch(next);change.addListener(()->{if(session!=generation)return;try{change.get();torch=next;lampLabel.setText(s(torch?"on":"off"));lampLabel.setTextColor(torch?0xffffd443:WHITE);flashButton.setBackground(card(torch?0xff997500:0xff073450,0xff001c32,torch?0xffffd443:0xff4c7898));pulse(flashButton);}catch(Exception error){failure(error);}finally{torchChanging=false;}},ContextCompat.getMainExecutor(this));}
+    private void changeZoom(float requested){if(!cameraReady||camera==null)return;ZoomState state=camera.getCameraInfo().getZoomState().getValue();if(state==null)return;float value=Math.max(state.getMinZoomRatio(),Math.min(state.getMaxZoomRatio(),requested));final int session=generation,request=++zoomRequest;frameEpoch++;zoomChanging=true;ListenableFuture<Void> future=camera.getCameraControl().setZoomRatio(value);future.addListener(()->{if(session!=generation||request!=zoomRequest)return;try{future.get();tracker.rescale(value/zoomRatio);zoomRatio=value;zoomView.value(value);}catch(Exception error){if(!(error.getCause() instanceof CameraControl.OperationCanceledException))failure(error);}finally{zoomChanging=false;}},ContextCompat.getMainExecutor(this));}
+    private void resetScan(){tracker.reset();feedback.setEnabled(false);feedback.setEnabled(vibrate);persist();refresh();if(statusText!=null)statusText.setText(s("reset_hint"));scanning=false;handler.postDelayed(()->{if(screen.equals("camera")&&cameraReady&&!capturing)scanning=true;},550);}
+    void showCodeList(){boolean resume=scanning;LinearLayout panel=sheet(s("list"));List<ScanTracker.Item> rows=tracker.items();if(rows.isEmpty())panel.addView(text(s("no_results"),16,false));Map<Integer,EditText> edits=new LinkedHashMap<>();for(ScanTracker.Item i:rows){LinearLayout line=row();line.addView(text(Integer.toString(i.id),14,true),new LinearLayout.LayoutParams(dp(28),-2));EditText edit=new EditText(this);edit.setText(i.value);edit.setTextColor(WHITE);edit.setTextSize(15);edit.setSingleLine();edit.setContentDescription(s("edit")+" "+i.id);edits.put(i.id,edit);line.addView(edit,new LinearLayout.LayoutParams(0,-2,1));line.addView(iconButton("delete",s("delete")+" "+i.id,()->{tracker.remove(i.id);persist();dialog.dismiss();showCodeList();}),new LinearLayout.LayoutParams(dp(44),dp(44)));panel.addView(line);}gap(panel,12);panel.addView(action(s("save_changes"),()->{for(Map.Entry<Integer,EditText> e:edits.entrySet())tracker.edit(e.getKey(),e.getValue().getText().toString());persist();dialog.dismiss();refresh();if(screen.equals("camera")&&resume)scanning=true;else if(screen.equals("results"))showResults();}));}
+
+    private void takeScanPhoto(){if(!cameraReady||capture==null||capturing)return;capturing=true;scanning=false;shutter.setEnabled(false);final int session=generation;File file;try{File folder=new File(getFilesDir(),"captures");folder.mkdirs();file=File.createTempFile("capture-",".jpg",folder);}catch(IOException e){capturing=false;failure(e);return;}capture.takePicture(new ImageCapture.OutputFileOptions.Builder(file).build(),ContextCompat.getMainExecutor(this),new ImageCapture.OnImageSavedCallback(){@Override public void onError(@NonNull ImageCaptureException error){if(session==generation){capturing=false;scanning=true;shutter.setEnabled(true);failure(error);}}@Override public void onImageSaved(@NonNull ImageCapture.OutputFileResults output){if(session!=generation){file.delete();return;}capturedPhoto=file;processCapture(file,session);}});}
+    private void processCapture(File file,int session){worker.execute(()->{try{InputImage image=InputImage.fromFilePath(this,Uri.fromFile(file));detector.process(image).addOnSuccessListener(codes->{if(session!=generation)return;List<ScanTracker.Detection> detections=new ArrayList<>();for(Barcode b:codes)if(b.getRawValue()!=null&&b.getBoundingBox()!=null&&allowed(b)){Rect box=b.getBoundingBox();detections.add(new ScanTracker.Detection(b.getRawValue(),b.getFormat()==Barcode.FORMAT_QR_CODE?"QR":"Barcode",(float)box.left/image.getWidth(),(float)box.top/image.getHeight(),(float)box.right/image.getWidth(),(float)box.bottom/image.getHeight()));}accept(detections,1);captureRows=tracker.items();persist();capturing=false;captureChoices();}).addOnFailureListener(error->{capturing=false;scanning=true;failure(error);});}catch(IOException e){runOnUiThread(()->{capturing=false;scanning=true;failure(e);});}});}
+    private void captureChoices(){LinearLayout panel=sheet(s("captured"));TextView tick=text("✓",54,true);tick.setTextColor(CYAN);tick.setGravity(Gravity.CENTER);panel.addView(tick);pulse(tick);TextView count=text(s("count",captureRows.size()),18,true);count.setGravity(Gravity.CENTER);panel.addView(count);gap(panel,18);panel.addView(action(s("local_save"),()->prepareExport(true,true)));gap(panel,10);panel.addView(action(s("share"),()->prepareExport(true,false)));gap(panel,10);panel.addView(action(s("again"),()->{dialog.dismiss();capturedPhoto=null;scanning=true;shutter.setEnabled(true);}));}
+    void showResults(){base("results",s("results"));LinearLayout content=column();List<ScanTracker.Item> rows=tracker.items();content.addView(text(s("count",rows.size()),24,true));gap(content,14);if(rows.isEmpty())content.addView(text(s("no_results"),16,false));for(ScanTracker.Item i:rows){TextView line=text(i.id+"  "+(i.kind.equals("QR")?"QR":s("barcode"))+"\n"+i.value,16,false);line.setTextIsSelectable(true);line.setPadding(dp(10),dp(8),dp(10),dp(8));line.setBackground(card(0xff073c60,0xff001c34,0xff25516d));content.addView(line);gap(content,6);}gap(content,16);content.addView(action(s("list"),this::showCodeList));gap(content,10);content.addView(action(s("document_type"),this::documentSettings));gap(content,10);content.addView(action(s("export"),()->prepareExport(false,true)));gap(content,10);content.addView(action(s("share"),()->prepareExport(false,false)));page(content);}
+    private String[] headings(){return new String[]{s("nr"),s("type"),s("code")};}
+    private void prepareExport(boolean withPhoto,boolean local){List<ScanTracker.Item> snapshot=withPhoto?new ArrayList<>(captureRows):tracker.items();if(snapshot.isEmpty()&&!withPhoto){toast(s("no_results"));return;}final int format=documentFormat;final String filename=DocumentExporter.filename(baseName,format);final String[] headings=headings();final File photo=capturedPhoto;exportPhoto=withPhoto;toast(s("busy"));worker.execute(()->{try{File dir=new File(getCacheDir(),"exports");dir.mkdirs();File document=new File(dir,filename);try(FileOutputStream out=new FileOutputStream(document)){out.write(DocumentExporter.build(format,snapshot,headings));}File sharePhoto=null;if(withPhoto&&photo!=null){sharePhoto=new File(dir,"BMD-scan.jpg");annotate(photo,sharePhoto,snapshot);}preparedDocument=document;final File savedPhoto=sharePhoto;runOnUiThread(()->{if(local){if(withPhoto)saveFolder.launch(null);else{Intent intent=new Intent(Intent.ACTION_CREATE_DOCUMENT).setType(DocumentExporter.MIME[format]).addCategory(Intent.CATEGORY_OPENABLE).putExtra(Intent.EXTRA_TITLE,filename);saveDocument.launch(intent);}}else shareFiles(document,savedPhoto);});}catch(Exception error){runOnUiThread(()->failure(error));}});}
+    private void annotate(File source,File dest,List<ScanTracker.Item> snapshot)throws IOException{BitmapFactory.Options options=new BitmapFactory.Options();options.inJustDecodeBounds=true;BitmapFactory.decodeFile(source.getPath(),options);options.inSampleSize=Math.max(1,(int)Math.ceil(Math.max(options.outWidth,options.outHeight)/2560f));options.inJustDecodeBounds=false;Bitmap original=BitmapFactory.decodeFile(source.getPath(),options);if(original==null)throw new IOException(s("photo_error"));Matrix matrix=new Matrix();int orientation=new ExifInterface(source.getPath()).getAttributeInt(ExifInterface.TAG_ORIENTATION,ExifInterface.ORIENTATION_NORMAL);if(orientation==6)matrix.postRotate(90);else if(orientation==3)matrix.postRotate(180);else if(orientation==8)matrix.postRotate(270);Bitmap rotated=Bitmap.createBitmap(original,0,0,original.getWidth(),original.getHeight(),matrix,true);Bitmap result=rotated.copy(Bitmap.Config.ARGB_8888,true);Canvas canvas=new Canvas(result);Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setTextSize(Math.max(16,result.getWidth()/45f));p.setStrokeWidth(Math.max(2,result.getWidth()/450f));for(ScanTracker.Item i:snapshot){if(SystemClock.elapsedRealtime()-i.seen>3000)continue;p.setColor(CYAN);p.setStyle(Paint.Style.STROKE);RectF box=new RectF(i.left*result.getWidth(),i.top*result.getHeight(),i.right*result.getWidth(),i.bottom*result.getHeight());canvas.drawRoundRect(box,8,8,p);p.setStyle(Paint.Style.FILL);canvas.drawText("✓ "+i.id,Math.max(0,box.left),Math.max(p.getTextSize(),box.top-4),p);}try(FileOutputStream out=new FileOutputStream(dest)){if(!result.compress(Bitmap.CompressFormat.JPEG,94,out))throw new IOException("JPEG");}result.recycle();if(rotated!=original)rotated.recycle();original.recycle();}
+    Intent buildShareIntent(File document,File photo){ArrayList<Uri> uris=new ArrayList<>();if(photo!=null)uris.add(FileProvider.getUriForFile(this,getPackageName()+".provider",photo));uris.add(FileProvider.getUriForFile(this,getPackageName()+".provider",document));Intent intent=new Intent(photo==null?Intent.ACTION_SEND:Intent.ACTION_SEND_MULTIPLE).setType(photo==null?mime(document):"*/*").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);if(photo==null)intent.putExtra(Intent.EXTRA_STREAM,uris.get(0));else intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,uris);ClipData clip=ClipData.newRawUri("BMD",uris.get(0));for(int i=1;i<uris.size();i++)clip.addItem(new ClipData.Item(uris.get(i)));intent.setClipData(clip);return intent;}
+    private void shareFiles(File document,File photo){try{startActivity(Intent.createChooser(buildShareIntent(document,photo),s("share")));}catch(Exception error){failure(error);}}
+    private String mime(File file){for(int i=0;i<4;i++)if(file.getName().endsWith("."+DocumentExporter.EXT[i]))return DocumentExporter.MIME[i];return "application/octet-stream";}
+    private void writeSingle(Uri uri){final File source=preparedDocument;if(source==null)return;worker.execute(()->{try{copyTo(source,uri);runOnUiThread(()->{LinearLayout panel=sheet(s("saved"));panel.addView(action(s("share"),()->shareFiles(source,null)));});}catch(Exception e){runOnUiThread(()->failure(e));}});}
+    private void writeFolder(Uri tree){final File document=preparedDocument,photo=new File(getCacheDir(),"exports/BMD-scan.jpg");if(document==null)return;worker.execute(()->{try{Uri parent=DocumentsContract.buildDocumentUriUsingTree(tree,DocumentsContract.getTreeDocumentId(tree));Uri doc=DocumentsContract.createDocument(getContentResolver(),parent,mime(document),document.getName());if(doc==null)throw new IOException("Document");copyTo(document,doc);if(exportPhoto&&photo.exists()){Uri pic=DocumentsContract.createDocument(getContentResolver(),parent,"image/jpeg","BMD-scan-"+new SimpleDateFormat("yyyyMMdd-HHmmss",Locale.ROOT).format(new Date())+".jpg");if(pic==null)throw new IOException("Photo");copyTo(photo,pic);}runOnUiThread(()->toast(s("saved")));}catch(Exception e){runOnUiThread(()->failure(e));}});}
+    private void copyTo(File source,Uri uri)throws IOException{try(InputStream in=new FileInputStream(source);OutputStream out=getContentResolver().openOutputStream(uri,"w")){if(out==null)throw new IOException("Output");byte[] buffer=new byte[16384];int n;while((n=in.read(buffer))!=-1)out.write(buffer,0,n);}}
+
+    private void choosePhotos(){stopCamera();picker.launch(new String[]{"image/*"});}
+    private void scanPhotos(ArrayDeque<Uri> queue,int errors){if(queue.isEmpty()){importing=false;persist();showResults();if(errors>0)toast(s("photo_error"));return;}Uri uri=queue.remove();worker.execute(()->{try{InputImage image=InputImage.fromFilePath(this,uri);detector.process(image).addOnSuccessListener(codes->{for(Barcode b:codes)if(b.getRawValue()!=null&&allowed(b)){Rect r=b.getBoundingBox();if(r==null)continue;tracker.importCode(new ScanTracker.Detection(b.getRawValue(),b.getFormat()==Barcode.FORMAT_QR_CODE?"QR":"Barcode",(float)r.left/image.getWidth(),(float)r.top/image.getHeight(),(float)r.right/image.getWidth(),(float)r.bottom/image.getHeight()),0);feedback.success();}scanPhotos(queue,errors);}).addOnFailureListener(error->scanPhotos(queue,errors+1));}catch(Exception e){runOnUiThread(()->scanPhotos(queue,errors+1));}});}
+    private void schedulePersist(){handler.removeCallbacks(persistJob);handler.postDelayed(persistJob,350);}
+    private String json(List<ScanTracker.Item> items){JSONArray array=new JSONArray();for(ScanTracker.Item i:items)try{JSONObject o=new JSONObject();o.put("id",i.id).put("raw",i.raw).put("value",i.value).put("kind",i.kind).put("l",i.left).put("t",i.top).put("r",i.right).put("b",i.bottom).put("deleted",i.deleted);array.put(o);}catch(JSONException ignored){}return array.toString();}
+    private List<ScanTracker.Item> readRows(String json){List<ScanTracker.Item> result=new ArrayList<>();try{JSONArray array=new JSONArray(json);for(int n=0;n<array.length();n++){JSONObject o=array.getJSONObject(n);ScanTracker.Item i=new ScanTracker.Item(o.getInt("id"),new ScanTracker.Detection(o.getString("raw"),o.getString("kind"),(float)o.optDouble("l"),(float)o.optDouble("t"),(float)o.optDouble("r"),(float)o.optDouble("b")),0);i.value=o.getString("value");i.confirmed=true;i.deleted=o.optBoolean("deleted");result.add(i);}}catch(JSONException ignored){}return result;}
+    private void persist(){getPreferences(0).edit().putString("scanRows",json(tracker.all())).apply();}
+    private void restore(){tracker.restore(readRows(getPreferences(0).getString("scanRows","[]")));}
+    private void stopCamera(){generation++;frameEpoch++;zoomChanging=false;if(formatPopup!=null)formatPopup.dismiss();scanning=false;cameraReady=false;capturing=false;if(preview!=null)preview.getPreviewStreamState().removeObservers(this);if(camera!=null)camera.getCameraControl().enableTorch(false);torch=false;torchChanging=false;camera=null;capture=null;preview=null;if(provider!=null)provider.unbindAll();if(dialog!=null){android.app.Dialog d=dialog;dialog=null;d.dismiss();}}
+    @Override protected void onSaveInstanceState(@NonNull Bundle state){persist();state.putString("screen",screen);if(capturedPhoto!=null)state.putString("capturedPhoto",capturedPhoto.getPath());if(preparedDocument!=null)state.putString("preparedDocument",preparedDocument.getPath());state.putString("captureRows",json(captureRows));state.putBoolean("exportPhoto",exportPhoto);super.onSaveInstanceState(state);}
+    @Override protected void onPause(){super.onPause();scanning=false;if(feedback!=null)feedback.cancel();persist();if(camera!=null)camera.getCameraControl().enableTorch(false);torch=false;if(lampLabel!=null)lampLabel.setText(s("off"));}
+    @Override protected void onResume(){super.onResume();if(screen.equals("camera")&&cameraReady&&capturedPhoto==null&&(dialog==null||!dialog.isShowing()))scanning=true;}
+    @Override protected void onDestroy(){stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();detector.close();worker.shutdown();super.onDestroy();}
 }

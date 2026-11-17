@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD स्कैन जादूगर</string>
+    <string name="ui_short_name" formatted="false">स्कैन जादूगर</string>
+    <string name="ui_scan" formatted="false">स्कैन करें</string>
+    <string name="ui_photos" formatted="false">फ़ोटो अपलोड करें</string>
+    <string name="ui_results" formatted="false">परिणाम</string>
+    <string name="ui_settings" formatted="false">सेटिंग</string>
+    <string name="ui_language" formatted="false">भाषा</string>
+    <string name="ui_choose_language" formatted="false">भाषा चुनें</string>
+    <string name="ui_scanner_settings" formatted="false">स्कैनर सेटिंग</string>
+    <string name="ui_scanner" formatted="false">स्कैनर</string>
+    <string name="ui_scanner_hint" formatted="false">रिज़ॉल्यूशन, संवेदनशीलता और कंपन</string>
+    <string name="ui_document_type" formatted="false">दस्तावेज़ प्रकार</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word और PDF</string>
+    <string name="ui_about" formatted="false">ऐप के बारे में</string>
+    <string name="ui_back" formatted="false">वापस</string>
+    <string name="ui_close" formatted="false">बंद करें</string>
+    <string name="ui_done" formatted="false">हो गया</string>
+    <string name="ui_apply" formatted="false">लागू करें</string>
+    <string name="ui_cancel" formatted="false">रद्द करें</string>
+    <string name="ui_save" formatted="false">सहेजें</string>
+    <string name="ui_save_changes" formatted="false">बदलाव सहेजें</string>
+    <string name="ui_live" formatted="false">लाइव पहचान</string>
+    <string name="ui_both" formatted="false">QR + बारकोड</string>
+    <string name="ui_qr_only" formatted="false">केवल QR</string>
+    <string name="ui_bar_only" formatted="false">केवल बारकोड</string>
+    <string name="ui_code_filter" formatted="false">कोड स्कैन करें</string>
+    <string name="ui_count" formatted="false">%1$d कोड स्कैन हुए</string>
+    <string name="ui_split" formatted="false">%1$d QR कोड · %2$d बारकोड</string>
+    <string name="ui_same_hint" formatted="false">समान कोड हर उत्पाद के लिए गिना जाता है</string>
+    <string name="ui_empty" formatted="false">कैमरा कोड की ओर करें</string>
+    <string name="ui_all_results" formatted="false">सभी परिणाम देखें</string>
+    <string name="ui_capture" formatted="false">फ़ोटो लें</string>
+    <string name="ui_captured" formatted="false">फ़ोटो ले ली गई</string>
+    <string name="ui_local_save" formatted="false">डिवाइस पर सहेजें</string>
+    <string name="ui_local_hint" formatted="false">फ़ोटो और स्कैन परिणाम सहेजें</string>
+    <string name="ui_share" formatted="false">साझा करें</string>
+    <string name="ui_share_hint" formatted="false">ईमेल या अन्य ऐप</string>
+    <string name="ui_again" formatted="false">फिर स्कैन करें</string>
+    <string name="ui_list" formatted="false">स्कैन किए गए कोड</string>
+    <string name="ui_edit" formatted="false">कोड सुधारें</string>
+    <string name="ui_delete" formatted="false">हटाएँ</string>
+    <string name="ui_reset" formatted="false">स्कैन रीसेट करें</string>
+    <string name="ui_reset_hint" formatted="false">नया स्कैन सत्र शुरू हुआ</string>
+    <string name="ui_resolution" formatted="false">रिज़ॉल्यूशन</string>
+    <string name="ui_actual" formatted="false">वास्तविक</string>
+    <string name="ui_highest" formatted="false">उच्चतम समर्थित रिज़ॉल्यूशन</string>
+    <string name="ui_fallback" formatted="false">ज़रूरत पर कैमरा निकटतम समर्थित आकार चुनता है</string>
+    <string name="ui_sensitivity" formatted="false">संवेदनशीलता</string>
+    <string name="ui_stability" formatted="false">कोड पहचान की स्थिरता</string>
+    <string name="ui_low" formatted="false">कम</string>
+    <string name="ui_normal" formatted="false">सामान्य</string>
+    <string name="ui_high" formatted="false">अधिक</string>
+    <string name="ui_vibrate" formatted="false">स्कैन के बाद कंपन</string>
+    <string name="ui_vibrate_hint" formatted="false">हर स्कैन किए गए कोड पर हल्का कंपन</string>
+    <string name="ui_lamp" formatted="false">लाइट</string>
+    <string name="ui_on" formatted="false">चालू</string>
+    <string name="ui_off" formatted="false">बंद</string>
+    <string name="ui_zoom" formatted="false">ज़ूम</string>
+    <string name="ui_document_settings" formatted="false">दस्तावेज़ सेटिंग</string>
+    <string name="ui_choose_format" formatted="false">फ़ाइल प्रारूप चुनें</string>
+    <string name="ui_filename" formatted="false">फ़ाइल का नाम</string>
+    <string name="ui_extension_hint" formatted="false">एक्सटेंशन अपने आप जोड़ा जाता है</string>
+    <string name="ui_export" formatted="false">दस्तावेज़ बनाएँ</string>
+    <string name="ui_saved" formatted="false">सहेज दिया गया</string>
+    <string name="ui_busy" formatted="false">प्रक्रिया जारी है…</string>
+    <string name="ui_error" formatted="false">कुछ गलत हो गया</string>
+    <string name="ui_permission" formatted="false">स्कैन करने के लिए कैमरे की अनुमति चाहिए</string>
+    <string name="ui_no_camera" formatted="false">उपयोग करने योग्य कैमरा नहीं मिला</string>
+    <string name="ui_no_lamp" formatted="false">इस कैमरे में लाइट नहीं है</string>
+    <string name="ui_no_results" formatted="false">अभी कोई स्कैन परिणाम नहीं है</string>
+    <string name="ui_nr" formatted="false">क्र.</string>
+    <string name="ui_type" formatted="false">प्रकार</string>
+    <string name="ui_code" formatted="false">कोड</string>
+    <string name="ui_barcode" formatted="false">बारकोड</string>
+    <string name="ui_photo_error" formatted="false">कुछ फ़ोटो पढ़ी नहीं जा सकीं</string>
+    <string name="ui_choose_folder" formatted="false">फ़ोटो और दस्तावेज़ के लिए फ़ोल्डर चुनें</string>
+    <string name="ui_tracking_note" formatted="false">फ़ोटो लेने तक उत्पादों को फ़्रेम में रखें</string>
+    <string name="ui_confirm_reset" formatted="false">मौजूदा स्कैन सत्र साफ़ करें?</string>
+    <string name="ui_delete_question" formatted="false">यह स्कैन हटाएँ?</string>
+</resources>

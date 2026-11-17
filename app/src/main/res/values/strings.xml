@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD ScanTovenaar</string>
+    <string name="ui_short_name" formatted="false">ScanTovenaar</string>
+    <string name="ui_scan" formatted="false">Scannen</string>
+    <string name="ui_photos" formatted="false">Foto’s uploaden</string>
+    <string name="ui_results" formatted="false">Resultaten</string>
+    <string name="ui_settings" formatted="false">Instellingen</string>
+    <string name="ui_language" formatted="false">Taal</string>
+    <string name="ui_choose_language" formatted="false">Taal kiezen</string>
+    <string name="ui_scanner_settings" formatted="false">Scannerinstellingen</string>
+    <string name="ui_scanner" formatted="false">Scanner</string>
+    <string name="ui_scanner_hint" formatted="false">Resolutie, gevoeligheid en trillen</string>
+    <string name="ui_document_type" formatted="false">Documenttype</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word en PDF</string>
+    <string name="ui_about" formatted="false">Over de app</string>
+    <string name="ui_back" formatted="false">Terug</string>
+    <string name="ui_close" formatted="false">Sluiten</string>
+    <string name="ui_done" formatted="false">Gereed</string>
+    <string name="ui_apply" formatted="false">Toepassen</string>
+    <string name="ui_cancel" formatted="false">Annuleren</string>
+    <string name="ui_save" formatted="false">Opslaan</string>
+    <string name="ui_save_changes" formatted="false">Wijzigingen opslaan</string>
+    <string name="ui_live" formatted="false">LIVE DETECTIE</string>
+    <string name="ui_both" formatted="false">QR + barcodes</string>
+    <string name="ui_qr_only" formatted="false">Alleen QR</string>
+    <string name="ui_bar_only" formatted="false">Alleen barcodes</string>
+    <string name="ui_code_filter" formatted="false">Codes scannen</string>
+    <string name="ui_count" formatted="false">%1$d codes gescand</string>
+    <string name="ui_split" formatted="false">%1$d QR-codes · %2$d barcodes</string>
+    <string name="ui_same_hint" formatted="false">Gelijke inhoud telt per product mee</string>
+    <string name="ui_empty" formatted="false">Richt de camera op de codes</string>
+    <string name="ui_all_results" formatted="false">Alle resultaten bekijken</string>
+    <string name="ui_capture" formatted="false">Foto vastleggen</string>
+    <string name="ui_captured" formatted="false">Foto vastgelegd</string>
+    <string name="ui_local_save" formatted="false">Lokaal opslaan</string>
+    <string name="ui_local_hint" formatted="false">Bewaar foto en scanresultaten</string>
+    <string name="ui_share" formatted="false">Delen</string>
+    <string name="ui_share_hint" formatted="false">E-mail of andere apps</string>
+    <string name="ui_again" formatted="false">Opnieuw scannen</string>
+    <string name="ui_list" formatted="false">Gescande codes</string>
+    <string name="ui_edit" formatted="false">Code corrigeren</string>
+    <string name="ui_delete" formatted="false">Verwijderen</string>
+    <string name="ui_reset" formatted="false">Scan resetten</string>
+    <string name="ui_reset_hint" formatted="false">Nieuwe scansessie gestart</string>
+    <string name="ui_resolution" formatted="false">Resolutie</string>
+    <string name="ui_actual" formatted="false">Werkelijk</string>
+    <string name="ui_highest" formatted="false">Hoogste ondersteunde resolutie</string>
+    <string name="ui_fallback" formatted="false">De camera kiest zo nodig de dichtstbijzijnde ondersteunde maat</string>
+    <string name="ui_sensitivity" formatted="false">Gevoeligheid</string>
+    <string name="ui_stability" formatted="false">Stabiliteit van codeherkenning</string>
+    <string name="ui_low" formatted="false">Laag</string>
+    <string name="ui_normal" formatted="false">Normaal</string>
+    <string name="ui_high" formatted="false">Hoog</string>
+    <string name="ui_vibrate" formatted="false">Trillen na scan</string>
+    <string name="ui_vibrate_hint" formatted="false">Een korte trilling per gescande code</string>
+    <string name="ui_lamp" formatted="false">Lamp</string>
+    <string name="ui_on" formatted="false">AAN</string>
+    <string name="ui_off" formatted="false">UIT</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Documentinstellingen</string>
+    <string name="ui_choose_format" formatted="false">Kies je bestandsformaat</string>
+    <string name="ui_filename" formatted="false">Bestandsnaam</string>
+    <string name="ui_extension_hint" formatted="false">De extensie wordt automatisch toegevoegd</string>
+    <string name="ui_export" formatted="false">Document maken</string>
+    <string name="ui_saved" formatted="false">Opgeslagen</string>
+    <string name="ui_busy" formatted="false">Even verwerken…</string>
+    <string name="ui_error" formatted="false">Er ging iets mis</string>
+    <string name="ui_permission" formatted="false">Cameratoegang is nodig om te scannen</string>
+    <string name="ui_no_camera" formatted="false">Geen bruikbare camera gevonden</string>
+    <string name="ui_no_lamp" formatted="false">Deze camera heeft geen lamp</string>
+    <string name="ui_no_results" formatted="false">Nog geen scanresultaten</string>
+    <string name="ui_nr" formatted="false">Nr.</string>
+    <string name="ui_type" formatted="false">Type</string>
+    <string name="ui_code" formatted="false">Code</string>
+    <string name="ui_barcode" formatted="false">Barcode</string>
+    <string name="ui_photo_error" formatted="false">Sommige foto’s konden niet worden gelezen</string>
+    <string name="ui_choose_folder" formatted="false">Kies een map voor foto en document</string>
+    <string name="ui_tracking_note" formatted="false">Houd de producten in beeld tot je de foto maakt</string>
+    <string name="ui_confirm_reset" formatted="false">Huidige scansessie wissen?</string>
+    <string name="ui_delete_question" formatted="false">Deze scan verwijderen?</string>
+</resources>

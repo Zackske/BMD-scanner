@@ -15,6 +15,7 @@ final class UiArt {
         sheen.setCornerRadius(radius);
         return new LayerDrawable(new Drawable[]{base,sheen});
     }
+    static Drawable raised(int top,int bottom,int edge,float radius){return new android.graphics.drawable.Drawable(){private final Paint p=new Paint(3);@Override public void draw(Canvas c){Rect bounds=getBounds();float w=bounds.width(),h=bounds.height(),depth=5*c.getDensity()/160f;c.save();c.translate(bounds.left,bounds.top);p.setShader(null);p.setStyle(Paint.Style.FILL);p.setColor(0xff000a1c);c.drawRoundRect(0,depth,w,h,radius,radius,p);p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,0xff001329},null,Shader.TileMode.CLAMP));RectF face=new RectF(1,1,w-1,h-depth);c.drawRoundRect(face,radius,radius,p);p.setShader(null);int layer=c.save();Path clip=new Path();clip.addRoundRect(face,radius,radius,Path.Direction.CW);c.clipPath(clip);p.setShader(new LinearGradient(0,0,0,h*.4f,new int[]{0x88ffffff,0x10ffffff,0x00ffffff},null,Shader.TileMode.CLAMP));Path gloss=new Path();gloss.moveTo(0,0);gloss.lineTo(w,0);gloss.lineTo(w,h*.12f);gloss.quadTo(w*.4f,h*.14f,0,h*.3f);gloss.close();c.drawPath(gloss,p);c.restoreToCount(layer);p.setShader(new LinearGradient(0,0,w,h,new int[]{Color.WHITE,edge,0xff00233c},null,Shader.TileMode.CLAMP));p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2);c.drawRoundRect(face,radius,radius,p);p.setShader(null);c.restore();}@Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter filter){p.setColorFilter(filter);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}@Override public void getOutline(Outline outline){outline.setRoundRect(getBounds(),radius);}};}
     static class Backdrop extends View {
         private final Paint p=new Paint(3);
         Backdrop(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
@@ -64,7 +65,7 @@ final class UiArt {
         @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(CYAN);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
     static class Brand extends androidx.appcompat.widget.AppCompatImageView {
-        Brand(Context c){super(c);setImageBitmap(artwork(c,false));setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
+        Brand(Context c){super(c);setImageResource(R.drawable.blue_medical_logo);setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
     }
     static class Icon extends View {
         private final String kind;private final int color;private final Paint p=new Paint(3);
@@ -84,6 +85,10 @@ final class UiArt {
                     for(int y=16;y<=48;y+=16){canvas.drawCircle(10,y,2,p);canvas.drawLine(23,y,55,y,p);}break;
                 case "settings":
                     Path gear=new Path();for(int i=0;i<32;i++){double angle=i*Math.PI/16-Math.PI/2;float radius=i%4<2?26:21;float x=32+(float)Math.cos(angle)*radius,y=32+(float)Math.sin(angle)*radius;if(i==0)gear.moveTo(x,y);else gear.lineTo(x,y);}gear.close();canvas.drawPath(gear,p);canvas.drawCircle(32,32,9,p);break;
+                case "close":canvas.drawLine(17,17,47,47,p);canvas.drawLine(47,17,17,47,p);break;
+                case "reset":canvas.drawArc(9,9,55,55,-50,290,false,p);canvas.drawLine(48,8,53,23,p);canvas.drawLine(53,23,38,21,p);break;
+                case "delete":canvas.drawLine(12,16,52,16,p);canvas.drawRoundRect(18,17,46,55,3,3,p);canvas.drawLine(25,8,39,8,p);canvas.drawLine(27,26,27,46,p);canvas.drawLine(37,26,37,46,p);break;
+                case "document":canvas.drawRoundRect(15,6,49,58,4,4,p);canvas.drawLine(23,23,41,23,p);canvas.drawLine(23,34,41,34,p);canvas.drawLine(23,45,36,45,p);break;
                 case "csv":
                     Path page=new Path();page.moveTo(14,6);page.lineTo(39,6);page.lineTo(53,20);page.lineTo(53,58);page.lineTo(14,58);page.close();canvas.drawPath(page,p);
                     canvas.drawLine(38,7,38,21,p);canvas.drawLine(38,21,52,21,p);p.setStyle(Paint.Style.FILL);p.setTypeface(Typeface.DEFAULT_BOLD);p.setTextSize(15);canvas.drawText("CSV",18,44,p);break;

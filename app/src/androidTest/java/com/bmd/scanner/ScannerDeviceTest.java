@@ -1,184 +1,31 @@
 package com.bmd.scanner;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
+import android.content.*;
+import android.graphics.*;
+import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.os.ParcelFileDescriptor;
+import android.view.*;
+import android.widget.*;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.uiautomator.*;
 import androidx.test.platform.app.InstrumentationRegistry;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
+import com.google.zxing.*;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.nio.file.Files;
+import java.io.*;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.junit.*;
+import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
-
-@androidx.test.filters.SdkSuppress(minSdkVersion=31)
 @RunWith(AndroidJUnit4.class)
 public class ScannerDeviceTest {
-    private static View tagged(View view,String tag){
-        if(tag.equals(view.getTag()))return view;
-        if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){View found=tagged(((ViewGroup)view).getChildAt(i),tag);if(found!=null)return found;}
-        return null;
+    @Before public void before(){DeviceSupport.clear();}
+    static File fixture()throws Exception{Bitmap image=Bitmap.createBitmap(1600,1200,Bitmap.Config.ARGB_8888);Canvas c=new Canvas(image);c.drawColor(Color.WHITE);for(int n=0;n<6;n++){boolean qr=n%2==0;String value=qr?"BMD-000123":new String[]{"123456","234567","345678"}[n/2];BitMatrix matrix=new MultiFormatWriter().encode(value,qr?BarcodeFormat.QR_CODE:BarcodeFormat.CODE_128,qr?210:350,qr?210:160);int ox=350+(n%2)*450+(450-matrix.getWidth())/2,oy=185+(n/2)*300;for(int y=0;y<matrix.getHeight();y++)for(int x=0;x<matrix.getWidth();x++)image.setPixel(ox+x,oy+y,matrix.get(x,y)?Color.BLACK:Color.WHITE);}File out=new File(DeviceSupport.context().getFilesDir(),"six-codes.png");try(FileOutputStream stream=new FileOutputStream(out)){image.compress(Bitmap.CompressFormat.PNG,100,stream);}image.recycle();return out;}
+    @Test public void realPhotoDecodePreservesDuplicatesAndSurvivesRecreation()throws Exception{File fixture=fixture();try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){scenario.onActivity(a->{ArrayDeque<Uri> queue=new ArrayDeque<>();queue.add(Uri.fromFile(fixture));DeviceSupport.call(a,"scanPhotos",new Class<?>[]{ArrayDeque.class,int.class},queue,0);});DeviceSupport.await(scenario,a->a.tracker.items().size()==6,30);scenario.onActivity(a->{assertEquals(3,a.tracker.items().stream().filter(i->i.value.equals("BMD-000123")).count());a.tracker.edit(1,"CORRECTED");a.tracker.remove(2);DeviceSupport.call(a,"persist",new Class<?>[]{});a.showResults();});DeviceSupport.shot(scenario,"results-imported-six");scenario.recreate();scenario.onActivity(a->{assertEquals(5,a.tracker.items().size());assertEquals("CORRECTED",a.tracker.items().get(0).value);});}}
+    @Test public void allFourExportsOpenAndShareUrisGrantReadAccess()throws Exception{try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){scenario.onActivity(a->{for(String value:new String[]{"00123","00123","Україна हिन्दी & <é>","=SUM(A1)",String.join(" ",Collections.nCopies(500,"LongCode"))})a.tracker.importCode(new ScanTracker.Detection(value,"QR",0,0,1,1),0);});List<ScanTracker.Item>[] rows=new List[1];scenario.onActivity(a->rows[0]=a.tracker.items());for(int format=0;format<4;format++){File folder=new File(DeviceSupport.context().getCacheDir(),"exports");folder.mkdirs();File file=new File(folder,"validation."+DocumentExporter.EXT[format]);try(OutputStream out=new FileOutputStream(file)){out.write(DocumentExporter.build(format,rows[0],new String[]{"Nr.","Type","Code"}));}assertTrue(file.length()>50);if(format==3)try(ParcelFileDescriptor fd=ParcelFileDescriptor.open(file,ParcelFileDescriptor.MODE_READ_ONLY);PdfRenderer pdf=new PdfRenderer(fd)){assertTrue(pdf.getPageCount()>1);try(PdfRenderer.Page p=pdf.openPage(0)){Bitmap b=Bitmap.createBitmap(595,842,Bitmap.Config.ARGB_8888);p.render(b,null,null,PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);b.recycle();}}scenario.onActivity(a->{Intent intent=a.buildShareIntent(file,null);assertEquals(Intent.ACTION_SEND,intent.getAction());assertTrue((intent.getFlags()&Intent.FLAG_GRANT_READ_URI_PERMISSION)!=0);Uri uri=intent.getParcelableExtra(Intent.EXTRA_STREAM);assertNotNull(uri);try(InputStream in=a.getContentResolver().openInputStream(uri)){assertNotNull(in);assertTrue(in.read()!=-1);}catch(IOException e){throw new AssertionError(e);}});}}
     }
-    private static boolean hasText(View view,String text){
-        if(view instanceof TextView&&text.contentEquals(((TextView)view).getText()))return true;
-        if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++)if(hasText(((ViewGroup)view).getChildAt(i),text))return true;
-        return false;
-    }
-    private static Object field(MainActivity activity,String name){try{Field field=MainActivity.class.getDeclaredField(name);field.setAccessible(true);return field.get(activity);}catch(Exception error){throw new AssertionError(error);}}
-    private static void call(MainActivity activity,String name,Class<?>[] types,Object...args){try{Method method=MainActivity.class.getDeclaredMethod(name,types);method.setAccessible(true);method.invoke(activity,args);}catch(Exception error){throw new AssertionError(error);}}
-    private static String shell(String command)throws Exception{
-        try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(command))){
-            java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[4096];int count;
-            while((count=in.read(buffer))!=-1)out.write(buffer,0,count);return out.toString("UTF-8");
-        }
-    }
-    private static void screenshot(String name)throws Exception{
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-        Thread.sleep(1000);
-        shell("mkdir -p /data/local/tmp/bmd-screenshots");
-        shell("screencap -p /data/local/tmp/bmd-screenshots/"+name+".png");
-    }
-    @Test public void homeShowsOnlyFourActionsAndSettingsOpen()throws Exception{
-        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(activity->{View root=activity.getWindow().getDecorView();for(String name:Arrays.asList("qr","photo","list","settings"))assertNotNull(tagged(root,name));assertNull(tagged(root,"csv"));assertFalse(hasText(root,"Verzenden"));});
-            screenshot("01-home");
-            scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"settings").performClick());screenshot("03-settings");
-            scenario.onActivity(activity->{assertEquals("settings",field(activity,"screen"));activity.getOnBackPressedDispatcher().onBackPressed();assertEquals("home",field(activity,"screen"));});
-            scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"list").performClick());
-            scenario.onActivity(activity->{assertNotNull(tagged(activity.getWindow().getDecorView(),"csv"));assertFalse(hasText(activity.getWindow().getDecorView(),"Verzenden"));});
-        }
-    }
-    private static Bitmap qr(String value)throws Exception{
-        BitMatrix matrix=new QRCodeWriter().encode(value,BarcodeFormat.QR_CODE,480,480,Collections.singletonMap(EncodeHintType.CHARACTER_SET,"UTF-8"));
-        int[] pixels=new int[480*480];for(int y=0;y<480;y++)for(int x=0;x<480;x++)pixels[y*480+x]=matrix.get(x,y)?Color.BLACK:Color.WHITE;
-        return Bitmap.createBitmap(pixels,480,480,Bitmap.Config.ARGB_8888);
-    }
-    private static Uri photo(Bitmap image,String name)throws Exception{
-        File file=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),name);
-        try(FileOutputStream stream=new FileOutputStream(file)){image.compress(Bitmap.CompressFormat.PNG,100,stream);}return Uri.fromFile(file);
-    }
-    @Test public void photoBatchDecodesMultipleCodesPreservesStateAndSavesCsv()throws Exception{
-        String first="SCN-000123456789",second="SCN-000123456790",third="BMD,\"test\"";
-        Bitmap pair=Bitmap.createBitmap(1100,600,Bitmap.Config.ARGB_8888);Canvas canvas=new Canvas(pair);canvas.drawColor(Color.WHITE);canvas.drawBitmap(qr(first),30,60,null);canvas.drawBitmap(qr(second),590,60,null);
-        ArrayDeque<Uri> queue=new ArrayDeque<>();queue.add(photo(pair,"pair.png"));queue.add(photo(qr(third),"single.png"));
-        Bitmap blank=Bitmap.createBitmap(480,480,Bitmap.Config.ARGB_8888);blank.eraseColor(Color.WHITE);queue.add(photo(blank,"blank.png"));
-        File invalid=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),"broken.png");try(FileOutputStream out=new FileOutputStream(invalid)){out.write(new byte[]{1,2,3});}queue.add(Uri.fromFile(invalid));
-        AtomicInteger successfulPulses=new AtomicInteger();
-        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(activity->{try{Field feedback=MainActivity.class.getDeclaredField("scanFeedback");feedback.setAccessible(true);feedback.set(activity,new ScanFeedback(new android.os.Handler(android.os.Looper.getMainLooper()),successfulPulses::incrementAndGet));}catch(Exception error){throw new AssertionError(error);}call(activity,"scanPhotos",new Class<?>[]{ArrayDeque.class,int.class,int.class},queue,0,0);});
-            AtomicBoolean busy=new AtomicBoolean(true);long end=System.currentTimeMillis()+60000;
-            while(busy.get()&&System.currentTimeMillis()<end){Thread.sleep(100);scenario.onActivity(activity->busy.set((Boolean)field(activity,"photoBusy")));}assertFalse("Photo import timed out",busy.get());
-            long pulseDeadline=System.currentTimeMillis()+3000;while(successfulPulses.get()<3&&System.currentTimeMillis()<pulseDeadline)Thread.sleep(20);assertEquals("One haptic event for each imported QR, none for blank/broken photos",3,successfulPulses.get());
-            scenario.onActivity(activity->{List<?> values=(List<?>)field(activity,"results");assertEquals(3,values.size());assertTrue(values.containsAll(Arrays.asList(first,second,third)));});
-            InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);scenario.recreate();screenshot("02-results");
-            File exported=new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getCacheDir(),"export.csv");
-            scenario.onActivity(activity->{assertEquals(3,((List<?>)field(activity,"results")).size());call(activity,"writeCsv",new Class<?>[]{Uri.class},Uri.fromFile(exported));});
-            long timeout=System.currentTimeMillis()+10000;while((!exported.exists()||exported.length()<3)&&System.currentTimeMillis()<timeout)Thread.sleep(100);
-            scenario.onActivity(activity->{@SuppressWarnings("unchecked") List<String> values=(List<String>)field(activity,"results");try{assertArrayEquals(CsvData.encode(values),Files.readAllBytes(exported.toPath()));}catch(Exception error){throw new AssertionError(error);}});
-            InstrumentationRegistry.getInstrumentation().waitForIdleSync();screenshot("04-csv-saved");
-        }
-    }
-    @org.junit.Ignore("Android 35 picker visibility differs between emulator images; photo decode is covered by photoBatchDecodesMultipleCodesPreservesStateAndSavesCsv")
-    @Test public void photoButtonAndAndroidPickerImportRealImage()throws Exception{
-        android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
-        android.content.ContentValues values=new android.content.ContentValues();
-        values.put(android.provider.MediaStore.Images.Media.DISPLAY_NAME,"BMD-virtual-photo.png");
-        values.put(android.provider.MediaStore.Images.Media.MIME_TYPE,"image/png");
-        values.put(android.provider.MediaStore.Images.Media.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS);
-        values.put(android.provider.MediaStore.Images.Media.IS_PENDING,1);
-        Uri media=context.getContentResolver().insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,values);
-        assertNotNull(media);
-        try{
-            try(java.io.OutputStream output=context.getContentResolver().openOutputStream(media)){
-                assertNotNull(output);assertTrue(qr("BMD-PHOTO-PICKER-OK").compress(Bitmap.CompressFormat.PNG,100,output));
-            }
-            values.clear();values.put(android.provider.MediaStore.Images.Media.IS_PENDING,0);context.getContentResolver().update(media,values,null,null);
-            try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-                scenario.onActivity(activity->tagged(activity.getWindow().getDecorView(),"photo").performClick());
-                androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-                androidx.test.uiautomator.UiObject file=device.findObject(new androidx.test.uiautomator.UiSelector().textContains("BMD-virtual-photo"));
-                if(!file.waitForExists(5000)){
-                    androidx.test.uiautomator.UiObject roots=device.findObject(new androidx.test.uiautomator.UiSelector().descriptionContains("Show roots"));
-                    if(roots.exists())roots.click();
-                    androidx.test.uiautomator.UiObject downloads=device.findObject(new androidx.test.uiautomator.UiSelector().text("Downloads"));
-                    if(downloads.waitForExists(5000))downloads.click();
-                }
-                screenshot("05-android-photo-picker");
-                java.io.ByteArrayOutputStream hierarchy=new java.io.ByteArrayOutputStream();device.dumpWindowHierarchy(hierarchy);System.out.println("PICKER_HIERARCHY: "+hierarchy.toString("UTF-8"));
-                android.os.ParcelFileDescriptor[] pipe=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("tee /data/local/tmp/bmd-picker.xml");
-                try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])){out.write(hierarchy.toByteArray());}
-                try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipe[0])){while(in.read()!=-1){}}
-                if(file.waitForExists(5000))file.click();
-                else{
-                    androidx.test.uiautomator.UiObject thumbnail=device.findObject(new androidx.test.uiautomator.UiSelector().resourceIdMatches(".*:id/(icon_thumb|icon_thumbnail|thumbnail)"));
-                    assertTrue("The seeded image must be visible in the Android picker",thumbnail.waitForExists(5000));thumbnail.click();
-                }
-                AtomicBoolean imported=new AtomicBoolean(false);long end=System.currentTimeMillis()+45000;
-                while(!imported.get()&&System.currentTimeMillis()<end){
-                    Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-PHOTO-PICKER-OK")));
-                }
-                assertTrue("Selecting a photo must add its QR code to Results",imported.get());
-                InstrumentationRegistry.getInstrumentation().waitForIdleSync();
-                InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);
-                screenshot("06-photo-import-result");
-            }
-        }finally{context.getContentResolver().delete(media,null,null);}
-    }
-
-    @Test public void captureRealPhotoPickerFromHome()throws Exception{
-        android.content.Context context=InstrumentationRegistry.getInstrumentation().getTargetContext();
-        android.content.ContentValues metadata=new android.content.ContentValues();
-        metadata.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME,"BMD-camera-test.png");
-        metadata.put(android.provider.MediaStore.MediaColumns.MIME_TYPE,"image/png");
-        metadata.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH,android.os.Environment.DIRECTORY_DOWNLOADS);
-        Uri uri=context.getContentResolver().insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI,metadata);
-        assertNotNull(uri);
-        try{
-            try(java.io.OutputStream out=context.getContentResolver().openOutputStream(uri)){assertNotNull(out);qr("BMD-REAL-PHOTO-OK").compress(Bitmap.CompressFormat.PNG,100,out);}
-            try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-                androidx.test.uiautomator.UiDevice device=androidx.test.uiautomator.UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-                device.waitForIdle();Thread.sleep(1000);
-                androidx.test.uiautomator.UiObject upload=device.findObject(new androidx.test.uiautomator.UiSelector().description("Foto’s uploaden"));
-                assertTrue("Upload button must be visible on Home",upload.waitForExists(5000));upload.click();device.waitForIdle();Thread.sleep(1500);
-                screenshot("05-real-photo-picker");
-                java.io.ByteArrayOutputStream hierarchy=new java.io.ByteArrayOutputStream();device.dumpWindowHierarchy(hierarchy);
-                android.os.ParcelFileDescriptor[] pipe=InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommandRw("tee /data/local/tmp/bmd-picker.xml");
-                try(android.os.ParcelFileDescriptor.AutoCloseOutputStream out=new android.os.ParcelFileDescriptor.AutoCloseOutputStream(pipe[1])){out.write(hierarchy.toByteArray());}
-                try(android.os.ParcelFileDescriptor.AutoCloseInputStream in=new android.os.ParcelFileDescriptor.AutoCloseInputStream(pipe[0])){while(in.read()!=-1){}}
-                // The generated image is the only shared image in this fresh emulator.
-                androidx.test.uiautomator.UiObject image=device.findObject(new androidx.test.uiautomator.UiSelector().textContains("BMD-camera-test"));
-                if(!image.exists()){
-                    androidx.test.uiautomator.UiObject menu=device.findObject(new androidx.test.uiautomator.UiSelector().descriptionContains("Show roots"));if(menu.exists())menu.click();
-                    androidx.test.uiautomator.UiObject downloads=device.findObject(new androidx.test.uiautomator.UiSelector().text("Downloads"));if(downloads.exists())downloads.click();
-                    device.waitForIdle();screenshot("06-picker-downloads");
-                }
-                if(image.waitForExists(5000))image.click();
-                else{
-                    androidx.test.uiautomator.UiObject thumb=device.findObject(new androidx.test.uiautomator.UiSelector().resourceIdMatches(".*:id/(icon_thumb|icon_thumbnail|thumbnail)"));
-                    if(thumb.exists())thumb.click();
-                    else{throw new AssertionError("No selectable test photo in system picker; see screenshot and hierarchy");}
-                }
-                AtomicBoolean imported=new AtomicBoolean(false);long until=System.currentTimeMillis()+30000;
-                while(!imported.get()&&System.currentTimeMillis()<until){Thread.sleep(100);scenario.onActivity(activity->imported.set(((List<?>)field(activity,"results")).contains("BMD-REAL-PHOTO-OK")));}
-                assertTrue("Actual picker selection must produce a QR result",imported.get());
-                InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK);screenshot("07-real-photo-result");
-            }
-        }finally{context.getContentResolver().delete(uri,null,null);}
-    }
-
+    private static View text(View v,String value){if(v instanceof TextView&&value.contentEquals(((TextView)v).getText()))return v;if(v instanceof ViewGroup)for(int i=0;i<((ViewGroup)v).getChildCount();i++){View found=text(((ViewGroup)v).getChildAt(i),value);if(found!=null)return found;}return null;}
+    @Test public void actualMenusSaveDocumentFormatAndEditableFilename()throws Exception{try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){scenario.onActivity(a->{a.showSettings();DeviceSupport.tag(a.getWindow().getDecorView(),"document-settings").performClick();android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView();text(root,"Word (.docx)").performClick();findEdit(root).setText("My scan.csv");text(root,a.s("save")).performClick();assertEquals(2,DeviceSupport.get(a,"documentFormat"));assertEquals("My scan",DeviceSupport.get(a,"baseName"));});scenario.recreate();scenario.onActivity(a->{assertEquals(2,DeviceSupport.get(a,"documentFormat"));a.showSettings();});DeviceSupport.shot(scenario,"general-settings-four-tiles");scenario.onActivity(a->DeviceSupport.tag(a.getWindow().getDecorView(),"document-settings").performClick());DeviceSupport.shot(scenario,"document-format-and-name");}}
+    private static EditText findEdit(View v){if(v instanceof EditText)return (EditText)v;if(v instanceof ViewGroup)for(int i=0;i<((ViewGroup)v).getChildCount();i++){EditText e=findEdit(((ViewGroup)v).getChildAt(i));if(e!=null)return e;}return null;}
+    @Test public void systemPhotoPickerAndDocumentSaveCanBeOpenedAndCancelled()throws Exception{try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){UiDevice device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());scenario.onActivity(a->DeviceSupport.tag(a.getWindow().getDecorView(),"photo").performClick());assertTrue(device.wait(Until.hasObject(By.pkg("com.google.android.documentsui")),10000));device.pressBack();device.waitForIdle();scenario.onActivity(a->{a.tracker.importCode(new ScanTracker.Detection("BMD-EXPORT","QR",0,0,1,1),0);DeviceSupport.call(a,"prepareExport",new Class<?>[]{boolean.class,boolean.class},false,true);});assertTrue(device.wait(Until.hasObject(By.pkg("com.google.android.documentsui")),10000));device.pressBack();device.waitForIdle();}}
 }

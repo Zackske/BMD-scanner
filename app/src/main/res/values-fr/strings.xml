@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD ScanMagicien</string>
+    <string name="ui_short_name" formatted="false">ScanMagicien</string>
+    <string name="ui_scan" formatted="false">Scanner</string>
+    <string name="ui_photos" formatted="false">Importer des photos</string>
+    <string name="ui_results" formatted="false">Résultats</string>
+    <string name="ui_settings" formatted="false">Paramètres</string>
+    <string name="ui_language" formatted="false">Langue</string>
+    <string name="ui_choose_language" formatted="false">Choisir la langue</string>
+    <string name="ui_scanner_settings" formatted="false">Paramètres du scanner</string>
+    <string name="ui_scanner" formatted="false">Scanner</string>
+    <string name="ui_scanner_hint" formatted="false">Résolution, sensibilité et vibration</string>
+    <string name="ui_document_type" formatted="false">Type de document</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word et PDF</string>
+    <string name="ui_about" formatted="false">À propos de l’application</string>
+    <string name="ui_back" formatted="false">Retour</string>
+    <string name="ui_close" formatted="false">Fermer</string>
+    <string name="ui_done" formatted="false">Terminé</string>
+    <string name="ui_apply" formatted="false">Appliquer</string>
+    <string name="ui_cancel" formatted="false">Annuler</string>
+    <string name="ui_save" formatted="false">Enregistrer</string>
+    <string name="ui_save_changes" formatted="false">Enregistrer les modifications</string>
+    <string name="ui_live" formatted="false">DÉTECTION EN DIRECT</string>
+    <string name="ui_both" formatted="false">QR + codes-barres</string>
+    <string name="ui_qr_only" formatted="false">QR uniquement</string>
+    <string name="ui_bar_only" formatted="false">Codes-barres uniquement</string>
+    <string name="ui_code_filter" formatted="false">Scanner des codes</string>
+    <string name="ui_count" formatted="false">%1$d codes scannés</string>
+    <string name="ui_split" formatted="false">%1$d codes QR · %2$d codes-barres</string>
+    <string name="ui_same_hint" formatted="false">Un même contenu compte par produit</string>
+    <string name="ui_empty" formatted="false">Pointez la caméra vers les codes</string>
+    <string name="ui_all_results" formatted="false">Voir tous les résultats</string>
+    <string name="ui_capture" formatted="false">Prendre une photo</string>
+    <string name="ui_captured" formatted="false">Photo prise</string>
+    <string name="ui_local_save" formatted="false">Enregistrer sur l’appareil</string>
+    <string name="ui_local_hint" formatted="false">Enregistrer la photo et les résultats</string>
+    <string name="ui_share" formatted="false">Partager</string>
+    <string name="ui_share_hint" formatted="false">E-mail ou autres applications</string>
+    <string name="ui_again" formatted="false">Scanner à nouveau</string>
+    <string name="ui_list" formatted="false">Codes scannés</string>
+    <string name="ui_edit" formatted="false">Corriger le code</string>
+    <string name="ui_delete" formatted="false">Supprimer</string>
+    <string name="ui_reset" formatted="false">Réinitialiser le scan</string>
+    <string name="ui_reset_hint" formatted="false">Nouvelle session démarrée</string>
+    <string name="ui_resolution" formatted="false">Résolution</string>
+    <string name="ui_actual" formatted="false">Réelle</string>
+    <string name="ui_highest" formatted="false">Résolution maximale prise en charge</string>
+    <string name="ui_fallback" formatted="false">La caméra utilise au besoin la taille prise en charge la plus proche</string>
+    <string name="ui_sensitivity" formatted="false">Sensibilité</string>
+    <string name="ui_stability" formatted="false">Stabilité de reconnaissance</string>
+    <string name="ui_low" formatted="false">Faible</string>
+    <string name="ui_normal" formatted="false">Normale</string>
+    <string name="ui_high" formatted="false">Élevée</string>
+    <string name="ui_vibrate" formatted="false">Vibrer après le scan</string>
+    <string name="ui_vibrate_hint" formatted="false">Une courte vibration par code scanné</string>
+    <string name="ui_lamp" formatted="false">Lampe</string>
+    <string name="ui_on" formatted="false">ALLUMÉE</string>
+    <string name="ui_off" formatted="false">ÉTEINTE</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Paramètres du document</string>
+    <string name="ui_choose_format" formatted="false">Choisissez le format du fichier</string>
+    <string name="ui_filename" formatted="false">Nom du fichier</string>
+    <string name="ui_extension_hint" formatted="false">L’extension est ajoutée automatiquement</string>
+    <string name="ui_export" formatted="false">Créer un document</string>
+    <string name="ui_saved" formatted="false">Enregistré</string>
+    <string name="ui_busy" formatted="false">Traitement…</string>
+    <string name="ui_error" formatted="false">Une erreur est survenue</string>
+    <string name="ui_permission" formatted="false">L’accès à la caméra est nécessaire</string>
+    <string name="ui_no_camera" formatted="false">Aucune caméra utilisable</string>
+    <string name="ui_no_lamp" formatted="false">Cette caméra n’a pas de lampe</string>
+    <string name="ui_no_results" formatted="false">Aucun résultat de scan</string>
+    <string name="ui_nr" formatted="false">N°</string>
+    <string name="ui_type" formatted="false">Type</string>
+    <string name="ui_code" formatted="false">Code</string>
+    <string name="ui_barcode" formatted="false">Code-barres</string>
+    <string name="ui_photo_error" formatted="false">Certaines photos n’ont pas pu être lues</string>
+    <string name="ui_choose_folder" formatted="false">Choisissez un dossier pour la photo et le document</string>
+    <string name="ui_tracking_note" formatted="false">Gardez les produits dans le cadre jusqu’à la photo</string>
+    <string name="ui_confirm_reset" formatted="false">Effacer la session actuelle ?</string>
+    <string name="ui_delete_question" formatted="false">Supprimer ce scan ?</string>
+</resources>

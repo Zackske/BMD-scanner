@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD СканЧарівник</string>
+    <string name="ui_short_name" formatted="false">СканЧарівник</string>
+    <string name="ui_scan" formatted="false">Сканувати</string>
+    <string name="ui_photos" formatted="false">Завантажити фото</string>
+    <string name="ui_results" formatted="false">Результати</string>
+    <string name="ui_settings" formatted="false">Налаштування</string>
+    <string name="ui_language" formatted="false">Мова</string>
+    <string name="ui_choose_language" formatted="false">Виберіть мову</string>
+    <string name="ui_scanner_settings" formatted="false">Налаштування сканера</string>
+    <string name="ui_scanner" formatted="false">Сканер</string>
+    <string name="ui_scanner_hint" formatted="false">Роздільність, чутливість і вібрація</string>
+    <string name="ui_document_type" formatted="false">Тип документа</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word і PDF</string>
+    <string name="ui_about" formatted="false">Про застосунок</string>
+    <string name="ui_back" formatted="false">Назад</string>
+    <string name="ui_close" formatted="false">Закрити</string>
+    <string name="ui_done" formatted="false">Готово</string>
+    <string name="ui_apply" formatted="false">Застосувати</string>
+    <string name="ui_cancel" formatted="false">Скасувати</string>
+    <string name="ui_save" formatted="false">Зберегти</string>
+    <string name="ui_save_changes" formatted="false">Зберегти зміни</string>
+    <string name="ui_live" formatted="false">ВИЯВЛЕННЯ НАЖИВО</string>
+    <string name="ui_both" formatted="false">QR + штрихкоди</string>
+    <string name="ui_qr_only" formatted="false">Лише QR</string>
+    <string name="ui_bar_only" formatted="false">Лише штрихкоди</string>
+    <string name="ui_code_filter" formatted="false">Сканувати коди</string>
+    <string name="ui_count" formatted="false">Відскановано кодів: %1$d</string>
+    <string name="ui_split" formatted="false">%1$d QR-кодів · %2$d штрихкодів</string>
+    <string name="ui_same_hint" formatted="false">Однаковий вміст рахується для кожного виробу</string>
+    <string name="ui_empty" formatted="false">Наведіть камеру на коди</string>
+    <string name="ui_all_results" formatted="false">Переглянути всі результати</string>
+    <string name="ui_capture" formatted="false">Зробити фото</string>
+    <string name="ui_captured" formatted="false">Фото зроблено</string>
+    <string name="ui_local_save" formatted="false">Зберегти на пристрої</string>
+    <string name="ui_local_hint" formatted="false">Зберегти фото й результати</string>
+    <string name="ui_share" formatted="false">Поділитися</string>
+    <string name="ui_share_hint" formatted="false">Ел. пошта або інші застосунки</string>
+    <string name="ui_again" formatted="false">Сканувати знову</string>
+    <string name="ui_list" formatted="false">Відскановані коди</string>
+    <string name="ui_edit" formatted="false">Виправити код</string>
+    <string name="ui_delete" formatted="false">Видалити</string>
+    <string name="ui_reset" formatted="false">Скинути сканування</string>
+    <string name="ui_reset_hint" formatted="false">Розпочато новий сеанс</string>
+    <string name="ui_resolution" formatted="false">Роздільна здатність</string>
+    <string name="ui_actual" formatted="false">Фактично</string>
+    <string name="ui_highest" formatted="false">Найвища підтримувана роздільність</string>
+    <string name="ui_fallback" formatted="false">За потреби камера вибирає найближчий підтримуваний розмір</string>
+    <string name="ui_sensitivity" formatted="false">Чутливість</string>
+    <string name="ui_stability" formatted="false">Стабільність розпізнавання кодів</string>
+    <string name="ui_low" formatted="false">Низька</string>
+    <string name="ui_normal" formatted="false">Звичайна</string>
+    <string name="ui_high" formatted="false">Висока</string>
+    <string name="ui_vibrate" formatted="false">Вібрація після сканування</string>
+    <string name="ui_vibrate_hint" formatted="false">Коротка вібрація для кожного коду</string>
+    <string name="ui_lamp" formatted="false">Ліхтарик</string>
+    <string name="ui_on" formatted="false">УВІМК.</string>
+    <string name="ui_off" formatted="false">ВИМК.</string>
+    <string name="ui_zoom" formatted="false">Масштаб</string>
+    <string name="ui_document_settings" formatted="false">Налаштування документа</string>
+    <string name="ui_choose_format" formatted="false">Виберіть формат файлу</string>
+    <string name="ui_filename" formatted="false">Назва файлу</string>
+    <string name="ui_extension_hint" formatted="false">Розширення додається автоматично</string>
+    <string name="ui_export" formatted="false">Створити документ</string>
+    <string name="ui_saved" formatted="false">Збережено</string>
+    <string name="ui_busy" formatted="false">Обробка…</string>
+    <string name="ui_error" formatted="false">Сталася помилка</string>
+    <string name="ui_permission" formatted="false">Для сканування потрібен доступ до камери</string>
+    <string name="ui_no_camera" formatted="false">Доступну камеру не знайдено</string>
+    <string name="ui_no_lamp" formatted="false">Ця камера не має ліхтарика</string>
+    <string name="ui_no_results" formatted="false">Результатів поки немає</string>
+    <string name="ui_nr" formatted="false">№</string>
+    <string name="ui_type" formatted="false">Тип</string>
+    <string name="ui_code" formatted="false">Код</string>
+    <string name="ui_barcode" formatted="false">Штрихкод</string>
+    <string name="ui_photo_error" formatted="false">Деякі фото не вдалося прочитати</string>
+    <string name="ui_choose_folder" formatted="false">Виберіть папку для фото й документа</string>
+    <string name="ui_tracking_note" formatted="false">Тримайте вироби в кадрі до знімка</string>
+    <string name="ui_confirm_reset" formatted="false">Очистити поточний сеанс?</string>
+    <string name="ui_delete_question" formatted="false">Видалити цей запис?</string>
+</resources>
