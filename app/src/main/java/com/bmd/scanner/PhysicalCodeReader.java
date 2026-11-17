@@ -16,7 +16,7 @@ final class PhysicalCodeReader {
         if(!mode.equals("bar"))try{for(Result result:new QRCodeMultiReader().decodeMultiple(bitmap(0,0,width,height),hints))add(result,0,0,false);}catch(NotFoundException ignored){}
         if(!mode.equals("qr")){
             hints.remove(DecodeHintType.TRY_HARDER);
-            hints.put(DecodeHintType.POSSIBLE_FORMATS,Arrays.asList(BarcodeFormat.CODE_128,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93,BarcodeFormat.CODABAR,BarcodeFormat.EAN_13,BarcodeFormat.EAN_8,BarcodeFormat.ITF,BarcodeFormat.UPC_A,BarcodeFormat.UPC_E,BarcodeFormat.RSS_14,BarcodeFormat.RSS_EXPANDED,BarcodeFormat.DATA_MATRIX,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417));
+            hints.put(DecodeHintType.POSSIBLE_FORMATS,Arrays.asList(BarcodeFormat.CODE_128,BarcodeFormat.CODE_39,BarcodeFormat.CODE_93,BarcodeFormat.CODABAR,BarcodeFormat.EAN_13,BarcodeFormat.EAN_8,BarcodeFormat.ITF,BarcodeFormat.UPC_A,BarcodeFormat.UPC_E,BarcodeFormat.RSS_14,BarcodeFormat.RSS_EXPANDED));
             MultiFormatReader reader=new MultiFormatReader();reader.setHints(hints);region(reader,0,0,width,height,0);
         }
         found.sort(Comparator.comparingDouble((ScanTracker.Detection d)->d.top).thenComparingDouble(d->d.left));

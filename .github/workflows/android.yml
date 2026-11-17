@@ -59,8 +59,11 @@ jobs:
       - name: Build and lint Debug APK
         run: gradle --no-daemon --stacktrace :app:assembleDebug :app:lintDebug :app:testDebugUnitTest
 
-      - name: Verify APK
-        run: test -s app/build/outputs/apk/debug/app-debug.apk
+      - name: Verify APK package and signature
+        run: |
+          test -s app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose app/build/outputs/apk/debug/app-debug.apk
+          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -70,25 +73,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Enable emulator acceleration
-        run: |
-          sudo chmod 666 /dev/kvm
-
-      - name: Test live codes, menus, ten languages and four export formats
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          target: google_apis
-          arch: x86_64
-          profile: pixel_2
-          ram-size: 1536M
-          heap-size: 256M
-          emulator-boot-timeout: 240
-          disable-animations: false
-          emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
-          script: bash ci/android-device-tests.sh
-
-      - name: Publish tested APK download
+      - name: Publish APK for phone testing
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -98,66 +83,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
-          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and active Android emulator tests passed. Camera hardware, physical vibration and email delivery still require testing on a real phone."
-
-      - name: Prepare real Android screen recording
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ ! -s device-demo/app-demo-raw.mp4 ]]; then exit 0; fi
-          if ! command -v ffmpeg > /dev/null; then
-            sudo apt-get update
-            sudo apt-get install -y ffmpeg
-          fi
-          ffmpeg -v error -y -i device-demo/app-demo-raw.mp4 -vf "fps=12,scale=720:-2:flags=lanczos" -c:v libx264 -preset fast -crf 27 -an -movflags +faststart device-demo/BMD-ScanTovenaar-demo.mp4
-          ffmpeg -v error -y -i device-demo/BMD-ScanTovenaar-demo.mp4 -vf "fps=5,scale=360:-2:flags=lanczos" -c:v libwebp_anim -q:v 50 -loop 0 device-demo/BMD-ScanTovenaar-demo.webp
-          ffprobe -v error -show_entries format=duration,size -of json device-demo/BMD-ScanTovenaar-demo.mp4
-
-      - name: Upload screen recording
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: BMD-ScanTovenaar-demo
-          path: |
-            device-demo/BMD-ScanTovenaar-demo.mp4
-            device-demo/BMD-ScanTovenaar-demo.webp
-          if-no-files-found: ignore
-          retention-days: 30
-
-      - name: Upload device screenshots
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: BMD-device-screenshots
-          path: device-screenshots/
-          if-no-files-found: ignore
-
-      - name: Save emulator screenshots in repository
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        shell: bash
-        run: |
-          set -euo pipefail
-          if ! compgen -G 'device-screenshots/*.png' > /dev/null; then exit 0; fi
-          git fetch origin main
-          if [[ "$(git rev-parse origin/main)" != "$(git rev-parse HEAD)" ]]; then
-            echo "A newer commit is on main; screenshots remain available as workflow artifacts."
-            exit 0
-          fi
-          mkdir -p docs/screenshots
-          find device-screenshots -type f -name "*.png" -exec cp {} docs/screenshots/ \;
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -s device-demo/BMD-ScanTovenaar-demo.mp4 ]]; then
-            mkdir -p docs/demo
-            cp device-demo/BMD-ScanTovenaar-demo.mp4 docs/demo/
-            cp device-demo/BMD-ScanTovenaar-demo.webp docs/demo/
-          fi
-          git add docs/screenshots
-          if [[ -d docs/demo ]]; then git add docs/demo; fi
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "docs: save Android app test screenshots [skip ci]"
-          git push origin HEAD:main
+          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. No emulator was used. Ready for the owner to test on a real phone."
 
       - name: Upload diagnostic reports
         if: always()

@@ -6,7 +6,7 @@ Native Android scanner with local QR/barcode recognition. Android 8.0+ (API 26);
 
 ## Home and settings
 
-Four raised, animated home tiles: Scannen, Foto’s uploaden, Resultaten and Instellingen. The original supplied Blue Medical logo is preserved, with a subtle dark raised rim. The title has a gentle smoke animation. Android's disabled-animation preference is respected.
+Four raised home tiles: Scannen, Resultaten, CSV Export and E-mail / Outlook. Photo import, settings and About are available below. The original supplied Blue Medical logo is preserved, with a subtle dark raised rim. The title has a gentle smoke animation. Android's disabled-animation preference is respected.
 
 General settings contain Language, Scanner, Document type and About. About opens an animated “Made by Jack with ♥” canvas.
 
@@ -37,17 +37,10 @@ Android's document/folder picker lets the user choose where files are saved. Ann
 
 ## Build and verification
 
-GitHub Actions pins Temurin Java 17 and Gradle 8.9. It builds the APK, runs Android lint and JVM tests, then installs the app on an Android 35 emulator with real code images supplied to the virtual camera. A release download is published only after these checks pass.
+GitHub Actions builds the installable APK with Java 17 and Gradle 8.9, runs Android lint and JVM tests, and verifies the APK signature and package before publishing a release. No emulator, screenshots or demo recordings are produced. The owner tests camera behavior on their own phone.
 
-Tests cover identical code instances and rotation, tracker stability and corrections, a regression image captured from the real emulator camera, confirmation on slow processed frames, real photo decoding, actual camera binding for all thirteen preferences, zoom/capture behavior, format filters, settings and ten languages, four export formats, Android file pickers and share URI grants. Emulator screenshots and a screen recording are retained as workflow artifacts; screenshots are also saved in `docs/screenshots`.
+Recognition accepts QR codes and linear barcodes only. Data Matrix, Aztec and PDF417 are excluded. Tests cover accepted codes, separate identical labels, format filters and rejection of excluded matrix formats.
 
-Physical Samsung camera quality, actual lamp brightness, the felt vibration and delivery through installed email/social apps still require testing on a phone. The downloadable APK is a debug-signed installable test build; CI caches its signing key to permit subsequent updates.
+The home screen follows the supplied Blue Medical example with the logo above the scanner identity, blue/purple scan and results tiles, green CSV export and orange email sharing. Photo import, settings and About remain available below.
 
-Locally, with the Android SDK, Java 17 and Gradle 8.9 installed:
-
-```sh
-gradle --no-daemon :app:assembleDebug :app:lintDebug :app:testDebugUnitTest
-gradle --no-daemon :app:connectedDebugAndroidTest
-```
-
-The recognition engine uses [ZXing](https://github.com/zxing/zxing), licensed under Apache 2.0.
+The APK is a debug-signed test build. The signing key is cached for subsequent updates.
