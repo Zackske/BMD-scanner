@@ -6,7 +6,7 @@ Native Android scanner with local QR/barcode recognition. Android 8.0+ (API 26);
 
 ## Home and settings
 
-Four raised home tiles: Scannen, Resultaten, CSV Export and E-mail / Outlook. Photo import, settings and About are available below. The original supplied Blue Medical logo is preserved, with a subtle dark raised rim. The title has a gentle smoke animation. Android's disabled-animation preference is respected.
+The supplied Dutch homepage artwork is preserved exactly, with four native tile actions: Scannen, Foto’s uploaden, Resultaten and Instellingen. The original title lettering, glossy 3D tile borders, scanner illustration, smoke artwork and Blue Medical plaque are retained. Other languages keep translated labels and accessibility names. See [homepage verification](docs/home-reference-2.1.md).
 
 General settings contain Language, Scanner, Document type and About. About opens an animated “Made by Jack with ♥” canvas.
 
@@ -37,10 +37,10 @@ Android's document/folder picker lets the user choose where files are saved. Ann
 
 ## Build and verification
 
-GitHub Actions builds the installable APK with Java 17 and Gradle 8.9, runs Android lint and JVM tests, and verifies the APK signature and package before publishing a release. No emulator, screenshots or demo recordings are produced. The owner tests camera behavior on their own phone.
+GitHub Actions builds the APK with Java 17 and Gradle 8.9, runs Android lint and JVM tests, and verifies the APK signature and package. Android 35 homepage tests then compare the displayed pixels against the supplied image and check the native buttons and translated navigation. A release is published only after these checks pass. Actual camera hardware remains a phone test.
 
 Recognition accepts QR codes and linear barcodes only. Data Matrix, Aztec and PDF417 are excluded. Tests cover accepted codes, separate identical labels, format filters and rejection of excluded matrix formats.
 
-The home screen follows the supplied Blue Medical example with the logo above the scanner identity, blue/purple scan and results tiles, green CSV export and orange email sharing. Photo import, settings and About remain available below.
+The 2.1 homepage follows the latest supplied example: title above, blue Scan / green Photo upload tiles, purple Results / orange Settings tiles, and the Blue Medical plaque below. CSV and email actions are inside Results.
 
 The APK is a debug-signed test build. The signing key is cached for subsequent updates.
