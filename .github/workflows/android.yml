@@ -83,7 +83,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-ScanTovenaar.apk
-          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. New BMD scanner layout and compact 1x/2x/3x zoom. Owner will test camera behavior and appearance on the phone; no emulator/device test was run for this build."
+          gh release create "$tag" BMD-ScanTovenaar.apk --target "$GITHUB_SHA" --title "BMD ScanTovenaar ${version}" --notes "Android APK. Build, lint, unit tests and APK signature checks passed. Approved home layout with larger tiles and a rounded, centered Blue Medical plaque. Complete artwork fits inside the available screen without cropping. Owner will test camera behavior and appearance on the phone; no emulator/device test was run for this build."
 
       - name: Upload diagnostic reports
         if: always()
@@ -95,3 +95,4 @@ jobs:
             build/reports/
           if-no-files-found: ignore
           retention-days: 7
+
