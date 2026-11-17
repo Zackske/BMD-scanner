@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout root,inlineResults;private TextView countText,splitText,modeText,lampLabel,statusText;
     private PreviewView preview;private ScanOverlay overlay;private VerticalZoom zoomView;private View shutter,flashButton,resetButton;
     private ProcessCameraProvider provider;private androidx.camera.core.Camera camera;private ImageCapture capture;
-    private int frameEpoch=0,zoomRequest=0;private boolean zoomChanging=false;private PopupWindow formatPopup;
+    private int lastDecoded=-1;private int frameEpoch=0,zoomRequest=0;private boolean zoomChanging=false;private PopupWindow formatPopup;
     private int generation=0,resolutionChoice=1,sensitivity=1,documentFormat=0;private float zoomRatio=1;
     private boolean cameraReady=false,scanning=false,capturing=false,torch=false,torchChanging=false,vibrate=true,importing=false;
     private android.app.Dialog dialog;private ScanFeedback feedback;private File capturedPhoto,preparedDocument;private List<ScanTracker.Item> captureRows=new ArrayList<>();private boolean exportPhoto=false;private String baseName="BMD-scanresultaten";
@@ -112,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
         if(!scanning||capturing||zoomChanging||session!=generation||!processing.compareAndSet(false,true)){proxy.close();return;}
         final int epoch=frameEpoch;final String mode=codeMode;
         try{
-            ImageProxyTransformFactory factory=new ImageProxyTransformFactory();factory.setUsingRotationDegrees(true);factory.setUsingCropRect(true);OutputTransform source=factory.getOutputTransform(proxy);
+            ImageProxyTransformFactory factory=new ImageProxyTransformFactory();factory.setUsingRotationDegrees(true);factory.setUsingCropRect(false);OutputTransform source=factory.getOutputTransform(proxy);
             int w=proxy.getWidth(),h=proxy.getHeight(),angle=proxy.getImageInfo().getRotationDegrees();ImageProxy.PlaneProxy plane=proxy.getPlanes()[0];java.nio.ByteBuffer buffer=plane.getBuffer();byte[] gray=new byte[w*h];for(int y=0;y<h;y++)for(int x=0;x<w;x++)gray[y*w+x]=buffer.get(y*plane.getRowStride()+x*plane.getPixelStride());
             int rw=angle%180==0?w:h,rh=angle%180==0?h:w;byte[] rotated=new byte[gray.length];for(int y=0;y<h;y++)for(int x=0;x<w;x++){int nx=x,ny=y;if(angle==90){nx=h-1-y;ny=x;}else if(angle==180){nx=w-1-x;ny=h-1-y;}else if(angle==270){nx=y;ny=w-1-x;}rotated[ny*rw+nx]=gray[y*w+x];}
-            List<ScanTracker.Detection> decoded=PhysicalCodeReader.decode(rotated,rw,rh,mode);
+            List<ScanTracker.Detection> decoded=PhysicalCodeReader.decode(rotated,rw,rh,mode);if(decoded.size()!=lastDecoded){lastDecoded=decoded.size();android.util.Log.i("BMD-frame","mode="+mode+" decoded="+decoded.size()+" image="+rw+"x"+rh+" crop="+proxy.getCropRect()+" rotation="+angle);}
             runOnUiThread(()->{if(session!=generation||epoch!=frameEpoch||!scanning||preview==null)return;OutputTransform target=preview.getOutputTransform();if(target==null)return;CoordinateTransform transform=new CoordinateTransform(source,target);List<ScanTracker.Detection> detections=new ArrayList<>();for(ScanTracker.Detection d:decoded){RectF box=new RectF(d.left*rw,d.top*rh,d.right*rw,d.bottom*rh);transform.mapRect(box);if(box.centerX()<0||box.centerY()<0||box.centerX()>preview.getWidth()||box.centerY()>preview.getHeight())continue;detections.add(new ScanTracker.Detection(d.value,d.kind,box.left/preview.getWidth(),box.top/preview.getHeight(),box.right/preview.getWidth(),box.bottom/preview.getHeight()));}accept(detections,requiredHits());});
         }catch(Exception error){android.util.Log.w("BMD","Camera decode",error);}finally{proxy.close();processing.set(false);}
     }
