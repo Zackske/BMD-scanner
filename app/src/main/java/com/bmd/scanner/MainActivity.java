@@ -87,29 +87,8 @@ public class MainActivity extends AppCompatActivity {
     private void failure(Exception error){if(isDestroyed())return;toast(s("error")+": "+String.valueOf(error.getMessage()));}
 
     private void homeCard(LinearLayout parent,String icon,String title,int top,int bottom,int edge,Runnable action){LinearLayout tile=column();tile.setGravity(Gravity.CENTER);tile.setPadding(dp(9),dp(12),dp(9),dp(12));tile.setBackground(UiArt.raised(top,bottom,edge,dp(22)));tile.setElevation(dp(7));tile.setOnTouchListener((v,event)->{if(ValueAnimator.areAnimatorsEnabled()){if(event.getAction()==MotionEvent.ACTION_DOWN)v.animate().scaleX(.98f).scaleY(.98f).translationY(dp(3)).setDuration(100).start();else if(event.getAction()==MotionEvent.ACTION_UP||event.getAction()==MotionEvent.ACTION_CANCEL)v.animate().scaleX(1).scaleY(1).translationY(0).setDuration(170).start();}return false;});tile.addView(new UiArt.Icon(this,icon),new LinearLayout.LayoutParams(dp(48),dp(48)));gap(tile,12);TextView label=text(title,20,true);label.setGravity(Gravity.CENTER);label.setMaxLines(2);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(label,14,20,1,android.util.TypedValue.COMPLEX_UNIT_SP);tile.addView(label,new LinearLayout.LayoutParams(-1,dp(48)));LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,-1,1);p.setMargins(dp(5),dp(5),dp(5),dp(5));parent.addView(tile,p);tile.setTag(icon);click(tile,title,action);}
-    void showHome(){
-        base("home","");LinearLayout content=column();content.setGravity(Gravity.CENTER_HORIZONTAL);
-        UiArt.Brand brand=new UiArt.Brand(this);brand.setTag("home-brand");
-        LinearLayout.LayoutParams bp=new LinearLayout.LayoutParams(-1,dp(100));bp.setMargins(dp(8),dp(8),dp(8),dp(12));content.addView(brand,bp);
-        content.addView(new UiArt.Wave(this),new LinearLayout.LayoutParams(-1,dp(22)));
-        LinearLayout hero=row();hero.setGravity(Gravity.CENTER);hero.setTag("home-identity");
-        hero.addView(new UiArt.ScannerMark(this),new LinearLayout.LayoutParams(dp(78),dp(78)));
-        LinearLayout names=column();names.setPadding(dp(14),0,0,0);TextView bmd=text("BMD",46,true);bmd.setTypeface(Typeface.create("sans-serif",Typeface.BOLD_ITALIC));names.addView(bmd);
-        TextView subtitle=text("QR & Barcode Scanner",18,true);subtitle.setTextColor(CYAN);names.addView(subtitle);hero.addView(names);
-        content.addView(hero,new LinearLayout.LayoutParams(-1,dp(104)));gap(content,12);
-        int height=getResources().getConfiguration().screenHeightDp<700?136:160;
-        LinearLayout first=row(),second=row();content.addView(first,new LinearLayout.LayoutParams(-1,dp(height)));
-        homeCard(first,"qr",s("scan"),0xff00cfff,0xff003aa0,CYAN,this::openCamera);
-        homeCard(first,"list",s("results"),0xffdd36ff,0xff4a007e,0xffec91ff,this::showResults);
-        content.addView(second,new LinearLayout.LayoutParams(-1,dp(height)));
-        homeCard(second,"csv","CSV Export",0xff00ed4a,0xff006525,0xff2eff8b,()->{documentFormat=0;prepareExport(false,true);});
-        homeCard(second,"document","E-mail / Outlook",0xffffb800,0xffa54300,0xffffdf63,()->{documentFormat=0;prepareExport(false,false);});
-        gap(content,12);LinearLayout shortcuts=row();
-        shortcuts.addView(iconButton("photo",s("photos"),this::choosePhotos),new LinearLayout.LayoutParams(0,dp(54),1));
-        shortcuts.addView(iconButton("settings",s("settings"),this::showSettings),new LinearLayout.LayoutParams(0,dp(54),1));
-        shortcuts.addView(iconButton("info",s("about"),this::about),new LinearLayout.LayoutParams(0,dp(54),1));
-        content.addView(shortcuts);gap(content,16);page(content);
-    }
+    private Runnable homeAction(Runnable action){return ()->{if(!importing)action.run();else toast(s("busy"));};}
+    void showHome(){base("home","");root.setPadding(0,0,0,0);ReferenceHome home=new ReferenceHome(this,lang,new String[]{s("scan"),s("photos"),s("results"),s("settings")},s("short_name"),new Runnable[]{homeAction(this::openCamera),homeAction(this::choosePhotos),homeAction(this::showResults),homeAction(this::showSettings)});root.addView(home,new LinearLayout.LayoutParams(-1,0,1));}
 
     private void settingsTile(LinearLayout content,String icon,String title,String detail,String tag,Runnable action){LinearLayout tile=row();tile.setBackground(card(0xff0a4267,0xff00213b,0xff477a98));tile.setPadding(dp(16),dp(18),dp(16),dp(18));tile.setMinimumHeight(dp(94));tile.addView(new UiArt.Icon(this,icon,CYAN),new LinearLayout.LayoutParams(dp(38),dp(38)));LinearLayout labels=column();labels.setPadding(dp(16),0,dp(8),0);labels.addView(text(title,21,true));gap(labels,8);labels.addView(text(detail,14,false));tile.addView(labels,new LinearLayout.LayoutParams(0,-2,1));tile.addView(text("›",28,false));click(tile,title,action);tile.setTag(tag);content.addView(tile,new LinearLayout.LayoutParams(-1,-2));gap(content,14);}
     void showSettings(){base("settings",s("brand"));LinearLayout content=column();gap(content,16);TextView title=text("⚙  "+s("settings"),30,true);content.addView(title);gap(content,24);int index=Arrays.asList(LANGS).indexOf(lang);settingsTile(content,"language",s("language"),LANG_NAMES[index],"language",this::languages);settingsTile(content,"qr",s("scanner"),s("scanner_hint"),"scanner-settings",this::cameraSettings);settingsTile(content,"document",s("document_type"),s("formats"),"document-settings",this::documentSettings);settingsTile(content,"info",s("about"),s("brand"),"about",this::about);page(content);}
