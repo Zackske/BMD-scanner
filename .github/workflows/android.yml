@@ -85,7 +85,7 @@ jobs:
           heap-size: 256M
           emulator-boot-timeout: 240
           disable-animations: false
-          emulator-options: -no-window -gpu swiftshader_indirect -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
+          emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
           script: bash ci/android-device-tests.sh
 
       - name: Publish tested APK download

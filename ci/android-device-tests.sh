@@ -13,15 +13,17 @@ log_pid=$!
   done
 ) &
 pull_pid=$!
-timeout 12m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest || status=$?
+for classes in 'com.bmd.scanner.AppIdentityTest,com.bmd.scanner.HomeLayoutTest,com.bmd.scanner.ScannerDeviceTest,com.bmd.scanner.StorageDeviceTest' 'com.bmd.scanner.CameraControlsTest' 'com.bmd.scanner.AppDemoTest'; do
+  timeout 7m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="$classes" || { status=$?; break; }
+done
 kill "$pull_pid" "$log_pid" 2>/dev/null || true
 timeout 10s adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 || true
 timeout 10s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
 timeout 10s adb pull /sdcard/Android/data/com.bmd.scanner/files/screenshots/. device-screenshots/ || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
-  tail -n 150 device-screenshots/device-logcat.txt
+  grep -E "BMD|FATAL|Fatal|crash|OutOfMemory|AssertionError" device-screenshots/device-logcat.txt | tail -n 100 || true
+  tail -n 35 device-screenshots/device-logcat.txt
   sudo dmesg | tail -n 40 || true
 fi
 exit "$status"
-
