@@ -24,7 +24,7 @@ public class CameraControlsTest {
             DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("codeMode",mode).putString("scanRows","[]").commit();
             try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
                 scenario.onActivity(MainActivity::showScanner);DeviceSupport.await(scenario,a->a.tracker.items().size()>=3,45);scenario.onActivity(a->{assertEquals(3,a.tracker.items().size());assertTrue(a.tracker.items().stream().allMatch(i->i.kind.equals(mode.equals("qr")?"QR":"Barcode")));assertNull(DeviceSupport.get(a,"capturedPhoto"));});DeviceSupport.shot(scenario,"camera-filter-"+mode);
-                scenario.onActivity(a->DeviceSupport.tag(a.getWindow().getDecorView(),"photo-shutter").performClick());DeviceSupport.await(scenario,a->DeviceSupport.get(a,"capturedPhoto")!=null&&!Boolean.TRUE.equals(DeviceSupport.get(a,"capturing")),25);scenario.onActivity(a->{assertFalse(Boolean.TRUE.equals(DeviceSupport.get(a,"scanning")));assertTrue(((java.io.File)DeviceSupport.get(a,"capturedPhoto")).length()>1000);});DeviceSupport.shot(scenario,"photo-choice-"+mode);
+                scenario.onActivity(a->DeviceSupport.tag(a.getWindow().getDecorView(),"photo-shutter").performClick());DeviceSupport.await(scenario,a->DeviceSupport.get(a,"capturedPhoto")!=null&&!Boolean.TRUE.equals(DeviceSupport.get(a,"capturing")),25);scenario.onActivity(a->{assertFalse(Boolean.TRUE.equals(DeviceSupport.get(a,"scanning")));assertEquals("Capturing must not add the same physical codes twice",3,a.tracker.items().size());assertTrue(((java.io.File)DeviceSupport.get(a,"capturedPhoto")).length()>1000);});DeviceSupport.shot(scenario,"photo-choice-"+mode);
             }
         }
     }
