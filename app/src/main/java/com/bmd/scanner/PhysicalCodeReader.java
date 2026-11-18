@@ -43,7 +43,7 @@ final class PhysicalCodeReader {
         for(ScanTracker.Detection old:found)if(old.value.equals(d.value)&&old.kind.equals(d.kind)&&Math.abs(old.x()-d.x())<Math.max(.012f,(old.right-old.left)*.3f)&&Math.abs(old.y()-d.y())<Math.max(.012f,(old.bottom-old.top)*.3f))return d;
         found.add(d);return d;
     }
-    private boolean similarRow(int a,int b,int l,int r){int same=0,total=0;for(int x=l;x<=r;x+=2){if(((pixels[a*width+x]&255)<128)==((pixels[b*width+x]&255)<128))same++;total++;}return same>total*.88;}
+    private boolean similarRow(int a,int b,int l,int r){int total=0,best=0;for(int shift=-3;shift<=3;shift++){int same=0;total=0;for(int x=l;x<=r;x+=2){int sx=x+shift;if(sx<0||sx>=width)continue;if(((pixels[a*width+x]&255)<128)==((pixels[b*width+sx]&255)<128))same++;total++;}if(total>0)best=Math.max(best,(int)(1000L*same/total));}return best>820;}
     /** Adaptive matrix rows avoid edge sharpening that distorts resampled narrow bars. */
     private static final class MatrixRows extends Binarizer {
         private final HybridBinarizer delegate;
