@@ -51,5 +51,6 @@ public class NativeBulkTest {
         ScanTracker.Detection a=new ScanTracker.Detection("same","Barcode",.22f,.66f,.75f,.74f),b=new ScanTracker.Detection("same","Barcode",.22f,.72f,.75f,.81f),nextBox=new ScanTracker.Detection("same","Barcode",.22f,.84f,.75f,.93f);
         assertEquals(1,NativeCodes.mergeLinear(Arrays.asList(a,b),765,300).size());assertEquals(2,NativeCodes.mergeLinear(Arrays.asList(a,b,nextBox),765,300).size());
     }
-}
+    @Test public void sameGs1BarcodeFromTwoReadersPreservesNativeSeparatorsWithoutDoubleCounting(){ScanTracker.Detection java=new ScanTracker.Detection("010872063420006610LOT21SERIAL","Barcode",.1f,.2f,.5f,.3f),nativeCode=new ScanTracker.Detection("010872063420006610LOT"+(char)29+"21SERIAL","Barcode",.1f,.2f,.5f,.3f);List<ScanTracker.Detection> merged=NativeCodes.mergeLinear(Arrays.asList(java,nativeCode),1000,1000);assertEquals(1,merged.size());assertEquals(nativeCode.value,merged.get(0).value);}
 
+}
