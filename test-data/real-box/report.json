@@ -1,0 +1,382 @@
+{
+  "decoder": "zxing-cpp 2.3.0 Python diagnostic, not Android camera validation",
+  "photos": [
+    {
+      "image": "photo-1.jpg",
+      "size": [
+        1536,
+        1152
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 0,
+          "ms": 28
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 0,
+          "ms": 40
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 3,
+          "ms": 122
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 3,
+          "ms": 264
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 3,
+          "ms": 93
+        }
+      ],
+      "decoded_symbols": 3,
+      "decoded_lots": {
+        "2504030": 3
+      },
+      "results": [
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            1122.5,
+            303.0,
+            1153.5,
+            330.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            1182.0,
+            905.0,
+            1215.5,
+            938.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            1191.5,
+            984.0,
+            1225.5,
+            1017.5
+          ],
+          "lot": "2504030"
+        }
+      ],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    },
+    {
+      "image": "photo-2.jpg",
+      "size": [
+        1536,
+        1152
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 6,
+          "ms": 22
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 6,
+          "ms": 37
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 10,
+          "ms": 116
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 10,
+          "ms": 205
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 10,
+          "ms": 85
+        }
+      ],
+      "decoded_symbols": 10,
+      "decoded_lots": {
+        "2504030": 10
+      },
+      "results": [
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            47.0,
+            72.5,
+            83.5,
+            105.5
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            38.0,
+            139.0,
+            75.0,
+            171.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            44.0,
+            219.0,
+            81.0,
+            252.5
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            53.0,
+            389.0,
+            91.5,
+            422.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            42.5,
+            469.0,
+            80.5,
+            503.5
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            55.0,
+            554.0,
+            93.0,
+            589.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            72.0,
+            647.0,
+            110.0,
+            684.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            74.0,
+            733.0,
+            113.0,
+            771.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            50.0,
+            822.0,
+            90.0,
+            862.0
+          ],
+          "lot": "2504030"
+        },
+        {
+          "raw": "(01)08720634200127(17)261006(10)2504030",
+          "format": "BarcodeFormat.DataMatrix",
+          "box": [
+            54.0,
+            911.0,
+            94.0,
+            952.0
+          ],
+          "lot": "2504030"
+        }
+      ],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    },
+    {
+      "image": "photo-3.jpg",
+      "size": [
+        1536,
+        1152
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 0,
+          "ms": 23
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 0,
+          "ms": 41
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 0,
+          "ms": 125
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 0,
+          "ms": 211
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 0,
+          "ms": 89
+        }
+      ],
+      "decoded_symbols": 0,
+      "decoded_lots": {},
+      "results": [],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    },
+    {
+      "image": "photo-4.jpg",
+      "size": [
+        1152,
+        1536
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 0,
+          "ms": 39
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 0,
+          "ms": 68
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 0,
+          "ms": 175
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 0,
+          "ms": 293
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 0,
+          "ms": 124
+        }
+      ],
+      "decoded_symbols": 0,
+      "decoded_lots": {},
+      "results": [],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    },
+    {
+      "image": "photo-5.jpg",
+      "size": [
+        1152,
+        1536
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 0,
+          "ms": 38
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 0,
+          "ms": 68
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 0,
+          "ms": 175
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 0,
+          "ms": 289
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 0,
+          "ms": 126
+        }
+      ],
+      "decoded_symbols": 0,
+      "decoded_lots": {},
+      "results": [],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    },
+    {
+      "image": "photo-6.jpg",
+      "size": [
+        1152,
+        1536
+      ],
+      "passes": [
+        {
+          "pass": "full-frame baseline",
+          "codes": 0,
+          "ms": 29
+        },
+        {
+          "pass": "overlapping tiles x1",
+          "codes": 0,
+          "ms": 51
+        },
+        {
+          "pass": "overlapping tiles x2",
+          "codes": 0,
+          "ms": 154
+        },
+        {
+          "pass": "overlapping tiles x3",
+          "codes": 0,
+          "ms": 253
+        },
+        {
+          "pass": "contrast + global histogram tiles x3",
+          "codes": 0,
+          "ms": 111
+        }
+      ],
+      "decoded_symbols": 0,
+      "decoded_lots": {},
+      "results": [],
+      "limits": "Symbols are not validated physical products. No cross-photo deduplication. Expected 95 is not used by the decoder."
+    }
+  ]
+}
