@@ -1,0 +1,24 @@
+<resources>
+    <string name="ui_portal">Portail client</string>
+    <string name="ui_work_instructions">Instructions de travail</string>
+    <string name="ui_email_check">Contrôle e-mail</string>
+    <string name="ui_document_check">Contrôle documents</string>
+    <string name="ui_in_development">Cette fonction est en développement.</string>
+    <string name="ui_lots_title">Lots scannés</string>
+    <string name="ui_checklist">Voir la liste de contrôle</string>
+    <string name="ui_continue_save">Continuer pour enregistrer</string>
+    <string name="ui_include_images">Inclure les images</string>
+    <string name="ui_guided_mode">Que vérifier ?</string>
+    <string name="ui_complete_box">Carton complet</string>
+    <string name="ui_inventory">Stock</string>
+    <string name="ui_step_progress">Photo %1$d sur 5 · %2$s</string>
+    <string name="ui_review_lot">Vérifier le lot</string>
+    <string name="ui_exclude">Exclure</string>
+    <string name="ui_undo">Annuler</string>
+    <string name="ui_save_options">Enregistrer et partager</string>
+    <string name="ui_all_reviewed">Vérifié manuellement</string>
+    <string name="ui_capture_first">Prendre la vue générale d’abord</string>
+    <string name="ui_photos_needed">Prendre encore au moins %1$d photos de détail</string>
+    <string name="ui_manual_change">Modifié manuellement</string>
+    <string name="ui_review_all">Vérifier tous les produits de ce lot</string>
+</resources>

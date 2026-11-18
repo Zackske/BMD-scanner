@@ -85,6 +85,11 @@ final class UiArt {
                 case "photo":
                     canvas.drawRoundRect(7,10,57,54,5,5,p);canvas.drawCircle(43,23,4,p);
                     Path mountain=new Path();mountain.moveTo(9,48);mountain.lineTo(26,29);mountain.lineTo(38,43);mountain.lineTo(46,36);mountain.lineTo(56,48);canvas.drawPath(mountain,p);break;
+                case "users":canvas.drawCircle(23,21,9,p);canvas.drawCircle(47,25,7,p);canvas.drawArc(6,34,40,65,180,180,false,p);canvas.drawArc(36,38,61,61,180,170,false,p);break;
+                case "book":canvas.drawRoundRect(9,8,55,56,4,4,p);canvas.drawLine(20,8,20,56,p);canvas.drawLine(29,21,46,21,p);canvas.drawLine(29,31,46,31,p);break;
+                case "mail":canvas.drawRoundRect(5,13,59,51,4,4,p);canvas.drawLine(7,16,32,36,p);canvas.drawLine(32,36,57,16,p);break;
+                case "pallet":for(int i=0;i<3;i++)canvas.drawRoundRect(8+i*17,30,24+i*17,47,2,2,p);canvas.drawRoundRect(24,10,41,28,2,2,p);canvas.drawLine(6,53,59,53,p);canvas.drawLine(13,53,13,59,p);canvas.drawLine(51,53,51,59,p);break;
+                case "save":canvas.drawRoundRect(10,7,54,57,5,5,p);canvas.drawRect(21,7,43,25,p);canvas.drawRect(21,38,43,56,p);break;
                 case "list":
                     for(int y=16;y<=48;y+=16){canvas.drawCircle(10,y,2,p);canvas.drawLine(23,y,55,y,p);}break;
                 case "settings":
@@ -112,5 +117,3 @@ final class UiArt {
         private void cbox(Canvas c,float x,float y){c.drawRoundRect(x,y,x+18,y+18,1,1,p);p.setStyle(Paint.Style.FILL);c.drawRect(x+6,y+6,x+12,y+12,p);p.setStyle(Paint.Style.STROKE);}
     }
 }
-
-

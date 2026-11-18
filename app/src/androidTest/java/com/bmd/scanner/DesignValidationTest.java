@@ -30,5 +30,11 @@ public class DesignValidationTest {
             scenario.onActivity(MainActivity::cameraSettings);scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");Spinner format=(Spinner)DeviceSupport.tag(d.getWindow().getDecorView(),"scan-format-choice");assertNotNull(format);assertEquals(3,format.getCount());assertEquals("2D (QR / Data Matrix)",format.getItemAtPosition(0));assertEquals("Barcode",format.getItemAtPosition(1));assertEquals("2D + barcode",format.getItemAtPosition(2));});DeviceSupport.shot(scenario,"build3-scanner-settings");scenario.onActivity(a->((android.app.Dialog)DeviceSupport.get(a,"dialog")).dismiss());
         }
     }
+    @Test public void homeAndScanMenuHaveApprovedRoutesAndPlaceholders()throws Exception{
+        DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("language","nl").commit();
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            scenario.onActivity(a->{View root=a.getWindow().getDecorView();assertEquals("Klantenportaal",DeviceSupport.tag(root,"photo").getContentDescription());assertEquals("Werkinstructies",DeviceSupport.tag(root,"list").getContentDescription());DeviceSupport.tag(root,"list").performClick();android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");assertTrue(d.isShowing());d.dismiss();a.chooseScan();View menu=DeviceSupport.tag(a.getWindow().getDecorView(),"scan-menu");assertNotNull(menu);assertEquals("QR/count check",DeviceSupport.tag(menu,"qr").getContentDescription());assertEquals("Box/pallet check",DeviceSupport.tag(menu,"photo").getContentDescription());assertEquals("E-mail check",DeviceSupport.tag(menu,"list").getContentDescription());assertEquals("Document check",DeviceSupport.tag(menu,"settings").getContentDescription());});DeviceSupport.shot(scenario,"build3-scan-menu-nl");
+            scenario.onActivity(a->DeviceSupport.tag(a.getWindow().getDecorView(),"settings").performClick());DeviceSupport.shot(scenario,"build3-work-in-process");scenario.onActivity(a->((android.app.Dialog)DeviceSupport.get(a,"dialog")).dismiss());
+        }
+    }
 }
-
