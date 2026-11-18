@@ -11,27 +11,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 0,
-          "ms": 27
+          "ms": 18
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 0,
-          "ms": 38
+          "ms": 25
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 3,
-          "ms": 115
+          "ms": 74
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 3,
-          "ms": 244
+          "ms": 162
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 3,
-          "ms": 91
+          "ms": 56
         }
       ],
       "decoded_symbols": 3,
@@ -85,27 +85,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 6,
-          "ms": 20
+          "ms": 14
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 6,
-          "ms": 35
+          "ms": 23
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 10,
-          "ms": 107
+          "ms": 69
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 10,
-          "ms": 197
+          "ms": 118
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 10,
-          "ms": 81
+          "ms": 49
         }
       ],
       "decoded_symbols": 10,
@@ -236,27 +236,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 0,
-          "ms": 21
+          "ms": 14
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 0,
-          "ms": 38
+          "ms": 25
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 0,
-          "ms": 119
+          "ms": 76
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 0,
-          "ms": 201
+          "ms": 124
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 0,
-          "ms": 87
+          "ms": 54
         }
       ],
       "decoded_symbols": 0,
@@ -274,27 +274,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 0,
-          "ms": 35
+          "ms": 25
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 0,
-          "ms": 62
+          "ms": 44
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 0,
-          "ms": 165
+          "ms": 109
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 0,
-          "ms": 279
+          "ms": 179
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 0,
-          "ms": 121
+          "ms": 77
         }
       ],
       "decoded_symbols": 0,
@@ -312,27 +312,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 0,
-          "ms": 35
+          "ms": 25
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 0,
-          "ms": 62
+          "ms": 45
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 0,
-          "ms": 164
+          "ms": 110
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 0,
-          "ms": 272
+          "ms": 180
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 0,
-          "ms": 123
+          "ms": 103
         }
       ],
       "decoded_symbols": 0,
@@ -350,27 +350,27 @@
         {
           "pass": "full-frame baseline",
           "codes": 0,
-          "ms": 26
+          "ms": 19
         },
         {
           "pass": "overlapping tiles x1",
           "codes": 0,
-          "ms": 48
+          "ms": 34
         },
         {
           "pass": "overlapping tiles x2",
           "codes": 0,
-          "ms": 140
+          "ms": 93
         },
         {
           "pass": "overlapping tiles x3",
           "codes": 0,
-          "ms": 239
+          "ms": 151
         },
         {
           "pass": "contrast + global histogram tiles x3",
           "codes": 0,
-          "ms": 109
+          "ms": 69
         }
       ],
       "decoded_symbols": 0,
