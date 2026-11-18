@@ -14,6 +14,8 @@ import java.util.*;
 import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class GuidedBoxTest {
+    @Test public void printedBoxMarkersNeverBecomeProductsInTheRegularLiveScanner(){DeviceSupport.clear();try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){scenario.onActivity(a->{a.tracker.reset();a.accept(Arrays.asList(new ScanTracker.Detection("BMD-BOX-A","QR",.1f,.1f,.2f,.2f),new ScanTracker.Detection("real-product","QR",.4f,.4f,.5f,.5f)),1);assertEquals(1,a.tracker.items().size());assertEquals("real-product",a.tracker.items().get(0).raw);});}}
+
     @Test public void unreadQrLocationIsOnlyACandidateAndDisappearsWhenDecoded()throws Exception{
         com.google.zxing.common.BitMatrix matrix=new com.google.zxing.MultiFormatWriter().encode("BMD-candidate-test",com.google.zxing.BarcodeFormat.QR_CODE,300,300);Bitmap bitmap=Bitmap.createBitmap(400,400,Bitmap.Config.ARGB_8888);bitmap.eraseColor(Color.WHITE);for(int y=0;y<300;y++)for(int x=0;x<300;x++)bitmap.setPixel(x+50,y+50,matrix.get(x,y)?Color.BLACK:Color.WHITE);try{List<ScanTracker.Detection> read=NativeCodes.decode(bitmap,"qr");assertEquals(1,read.size());assertEquals(1,CodeCandidates.find(bitmap,Collections.emptyList()).size());assertTrue(CodeCandidates.find(bitmap,read).isEmpty());}finally{bitmap.recycle();}
     }
@@ -38,4 +40,3 @@ public class GuidedBoxTest {
     }
 
 }
-

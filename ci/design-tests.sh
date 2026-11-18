@@ -10,11 +10,9 @@ status=0
 timeout 15m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.bmd.scanner.DesignValidationTest,com.bmd.scanner.CameraControlsTest,com.bmd.scanner.NativeBulkTest,com.bmd.scanner.GuidedBoxTest || status=$?
 kill "$log_pid" 2>/dev/null || true
 timeout 20s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
-grep -E "BMD-real|BMD-bulk" device-screenshots/logcat.txt | tail -n 80 || true
+grep -E "BMD-real|BMD-bulk|BMD-box" device-screenshots/logcat.txt | tail -n 80 || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
   grep -E 'BMD|FATAL|AssertionError' device-screenshots/logcat.txt | tail -n 100 || true
 fi
 exit "$status"
-
-
