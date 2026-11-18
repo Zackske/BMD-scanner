@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">कैमरा बदलें</string>
     <string name="ui_camera_mode" formatted="false">कैमरा मोड</string>
     <string name="ui_save_scan" formatted="false">स्कैन सहेजें</string>
+    <string name="ui_review_products" formatted="false">उत्पादों की समीक्षा</string>
+    <string name="ui_product_count" formatted="false">%1$d उत्पाद</string>
+    <string name="ui_product" formatted="false">उत्पाद</string>
+    <string name="ui_review" formatted="false">समीक्षा</string>
+    <string name="ui_unknown_lot" formatted="false">अज्ञात लॉट</string>
+    <string name="ui_conflict" formatted="false">विरोधी डेटा</string>
+    <string name="ui_group_hint" formatted="false">लेबल अलग रहते हैं। केवल एक ही बॉक्स के कोड जोड़ें। संख्या और लॉट जाँचें; हाथ से दर्ज लॉट चिह्नित रहेंगे।</string>
+    <string name="ui_group_selected" formatted="false">चुने कोड जोड़ें</string>
+    <string name="ui_split_selected" formatted="false">चुने समूह अलग करें</string>
+    <string name="ui_grouping_error" formatted="false">अलग लॉट या उत्पाद न जोड़ें। विरोधी कोड अलग करें।</string>
 </resources>

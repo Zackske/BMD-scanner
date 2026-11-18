@@ -30,7 +30,7 @@ final class ScannerLayout extends android.widget.FrameLayout {
         float fx=slot*.48f-iconSize*.6f;icon(c,lamp?flashOn:flash,fx,iy,iconSize);
         label(c,lamp?labels[6]:labels[5],new RectF(fx+iconSize,iy,slot-dp(7),iy+iconSize),dp(10),false,lamp?0xffffd443:Color.WHITE);
         float mx=slot+slot*.28f-iconSize*.5f;icon(c,mode.equals("qr")?qr:mode.equals("bar")?barcode:both,mx,iy,iconSize);
-        String status=mode.equals("qr")?"QR":mode.equals("bar")?labels[8]:"QR +\n"+labels[8];RectF mr=new RectF(mx+iconSize+dp(3),iy,slot*2-dp(6),iy+iconSize);String[] lines=status.split("\n");for(int i=0;i<lines.length;i++)label(c,lines[i],new RectF(mr.left,mr.top+i*mr.height()/lines.length,mr.right,mr.top+(i+1)*mr.height()/lines.length),dp(10),false,Color.WHITE);
+        String status=mode.equals("qr")?"2D":mode.equals("bar")?labels[8]:"2D +\n"+labels[8];RectF mr=new RectF(mx+iconSize+dp(3),iy,slot*2-dp(6),iy+iconSize);String[] lines=status.split("\n");for(int i=0;i<lines.length;i++)label(c,lines[i],new RectF(mr.left,mr.top+i*mr.height()/lines.length,mr.right,mr.top+(i+1)*mr.height()/lines.length),dp(10),false,Color.WHITE);
         c.save();c.rotate(gearRotation,slot*2+slot/2,iy+iconSize/2);icon(c,settings,slot*2+slot/2-iconSize/2,iy,iconSize);c.restore();
         for(int i=0;i<3;i++)label(c,labels[i+1],new RectF(slot*i+dp(5),toolbar.top+toolbar.height()*.57f,slot*(i+1)-dp(5),toolbar.bottom-dp(3)),dp(13),false,Color.WHITE);
         if(!lampAvailable){p.setColor(0x9900172c);c.drawRoundRect(dp(7),toolbar.top,slot-dp(1),toolbar.bottom,dp(10),dp(10),p);}

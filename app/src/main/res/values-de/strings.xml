@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Kamera wechseln</string>
     <string name="ui_camera_mode" formatted="false">Kameramodus</string>
     <string name="ui_save_scan" formatted="false">Scan speichern</string>
+    <string name="ui_review_products" formatted="false">Produkte prüfen</string>
+    <string name="ui_product_count" formatted="false">%1$d Produkte</string>
+    <string name="ui_product" formatted="false">Produkt</string>
+    <string name="ui_review" formatted="false">prüfen</string>
+    <string name="ui_unknown_lot" formatted="false">Los unbekannt</string>
+    <string name="ui_conflict" formatted="false">Widersprüchliche Daten</string>
+    <string name="ui_group_hint" formatted="false">Etiketten bleiben getrennt. Nur Codes derselben Schachtel gruppieren. Anzahl und Lose prüfen; manuelle Lose bleiben markiert.</string>
+    <string name="ui_group_selected" formatted="false">Ausgewählte Codes gruppieren</string>
+    <string name="ui_split_selected" formatted="false">Ausgewählte Gruppen trennen</string>
+    <string name="ui_grouping_error" formatted="false">Keine verschiedenen Lose oder Produkte gruppieren. Widersprüchliche Codes trennen.</string>
 </resources>

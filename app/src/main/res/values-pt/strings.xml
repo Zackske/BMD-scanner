@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Mudar câmara</string>
     <string name="ui_camera_mode" formatted="false">Modo de câmara</string>
     <string name="ui_save_scan" formatted="false">Guardar digitalização</string>
+    <string name="ui_review_products" formatted="false">Rever produtos</string>
+    <string name="ui_product_count" formatted="false">%1$d produtos</string>
+    <string name="ui_product" formatted="false">Produto</string>
+    <string name="ui_review" formatted="false">rever</string>
+    <string name="ui_unknown_lot" formatted="false">Lote desconhecido</string>
+    <string name="ui_conflict" formatted="false">Dados contraditórios</string>
+    <string name="ui_group_hint" formatted="false">As etiquetas ficam separadas. Agrupe apenas códigos da mesma caixa. Reveja quantidades e lotes; os lotes manuais ficam assinalados.</string>
+    <string name="ui_group_selected" formatted="false">Agrupar códigos selecionados</string>
+    <string name="ui_split_selected" formatted="false">Separar grupos selecionados</string>
+    <string name="ui_grouping_error" formatted="false">Não agrupe lotes ou produtos diferentes. Separe códigos contraditórios.</string>
 </resources>

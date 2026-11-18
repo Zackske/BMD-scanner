@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Switch camera</string>
     <string name="ui_camera_mode" formatted="false">Camera mode</string>
     <string name="ui_save_scan" formatted="false">Save scan</string>
+    <string name="ui_review_products" formatted="false">Review products</string>
+    <string name="ui_product_count" formatted="false">%1$d products</string>
+    <string name="ui_product" formatted="false">Product</string>
+    <string name="ui_review" formatted="false">review</string>
+    <string name="ui_unknown_lot" formatted="false">Unknown lot</string>
+    <string name="ui_conflict" formatted="false">Conflicting data</string>
+    <string name="ui_group_hint" formatted="false">Labels stay separate. Group only codes on the same physical box. Review counts and lots; manual lots remain marked.</string>
+    <string name="ui_group_selected" formatted="false">Group selected codes</string>
+    <string name="ui_split_selected" formatted="false">Split selected groups</string>
+    <string name="ui_grouping_error" formatted="false">Do not group different lots or products. Split conflicting codes.</string>
 </resources>

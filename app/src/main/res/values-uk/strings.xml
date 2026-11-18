@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Змінити камеру</string>
     <string name="ui_camera_mode" formatted="false">Режим камери</string>
     <string name="ui_save_scan" formatted="false">Зберегти скан</string>
+    <string name="ui_review_products" formatted="false">Перевірити вироби</string>
+    <string name="ui_product_count" formatted="false">%1$d виробів</string>
+    <string name="ui_product" formatted="false">Виріб</string>
+    <string name="ui_review" formatted="false">перевірка</string>
+    <string name="ui_unknown_lot" formatted="false">Лот невідомий</string>
+    <string name="ui_conflict" formatted="false">Суперечливі дані</string>
+    <string name="ui_group_hint" formatted="false">Етикетки залишаються окремими. Групуйте лише коди однієї коробки. Перевірте кількість і лоти; ручні лоти залишаються позначеними.</string>
+    <string name="ui_group_selected" formatted="false">Згрупувати вибрані коди</string>
+    <string name="ui_split_selected" formatted="false">Розділити вибрані групи</string>
+    <string name="ui_grouping_error" formatted="false">Не групуйте різні лоти або вироби. Розділіть суперечливі коди.</string>
 </resources>

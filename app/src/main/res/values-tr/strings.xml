@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Kamerayı değiştir</string>
     <string name="ui_camera_mode" formatted="false">Kamera modu</string>
     <string name="ui_save_scan" formatted="false">Taramayı kaydet</string>
+    <string name="ui_review_products" formatted="false">Ürünleri kontrol et</string>
+    <string name="ui_product_count" formatted="false">%1$d ürün</string>
+    <string name="ui_product" formatted="false">Ürün</string>
+    <string name="ui_review" formatted="false">kontrol</string>
+    <string name="ui_unknown_lot" formatted="false">Lot bilinmiyor</string>
+    <string name="ui_conflict" formatted="false">Çelişkili veriler</string>
+    <string name="ui_group_hint" formatted="false">Etiketler ayrı kalır. Yalnız aynı kutudaki kodları gruplayın. Sayıları ve lotları kontrol edin; elle girilen lotlar işaretli kalır.</string>
+    <string name="ui_group_selected" formatted="false">Seçili kodları grupla</string>
+    <string name="ui_split_selected" formatted="false">Seçili grupları ayır</string>
+    <string name="ui_grouping_error" formatted="false">Farklı lotları veya ürünleri gruplamayın. Çelişkili kodları ayırın.</string>
 </resources>

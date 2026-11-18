@@ -7,7 +7,7 @@ adb logcat -c
 adb logcat -v threadtime > device-screenshots/logcat.txt 2>&1 &
 log_pid=$!
 status=0
-timeout 9m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.bmd.scanner.DesignValidationTest,com.bmd.scanner.CameraControlsTest || status=$?
+timeout 12m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.bmd.scanner.DesignValidationTest,com.bmd.scanner.CameraControlsTest,com.bmd.scanner.NativeBulkTest || status=$?
 kill "$log_pid" 2>/dev/null || true
 timeout 20s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
 if [ "$status" -ne 0 ]; then

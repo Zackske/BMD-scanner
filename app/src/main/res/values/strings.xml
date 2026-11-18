@@ -87,4 +87,14 @@
     <string name="ui_switch_camera">Camera wisselen</string>
     <string name="ui_camera_mode" formatted="false">Cameramodus</string>
     <string name="ui_save_scan" formatted="false">Scan opslaan</string>
+    <string name="ui_review_products" formatted="false">Producten controleren</string>
+    <string name="ui_product_count" formatted="false">%1$d producten</string>
+    <string name="ui_product" formatted="false">Product</string>
+    <string name="ui_review" formatted="false">controleren</string>
+    <string name="ui_unknown_lot" formatted="false">Lot onbekend</string>
+    <string name="ui_conflict" formatted="false">Conflicterende gegevens</string>
+    <string name="ui_group_hint" formatted="false">Labels blijven apart. Groepeer alleen codes op dezelfde fysieke doos. Controleer aantallen en lots; handmatige lots blijven gemarkeerd.</string>
+    <string name="ui_group_selected" formatted="false">Geselecteerde codes groeperen</string>
+    <string name="ui_split_selected" formatted="false">Geselecteerde groepen splitsen</string>
+    <string name="ui_grouping_error" formatted="false">Groepeer geen verschillende lots of producten. Splits conflicterende codes.</string>
 </resources>
