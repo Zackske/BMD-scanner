@@ -1,6 +1,6 @@
 # BMD Scan 3.1 — experimental bulk scanner
 
-Adds the ZXing-C++ Android 3.1.1 multi-symbol decoder (pinned dependency) for QR, Data Matrix and linear barcodes. 2D mode includes QR and Data Matrix; combined mode adds linear barcodes. Dense images use overlapping native passes instead of relying on one pass's 255-symbol ceiling. Full-resolution capture decoding is performed off the UI thread.
+Adds the ZXing-C++ Android 2.3.0 multi-symbol decoder (pinned dependency) for QR, Data Matrix and linear barcodes. 2D mode includes QR and Data Matrix; combined mode adds linear barcodes. Dense images use overlapping native passes instead of relying on one pass's 255-symbol ceiling. Full-resolution capture decoding is performed off the UI thread.
 
 LotData extracts supported GS1 fields from HRI or separator-delimited data: GTIN (01), lot (10), expiry (17); unrecognised fields/data do not become guessed lots. Unknown/conflicting lots remain marked for review. Manual lot edits are identified in exported rows. Lot colours appear only in numbered check badges and legend dots, never in product outlines. Colour assignments persist and do not indicate shipment approval.
 

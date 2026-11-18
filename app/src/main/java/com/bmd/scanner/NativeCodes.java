@@ -13,7 +13,7 @@ final class NativeCodes {
         BarcodeReader.Options options=new BarcodeReader.Options();
         Set<BarcodeReader.Format> formats=new HashSet<>();
         if(!mode.equals("bar")){formats.add(BarcodeReader.Format.QR_CODE);formats.add(BarcodeReader.Format.DATA_MATRIX);}
-        if(!mode.equals("qr"))formats.add(BarcodeReader.Format.ALL_LINEAR);
+        if(!mode.equals("qr"))formats.addAll(Arrays.asList(BarcodeReader.Format.CODE_128,BarcodeReader.Format.CODE_39,BarcodeReader.Format.CODE_93,BarcodeReader.Format.CODABAR,BarcodeReader.Format.EAN_13,BarcodeReader.Format.EAN_8,BarcodeReader.Format.ITF,BarcodeReader.Format.UPC_A,BarcodeReader.Format.UPC_E,BarcodeReader.Format.DATA_BAR,BarcodeReader.Format.DATA_BAR_EXPANDED,BarcodeReader.Format.DATA_BAR_LIMITED));
         options.setFormats(formats);options.setTryHarder(true);options.setTryRotate(true);options.setTryInvert(true);options.setTryDownscale(false);options.setMaxNumberOfSymbols(255);options.setTextMode(BarcodeReader.TextMode.HRI);
         List<ScanTracker.Detection> result=new ArrayList<>();BarcodeReader reader=new BarcodeReader(options);readRegion(reader,bitmap,new Rect(),result);
         // Overlapping native passes avoid a single-pass symbol ceiling on dense scenes.
@@ -26,7 +26,7 @@ final class NativeCodes {
     private static void readRegion(BarcodeReader reader,Bitmap bitmap,Rect crop,List<ScanTracker.Detection> result){
         int ox=crop.isEmpty()?0:crop.left,oy=crop.isEmpty()?0:crop.top;
         for(BarcodeReader.Result code:reader.read(bitmap,crop,0)){
-            if((code.getError()!=null&&code.getError().getType()!=BarcodeReader.ErrorType.NONE)||code.getText()==null||code.getText().isEmpty())continue;
+            if(code.getError()!=null||code.getText()==null||code.getText().isEmpty())continue;
             BarcodeReader.Position p=code.getPosition();Point[] points={p.getTopLeft(),p.getTopRight(),p.getBottomRight(),p.getBottomLeft()};
             float l=bitmap.getWidth(),t=bitmap.getHeight(),r=0,b=0;for(Point q:points){l=Math.min(l,q.x+ox);t=Math.min(t,q.y+oy);r=Math.max(r,q.x+ox);b=Math.max(b,q.y+oy);}
             float margin=Math.max(2,(b-t)*.10f);if(b-t<4){t-=4;b+=4;}
