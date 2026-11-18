@@ -15,6 +15,16 @@ jobs:
           python-version: '3.12'
       - run: pip install zxing-cpp==2.3.0 Pillow==11.1.0
       - run: python tools/real-box-benchmark.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Inspect linear readers on unaltered images
+        run: |
+          curl -fsSL https://repo.maven.apache.org/maven2/com/google/zxing/core/3.5.3/core-3.5.3.jar -o core.jar
+          mkdir -p linear-classes
+          javac -cp core.jar -d linear-classes tools/InspectLinear.java app/src/main/java/com/bmd/scanner/PhysicalCodeReader.java app/src/main/java/com/bmd/scanner/ScanTracker.java
+          java -cp linear-classes:core.jar com.bmd.scanner.InspectLinear | tee diagnostics/linear.txt
       - uses: actions/upload-artifact@v4
         with:
           name: real-box-diagnostics
