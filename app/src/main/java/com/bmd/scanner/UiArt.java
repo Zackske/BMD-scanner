@@ -15,7 +15,17 @@ final class UiArt {
         sheen.setCornerRadius(radius);
         return new LayerDrawable(new Drawable[]{base,sheen});
     }
-    static Drawable raised(int top,int bottom,int edge,float radius){return new android.graphics.drawable.Drawable(){private final Paint p=new Paint(3);@Override public void draw(Canvas c){Rect bounds=getBounds();float w=bounds.width(),h=bounds.height(),depth=5*c.getDensity()/160f;c.save();c.translate(bounds.left,bounds.top);p.setShader(null);p.setStyle(Paint.Style.FILL);p.setColor(0xff000a1c);c.drawRoundRect(0,depth,w,h,radius,radius,p);p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,0xff001329},null,Shader.TileMode.CLAMP));RectF face=new RectF(1,1,w-1,h-depth);c.drawRoundRect(face,radius,radius,p);p.setShader(null);int layer=c.save();Path clip=new Path();clip.addRoundRect(face,radius,radius,Path.Direction.CW);c.clipPath(clip);p.setShader(new LinearGradient(0,0,0,h*.4f,new int[]{0x88ffffff,0x10ffffff,0x00ffffff},null,Shader.TileMode.CLAMP));Path gloss=new Path();gloss.moveTo(0,0);gloss.lineTo(w,0);gloss.lineTo(w,h*.12f);gloss.quadTo(w*.4f,h*.14f,0,h*.3f);gloss.close();c.drawPath(gloss,p);c.restoreToCount(layer);p.setShader(new LinearGradient(0,0,w,h,new int[]{Color.WHITE,edge,0xff00233c},null,Shader.TileMode.CLAMP));p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2);c.drawRoundRect(face,radius,radius,p);p.setShader(null);c.restore();}@Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter filter){p.setColorFilter(filter);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}@Override public void getOutline(Outline outline){outline.setRoundRect(getBounds(),radius);}};}
+    static Drawable raised(int top,int bottom,int edge,float radius){return new Drawable(){
+        private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);
+        @Override public void draw(Canvas c){Rect b=getBounds();float w=b.width(),h=b.height(),d=c.getDensity()/160f,depth=Math.min(6*d,h*.07f),rr=Math.min(radius,Math.min(w,h)*.5f);c.save();c.translate(b.left,b.top);p.setStyle(Paint.Style.FILL);p.setShader(null);p.setColor(0xff000a16);c.drawRoundRect(0,depth,w,h,rr,rr,p);
+            int dark=Color.rgb(Math.round(Color.red(bottom)*.32f),Math.round(Color.green(bottom)*.32f),Math.round(Color.blue(bottom)*.32f));RectF face=new RectF(1,1,w-1,h-depth);p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,dark},new float[]{0,.65f,1},Shader.TileMode.CLAMP));c.drawRoundRect(face,rr,rr,p);p.setShader(null);
+            int clip=c.save();Path mask=new Path();mask.addRoundRect(face,rr,rr,Path.Direction.CW);c.clipPath(mask);
+            p.setShader(new LinearGradient(0,0,0,h*.48f,new int[]{0xb0ffffff,0x22ffffff,0x00ffffff},new float[]{0,.36f,1},Shader.TileMode.CLAMP));Path gloss=new Path();gloss.moveTo(0,0);gloss.lineTo(w,0);gloss.lineTo(w,h*.09f);gloss.cubicTo(w*.65f,h*.15f,w*.20f,h*.12f,0,h*.35f);gloss.close();c.drawPath(gloss,p);p.setShader(null);
+            p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(Math.min(6*d,w*.017f));p.setShader(new LinearGradient(0,0,w,h,new int[]{0xdfffffff,edge,0x50000000},new float[]{0,.35f,1},Shader.TileMode.CLAMP));RectF inner=new RectF(4*d,4*d,w-4*d,h-depth-4*d);c.drawRoundRect(inner,Math.max(1,rr-3*d),Math.max(1,rr-3*d),p);p.setShader(null);c.restoreToCount(clip);
+            p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(Math.max(1,d));p.setShader(new LinearGradient(0,0,w,h,new int[]{Color.WHITE,edge,0xff243c48},new float[]{0,.45f,1},Shader.TileMode.CLAMP));c.drawRoundRect(face,rr,rr,p);p.setShader(null);
+            p.setColor(0xccffffff);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeWidth(Math.min(2*d,w*.01f));Path shine=new Path();shine.moveTo(5*d,Math.min(rr,h*.32f));shine.quadTo(5*d,5*d,Math.min(rr,w*.3f),5*d);shine.lineTo(w*.66f,5*d);c.drawPath(shine,p);p.setStyle(Paint.Style.FILL);c.restore();}
+        @Override public void setAlpha(int a){p.setAlpha(a);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}@Override public void getOutline(Outline o){o.setRoundRect(getBounds(),radius);}
+    };}
     static class Backdrop extends View {
         private final Paint p=new Paint(3);
         Backdrop(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
@@ -85,11 +95,11 @@ final class UiArt {
                 case "photo":
                     canvas.drawRoundRect(7,10,57,54,5,5,p);canvas.drawCircle(43,23,4,p);
                     Path mountain=new Path();mountain.moveTo(9,48);mountain.lineTo(26,29);mountain.lineTo(38,43);mountain.lineTo(46,36);mountain.lineTo(56,48);canvas.drawPath(mountain,p);break;
-                case "users":canvas.drawCircle(23,21,9,p);canvas.drawCircle(47,25,7,p);canvas.drawArc(6,34,40,65,180,180,false,p);canvas.drawArc(36,38,61,61,180,170,false,p);break;
-                case "book":canvas.drawRoundRect(9,8,55,56,4,4,p);canvas.drawLine(20,8,20,56,p);canvas.drawLine(29,21,46,21,p);canvas.drawLine(29,31,46,31,p);break;
+                case "users":canvas.drawCircle(19,22,8,p);canvas.drawCircle(30,14,7,p);canvas.drawRoundRect(6,34,32,54,9,9,p);for(int y=19;y<50;y+=13)canvas.drawLine(43,y,59,y,p);break;
+                case "book":Path book=new Path();book.moveTo(4,12);book.quadTo(18,4,32,15);book.quadTo(46,4,60,12);book.lineTo(60,55);book.quadTo(46,47,32,58);book.quadTo(18,47,4,55);book.close();canvas.drawPath(book,p);canvas.drawLine(32,15,32,58,p);for(int y=22;y<48;y+=12){canvas.drawLine(11,y,14,y+3,p);canvas.drawLine(14,y+3,21,y-4,p);}canvas.drawLine(40,23,53,39,p);canvas.drawLine(53,23,40,39,p);break;
                 case "mail":canvas.drawRoundRect(5,13,59,51,4,4,p);canvas.drawLine(7,16,32,36,p);canvas.drawLine(32,36,57,16,p);break;
                 case "pallet":for(int i=0;i<3;i++)canvas.drawRoundRect(8+i*17,30,24+i*17,47,2,2,p);canvas.drawRoundRect(24,10,41,28,2,2,p);canvas.drawLine(6,53,59,53,p);canvas.drawLine(13,53,13,59,p);canvas.drawLine(51,53,51,59,p);break;
-                case "save":canvas.drawRoundRect(10,7,54,57,5,5,p);canvas.drawRect(21,7,43,25,p);canvas.drawRect(21,38,43,56,p);break;
+                case "save":canvas.drawRoundRect(8,6,49,54,5,5,p);canvas.drawRect(19,6,38,23,p);canvas.drawRect(19,36,38,54,p);canvas.drawCircle(47,47,13,p);canvas.drawLine(40,47,45,52,p);canvas.drawLine(45,52,54,41,p);break;
                 case "list":
                     for(int y=16;y<=48;y+=16){canvas.drawCircle(10,y,2,p);canvas.drawLine(23,y,55,y,p);}break;
                 case "settings":
