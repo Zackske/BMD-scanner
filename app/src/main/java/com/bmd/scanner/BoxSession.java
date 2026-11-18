@@ -18,8 +18,8 @@ final class BoxSession {
     Set<Integer> add(String file,List<ScanTracker.Detection> detections,double[] map){
         // Validate the entire photo before mutating the session.
         List<ScanTracker.Detection> mapped=new ArrayList<>(),originals=new ArrayList<>();for(ScanTracker.Detection d:detections)if(!marker(d.value)){mapped.add(project(d,map));originals.add(d);}
-        Set<Integer> ids=new HashSet<>(),used=new HashSet<>();List<ScanTracker.Item> previous=tracker.items();
-        for(ScanTracker.Detection d:mapped)for(ScanTracker.Item old:previous)if(old.kind.equals(d.kind)&&!old.raw.equals(d.value)&&Math.abs(old.x()-d.x())<Math.min(old.right-old.left,d.right-d.left)*.3f&&Math.abs(old.y()-d.y())<Math.min(old.bottom-old.top,d.bottom-d.top)*.3f)throw new IllegalArgumentException("Conflicting code at the same overview position");
+        Set<Integer> ids=new HashSet<>(),used=new HashSet<>();List<ScanTracker.Item> previous=tracker.all();
+        for(ScanTracker.Detection d:mapped)for(ScanTracker.Item old:previous)if(!old.deleted&&old.kind.equals(d.kind)&&!old.raw.equals(d.value)&&Math.abs(old.x()-d.x())<Math.min(old.right-old.left,d.right-d.left)*.3f&&Math.abs(old.y()-d.y())<Math.min(old.bottom-old.top,d.bottom-d.top)*.3f)throw new IllegalArgumentException("Conflicting code at the same overview position");
         Map<Integer,ScanTracker.Detection> observations=new LinkedHashMap<>();int index=0;for(ScanTracker.Detection d:mapped){ScanTracker.Item match=null;float best=Float.MAX_VALUE;for(ScanTracker.Item old:previous){if(used.contains(old.id)||!old.raw.equals(d.value)||!old.kind.equals(d.kind))continue;float gx=Math.max(.001f,Math.min(old.right-old.left,d.right-d.left)*.3f),gy=Math.max(.001f,Math.min(old.bottom-old.top,d.bottom-d.top)*.3f);float dx=Math.abs(old.x()-d.x()),dy=Math.abs(old.y()-d.y());if(dx<=gx&&dy<=gy&&dx/gx+dy/gy<best){best=dx/gx+dy/gy;match=old;}}
             if(match==null){tracker.importCode(d,System.currentTimeMillis());List<ScanTracker.Item> all=tracker.items();int id=all.get(all.size()-1).id;ids.add(id);observations.put(id,originals.get(index));}else{ids.add(match.id);used.add(match.id);observations.put(match.id,originals.get(index));}index++;}
         shots.add(new Shot(file,map,ids,observations));reviewed=false;products.project(tracker.items());return ids;
@@ -27,4 +27,3 @@ final class BoxSession {
     boolean countMatches(){return products.view(tracker.items()).size()==expected;}
     boolean ready(){if(shots.size()<4||!reviewed||!countMatches())return false;for(ProductCatalog.Product p:products.view(tracker.items()))if(p.conflict||p.lot.isEmpty())return false;return true;}
 }
-

@@ -11,5 +11,6 @@ public class BoxSessionTest {
     @Test public void markerCodesNeverCountAsProducts(){BoxSession s=new BoxSession(1);s.add("a",Arrays.asList(new ScanTracker.Detection("BMD-BOX-A","QR",.1f,.1f,.2f,.2f)),I);assertEquals(0,s.tracker.items().size());}
     @Test public void invalidPhotoCannotPartiallyMutateSession(){BoxSession s=new BoxSession(1);try{s.add("a",Arrays.asList(code(.1f,.1f),code(1.2f,.1f)),I);fail();}catch(IllegalArgumentException expected){}assertTrue(s.tracker.items().isEmpty());assertTrue(s.shots.isEmpty());}
     @Test public void equalCountStillRequiresReviewAndFourPhotos(){BoxSession s=new BoxSession(1);s.add("a",Arrays.asList(code(.1f,.1f)),I);s.reviewed=true;assertFalse(s.ready());for(int n=0;n<3;n++)s.add("x"+n,Arrays.asList(code(.1f,.1f)),I);assertFalse(s.ready());s.reviewed=true;assertTrue(s.ready());}
-}
+    @Test public void manuallyExcludedCodeDoesNotReappearWhenAnotherPhotoSeesIt(){BoxSession s=new BoxSession(1);s.add("a",Arrays.asList(code(.1f,.1f)),I);s.tracker.remove(s.tracker.items().get(0).id);s.add("b",Arrays.asList(code(.101f,.101f)),I);assertTrue(s.tracker.items().isEmpty());assertEquals(1,s.tracker.all().size());assertFalse(s.ready());}
 
+}
