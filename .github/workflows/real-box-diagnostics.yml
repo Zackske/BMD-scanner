@@ -15,6 +15,7 @@ jobs:
           python-version: '3.12'
       - run: pip install zxing-cpp==2.3.0 Pillow==11.1.0
       - run: python tools/real-box-benchmark.py
+      - run: python tools/inspect-native-linear.py
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
