@@ -47,5 +47,9 @@ public class NativeBulkTest {
             DeviceSupport.shot(scenario,"build3-bulk-synthetic-lots");
         }finally{if(!image.isRecycled())image.recycle();}
     }
+    @Test public void overlappingBarcodeBandsMergeButAdjacentBoxesRemainSeparate(){
+        ScanTracker.Detection a=new ScanTracker.Detection("same","Barcode",.22f,.66f,.75f,.74f),b=new ScanTracker.Detection("same","Barcode",.22f,.72f,.75f,.81f),nextBox=new ScanTracker.Detection("same","Barcode",.22f,.84f,.75f,.93f);
+        assertEquals(1,NativeCodes.mergeLinear(Arrays.asList(a,b),765,300).size());assertEquals(2,NativeCodes.mergeLinear(Arrays.asList(a,b,nextBox),765,300).size());
+    }
 }
 
