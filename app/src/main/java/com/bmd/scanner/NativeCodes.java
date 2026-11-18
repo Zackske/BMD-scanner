@@ -24,7 +24,15 @@ final class NativeCodes {
             int overlapX=Math.max(16,bitmap.getWidth()/20),overlapY=Math.max(16,bitmap.getHeight()/20);
             for(int row=0;row<2;row++)for(int col=0;col<2;col++)readRegion(reader,bitmap,new Rect(Math.max(0,col*bitmap.getWidth()/2-overlapX),Math.max(0,row*bitmap.getHeight()/2-overlapY),Math.min(bitmap.getWidth(),(col+1)*bitmap.getWidth()/2+overlapX),Math.min(bitmap.getHeight(),(row+1)*bitmap.getHeight()/2+overlapY)),result);
         }
-        if(detailed&&result.size()<32){regions(reader,bitmap,result);if(Math.max(bitmap.getWidth(),bitmap.getHeight())<1800){Bitmap enlarged=Bitmap.createScaledBitmap(bitmap,bitmap.getWidth()*3,bitmap.getHeight()*3,false);try{readRegion(reader,enlarged,new Rect(),result);regions(reader,enlarged,result);}finally{enlarged.recycle();}}}
+        if(detailed&&result.size()<64){
+            regions(reader,bitmap,result);
+            // Enlarge bounded overlapping tiles, never a complete high-resolution photo.
+            for(int scale=2;scale<=3;scale++)for(int y=0;y<bitmap.getHeight();y+=320)for(int x=0;x<bitmap.getWidth();x+=320){
+                int left=Math.max(0,x-64),top=Math.max(0,y-64),right=Math.min(bitmap.getWidth(),x+384),bottom=Math.min(bitmap.getHeight(),y+384);
+                Bitmap tile=Bitmap.createBitmap(bitmap,left,top,right-left,bottom-top),large=Bitmap.createScaledBitmap(tile,tile.getWidth()*scale,tile.getHeight()*scale,false);
+                List<ScanTracker.Detection> local=new ArrayList<>();try{readRegion(reader,large,new Rect(),local);for(ScanTracker.Detection d:local)append(result,new ScanTracker.Detection(d.value,d.kind,(left+d.left*tile.getWidth())/bitmap.getWidth(),(top+d.top*tile.getHeight())/bitmap.getHeight(),(left+d.right*tile.getWidth())/bitmap.getWidth(),(top+d.bottom*tile.getHeight())/bitmap.getHeight()),bitmap.getWidth(),bitmap.getHeight());}finally{large.recycle();if(tile!=bitmap)tile.recycle();}
+            }
+        }
         result.sort(Comparator.comparingDouble((ScanTracker.Detection d)->d.top).thenComparingDouble(d->d.left));return result;
     }
     private static List<ScanTracker.Detection> linear(Bitmap bitmap){int w=bitmap.getWidth(),h=bitmap.getHeight();int[] rgb=new int[w*h];bitmap.getPixels(rgb,0,w,0,0,w,h);byte[] gray=new byte[rgb.length];for(int i=0;i<rgb.length;i++){int c=rgb[i];gray[i]=(byte)((((c>>16)&255)*306+((c>>8)&255)*601+(c&255)*117)>>10);}return mergeLinear(PhysicalCodeReader.decode(gray,w,h,"bar"),w,h);}
@@ -39,8 +47,11 @@ final class NativeCodes {
             float margin=Math.max(2,(b-t)*.10f);if(b-t<4){t-=4;b+=4;}
             String kind=code.getFormat()==BarcodeReader.Format.DATA_MATRIX?"Data Matrix":code.getFormat().name().startsWith("QR_CODE")?"QR":"Barcode";
             ScanTracker.Detection detection=new ScanTracker.Detection(code.getText(),kind,Math.max(0,(l-margin)/bitmap.getWidth()),Math.max(0,(t-margin)/bitmap.getHeight()),Math.min(1,(r+margin)/bitmap.getWidth()),Math.min(1,(b+margin)/bitmap.getHeight()));
-            boolean duplicate=false;for(ScanTracker.Detection old:result)if(old.kind.equals(detection.kind)&&old.value.equals(detection.value)&&Math.abs(old.x()-detection.x())<Math.max(2f/bitmap.getWidth(),Math.min(old.right-old.left,detection.right-detection.left)*.3f)&&Math.abs(old.y()-detection.y())<Math.max(2f/bitmap.getHeight(),Math.min(old.bottom-old.top,detection.bottom-detection.top)*.3f)){duplicate=true;break;}if(!duplicate)result.add(detection);
+            append(result,detection,bitmap.getWidth(),bitmap.getHeight());
         }
     }
+    private static void append(List<ScanTracker.Detection> result,ScanTracker.Detection d,int width,int height){boolean duplicate=false;for(ScanTracker.Detection old:result)if(old.kind.equals(d.kind)&&old.value.equals(d.value)&&Math.abs(old.x()-d.x())<Math.max(2f/width,Math.min(old.right-old.left,d.right-d.left)*.3f)&&Math.abs(old.y()-d.y())<Math.max(2f/height,Math.min(old.bottom-old.top,d.bottom-d.top)*.3f)){duplicate=true;break;}if(!duplicate)result.add(d);}
+
 }
+
 

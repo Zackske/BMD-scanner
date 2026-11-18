@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_box_scan" formatted="false">Geführter Kartonscan</string>
+    <string name="ui_live_scan" formatted="false">Live scannen</string>
+    <string name="ui_count_question" formatted="false">Wie viele Produkte erwartest du in diesem Karton?</string>
+    <string name="ui_expected_count" formatted="false">Erwartete Anzahl</string>
+    <string name="ui_count_hint" formatted="false">Gib die tatsächliche erwartete Anzahl ein. Fehlende Scans werden nicht ergänzt.</string>
+    <string name="ui_count_invalid" formatted="false">Gib eine ganze Zahl von 1 bis 10000 ein.</string>
+    <string name="ui_box_instructions" formatted="false">1. Übersicht aufnehmen. 2. Vier Bereiche mit 30% Überlappung fotografieren. 3. Jede Position und die Produktliste prüfen.</string>
+    <string name="ui_marker_help" formatted="false">A, B, C und D oben links, oben rechts, unten links und unten rechts platzieren. Marker und Produkte nicht bewegen. Detailbilder benötigen sichtbare Marker oder klare Überlappung.</string>
+    <string name="ui_box_limits" formatted="false">Experimentell: verdeckte oder vollständig übersehene Codes können unsichtbar bleiben. Identische Produkte und wiederholte Muster können falsch zugeordnet werden.</string>
+    <string name="ui_marker_sheet" formatted="false">Markerblatt teilen</string>
+    <string name="ui_make_overview" formatted="false">Übersicht aufnehmen</string>
+    <string name="ui_overview" formatted="false">Übersicht</string>
+    <string name="ui_detail_photo">Detailfoto %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Zusätzliches Detailfoto</string>
+    <string name="ui_top_left" formatted="false">Oben links</string>
+    <string name="ui_top_right" formatted="false">Oben rechts</string>
+    <string name="ui_bottom_left" formatted="false">Unten links</string>
+    <string name="ui_bottom_right" formatted="false">Unten rechts</string>
+    <string name="ui_overview_hint" formatted="false">Den ganzen Karton und die Marker aufnehmen.</string>
+    <string name="ui_detail_hint" formatted="false">Dem Kartenfeld folgen. Etwa 30% Überlappung halten und Reflexionen vermeiden.</string>
+    <string name="ui_box_progress">%1$d / %2$d Produkte · vorläufig</string>
+    <string name="ui_unreviewed" formatted="false">Prüfung erforderlich</string>
+    <string name="ui_live_codes">%1$d Codes im Bild</string>
+    <string name="ui_placement" formatted="false">Position prüfen</string>
+    <string name="ui_alignment_failed" formatted="false">Keine zuverlässige Position gefunden. Mit mehr Überlappung und sichtbaren Markern erneut aufnehmen. Dieses Foto wurde nicht addiert.</string>
+    <string name="ui_alignment_check" formatted="false">Prüfe, ob der blaue Umriss genau zum fotografierten Bereich passt. Wiederholte Muster können die Position verfälschen.</string>
+    <string name="ui_confirm_placement" formatted="false">Position korrekt · hinzufügen</string>
+    <string name="ui_photos_taken">%1$d Detailfotos aufgenommen</string>
+    <string name="ui_no_auto_approval" formatted="false">Eine passende Anzahl ist keine Versandfreigabe. Einzelne Produkte, Chargen und Doppelzählungen prüfen.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Anzahl stimmt · manuell geprüft</string>
+    <string name="ui_change_count" formatted="false">Erwartete Anzahl ändern</string>
+    <string name="ui_new_box" formatted="false">Neuer Karton</string>
+    <string name="ui_take_detail" formatted="false">Detailfoto aufnehmen</string>
+</resources>
+

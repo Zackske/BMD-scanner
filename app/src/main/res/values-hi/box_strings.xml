@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_box_scan" formatted="false">निर्देशित बॉक्स स्कैन</string>
+    <string name="ui_live_scan" formatted="false">लाइव स्कैन</string>
+    <string name="ui_count_question" formatted="false">इस बॉक्स में कितने उत्पाद होने चाहिए?</string>
+    <string name="ui_expected_count" formatted="false">अपेक्षित संख्या</string>
+    <string name="ui_count_hint" formatted="false">वास्तविक अपेक्षित संख्या दर्ज करें। इससे छूटे स्कैन नहीं भरते।</string>
+    <string name="ui_count_invalid" formatted="false">1 से 10000 तक पूर्णांक दर्ज करें।</string>
+    <string name="ui_box_instructions" formatted="false">1. पूरा बॉक्स खींचें। 2. चार हिस्सों की फोटो 30% ओवरलैप के साथ लें। 3. हर स्थिति और उत्पाद सूची जाँचें।</string>
+    <string name="ui_marker_help" formatted="false">A, B, C और D को ऊपर बाएँ, ऊपर दाएँ, नीचे बाएँ और नीचे दाएँ रखें। निशान और उत्पाद न हिलाएँ। विस्तृत फोटो में निशान या स्पष्ट ओवरलैप चाहिए।</string>
+    <string name="ui_box_limits" formatted="false">प्रायोगिक: छिपे या पूरी तरह छूटे कोड अदृश्य रह सकते हैं। समान उत्पाद और दोहराए पैटर्न गलत जुड़ सकते हैं।</string>
+    <string name="ui_marker_sheet" formatted="false">मार्कर शीट साझा करें</string>
+    <string name="ui_make_overview" formatted="false">पूरे बॉक्स की फोटो लें</string>
+    <string name="ui_overview" formatted="false">पूरा दृश्य</string>
+    <string name="ui_detail_photo">विस्तृत फोटो %1$d</string>
+    <string name="ui_extra_photo" formatted="false">अतिरिक्त फोटो</string>
+    <string name="ui_top_left" formatted="false">ऊपर बाएँ</string>
+    <string name="ui_top_right" formatted="false">ऊपर दाएँ</string>
+    <string name="ui_bottom_left" formatted="false">नीचे बाएँ</string>
+    <string name="ui_bottom_right" formatted="false">नीचे दाएँ</string>
+    <string name="ui_overview_hint" formatted="false">पूरा बॉक्स और निशान फोटो में रखें।</string>
+    <string name="ui_detail_hint" formatted="false">नक्शे के हिस्से का पालन करें। लगभग 30% ओवरलैप रखें और चमक से बचें।</string>
+    <string name="ui_box_progress">%1$d / %2$d उत्पाद · प्रारंभिक</string>
+    <string name="ui_unreviewed" formatted="false">जाँच आवश्यक</string>
+    <string name="ui_live_codes">दृश्य में %1$d कोड</string>
+    <string name="ui_placement" formatted="false">स्थिति जाँचें</string>
+    <string name="ui_alignment_failed" formatted="false">विश्वसनीय स्थिति नहीं मिली। अधिक ओवरलैप और दिखने वाले निशानों के साथ फिर लें। यह फोटो नहीं जोड़ी गई।</string>
+    <string name="ui_alignment_check" formatted="false">जाँचें कि नीली सीमा ठीक उसी हिस्से पर है। दोहराए पैटर्न गलत स्थिति दे सकते हैं।</string>
+    <string name="ui_confirm_placement" formatted="false">स्थिति सही · जोड़ें</string>
+    <string name="ui_photos_taken">%1$d विस्तृत फोटो ली गईं</string>
+    <string name="ui_no_auto_approval" formatted="false">सही संख्या भेजने की अनुमति नहीं है। अलग उत्पाद, लॉट और दोहरी गिनती जाँचें।</string>
+    <string name="ui_count_equal_reviewed" formatted="false">संख्या सही · मैन्युअल जाँच हुई</string>
+    <string name="ui_change_count" formatted="false">अपेक्षित संख्या बदलें</string>
+    <string name="ui_new_box" formatted="false">नया बॉक्स</string>
+    <string name="ui_take_detail" formatted="false">विस्तृत फोटो लें</string>
+</resources>
+

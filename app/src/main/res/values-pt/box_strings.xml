@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_box_scan" formatted="false">Leitura guiada da caixa</string>
+    <string name="ui_live_scan" formatted="false">Leitura em direto</string>
+    <string name="ui_count_question" formatted="false">Quantos produtos espera nesta caixa?</string>
+    <string name="ui_expected_count" formatted="false">Quantidade esperada</string>
+    <string name="ui_count_hint" formatted="false">Introduza a quantidade real esperada. Não preenche leituras em falta.</string>
+    <string name="ui_count_invalid" formatted="false">Introduza um número inteiro de 1 a 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Tire uma vista geral. 2. Fotografe quatro áreas com 30% de sobreposição. 3. Reveja posições e lista.</string>
+    <string name="ui_marker_help" formatted="false">Coloque A, B, C e D no canto superior esquerdo, superior direito, inferior esquerdo e inferior direito. Não mova marcadores ou produtos. Os detalhes precisam de marcadores visíveis ou sobreposição clara.</string>
+    <string name="ui_box_limits" formatted="false">Experimental: códigos ocultos ou não detetados podem ficar invisíveis. Produtos idênticos e padrões repetidos podem ser associados incorretamente.</string>
+    <string name="ui_marker_sheet" formatted="false">Partilhar marcadores</string>
+    <string name="ui_make_overview" formatted="false">Tirar vista geral</string>
+    <string name="ui_overview" formatted="false">Vista geral</string>
+    <string name="ui_detail_photo">Foto de detalhe %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Foto adicional</string>
+    <string name="ui_top_left" formatted="false">Superior esquerdo</string>
+    <string name="ui_top_right" formatted="false">Superior direito</string>
+    <string name="ui_bottom_left" formatted="false">Inferior esquerdo</string>
+    <string name="ui_bottom_right" formatted="false">Inferior direito</string>
+    <string name="ui_overview_hint" formatted="false">Inclua toda a caixa e os marcadores.</string>
+    <string name="ui_detail_hint" formatted="false">Siga a área. Mantenha cerca de 30% de sobreposição e evite reflexos.</string>
+    <string name="ui_box_progress">%1$d / %2$d produtos · provisório</string>
+    <string name="ui_unreviewed" formatted="false">Revisão necessária</string>
+    <string name="ui_live_codes">%1$d códigos na imagem</string>
+    <string name="ui_placement" formatted="false">Rever posição</string>
+    <string name="ui_alignment_failed" formatted="false">Não foi encontrada uma posição fiável. Repita com mais sobreposição e marcadores visíveis. Esta foto não foi somada.</string>
+    <string name="ui_alignment_check" formatted="false">Confirme que o contorno azul corresponde exatamente à área fotografada. Padrões repetidos podem causar erros.</string>
+    <string name="ui_confirm_placement" formatted="false">Posição correta · adicionar</string>
+    <string name="ui_photos_taken">%1$d fotos de detalhe captadas</string>
+    <string name="ui_no_auto_approval" formatted="false">A quantidade correta não autoriza a expedição. Reveja produtos, lotes e duplicados.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Quantidade correta · revisão manual</string>
+    <string name="ui_change_count" formatted="false">Alterar quantidade esperada</string>
+    <string name="ui_new_box" formatted="false">Nova caixa</string>
+    <string name="ui_take_detail" formatted="false">Tirar detalhe</string>
+</resources>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_box_scan" formatted="false">Scan guidé du carton</string>
+    <string name="ui_live_scan" formatted="false">Scan en direct</string>
+    <string name="ui_count_question" formatted="false">Combien de produits attendez-vous dans ce carton ?</string>
+    <string name="ui_expected_count" formatted="false">Quantité attendue</string>
+    <string name="ui_count_hint" formatted="false">Saisissez la quantité réelle attendue. Aucun scan manquant ne sera ajouté.</string>
+    <string name="ui_count_invalid" formatted="false">Saisissez un entier de 1 à 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Prenez une vue générale. 2. Photographiez quatre zones avec 30% de chevauchement. 3. Vérifiez les positions et la liste.</string>
+    <string name="ui_marker_help" formatted="false">Placez A, B, C et D en haut à gauche, en haut à droite, en bas à gauche et en bas à droite. Ne déplacez ni repères ni produits. Les détails nécessitent des repères visibles ou un chevauchement clair.</string>
+    <string name="ui_box_limits" formatted="false">Expérimental : les codes cachés ou non détectés peuvent rester invisibles. Des produits identiques et motifs répétés peuvent être mal associés.</string>
+    <string name="ui_marker_sheet" formatted="false">Partager les repères</string>
+    <string name="ui_make_overview" formatted="false">Prendre la vue générale</string>
+    <string name="ui_overview" formatted="false">Vue générale</string>
+    <string name="ui_detail_photo">Photo détaillée %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Photo supplémentaire</string>
+    <string name="ui_top_left" formatted="false">En haut à gauche</string>
+    <string name="ui_top_right" formatted="false">En haut à droite</string>
+    <string name="ui_bottom_left" formatted="false">En bas à gauche</string>
+    <string name="ui_bottom_right" formatted="false">En bas à droite</string>
+    <string name="ui_overview_hint" formatted="false">Cadrez le carton entier et ses repères.</string>
+    <string name="ui_detail_hint" formatted="false">Suivez la zone. Gardez environ 30% de chevauchement et évitez les reflets.</string>
+    <string name="ui_box_progress">%1$d / %2$d produits · provisoire</string>
+    <string name="ui_unreviewed" formatted="false">Vérification nécessaire</string>
+    <string name="ui_live_codes">%1$d codes dans le cadre</string>
+    <string name="ui_placement" formatted="false">Vérifier la position</string>
+    <string name="ui_alignment_failed" formatted="false">Position non fiable. Reprenez avec plus de chevauchement et des repères visibles. Cette photo n’a pas été ajoutée.</string>
+    <string name="ui_alignment_check" formatted="false">Vérifiez que le contour bleu correspond exactement à la zone photographiée. Les motifs répétés peuvent fausser la position.</string>
+    <string name="ui_confirm_placement" formatted="false">Position correcte · ajouter</string>
+    <string name="ui_photos_taken">%1$d photos détaillées prises</string>
+    <string name="ui_no_auto_approval" formatted="false">Une quantité correcte ne valide pas une expédition. Vérifiez les produits, les lots et les doublons.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Quantité correcte · vérifiée manuellement</string>
+    <string name="ui_change_count" formatted="false">Modifier la quantité attendue</string>
+    <string name="ui_new_box" formatted="false">Nouveau carton</string>
+    <string name="ui_take_detail" formatted="false">Prendre un détail</string>
+</resources>
+

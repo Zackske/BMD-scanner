@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_box_scan" formatted="false">Guided box scan</string>
+    <string name="ui_live_scan" formatted="false">Live scanning</string>
+    <string name="ui_count_question" formatted="false">How many products do you expect in this box?</string>
+    <string name="ui_expected_count" formatted="false">Expected count</string>
+    <string name="ui_count_hint" formatted="false">Enter the actual expected count. This never fills missing scans.</string>
+    <string name="ui_count_invalid" formatted="false">Enter a whole number from 1 to 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Take an overview. 2. Capture four areas with 30% overlap. 3. Review every placement and the product list.</string>
+    <string name="ui_marker_help" formatted="false">Print A, B, C and D and place them at top left, top right, bottom left and bottom right. Keep markers and products stationary. Details need visible markers or clear overlap.</string>
+    <string name="ui_box_limits" formatted="false">Experimental: hidden or entirely missed codes may remain invisible. Identical products and repeated patterns may be linked incorrectly.</string>
+    <string name="ui_marker_sheet" formatted="false">Share marker sheet</string>
+    <string name="ui_make_overview" formatted="false">Take overview photo</string>
+    <string name="ui_overview" formatted="false">Overview</string>
+    <string name="ui_detail_photo">Detail photo %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Extra detail photo</string>
+    <string name="ui_top_left" formatted="false">Top left</string>
+    <string name="ui_top_right" formatted="false">Top right</string>
+    <string name="ui_bottom_left" formatted="false">Bottom left</string>
+    <string name="ui_bottom_right" formatted="false">Bottom right</string>
+    <string name="ui_overview_hint" formatted="false">Include the whole box and its markers.</string>
+    <string name="ui_detail_hint" formatted="false">Follow the map area. Keep about 30% overlap and avoid reflections.</string>
+    <string name="ui_box_progress">%1$d / %2$d products · provisional</string>
+    <string name="ui_unreviewed" formatted="false">Review required</string>
+    <string name="ui_live_codes">%1$d codes in view</string>
+    <string name="ui_placement" formatted="false">Review placement</string>
+    <string name="ui_alignment_failed" formatted="false">No reliable placement found. Retake with more overlap and visible markers. This photo was not added.</string>
+    <string name="ui_alignment_check" formatted="false">Check that the blue outline matches the photographed area exactly. Repeated patterns can cause incorrect placement.</string>
+    <string name="ui_confirm_placement" formatted="false">Placement correct · add</string>
+    <string name="ui_photos_taken">%1$d detail photos captured</string>
+    <string name="ui_no_auto_approval" formatted="false">Matching counts do not approve shipment. Review individual products, lots and duplicate detections.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Count matches · manually reviewed</string>
+    <string name="ui_change_count" formatted="false">Change expected count</string>
+    <string name="ui_new_box" formatted="false">New box</string>
+    <string name="ui_take_detail" formatted="false">Take detail photo</string>
+</resources>
+
