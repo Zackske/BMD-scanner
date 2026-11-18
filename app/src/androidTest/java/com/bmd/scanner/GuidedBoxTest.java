@@ -14,6 +14,9 @@ import java.util.*;
 import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class GuidedBoxTest {
+    @Test public void unreadQrLocationIsOnlyACandidateAndDisappearsWhenDecoded()throws Exception{
+        com.google.zxing.common.BitMatrix matrix=new com.google.zxing.MultiFormatWriter().encode("BMD-candidate-test",com.google.zxing.BarcodeFormat.QR_CODE,300,300);Bitmap bitmap=Bitmap.createBitmap(400,400,Bitmap.Config.ARGB_8888);bitmap.eraseColor(Color.WHITE);for(int y=0;y<300;y++)for(int x=0;x<300;x++)bitmap.setPixel(x+50,y+50,matrix.get(x,y)?Color.BLACK:Color.WHITE);try{List<ScanTracker.Detection> read=NativeCodes.decode(bitmap,"qr");assertEquals(1,read.size());assertEquals(1,CodeCandidates.find(bitmap,Collections.emptyList()).size());assertTrue(CodeCandidates.find(bitmap,read).isEmpty());}finally{bitmap.recycle();}
+    }
     @Test public void expectedCountIsAskedPersistedAndCannotCreateFakeDetections()throws Exception{
         DeviceSupport.context().getSharedPreferences("BoxScanActivity",0).edit().clear().commit();Intent intent=new Intent(DeviceSupport.context(),BoxScanActivity.class).putExtra("language","nl");
         try(ActivityScenario<BoxScanActivity> scenario=ActivityScenario.launch(intent)){
