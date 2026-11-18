@@ -1,0 +1,30 @@
+name: Diagnose real box photos
+on:
+  push:
+    branches: [research/real-box-decoding]
+permissions:
+  contents: write
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install zxing-cpp==2.3.0 Pillow==11.1.0
+      - run: python tools/real-box-benchmark.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-box-diagnostics
+          path: diagnostics/
+      - name: Save diagnostic report
+        run: |
+          cp diagnostics/report.json test-data/real-box/report.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add test-data/real-box/report.json
+          git commit -m 'Record real box diagnostic results [skip ci]'
+          git push
+
