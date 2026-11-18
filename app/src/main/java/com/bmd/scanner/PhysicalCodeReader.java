@@ -3,6 +3,7 @@ package com.bmd.scanner;
 import com.google.zxing.*;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.multi.qrcode.QRCodeMultiReader;
+import com.google.zxing.oned.MultiFormatOneDReader;
 import java.util.*;
 
 /** Finds physical symbols; equal text on separate labels remains separate. */
@@ -33,6 +34,7 @@ final class PhysicalCodeReader {
         float l=width,t=height,r=0,b=0;for(ResultPoint p:points)if(p!=null){l=Math.min(l,p.getX()+ox);r=Math.max(r,p.getX()+ox);t=Math.min(t,p.getY()+oy);b=Math.max(b,p.getY()+oy);}
         if(r<=l)return null;
         boolean qr=result.getBarcodeFormat()==BarcodeFormat.QR_CODE;
+        if(linear&&!qr&&!supportedRows(result,Math.round((t+b)/2),l,r))return null;
         if(!linear||b-t>8){float px=(r-l)*.18f,py=(b-t)*.18f;l-=px;r+=px;t-=py;b+=py;}
         else { // Find the height of a linear symbol from its repeated row pattern.
             int row=Math.max(0,Math.min(height-1,Math.round((t+b)/2))),left=Math.max(0,(int)l),right=Math.min(width-1,(int)r);
@@ -42,6 +44,13 @@ final class PhysicalCodeReader {
         ScanTracker.Detection d=new ScanTracker.Detection(result.getText(),qr?"QR":"Barcode",Math.max(0,l/width),Math.max(0,t/height),Math.min(1,r/width),Math.min(1,b/height));
         for(ScanTracker.Detection old:found)if(old.value.equals(d.value)&&old.kind.equals(d.kind)&&Math.abs(old.x()-d.x())<Math.max(.012f,(old.right-old.left)*.3f)&&Math.abs(old.y()-d.y())<Math.max(.012f,(old.bottom-old.top)*.3f))return d;
         found.add(d);return d;
+    }
+    /** A checksum hit on one scanline can be a coincidental pattern in stacked text. */
+    private boolean supportedRows(Result expected,int row,float left,float right){
+        Map<DecodeHintType,Object> hints=new EnumMap<>(DecodeHintType.class);hints.put(DecodeHintType.POSSIBLE_FORMATS,Collections.singletonList(expected.getBarcodeFormat()));
+        MultiFormatOneDReader reader=new MultiFormatOneDReader(hints);BinaryBitmap image=bitmap(0,0,width,height);int support=0;
+        for(int offset:new int[]{-6,-3,3,6}){int y=row+offset;if(y<0||y>=height)continue;try{com.google.zxing.common.BitArray bits=image.getBlackRow(y,null);boolean match=false;for(int reverse=0;reverse<2&&!match;reverse++){try{Result read=reader.decodeRow(y,bits,hints);ResultPoint[] points=read.getResultPoints();float l=width,r=0;if(points!=null)for(ResultPoint point:points){l=Math.min(l,point.getX());r=Math.max(r,point.getX());}match=expected.getText().equals(read.getText())&&expected.getBarcodeFormat()==read.getBarcodeFormat()&&Math.abs((l+r-left-right)/2)<Math.max(3,(right-left)*.1f);}catch(ReaderException ignored){}finally{reader.reset();}bits.reverse();}if(match&&++support>=2)return true;}catch(ReaderException ignored){}}
+        return false;
     }
     private boolean similarRow(int a,int b,int l,int r){int total=0,best=0;for(int shift=-3;shift<=3;shift++){int same=0;total=0;for(int x=l;x<=r;x+=2){int sx=x+shift;if(sx<0||sx>=width)continue;if(((pixels[a*width+x]&255)<128)==((pixels[b*width+sx]&255)<128))same++;total++;}if(total>0)best=Math.max(best,(int)(1000L*same/total));}return best>820;}
     /** Adaptive matrix rows avoid edge sharpening that distorts resampled narrow bars. */
@@ -53,3 +62,4 @@ final class PhysicalCodeReader {
         @Override public Binarizer createBinarizer(LuminanceSource source){return new MatrixRows(source);}
     }
 }
+
