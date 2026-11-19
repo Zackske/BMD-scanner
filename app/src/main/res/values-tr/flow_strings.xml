@@ -21,4 +21,6 @@
     <string name="ui_photos_needed">En az %1$d ayrıntı fotoğrafı daha çekin</string>
     <string name="ui_manual_change">Elle değiştirildi</string>
     <string name="ui_review_all">Bu lottaki tüm ürünleri kontrol et</string>
+    <string name="ui_qr_count_check" formatted="false">QR/adet kontrolü</string>
+    <string name="ui_box_pallet_check" formatted="false">Kutu/palet kontrolü</string>
 </resources>

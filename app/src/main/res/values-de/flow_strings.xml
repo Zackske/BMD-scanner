@@ -1,8 +1,8 @@
 <resources>
     <string name="ui_portal">Kundenportal</string>
     <string name="ui_work_instructions">Arbeitsanweisungen</string>
-    <string name="ui_email_check">E-Mail-Prüfung</string>
-    <string name="ui_document_check">Dokumentenprüfung</string>
+    <string name="ui_email_check">E-Mail-Kontrolle</string>
+    <string name="ui_document_check">Dokumentenkontrolle</string>
     <string name="ui_in_development">Diese Funktion wird entwickelt.</string>
     <string name="ui_lots_title">Gescannte Chargen</string>
     <string name="ui_checklist">Prüfliste anzeigen</string>
@@ -21,4 +21,6 @@
     <string name="ui_photos_needed">Mindestens %1$d weitere Detailfotos aufnehmen</string>
     <string name="ui_manual_change">Manuell geändert</string>
     <string name="ui_review_all">Alle Produkte dieser Charge prüfen</string>
+    <string name="ui_qr_count_check" formatted="false">QR-/Mengenkontrolle</string>
+    <string name="ui_box_pallet_check" formatted="false">Karton-/Palettenkontrolle</string>
 </resources>

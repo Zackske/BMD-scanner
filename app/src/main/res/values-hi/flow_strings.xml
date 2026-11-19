@@ -21,4 +21,6 @@
     <string name="ui_photos_needed">कम से कम %1$d और विस्तृत फ़ोटो लें</string>
     <string name="ui_manual_change">मैन्युअल बदलाव</string>
     <string name="ui_review_all">इस लॉट के सभी उत्पाद जाँचें</string>
+    <string name="ui_qr_count_check" formatted="false">QR/संख्या जाँच</string>
+    <string name="ui_box_pallet_check" formatted="false">बॉक्स/पैलेट जाँच</string>
 </resources>
