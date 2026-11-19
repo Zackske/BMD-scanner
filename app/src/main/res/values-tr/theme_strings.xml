@@ -1,0 +1,5 @@
+<resources>
+    <string name="ui_themes">Temalar</string>
+    <string name="ui_colours_appearance">Renkler ve görünüm</string>
+    <string name="ui_choose_theme">Tema seçin</string>
+</resources>

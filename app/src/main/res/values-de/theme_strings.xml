@@ -1,0 +1,5 @@
+<resources>
+    <string name="ui_themes">Designs</string>
+    <string name="ui_colours_appearance">Farben und Darstellung</string>
+    <string name="ui_choose_theme">Design wählen</string>
+</resources>

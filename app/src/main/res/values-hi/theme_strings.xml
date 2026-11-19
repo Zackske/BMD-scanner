@@ -1,0 +1,5 @@
+<resources>
+    <string name="ui_themes">थीम</string>
+    <string name="ui_colours_appearance">रंग और स्वरूप</string>
+    <string name="ui_choose_theme">थीम चुनें</string>
+</resources>

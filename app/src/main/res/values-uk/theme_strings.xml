@@ -1,0 +1,5 @@
+<resources>
+    <string name="ui_themes">Теми</string>
+    <string name="ui_colours_appearance">Кольори та вигляд</string>
+    <string name="ui_choose_theme">Виберіть тему</string>
+</resources>

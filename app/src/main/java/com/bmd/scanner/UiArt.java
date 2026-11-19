@@ -9,16 +9,17 @@ import android.view.View;
 final class UiArt {
     static final int CYAN=0xff00dcff;
     static Drawable card(int top,int bottom,int edge,float radius){
-        GradientDrawable base=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{top,bottom,0xff001329});
+        ThemeSkin skin=ThemeSkin.active;if(skin!=ThemeSkin.BMD){top=skin.top;bottom=skin.bottom;edge=ThemeSkin.edge(edge);}
+        GradientDrawable base=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{top,bottom,ThemeSkin.active.bottom});
         base.setCornerRadius(radius);base.setStroke(2,edge);
         GradientDrawable sheen=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{0x38ffffff,0x00ffffff,0x00102030});
         sheen.setCornerRadius(radius);
         return new LayerDrawable(new Drawable[]{base,sheen});
     }
-    static Drawable raised(int top,int bottom,int edge,float radius){return new Drawable(){
+    static Drawable raised(int requestedTop,int requestedBottom,int requestedEdge,float radius){ThemeSkin skin=ThemeSkin.active;final int top=skin==ThemeSkin.BMD?requestedTop:skin.top,bottom=skin==ThemeSkin.BMD?requestedBottom:skin.bottom,edge=skin==ThemeSkin.BMD?requestedEdge:ThemeSkin.edge(requestedEdge);return new Drawable(){
         private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);
-        @Override public void draw(Canvas c){Rect b=getBounds();float w=b.width(),h=b.height(),d=c.getDensity()/160f,depth=Math.min(6*d,h*.07f),rr=Math.min(radius,Math.min(w,h)*.5f);c.save();c.translate(b.left,b.top);p.setStyle(Paint.Style.FILL);p.setShader(null);p.setColor(0xff000a16);c.drawRoundRect(0,depth,w,h,rr,rr,p);
-            int dark=Color.rgb(Math.round(Color.red(bottom)*.32f),Math.round(Color.green(bottom)*.32f),Math.round(Color.blue(bottom)*.32f));RectF face=new RectF(1,1,w-1,h-depth);p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,dark},new float[]{0,.65f,1},Shader.TileMode.CLAMP));c.drawRoundRect(face,rr,rr,p);p.setShader(null);
+        @Override public void draw(Canvas c){Rect b=getBounds();float w=b.width(),h=b.height(),d=c.getDensity()/160f,depth=Math.min(6*d,h*.07f),rr=Math.min(radius,Math.min(w,h)*.5f);c.save();c.translate(b.left,b.top);p.setStyle(Paint.Style.FILL);p.setShader(null);p.setColor(skin==ThemeSkin.LIGHT?0xffbfcfdc:0xff000a16);c.drawRoundRect(0,depth,w,h,rr,rr,p);
+            int dark=skin==ThemeSkin.LIGHT?bottom:Color.rgb(Math.round(Color.red(bottom)*.32f),Math.round(Color.green(bottom)*.32f),Math.round(Color.blue(bottom)*.32f));RectF face=new RectF(1,1,w-1,h-depth);p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,dark},new float[]{0,.65f,1},Shader.TileMode.CLAMP));c.drawRoundRect(face,rr,rr,p);p.setShader(null);
             int clip=c.save();Path mask=new Path();mask.addRoundRect(face,rr,rr,Path.Direction.CW);c.clipPath(mask);
             p.setShader(new LinearGradient(0,0,0,h*.48f,new int[]{0xb0ffffff,0x22ffffff,0x00ffffff},new float[]{0,.36f,1},Shader.TileMode.CLAMP));Path gloss=new Path();gloss.moveTo(0,0);gloss.lineTo(w,0);gloss.lineTo(w,h*.09f);gloss.cubicTo(w*.65f,h*.15f,w*.20f,h*.12f,0,h*.35f);gloss.close();c.drawPath(gloss,p);p.setShader(null);
             p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(Math.min(6*d,w*.017f));p.setShader(new LinearGradient(0,0,w,h,new int[]{0xdfffffff,edge,0x50000000},new float[]{0,.35f,1},Shader.TileMode.CLAMP));RectF inner=new RectF(4*d,4*d,w-4*d,h-depth-4*d);c.drawRoundRect(inner,Math.max(1,rr-3*d),Math.max(1,rr-3*d),p);p.setShader(null);c.restoreToCount(clip);
@@ -26,18 +27,19 @@ final class UiArt {
             p.setColor(0xccffffff);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeWidth(Math.min(2*d,w*.01f));Path shine=new Path();shine.moveTo(5*d,Math.min(rr,h*.32f));shine.quadTo(5*d,5*d,Math.min(rr,w*.3f),5*d);shine.lineTo(w*.66f,5*d);c.drawPath(shine,p);p.setStyle(Paint.Style.FILL);c.restore();}
         @Override public void setAlpha(int a){p.setAlpha(a);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}@Override public void getOutline(Outline o){o.setRoundRect(getBounds(),radius);}
     };}
+    static Drawable tile(int top,int bottom,int edge,float radius){ThemeSkin original=ThemeSkin.active;if(original==ThemeSkin.TRANSLUMINA){ThemeSkin.active=ThemeSkin.BMD;try{return raised(top,bottom,edge,radius);}finally{ThemeSkin.active=original;}}return raised(top,bottom,edge,radius);}
     static class Backdrop extends View {
         private final Paint p=new Paint(3);
         Backdrop(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas c){
             float w=getWidth(),h=getHeight();
-            p.setShader(new LinearGradient(0,0,w,h,new int[]{0xff001127,0xff03284c,0xff000918},null,Shader.TileMode.CLAMP));
+            p.setShader(new LinearGradient(0,0,w,h,new int[]{ThemeSkin.active.background,ThemeSkin.active.halo,ThemeSkin.active.background},null,Shader.TileMode.CLAMP));
             c.drawRect(0,0,w,h,p);p.setShader(null);
             Path wave=new Path();float y=h-40*getResources().getDisplayMetrics().density;
             wave.moveTo(-20,y+12);wave.cubicTo(w*.27f,y-88,w*.56f,y+75,w+20,y-30);
             p.setStyle(Paint.Style.STROKE);
             for(int i=14;i>0;i--){p.setStrokeWidth(i*3);p.setColor(Color.argb(8,0,130,255));c.drawPath(wave,p);}
-            p.setStrokeWidth(3);p.setColor(CYAN);c.drawPath(wave,p);
+            p.setStrokeWidth(3);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);
             p.setStrokeWidth(1);p.setColor(Color.WHITE);c.drawPath(wave,p);p.setStyle(Paint.Style.FILL);
         }
     }
@@ -73,18 +75,25 @@ final class UiArt {
     static class Wave extends View {
         private final Paint p=new Paint(3);
         Wave(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(CYAN);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
+        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
     static class Brand extends androidx.appcompat.widget.AppCompatImageView {
-        Brand(Context c){super(c);float d=getResources().getDisplayMetrics().density;GradientDrawable frame=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{Color.WHITE,Color.WHITE});frame.setCornerRadius(8*d);frame.setStroke(Math.max(1,Math.round(d*.8f)),0xff171b21);setBackground(frame);int inset=Math.round(1.5f*d);setPadding(inset,inset,inset,inset);setElevation(3*d);setClipToOutline(true);setImageResource(R.drawable.blue_medical_logo);setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setContentDescription("Blue Medical, A Translumina Group Company");}
+        Brand(Context c){super(c);ThemeSkin skin=ThemeSkin.load(c);setImageResource(skin==ThemeSkin.TRANSLUMINA?R.drawable.translumina_logo:R.drawable.blue_medical_logo);setColorFilter(skin.brandFilter());setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setBackground(null);setPadding(0,0,0,0);setElevation(0);setContentDescription(skin==ThemeSkin.TRANSLUMINA?"Translumina · Limitless Possibilities":"Blue Medical · A Translumina Group Company");}
     }
+    static class Magic extends View {
+        final Icon icon;final int tint;final Paint p=new Paint(3);
+        Magic(Context c,String name,int tint){super(c);this.tint=tint;icon=new Icon(c,name,tint);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight(),size=Math.min(w,h),x=(w-size)/2,y=(h-size)/2,r=size*.23f;ThemeSkin s=ThemeSkin.active;c.save();c.translate(x,y);p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(0,0,size,size,new int[]{mix(tint,s.top,.65f),s.bottom},null,Shader.TileMode.CLAMP));c.drawRoundRect(1,1,size-1,size-1,r,r,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(size*.018f);p.setColor(tint);c.drawRoundRect(1,1,size-1,size-1,r,r,p);c.save();c.translate(size*.17f,size*.17f);int z=Math.round(size*.66f);icon.layout(0,0,z,z);icon.draw(c);c.restore();p.setColor(tint);p.setStrokeWidth(size*.025f);c.save();c.rotate(-23,size/2,size/2);c.drawArc(size*.07f,size*.43f,size*.92f,size*.79f,5,165,false,p);c.restore();p.setStyle(Paint.Style.FILL);float cx=size*.82f,cy=size*.18f,rr=size*.08f;Path star=new Path();star.moveTo(cx,cy-rr);star.quadTo(cx+rr*.2f,cy-rr*.2f,cx+rr,cy);star.quadTo(cx+rr*.2f,cy+rr*.2f,cx,cy+rr);star.quadTo(cx-rr*.2f,cy+rr*.2f,cx-rr,cy);star.quadTo(cx-rr*.2f,cy-rr*.2f,cx,cy-rr);p.setColor(s==ThemeSkin.LIGHT?tint:Color.WHITE);c.drawPath(star,p);c.restore();}
+    }
+    static int mix(int a,int b,float amount){return Color.rgb(Math.round(Color.red(a)*(1-amount)+Color.red(b)*amount),Math.round(Color.green(a)*(1-amount)+Color.green(b)*amount),Math.round(Color.blue(a)*(1-amount)+Color.blue(b)*amount));}
+
     static class Icon extends View {
         private final String kind;private final int color;private final Paint p=new Paint(3);
         Icon(Context c,String kind){this(c,kind,Color.WHITE);}
-        Icon(Context c,String kind,int color){super(c);this.kind=kind;this.color=color;setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        Icon(Context c,String kind,int color){super(c);this.kind=kind;this.color=ThemeSkin.icon(color);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas canvas){
             float size=Math.min(getWidth(),getHeight());canvas.save();canvas.translate((getWidth()-size)/2,(getHeight()-size)/2);canvas.scale(size/64,size/64);
-            p.setColor(color);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
+            p.setShader(new LinearGradient(0,0,64,64,new int[]{ThemeSkin.active==ThemeSkin.LIGHT?color:Color.WHITE,color,mix(color,ThemeSkin.active.bottom,.28f)},new float[]{0,.43f,1},Shader.TileMode.CLAMP));p.setColor(color);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
             switch(kind){
                 case "qr":
                     cbox(canvas,8,8);cbox(canvas,38,8);cbox(canvas,8,38);
@@ -119,6 +128,7 @@ final class UiArt {
                 case "stop":p.setStyle(Paint.Style.FILL);canvas.drawRoundRect(18,16,46,46,4,4,p);break;
                 case "flashoff":case "flash":Path bolt=new Path();bolt.moveTo(38,5);bolt.lineTo(15,36);bolt.lineTo(31,36);bolt.lineTo(25,59);bolt.lineTo(50,27);bolt.lineTo(34,27);bolt.close();canvas.drawPath(bolt,p);if(kind.equals("flashoff")){p.setColor(0xffa3b6c8);canvas.drawLine(8,7,55,57,p);}break;
                 case "check":canvas.drawLine(13,33,26,46,p);canvas.drawLine(26,46,52,18,p);break;
+                case "palette":canvas.drawOval(6,8,58,54,p);canvas.drawCircle(20,23,3,p);canvas.drawCircle(34,18,3,p);canvas.drawCircle(46,28,3,p);canvas.drawCircle(22,40,3,p);break;
                 case "language":canvas.drawCircle(32,32,25,p);canvas.drawOval(21,7,43,57,p);canvas.drawLine(8,32,56,32,p);canvas.drawLine(13,19,51,19,p);canvas.drawLine(13,45,51,45,p);break;
                 default:canvas.drawCircle(32,32,23,p);canvas.drawLine(32,29,32,46,p);canvas.drawCircle(32,18,1,p);
             }

@@ -124,7 +124,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-Scan.apk
-          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes "BMD Scan experimental guided-box test build. Guided counted box sessions, overview and overlapping detail captures, proposed image alignment with explicit operator confirmation, lot-coloured code borders, grouping review, and local/share session packages. Parallel scanline verification rejects incidental barcode patterns. No automatic shipment approval. Real 95-product carton recognition and cross-photo identity are not validated. Additional detail captures and physical-phone testing are required."
+          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes "BMD Scan 3.4 theme and camera test build. Four persistent skins (BMD, Translumina, Dark, Light), coloured tiles on every skin, transparent readable brand signatures, immediate language-selection preview, full-height camera, and spring/ripple zoom. Menus stay portrait; camera supports portrait and landscape. Guided box sessions, lot-coloured code borders, grouping review, and local/share session packages retained. Parallel scanline verification rejects incidental barcode patterns. No automatic shipment approval. Real 95-product carton recognition and cross-photo identity are not validated. Additional detail captures and physical-phone testing are required."
 
       - name: Upload diagnostic reports
         if: always()
@@ -136,7 +136,3 @@ jobs:
             build/reports/
           if-no-files-found: ignore
           retention-days: 7
-
-
-
-
