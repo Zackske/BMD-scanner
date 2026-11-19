@@ -29,8 +29,16 @@ final class ThemeSkin {
     static int icon(int original){return original==0xffffffff?active.text:structural(original)?active.accent:original;}
     static GradientDrawable preview(String id,float radius){ThemeSkin s=forId(id);GradientDrawable d=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{s.halo,s.top,s.bottom});d.setCornerRadius(radius);d.setStroke(2,s.edge);return d;}
     static void footer(LinearLayout root){if(root.findViewWithTag("theme-brand")!=null)return;Context c=root.getContext();float density=c.getResources().getDisplayMetrics().density;UiArt.Brand brand=new UiArt.Brand(c);brand.setTag("theme-brand");LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Math.round(65*density));p.topMargin=Math.round(9*density);p.bottomMargin=Math.round(12*density);root.addView(brand,p);}
-    ColorFilter brandFilter(){if(this==LIGHT)return null;if(this==TRANSLUMINA)return new ColorMatrixColorFilter(new ColorMatrix(new float[]{.3f,0,0,0,178,-.7f,1,0,0,178,-.7f,0,1,0,178,0,0,0,1,0}));return new android.graphics.PorterDuffColorFilter(this==BMD?0xffd7f3ff:0xfff4f7f9,PorterDuff.Mode.SRC_IN);}
+    ColorFilter brandFilter(){
+        // Source logos contain a partial white matte as well as real alpha.
+        // Reject that matte at render time, preserving the original glyph asset.
+        ColorFilter alpha=new ColorMatrixColorFilter(new ColorMatrix(new float[]{1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,-5.1024f,-17.1648f,-1.7328f,24,-840}));
+        if(this==LIGHT)return alpha;
+        ColorFilter ink=this==TRANSLUMINA?new ColorMatrixColorFilter(new ColorMatrix(new float[]{.3f,0,0,0,178,-.7f,1,0,0,178,-.7f,0,1,0,178,0,0,0,1,0})):new android.graphics.PorterDuffColorFilter(this==BMD?0xffd7f3ff:0xfff4f7f9,PorterDuff.Mode.SRC_IN);
+        return new ComposeColorFilter(ink,alpha);
+    }
     static double channel(int n){double x=n/255.0;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4);}
     static double luminance(int c){return .2126*channel((c>>16)&255)+.7152*channel((c>>8)&255)+.0722*channel(c&255);}
     static double contrast(int a,int b){double x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
 }
+
