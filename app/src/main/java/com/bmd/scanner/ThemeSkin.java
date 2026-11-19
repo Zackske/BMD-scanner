@@ -32,10 +32,10 @@ final class ThemeSkin {
     ColorFilter brandFilter(){
         // Source logos contain a partial white matte as well as real alpha.
         // Reject that matte at render time, preserving the original glyph asset.
-        ColorFilter alpha=new ColorMatrixColorFilter(new ColorMatrix(new float[]{1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,-5.1024f,-17.1648f,-1.7328f,24,-840}));
-        if(this==LIGHT)return alpha;
-        ColorFilter ink=this==TRANSLUMINA?new ColorMatrixColorFilter(new ColorMatrix(new float[]{.3f,0,0,0,178,-.7f,1,0,0,178,-.7f,0,1,0,178,0,0,0,1,0})):new android.graphics.PorterDuffColorFilter(this==BMD?0xffd7f3ff:0xfff4f7f9,PorterDuff.Mode.SRC_IN);
-        return new ComposeColorFilter(ink,alpha);
+        float[] matrix={1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,-5.1024f,-17.1648f,-1.7328f,24,-840};
+        if(this==TRANSLUMINA){matrix[0]=.3f;matrix[4]=178;matrix[5]=-.7f;matrix[9]=178;matrix[10]=-.7f;matrix[14]=178;}
+        else if(this!=LIGHT){int ink=this==BMD?0xffd7f3ff:0xfff4f7f9;matrix[0]=matrix[6]=matrix[12]=0;matrix[4]=Color.red(ink);matrix[9]=Color.green(ink);matrix[14]=Color.blue(ink);}
+        return new ColorMatrixColorFilter(new ColorMatrix(matrix));
     }
     static double channel(int n){double x=n/255.0;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4);}
     static double luminance(int c){return .2126*channel((c>>16)&255)+.7152*channel((c>>8)&255)+.0722*channel(c&255);}
