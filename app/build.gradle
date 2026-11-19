@@ -7,8 +7,8 @@ android {
         applicationId 'com.bmd.scanner'
         minSdk 26
         targetSdk 35
-        versionCode 20
-        versionName '3.4.0'
+        versionCode 21
+        versionName '3.4.1'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments timeout_msec: '180000'
     }
@@ -40,3 +40,4 @@ dependencies {
 tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
     testLogging { exceptionFormat = 'full' }
 }
+
