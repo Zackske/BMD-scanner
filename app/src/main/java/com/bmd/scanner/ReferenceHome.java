@@ -12,7 +12,7 @@ import java.io.*;
 /** Reference-driven artwork with real, accessible Android controls aligned to its tiles. */
 final class ReferenceHome extends FrameLayout {
     static final int LEFT=0,TOP=0,RIGHT=868,BOTTOM=1812;
-    private final android.graphics.drawable.Drawable headerMist=UiArt.mist();
+    private final android.graphics.drawable.Drawable headerMist;
     private final UiArt.Backdrop backdrop;private final UiArt.ScannerMark scanner;private final UiArt.Brand brand;
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
     private final Rect source;
@@ -25,7 +25,7 @@ final class ReferenceHome extends FrameLayout {
     private final RectF[] boxes={new RectF(38,477,430,899),new RectF(439,477,831,899),new RectF(38,909,430,1331),new RectF(439,909,831,1331),new RectF(125,40,766,245),new RectF(190,1490,678,1648)};
     private boolean menu=false;private String menuTitle="";private final boolean dutch;private final String[] labels;private final String name;
     
-    ReferenceHome(Context context,String language,String[] labels,String name,Runnable[] actions){super(context);setTag("reference-home");setWillNotDraw(false);setLayerType(View.LAYER_TYPE_SOFTWARE,null);this.labels=labels;this.name=name;dutch=false;headerMist.setCallback(this);
+    ReferenceHome(Context context,String language,String[] labels,String name,Runnable[] actions){super(context);setTag("reference-home");setWillNotDraw(false);setLayerType(View.LAYER_TYPE_SOFTWARE,null);this.labels=labels;this.name=name;dutch=false;headerMist=UiArt.mist(context);headerMist.setCallback(this);
         backdrop=new UiArt.Backdrop(context);scanner=new UiArt.ScannerMark(context);brand=new UiArt.Brand(context);
         source=new Rect(LEFT,TOP,RIGHT,BOTTOM);
         String[] tags={"qr","photo","list","settings","home-identity","home-brand"};
@@ -36,7 +36,7 @@ final class ReferenceHome extends FrameLayout {
     private void fit(int width,int height){geometry=new HomeGeometry(width,height);artworkScale=geometry.scale;screenEdges=geometry.rows;destination.set(geometry.left,0,geometry.right,height);}
     private float screenY(float y){return geometry.y(y);}
     @Override protected void onLayout(boolean changed,int l,int t,int r,int b){fit(r-l,b-t);for(int i=0;i<targets.length;i++){RectF box=boxes[i];targets[i].layout(Math.round(destination.left+(box.left-LEFT)*artworkScale),Math.round(screenY(box.top)),Math.round(destination.left+(box.right-LEFT)*artworkScale),Math.round(screenY(box.bottom)));}}
-    @Override protected void onDraw(Canvas canvas){super.onDraw(canvas);fit(getWidth(),getHeight());backdrop.layout(0,0,getWidth(),getHeight());backdrop.draw(canvas);float left=destination.left,scale=artworkScale;RectF id=boxes[4];float y=screenY(id.top),height=screenY(id.bottom)-y;canvas.save();canvas.translate(left+id.left*scale,y-height*.18f);headerMist.setBounds(0,0,Math.round(700*scale),Math.round(height*1.5f));headerMist.draw(canvas);canvas.restore();canvas.save();canvas.translate(left+id.left*scale,y);int size=Math.round(height*.96f);scanner.layout(0,0,size,size);scanner.draw(canvas);canvas.restore();TextPaint title=new TextPaint(3);title.setTypeface(ReferenceArt.face(getContext(),true,950));title.setTextSize(height*.40f);title.setTextScaleX(.91f);title.setShader(new LinearGradient(0,y,0,y+height,new int[]{ThemeSkin.active==ThemeSkin.LIGHT?0xff1a4382:0xffffffff,ThemeSkin.active==ThemeSkin.LIGHT?0xff08235b:0xffe2edf7},null,Shader.TileMode.CLAMP));canvas.drawText("BMD",left+320*scale,y+height*.47f,title);Rect nameRect=new Rect(Math.round(left+320*scale),Math.round(y+height*.52f),Math.round(left+805*scale),Math.round(y+height*.98f));drawLabel(canvas,nameRect,name,true);spark(canvas,Math.min(getWidth()-18*scale,headerNameRight+18*scale),nameRect.centerY(),13*scale);ReferenceArt.ribbon(canvas,getWidth(),screenY(300)+4*getResources().getDisplayMetrics().density,ThemeSkin.active,true);float[] logo=geometry.brand();canvas.save();canvas.translate(Math.round(logo[0]),Math.round(logo[1]));brand.layout(0,0,Math.round(logo[2])-Math.round(logo[0]),Math.round(logo[3])-Math.round(logo[1]));brand.draw(canvas);canvas.restore();}
+    @Override protected void onDraw(Canvas canvas){super.onDraw(canvas);fit(getWidth(),getHeight());backdrop.layout(0,0,getWidth(),getHeight());backdrop.draw(canvas);float left=destination.left,scale=artworkScale;RectF id=boxes[4];float y=screenY(id.top),height=screenY(id.bottom)-y;canvas.save();canvas.translate(left+id.left*scale,y-height*.18f);headerMist.setBounds(0,0,Math.round(700*scale),Math.round(height*1.5f));headerMist.draw(canvas);canvas.restore();canvas.save();canvas.translate(left+id.left*scale,y);int size=Math.round(height*.96f);scanner.layout(0,0,size,size);scanner.draw(canvas);canvas.restore();drawWordmark(canvas,left+320*scale,y,height,485*scale);ReferenceArt.ribbon(canvas,getWidth(),screenY(300)+4*getResources().getDisplayMetrics().density,ThemeSkin.active,true);float[] logo=geometry.brand();canvas.save();canvas.translate(Math.round(logo[0]),Math.round(logo[1]));brand.layout(0,0,Math.round(logo[2])-Math.round(logo[0]),Math.round(logo[3])-Math.round(logo[1]));brand.draw(canvas);canvas.restore();}
 
     @Override protected void dispatchDraw(Canvas canvas){
         for(int i=0;i<4;i++){
@@ -48,6 +48,19 @@ final class ReferenceHome extends FrameLayout {
         }
         if(menu){Rect title=new Rect((int)(getWidth()*.1f),(int)screenY(307),(int)(getWidth()*.9f),(int)screenY(423));drawLabel(canvas,title,menuTitle,false);}
         super.dispatchDraw(canvas);
+    }
+    private void drawWordmark(Canvas canvas,float x,float y,float height,float availableWidth){
+        TextPaint namePaint=new TextPaint(3);namePaint.setTypeface(ReferenceArt.magicFace(getContext(),name));namePaint.setTextSize(100);
+        Rect nameInk=new Rect();namePaint.getTextBounds(name,0,name.length(),nameInk);
+        float nameSize=100*Math.min(height*.30f/Math.max(1,nameInk.height()),availableWidth/Math.max(1,namePaint.measureText(name)));
+        namePaint.setTextSize(nameSize);namePaint.getTextBounds(name,0,name.length(),nameInk);
+        float inkHeight=nameInk.height(),nameY=y+height*.56f;
+        namePaint.setShader(new LinearGradient(x,0,x+Math.max(1,namePaint.measureText(name)),0,ThemeSkin.active.titleGradient(),null,Shader.TileMode.CLAMP));
+        canvas.drawText(name,x-nameInk.left,nameY-nameInk.top,namePaint);
+        TextPaint initials=new TextPaint(3);initials.setTypeface(ReferenceArt.face(getContext(),true,850));initials.setTextSize(100);Rect initialsInk=new Rect();initials.getTextBounds("BMD",0,3,initialsInk);
+        initials.setTextSize(100*inkHeight/Math.max(1,initialsInk.height()));initials.getTextBounds("BMD",0,3,initialsInk);initials.setColor(ThemeSkin.active==ThemeSkin.LIGHT?0xff173e7b:0xfff5f9ff);
+        canvas.drawText("BMD",x-initialsInk.left,y+height*.16f-initialsInk.top,initials);
+        headerNameRight=x+namePaint.measureText(name);spark(canvas,Math.min(getWidth()-18*artworkScale,headerNameRight+18*artworkScale),nameY+inkHeight*.5f,13*artworkScale);
     }
     private void drawLabel(Canvas canvas,Rect rect,String text,boolean title){TextPaint p=new TextPaint(Paint.ANTI_ALIAS_FLAG);p.setColor(title?ThemeSkin.active.accent:ThemeSkin.active.text);p.setTypeface(title?ReferenceArt.magicFace(getContext(),text):ReferenceArt.face(getContext(),false,850));if(title)p.setShader(new LinearGradient(0,0,rect.width(),0,ThemeSkin.active.titleGradient(),null,Shader.TileMode.CLAMP));StaticLayout layout=null;for(int size=title?62:Math.max(24,Math.round(rect.width()*.14f));size>=14;size--){p.setTextSize(size);layout=StaticLayout.Builder.obtain(text,0,text.length(),p,rect.width()).setAlignment(title?Layout.Alignment.ALIGN_NORMAL:Layout.Alignment.ALIGN_CENTER).setIncludePad(false).build();if(layout.getHeight()<=rect.height()-8&&layout.getLineCount()<=(title?1:(text.contains(" ")||text.contains("/")?2:1)))break;}if(layout!=null){if(title){float width=0;for(int line=0;line<layout.getLineCount();line++)width=Math.max(width,layout.getLineWidth(line));headerNameRight=rect.left+width;}canvas.save();canvas.translate(rect.left,rect.top+(rect.height()-layout.getHeight())/2f);layout.draw(canvas);canvas.restore();}}
     private void spark(Canvas canvas,float x,float y,float r){Paint p=new Paint(3);p.setColor(0xffffd436);Path star=new Path();star.moveTo(x,y-r);star.quadTo(x+r*.15f,y-r*.15f,x+r,y);star.quadTo(x+r*.15f,y+r*.15f,x,y+r);star.quadTo(x-r*.15f,y+r*.15f,x-r,y);star.quadTo(x-r*.15f,y-r*.15f,x,y-r);canvas.drawPath(star,p);}

@@ -45,13 +45,14 @@ final class UiArt {
             if(scanner)scannerArt=bitmap;else brandArt=bitmap;return bitmap;
         }catch(java.io.IOException e){throw new IllegalStateException("Bundled brand artwork missing",e);}
     }
-    static Drawable mist(){return new Drawable(){
-        private final Paint p=new Paint(3);private final Runnable tick=this::invalidateSelf;
-        @Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();canvas.save();canvas.translate(r.left,r.top+(float)Math.sin(android.os.SystemClock.uptimeMillis()/3200.0)*h*.018f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);int ink=ThemeSkin.active.mistInk()&0xffffff;
-            for(int i=0;i<5;i++){Path wave=new Path();float y=h*(.26f+i*.1f);wave.moveTo(w*.01f,y);wave.cubicTo(w*.22f,y-h*.25f,w*.32f,y+h*.38f,w*.55f,y+h*.02f);wave.cubicTo(w*.73f,y-h*.34f,w*.83f,y+h*.12f,w*.98f,y-h*.24f);
-                p.setMaskFilter(new BlurMaskFilter(h*.025f,BlurMaskFilter.Blur.NORMAL));p.setStrokeWidth(h*.025f);p.setShader(new LinearGradient(0,y,w,y,new int[]{0,0x29000000|ink,0x22000000|ink,0},new float[]{0,.27f,.7f,1},Shader.TileMode.CLAMP));canvas.drawPath(wave,p);
-                p.setMaskFilter(null);p.setStrokeWidth(h*(.003f+i*.0005f));p.setShader(new LinearGradient(0,y,w,y,new int[]{0,0x35000000|ink,0x24000000|ink,0},new float[]{0,.35f,.72f,1},Shader.TileMode.CLAMP));canvas.drawPath(wave,p);
-            }p.setShader(null);p.setMaskFilter(null);canvas.restore();unscheduleSelf(tick);if(android.animation.ValueAnimator.areAnimatorsEnabled()&&isVisible())scheduleSelf(tick,android.os.SystemClock.uptimeMillis()+80);
+    static Drawable mist(Context context){return new Drawable(){
+        private final Bitmap smoke=ReferenceArt.bitmap(context,R.drawable.header_smoke);
+        private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+        private final Runnable tick=this::invalidateSelf;
+        @Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();boolean motion=android.animation.ValueAnimator.areAnimatorsEnabled();float drift=motion?(float)Math.sin(android.os.SystemClock.uptimeMillis()/4200.0):0;
+            p.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));p.setAlpha(ThemeSkin.active==ThemeSkin.LIGHT?54:86);
+            canvas.drawBitmap(smoke,null,new RectF(r.left+w*.008f*drift,r.top+h*(.02f+.014f*drift),r.right+w*.008f*drift,r.bottom-h*.06f),p);
+            unscheduleSelf(tick);if(motion&&isVisible())scheduleSelf(tick,android.os.SystemClock.uptimeMillis()+80);
         }
         @Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
     };}
