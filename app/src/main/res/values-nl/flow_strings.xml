@@ -23,4 +23,5 @@
     <string name="ui_review_all">Controleer alle producten in deze lot</string>
     <string name="ui_qr_count_check" formatted="false">QR-/aantalcontrole</string>
     <string name="ui_box_pallet_check" formatted="false">Doos-/palletcontrole</string>
+    <string name="ui_scan_menu_title" formatted="false">Scan</string>
 </resources>

@@ -23,4 +23,5 @@
     <string name="ui_review_all">Verificar todos os produtos deste lote</string>
     <string name="ui_qr_count_check" formatted="false">Verificação de QR/quantidade</string>
     <string name="ui_box_pallet_check" formatted="false">Verificação de caixa/palete</string>
+    <string name="ui_scan_menu_title" formatted="false">Digitalização</string>
 </resources>
