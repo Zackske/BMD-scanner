@@ -2,5 +2,8 @@
     <string name="ui_themes">Thema’s</string>
     <string name="ui_colours_appearance">Kleuren en uitstraling</string>
     <string name="ui_choose_theme">Thema kiezen</string>
-<string name="ui_theme_dark">Donker</string><string name="ui_theme_light">Licht</string><string name="ui_theme_lime">Limoen</string><string name="ui_theme_violet">Donkerviolet</string></resources>
-
+    <string name="ui_theme_dark">Donker</string>
+    <string name="ui_theme_light">Licht</string>
+    <string name="ui_theme_lime">Groen</string>
+    <string name="ui_theme_violet">Paars</string>
+</resources>

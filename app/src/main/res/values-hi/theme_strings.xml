@@ -2,5 +2,8 @@
     <string name="ui_themes">थीम</string>
     <string name="ui_colours_appearance">रंग और स्वरूप</string>
     <string name="ui_choose_theme">थीम चुनें</string>
-<string name="ui_theme_dark">गहरा</string><string name="ui_theme_light">हल्का</string><string name="ui_theme_lime">लाइम हरा</string><string name="ui_theme_violet">गहरा बैंगनी</string></resources>
-
+    <string name="ui_theme_dark">गहरा</string>
+    <string name="ui_theme_light">हल्का</string>
+    <string name="ui_theme_lime">हरा</string>
+    <string name="ui_theme_violet">बैंगनी</string>
+</resources>
