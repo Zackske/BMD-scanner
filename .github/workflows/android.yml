@@ -99,19 +99,24 @@ jobs:
           if-no-files-found: ignore
 
       - name: Save native scanner and lot test screenshots
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p docs/screenshots/build3
-          find device-screenshots -name 'build3-*.png' -exec cp {} docs/screenshots/build3/ \;
+          evidence="docs/screenshots/attempt-${GITHUB_RUN_NUMBER}"
+          mkdir -p "$evidence"
+          find device-screenshots -name '*.png' -exec cp {} "$evidence/" \;
+          if [[ "${{ job.status }}" == "success" ]]; then
+            mkdir -p docs/screenshots/build3
+            find device-screenshots -name 'build3-*.png' -exec cp {} docs/screenshots/build3/ \;
+          fi
           git fetch origin main
           if [[ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]]; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/screenshots/build3
+          git add docs/screenshots
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "docs: save native design and language checks [skip ci]"
+          git commit -m "docs: save Android check evidence [skip ci]"
           git push origin HEAD:main
 
       - name: Publish APK for phone testing
