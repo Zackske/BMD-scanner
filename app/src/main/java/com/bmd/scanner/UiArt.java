@@ -73,7 +73,8 @@ final class UiArt {
         @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
     static class Brand extends androidx.appcompat.widget.AppCompatImageView {
-        Brand(Context c){super(c);ThemeSkin skin=ThemeSkin.load(c);setImageResource(skin==ThemeSkin.TRANSLUMINA?R.drawable.translumina_logo:R.drawable.blue_medical_logo);setColorFilter(skin.brandFilter());setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setBackground(null);setPadding(0,0,0,0);setElevation(0);setContentDescription(skin==ThemeSkin.TRANSLUMINA?"Translumina · Limitless Possibilities":"Blue Medical · A Translumina Group Company");}
+        Brand(Context c){this(c,ThemeSkin.load(c));}
+        Brand(Context c,ThemeSkin skin){super(c);setImageResource(skin==ThemeSkin.TRANSLUMINA?R.drawable.translumina_logo:R.drawable.blue_medical_logo);setColorFilter(skin.brandFilter());setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);setBackground(null);setPadding(0,0,0,0);setElevation(0);setContentDescription(skin==ThemeSkin.TRANSLUMINA?"Translumina · Limitless Possibilities":"Blue Medical · A Translumina Group Company");}
     }
     /** Bevelled metal pictograms with the approved orbital light and small sparks. */
     static class Magic extends View {
@@ -97,6 +98,8 @@ final class UiArt {
                 case "language":p.setShader(new RadialGradient(37,31,44,new int[]{mix(tint,Color.WHITE,.35f),mix(tint,0xff092e54,.70f)},null,Shader.TileMode.CLAMP));c.drawCircle(50,48,28,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2.4f);p.setShader(new LinearGradient(20,15,78,83,new int[]{Color.WHITE,tint,0xffe7fcff},null,Shader.TileMode.CLAMP));c.drawCircle(50,48,28,p);c.drawOval(new RectF(37,20,63,76),p);c.drawOval(new RectF(23,33,77,63),p);c.drawLine(22,48,78,48,p);c.drawLine(50,20,50,76,p);p.setShader(null);p.setStyle(Paint.Style.FILL);break;
                 case "palette":Path palette=new Path();palette.moveTo(27,73);palette.cubicTo(0,55,18,15,50,18);palette.cubicTo(83,18,93,45,73,55);palette.cubicTo(62,57,67,66,61,74);palette.cubicTo(53,84,35,81,27,73);metal(c,palette,tint);for(float[] point:new float[][]{{33,34},{51,29},{68,39},{28,53}}){p.setColor(mix(tint,0xff271142,.68f));c.drawCircle(point[0],point[1],5,p);p.setColor(0xfff6d7ff);c.drawCircle(point[0]-1,point[1]-1,2.3f,p);}break;
                 case "info":ball(c,50,48,29,tint);metal(c,rounded(46,43,54,66,3),0xfff5ecd1);ball(c,50,33,4.5f,0xfffff1bf);break;
+                case "moon":Path moon=new Path();moon.addCircle(48,48,29,Path.Direction.CW);Path bite=new Path();bite.addCircle(62,36,26,Path.Direction.CW);moon.op(bite,Path.Op.DIFFERENCE);metal(c,moon,0xffb7cbdc);break;
+                case "sun":for(int n=0;n<8;n++){double a=n*Math.PI/4;line(c,50+(float)Math.cos(a)*29,48+(float)Math.sin(a)*29,50+(float)Math.cos(a)*36,48+(float)Math.sin(a)*36,0xffffc843,2.8f);}ball(c,50,48,21,0xffffb826);break;
                 default:c.save();c.translate(16,17);fallback.layout(0,0,68,68);fallback.draw(c);c.restore();
             }
         }

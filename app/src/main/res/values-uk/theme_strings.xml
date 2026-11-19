@@ -2,4 +2,5 @@
     <string name="ui_themes">Теми</string>
     <string name="ui_colours_appearance">Кольори та вигляд</string>
     <string name="ui_choose_theme">Виберіть тему</string>
-</resources>
+<string name="ui_theme_dark">Темна</string><string name="ui_theme_light">Світла</string></resources>
+
