@@ -1,5 +1,5 @@
 <resources>
-    <string name="ui_themes">Thema’s</string>
+    <string name="ui_themes">Thema</string>
     <string name="ui_colours_appearance">Kleuren en uitstraling</string>
     <string name="ui_choose_theme">Thema kiezen</string>
     <string name="ui_theme_dark">Donker</string>
