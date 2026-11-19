@@ -58,14 +58,9 @@ final class UiArt {
     }
     static Drawable mist(){return new Drawable(){private final Paint p=new Paint(3);private final Runnable tick=this::invalidateSelf;@Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();canvas.save();canvas.translate(r.left,r.top+(float)Math.sin(android.os.SystemClock.uptimeMillis()/3200.0)*h*.025f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);p.setMaskFilter(new BlurMaskFilter(h*.05f,BlurMaskFilter.Blur.NORMAL));for(int i=0;i<3;i++){Path wave=new Path();float y=h*(.35f+i*.17f);wave.moveTo(w*.08f,y);wave.cubicTo(w*.3f,y-h*.3f,w*.43f,y+h*.3f,w*.65f,y-h*.02f);wave.cubicTo(w*.8f,y-h*.2f,w*.85f,y-h*.15f,w*.95f,y-h*.35f);p.setStrokeWidth(h*.027f);p.setShader(new LinearGradient(0,y,w,y-h*.3f,new int[]{0x0000baff,0x2700cfff,0x1908baff,0x0000bbff},null,Shader.TileMode.CLAMP));canvas.drawPath(wave,p);}p.setShader(null);p.setMaskFilter(null);canvas.restore();unscheduleSelf(tick);if(android.animation.ValueAnimator.areAnimatorsEnabled()&&isVisible())scheduleSelf(tick,android.os.SystemClock.uptimeMillis()+80);}@Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}};}
     static class ScannerMark extends View {
-        private final Paint p=new Paint(3);private final Bitmap art;
-        ScannerMark(Context c){super(c);art=artwork(c,true);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onDraw(Canvas c){
-            float size=Math.min(getWidth(),getHeight()),x=(getWidth()-size)/2,y=(getHeight()-size)/2;
-            int layer=c.saveLayer(x,y,x+size,y+size,null);
-            c.drawBitmap(art,null,new RectF(x,y,x+size,y+size),p);
-            p.setShader(new RadialGradient(x+size/2,y+size/2,size*.7f,new int[]{Color.WHITE,Color.WHITE,Color.TRANSPARENT},new float[]{0,.65f,1},Shader.TileMode.CLAMP));p.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));c.drawRect(x,y,x+size,y+size,p);p.setShader(null);p.setXfermode(null);c.restoreToCount(layer);
-        }
+        private final Paint p=new Paint(3);private final Bitmap art;private final Rect bounds;
+        ScannerMark(Context c){super(c);art=BitmapFactory.decodeResource(c.getResources(),R.drawable.launcher_foreground);int w=art.getWidth(),h=art.getHeight(),left=w,top=h,right=0,bottom=0;int[] pixels=new int[w*h];art.getPixels(pixels,0,w,0,0,w,h);for(int y=0;y<h;y++)for(int x=0;x<w;x++)if(Color.alpha(pixels[y*w+x])>2){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}bounds=new Rect(left,top,right,bottom);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        @Override protected void onDraw(Canvas c){float scale=Math.min(getWidth()/(float)bounds.width(),getHeight()/(float)bounds.height()),w=bounds.width()*scale,h=bounds.height()*scale,x=(getWidth()-w)/2,y=(getHeight()-h)/2;c.drawBitmap(art,bounds,new RectF(x,y,x+w,y+h),p);}
     }
     static class NameText extends androidx.appcompat.widget.AppCompatTextView {
         NameText(Context c){super(c);setTextColor(CYAN);setPadding(0,0,(int)(14*getResources().getDisplayMetrics().density),0);}
@@ -82,7 +77,7 @@ final class UiArt {
     }
     static class Magic extends View {
         final Icon icon;final int tint;final Paint p=new Paint(3);
-        Magic(Context c,String name,int tint){super(c);this.tint=tint;icon=new Icon(c,name,tint);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        Magic(Context c,String name,int tint){super(c);this.tint=ThemeSkin.active==ThemeSkin.LIGHT&&ThemeSkin.contrast(tint,ThemeSkin.active.bottom)<3?mix(tint,ThemeSkin.LIGHT.text,.6f):tint;icon=new Icon(c,name,this.tint);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight(),size=Math.min(w,h),x=(w-size)/2,y=(h-size)/2,r=size*.23f;ThemeSkin s=ThemeSkin.active;c.save();c.translate(x,y);p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(0,0,size,size,new int[]{mix(tint,s.top,.65f),s.bottom},null,Shader.TileMode.CLAMP));c.drawRoundRect(1,1,size-1,size-1,r,r,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(size*.018f);p.setColor(tint);c.drawRoundRect(1,1,size-1,size-1,r,r,p);c.save();c.translate(size*.17f,size*.17f);int z=Math.round(size*.66f);icon.layout(0,0,z,z);icon.draw(c);c.restore();p.setColor(tint);p.setStrokeWidth(size*.025f);c.save();c.rotate(-23,size/2,size/2);c.drawArc(size*.07f,size*.43f,size*.92f,size*.79f,5,165,false,p);c.restore();p.setStyle(Paint.Style.FILL);float cx=size*.82f,cy=size*.18f,rr=size*.08f;Path star=new Path();star.moveTo(cx,cy-rr);star.quadTo(cx+rr*.2f,cy-rr*.2f,cx+rr,cy);star.quadTo(cx+rr*.2f,cy+rr*.2f,cx,cy+rr);star.quadTo(cx-rr*.2f,cy+rr*.2f,cx-rr,cy);star.quadTo(cx-rr*.2f,cy-rr*.2f,cx,cy-rr);p.setColor(s==ThemeSkin.LIGHT?tint:Color.WHITE);c.drawPath(star,p);c.restore();}
     }
     static int mix(int a,int b,float amount){return Color.rgb(Math.round(Color.red(a)*(1-amount)+Color.red(b)*amount),Math.round(Color.green(a)*(1-amount)+Color.green(b)*amount),Math.round(Color.blue(a)*(1-amount)+Color.blue(b)*amount));}
@@ -137,3 +132,4 @@ final class UiArt {
         private void cbox(Canvas c,float x,float y){c.drawRoundRect(x,y,x+18,y+18,1,1,p);p.setStyle(Paint.Style.FILL);c.drawRect(x+6,y+6,x+12,y+12,p);p.setStyle(Paint.Style.STROKE);}
     }
 }
+
