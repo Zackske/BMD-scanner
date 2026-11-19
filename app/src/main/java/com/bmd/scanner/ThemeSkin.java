@@ -32,7 +32,7 @@ final class ThemeSkin {
     static GradientDrawable preview(String id,float radius){ThemeSkin s=forId(id);GradientDrawable d=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{s.halo,s.top,s.bottom});d.setCornerRadius(radius);d.setStroke(2,s.edge);return d;}
     static void footer(LinearLayout root){if(root.findViewWithTag("theme-brand")!=null)return;Context c=root.getContext();float density=c.getResources().getDisplayMetrics().density;UiArt.Brand brand=new UiArt.Brand(c);brand.setTag("theme-brand");LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Math.round(65*density));p.topMargin=Math.round(9*density);p.bottomMargin=Math.round(12*density);root.addView(brand,p);}
     int[] titleGradient(){
-        if(this==TRANSLUMINA)return new int[]{0xffffc4b6,0xffff897d,0xffff685f};
+        if(this==TRANSLUMINA)return new int[]{0xffffc4b6,0xffff897d,0xffff786f};
         if(this==LIME)return new int[]{0xffedffca,0xffc1ff63,0xff6fe542};
         if(this==VIOLET)return new int[]{0xfff3ddff,0xffd5a2ff,0xffa86aec};
         if(this==LIGHT)return new int[]{0xff00687c,0xff345db0,0xff752d9c};
