@@ -27,21 +27,10 @@ final class UiArt {
             p.setColor(0xccffffff);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeWidth(Math.min(2*d,w*.01f));Path shine=new Path();shine.moveTo(5*d,Math.min(rr,h*.32f));shine.quadTo(5*d,5*d,Math.min(rr,w*.3f),5*d);shine.lineTo(w*.66f,5*d);c.drawPath(shine,p);p.setStyle(Paint.Style.FILL);c.restore();}
         @Override public void setAlpha(int a){p.setAlpha(a);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}@Override public void getOutline(Outline o){o.setRoundRect(getBounds(),radius);}
     };}
-    static Drawable tile(int top,int bottom,int edge,float radius){ThemeSkin original=ThemeSkin.active;if(original==ThemeSkin.TRANSLUMINA){ThemeSkin.active=ThemeSkin.BMD;try{return raised(top,bottom,edge,radius);}finally{ThemeSkin.active=original;}}return raised(top,bottom,edge,radius);}
+    static Drawable tile(int top,int bottom,int edge,float radius){return ReferenceArt.tile(top,bottom,edge,radius);}
     static class Backdrop extends View {
-        private final Paint p=new Paint(3);
         Backdrop(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onDraw(Canvas c){
-            float w=getWidth(),h=getHeight();
-            p.setShader(new LinearGradient(0,0,w,h,new int[]{ThemeSkin.active.background,ThemeSkin.active.halo,ThemeSkin.active.background},null,Shader.TileMode.CLAMP));
-            c.drawRect(0,0,w,h,p);p.setShader(null);
-            Path wave=new Path();float y=h-40*getResources().getDisplayMetrics().density;
-            wave.moveTo(-20,y+12);wave.cubicTo(w*.27f,y-88,w*.56f,y+75,w+20,y-30);
-            p.setStyle(Paint.Style.STROKE);
-            for(int i=14;i>0;i--){p.setStrokeWidth(i*3);p.setColor(Color.argb(8,0,130,255));c.drawPath(wave,p);}
-            p.setStrokeWidth(3);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);
-            p.setStrokeWidth(1);p.setColor(Color.WHITE);c.drawPath(wave,p);p.setStyle(Paint.Style.FILL);
-        }
+        @Override protected void onDraw(Canvas c){ReferenceArt.background(c,getWidth(),getHeight());}
     }
     // Only the two approved illustration regions are decoded; controls and translated
     // app names remain native views. No screenshot UI is used as an interactive page.
@@ -59,7 +48,7 @@ final class UiArt {
     static Drawable mist(){return new Drawable(){private final Paint p=new Paint(3);private final Runnable tick=this::invalidateSelf;@Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();canvas.save();canvas.translate(r.left,r.top+(float)Math.sin(android.os.SystemClock.uptimeMillis()/3200.0)*h*.025f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);p.setMaskFilter(new BlurMaskFilter(h*.05f,BlurMaskFilter.Blur.NORMAL));for(int i=0;i<3;i++){Path wave=new Path();float y=h*(.35f+i*.17f);wave.moveTo(w*.08f,y);wave.cubicTo(w*.3f,y-h*.3f,w*.43f,y+h*.3f,w*.65f,y-h*.02f);wave.cubicTo(w*.8f,y-h*.2f,w*.85f,y-h*.15f,w*.95f,y-h*.35f);p.setStrokeWidth(h*.027f);p.setShader(new LinearGradient(0,y,w,y-h*.3f,new int[]{0,0x27000000|(ThemeSkin.active.accent&0xffffff),0x19000000|(ThemeSkin.active.accent&0xffffff),0},null,Shader.TileMode.CLAMP));canvas.drawPath(wave,p);}p.setShader(null);p.setMaskFilter(null);canvas.restore();unscheduleSelf(tick);if(android.animation.ValueAnimator.areAnimatorsEnabled()&&isVisible())scheduleSelf(tick,android.os.SystemClock.uptimeMillis()+80);}@Override public void setAlpha(int alpha){p.setAlpha(alpha);}@Override public void setColorFilter(ColorFilter f){p.setColorFilter(f);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}};}
     static class ScannerMark extends View {
         private final Paint p=new Paint(3);private final Bitmap art;private final Rect bounds;
-        ScannerMark(Context c){super(c);art=BitmapFactory.decodeResource(c.getResources(),R.drawable.launcher_foreground);int w=art.getWidth(),h=art.getHeight(),left=w,top=h,right=0,bottom=0;int[] pixels=new int[w*h];art.getPixels(pixels,0,w,0,0,w,h);for(int y=0;y<h;y++)for(int x=0;x<w;x++)if(Color.alpha(pixels[y*w+x])>2){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}bounds=new Rect(left,top,right,bottom);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        ScannerMark(Context c){super(c);art=ReferenceArt.scanner(c);int w=art.getWidth(),h=art.getHeight(),left=w,top=h,right=0,bottom=0;int[] pixels=new int[w*h];art.getPixels(pixels,0,w,0,0,w,h);for(int y=0;y<h;y++)for(int x=0;x<w;x++)if(Color.alpha(pixels[y*w+x])>2){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}bounds=new Rect(left,top,right,bottom);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas c){float scale=Math.min(getWidth()/(float)bounds.width(),getHeight()/(float)bounds.height()),w=bounds.width()*scale,h=bounds.height()*scale,x=(getWidth()-w)/2,y=(getHeight()-h)/2;c.drawBitmap(art,bounds,new RectF(x,y,x+w,y+h),p);}
     }
     static class NameText extends androidx.appcompat.widget.AppCompatTextView {
@@ -100,6 +89,8 @@ final class UiArt {
                 case "info":ball(c,50,48,29,tint);metal(c,rounded(46,43,54,66,3),0xfff5ecd1);ball(c,50,33,4.5f,0xfffff1bf);break;
                 case "moon":Path moon=new Path();moon.addCircle(48,48,29,Path.Direction.CW);Path bite=new Path();bite.addCircle(62,36,26,Path.Direction.CW);moon.op(bite,Path.Op.DIFFERENCE);metal(c,moon,0xffb7cbdc);break;
                 case "sun":for(int n=0;n<8;n++){double a=n*Math.PI/4;line(c,50+(float)Math.cos(a)*29,48+(float)Math.sin(a)*29,50+(float)Math.cos(a)*36,48+(float)Math.sin(a)*36,0xffffc843,2.8f);}ball(c,50,48,21,0xffffb826);break;
+                case "leaf":Path leaf=new Path();leaf.moveTo(24,76);leaf.cubicTo(14,26,57,16,83,17);leaf.cubicTo(84,52,61,82,24,76);leaf.close();metal(c,leaf,0xffa9ed36);line(c,25,75,70,30,0xffefffc9,2.2f);line(c,42,58,39,41,0xffefffc9,1.5f);line(c,54,47,70,48,0xffefffc9,1.5f);break;
+                case "gem":Path gem=new Path();gem.moveTo(30,22);gem.lineTo(70,22);gem.lineTo(84,42);gem.lineTo(50,79);gem.lineTo(16,42);gem.close();metal(c,gem,0xffa362e9);line(c,30,23,50,79,0xfff0dbff,1.2f);line(c,70,23,50,79,0xfff0dbff,1.2f);line(c,17,42,83,42,0xfff0dbff,1.2f);break;
                 default:c.save();c.translate(16,17);fallback.layout(0,0,68,68);fallback.draw(c);c.restore();
             }
         }
