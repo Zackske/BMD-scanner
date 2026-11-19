@@ -9,7 +9,7 @@ import java.util.HashMap;
 final class ReferenceArt {
     private static final HashMap<Integer,Bitmap> images=new HashMap<>();
     private static final HashMap<String,Typeface> fonts=new HashMap<>();
-    static final int[] HOME={R.drawable.ref_home_qr,R.drawable.ref_home_customers,R.drawable.ref_home_instructions,R.drawable.ref_home_settings};
+    static final int[] HOME={R.drawable.ref_home_scan,R.drawable.ref_home_customers,R.drawable.ref_home_instructions,R.drawable.ref_home_settings};
     static synchronized Bitmap bitmap(Context context,int resource){Bitmap cached=images.get(resource);if(cached==null){cached=BitmapFactory.decodeResource(context.getResources(),resource);if(cached==null)throw new IllegalStateException("Bundled reference artwork missing");images.put(resource,cached);}return cached;}
     static synchronized Typeface face(Context context,boolean italic,int weight){String key=italic+":"+weight;Typeface font=fonts.get(key);if(font==null){font=new Typeface.Builder(context.getAssets(),italic?"fonts/nunito_italic.ttf":"fonts/nunito_regular.ttf").setFontVariationSettings("'wght' "+weight).setWeight(weight).setItalic(italic).build();fonts.put(key,font);}return font;}
     static synchronized Typeface magicFace(Context context,String text){
@@ -19,6 +19,7 @@ final class ReferenceArt {
     }
     static Bitmap scanner(Context context){int resource=ThemeSkin.active==ThemeSkin.LIME?R.drawable.ref_scanner_lime:ThemeSkin.active==ThemeSkin.VIOLET?R.drawable.ref_scanner_violet:ThemeSkin.active==ThemeSkin.TRANSLUMINA?R.drawable.ref_scanner_red:ThemeSkin.active==ThemeSkin.DARK?R.drawable.ref_scanner_dark:ThemeSkin.active==ThemeSkin.LIGHT?R.drawable.ref_scanner_light:R.drawable.launcher_foreground;return bitmap(context,resource);}
     static void icon(Canvas canvas,Context context,int index,RectF bounds){Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);canvas.drawBitmap(bitmap(context,HOME[index]),null,bounds,paint);}
+    static void qrIcon(Canvas canvas,Context context,RectF bounds){Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);canvas.drawBitmap(bitmap(context,R.drawable.ref_home_qr),null,bounds,paint);}
     static int curveInk(ThemeSkin skin){return skin==ThemeSkin.LIME?0xffd4ff72:skin==ThemeSkin.VIOLET?0xffdda4ff:skin==ThemeSkin.TRANSLUMINA?0xfffff1eb:skin==ThemeSkin.DARK?0xfff1f6fb:skin==ThemeSkin.LIGHT?0xff00c9e8:0xff00e9ff;}
     private static int glowInk(ThemeSkin skin){return skin==ThemeSkin.LIME?0xff91ff00:skin==ThemeSkin.VIOLET?0xffa22bff:skin==ThemeSkin.TRANSLUMINA?0xffff1636:skin==ThemeSkin.DARK?0xffa5b9c8:0xff00bfff;}
     static void ribbon(Canvas canvas,float width,float y,ThemeSkin skin,boolean header){
