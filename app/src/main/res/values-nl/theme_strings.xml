@@ -6,4 +6,6 @@
     <string name="ui_theme_light">Licht</string>
     <string name="ui_theme_lime">Groen</string>
     <string name="ui_theme_violet">Paars</string>
+    <string name="ui_theme_blue" formatted="false">Blauw</string>
+    <string name="ui_theme_red" formatted="false">Rood</string>
 </resources>

@@ -6,4 +6,6 @@
     <string name="ui_theme_light">Hell</string>
     <string name="ui_theme_lime">Grün</string>
     <string name="ui_theme_violet">Violett</string>
+    <string name="ui_theme_blue" formatted="false">Blau</string>
+    <string name="ui_theme_red" formatted="false">Rot</string>
 </resources>

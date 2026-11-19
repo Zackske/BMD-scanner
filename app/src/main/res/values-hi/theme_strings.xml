@@ -6,4 +6,6 @@
     <string name="ui_theme_light">हल्का</string>
     <string name="ui_theme_lime">हरा</string>
     <string name="ui_theme_violet">बैंगनी</string>
+    <string name="ui_theme_blue" formatted="false">नीला</string>
+    <string name="ui_theme_red" formatted="false">लाल</string>
 </resources>

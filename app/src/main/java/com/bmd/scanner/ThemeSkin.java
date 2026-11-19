@@ -12,7 +12,7 @@ import androidx.core.view.WindowCompat;
 /** Shared application chrome. Physical camera images and lot identities never pass through it. */
 final class ThemeSkin {
     static final String[] IDS={"bmd","translumina","lime","violet","light","dark"};
-    static final String[] NAMES={"Blue Medical","Translumina","Green","Purple","Light","Dark"};
+    static final String[] NAMES={"Blue","Red","Green","Purple","Light","Dark"};
     static final ThemeSkin BMD=new ThemeSkin("bmd",0xff00152d,0xff083d62,0xff063853,0xff00182c,0xffffffff,0xffc7dae9,0xff00dce9,0xff60a8c5);
     static final ThemeSkin TRANSLUMINA=new ThemeSkin("translumina",0xff300008,0xff9b1328,0xff740f24,0xff38000b,0xffffffff,0xffefdce1,0xffff4a62,0xffd0a4af);
     static final ThemeSkin DARK=new ThemeSkin("dark",0xff101214,0xff2b3034,0xff30363b,0xff181c20,0xfff7f9fb,0xffd0d8de,0xffb6c8d2,0xff8c9da8);
@@ -31,6 +31,15 @@ final class ThemeSkin {
     static int icon(int original){return original==0xffffffff?active.text:structural(original)?active.accent:original;}
     static GradientDrawable preview(String id,float radius){ThemeSkin s=forId(id);GradientDrawable d=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{s.halo,s.top,s.bottom});d.setCornerRadius(radius);d.setStroke(2,s.edge);return d;}
     static void footer(LinearLayout root){if(root.findViewWithTag("theme-brand")!=null)return;Context c=root.getContext();float density=c.getResources().getDisplayMetrics().density;UiArt.Brand brand=new UiArt.Brand(c);brand.setTag("theme-brand");LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Math.round(65*density));p.topMargin=Math.round(9*density);p.bottomMargin=Math.round(12*density);root.addView(brand,p);}
+    int[] titleGradient(){
+        if(this==TRANSLUMINA)return new int[]{0xffffedda,0xffffb0ba,0xffff607f};
+        if(this==LIME)return new int[]{0xffedffca,0xffc1ff63,0xff6fe542};
+        if(this==VIOLET)return new int[]{0xfff3ddff,0xffd5a2ff,0xffa86aec};
+        if(this==LIGHT)return new int[]{0xff00687c,0xff345db0,0xff752d9c};
+        if(this==DARK)return new int[]{0xfff0f6fa,0xffc3d8e4,0xff91acbf};
+        return new int[]{0xff7af4ee,0xff89c8ef,0xffa975df};
+    }
+    int mistInk(){return this==LIGHT?0xff2781b1:this==DARK?0xffa0bdcf:accent;}
     ColorFilter brandFilter(){
         // Source logos contain a partial white matte as well as real alpha.
         // Reject that matte at render time, preserving the original glyph asset.
