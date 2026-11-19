@@ -124,7 +124,7 @@ jobs:
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
           cp app/build/outputs/apk/debug/app-debug.apk BMD-Scan.apk
-          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes "BMD Scan 3.5.0 reference-style visual update. High-resolution transparent chrome/orbit icons, rounded Nunito heading and labels, luminous curved lines and glass tile highlights. Six themes: Blue Medical, Translumina, Dark, Light, Lime and Dark violet; localized names and matching header scanner illustrations. Translumina keeps the colourful tile scheme. Transparent original brand logos and aligned Home/Settings footers retained. Menus portrait; camera portrait and landscape. Scanner/GS1/grouping logic unchanged. No automatic shipment approval. Real 95/200-product carton recognition and physical Samsung testing remain unvalidated."
+          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes-file "docs/releases/${version}.md"
 
       - name: Upload diagnostic reports
         if: always()
