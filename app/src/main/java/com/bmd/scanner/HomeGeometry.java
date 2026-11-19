@@ -17,5 +17,7 @@ final class HomeGeometry {
         }
         rows[7]=height;
     }
+    float[] brand(){return new float[]{left+190*scale,y(1490),left+678*scale,y(1648)};}
     float y(float sourceY){for(int i=0;i<7;i++)if(sourceY<=EDGES[i+1])return rows[i]+(sourceY-EDGES[i])*(rows[i+1]-rows[i])/(EDGES[i+1]-EDGES[i]);return rows[7];}
 }
+
