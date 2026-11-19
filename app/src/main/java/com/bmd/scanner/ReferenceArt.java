@@ -23,17 +23,17 @@ final class ReferenceArt {
         if(header){curve.moveTo(-24*unit,y+width*.035f);curve.cubicTo(width*.23f,y-width*.065f,width*.39f,y+width*.037f,width*.64f,y+width*.013f);curve.cubicTo(width*.81f,y+width*.006f,width*.94f,y-width*.025f,width+24*unit,y-width*.055f);}
         else{curve.moveTo(-24*unit,y+width*.025f);curve.cubicTo(width*.22f,y-width*.065f,width*.47f,y+width*.072f,width*.72f,y+width*.028f);curve.cubicTo(width*.86f,y+width*.009f,width*.95f,y-width*.007f,width+24*unit,y-width*.030f);}
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeCap(Paint.Cap.ROUND);int glow=glowInk(skin);
-        for(int n=6;n>=1;n--){paint.setStrokeWidth((2+n*3.5f)*unit);paint.setColor((Math.round(34f/(n+1))<<24)|(glow&0xffffff));canvas.drawPath(curve,paint);}
+        for(int n=6;n>=1;n--){paint.setStrokeWidth((2+n*3.5f)*unit);paint.setColor((Math.round(60f/(n+1))<<24)|(glow&0xffffff));canvas.drawPath(curve,paint);}
         canvas.save();canvas.translate(0,-6*unit);paint.setStrokeWidth(11*unit);paint.setShader(new LinearGradient(0,y,width,y,new int[]{0x00ffffff,skin==ThemeSkin.LIGHT?0x60ffffff:0x22ffffff,0x08ffffff,0x00ffffff},null,Shader.TileMode.CLAMP));canvas.drawPath(curve,paint);canvas.restore();paint.setShader(null);
-        paint.setStrokeWidth(3.2f*unit);paint.setColor(curveInk(skin));canvas.drawPath(curve,paint);
-        paint.setStrokeWidth(1.15f*unit);paint.setShader(new LinearGradient(0,y,width,y,new int[]{0xffe7ffff,curveInk(skin),0xffffffff},new float[]{0,.65f,1},Shader.TileMode.CLAMP));canvas.drawPath(curve,paint);paint.setShader(null);
+        paint.setStrokeWidth(4.5f*unit);paint.setColor(curveInk(skin));canvas.drawPath(curve,paint);
+        paint.setStrokeWidth(1.5f*unit);paint.setShader(new LinearGradient(0,y,width,y,new int[]{0xffe7ffff,curveInk(skin),0xffffffff},new float[]{0,.65f,1},Shader.TileMode.CLAMP));canvas.drawPath(curve,paint);paint.setShader(null);
     }
     static void background(Canvas canvas,float width,float height){ThemeSkin skin=ThemeSkin.active;Paint paint=new Paint(3);
         int base=skin==ThemeSkin.BMD?0xff00172e:skin==ThemeSkin.TRANSLUMINA?0xff300007:skin==ThemeSkin.DARK?0xff111518:skin==ThemeSkin.LIME?0xff061e09:skin==ThemeSkin.VIOLET?0xff19082c:0xfff6faff;
-        int halo=skin==ThemeSkin.BMD?0xff063b62:skin==ThemeSkin.TRANSLUMINA?0xffa50019:skin==ThemeSkin.DARK?0xff343c43:skin==ThemeSkin.LIME?0xff2c5c11:skin==ThemeSkin.VIOLET?0xff57216f:0xffe4f1fb;
+        int halo=skin==ThemeSkin.BMD?0xff052f53:skin==ThemeSkin.TRANSLUMINA?0xffa50019:skin==ThemeSkin.DARK?0xff343c43:skin==ThemeSkin.LIME?0xff2c5c11:skin==ThemeSkin.VIOLET?0xff57216f:0xffe4f1fb;
         paint.setShader(new LinearGradient(0,0,width,height,new int[]{base,halo,base},new float[]{0,.48f,1},Shader.TileMode.CLAMP));canvas.drawRect(0,0,width,height,paint);
         paint.setShader(new RadialGradient(width*.86f,height*.15f,width*.95f,new int[]{skin==ThemeSkin.LIGHT?0x70ffffff:skin==ThemeSkin.TRANSLUMINA?0x24ffb8b4:skin==ThemeSkin.DARK?0x18ffffff:skin==ThemeSkin.LIME?0x208aff33:skin==ThemeSkin.VIOLET?0x20c17aff:0x124e9bce,0},null,Shader.TileMode.CLAMP));canvas.drawRect(0,0,width,height,paint);paint.setShader(null);
-        Path fold=new Path();fold.moveTo(width*.20f,0);fold.cubicTo(width*.53f,height*.26f,width*.77f,height*.13f,width*1.1f,height*.055f);fold.lineTo(width*1.1f,0);fold.close();paint.setShader(new LinearGradient(width*.5f,0,width,height*.22f,new int[]{0,skin==ThemeSkin.LIGHT?0x90ffffff:0x08ffffff},null,Shader.TileMode.CLAMP));canvas.drawPath(fold,paint);paint.setShader(null);
+        Path fold=new Path();fold.moveTo(width*.20f,0);fold.cubicTo(width*.53f,height*.26f,width*.77f,height*.13f,width*1.1f,height*.055f);fold.lineTo(width*1.1f,0);fold.close();paint.setShader(new LinearGradient(width*.5f,0,width,height*.22f,new int[]{0,skin==ThemeSkin.LIGHT?0x90ffffff:skin==ThemeSkin.BMD?0x03ffffff:0x08ffffff},null,Shader.TileMode.CLAMP));canvas.drawPath(fold,paint);paint.setShader(null);
         ribbon(canvas,width,height*.947f,skin,false);
     }
     static Drawable tile(int requestedTop,int requestedBottom,int requestedEdge,float radius){
@@ -43,8 +43,8 @@ final class ReferenceArt {
         final int edge=coloured?requestedEdge:skin==ThemeSkin.DARK?0xffc7d0d8:skin==ThemeSkin.LIME?0xffc7ff50:skin==ThemeSkin.VIOLET?0xffd39aff:UiArt.mix(requestedEdge,Color.WHITE,.45f);
         return new Drawable(){final Paint p=new Paint(3);
             @Override public void draw(Canvas c){Rect b=getBounds();float w=b.width(),h=b.height(),u=w/392f,depth=Math.min(8*u,h*.04f),rr=Math.min(radius,Math.min(w,h)*.15f);c.save();c.translate(b.left,b.top);
-                RectF face=new RectF(2*u,2*u,w-2*u,h-depth-2*u);p.setStyle(Paint.Style.FILL);p.setShader(null);p.setColor(skin==ThemeSkin.LIGHT?0xffbac9d7:0xff000b14);c.drawRoundRect(2*u,7*u,w-2*u,h-1*u,rr,rr,p);
-                int dark=skin==ThemeSkin.LIGHT?UiArt.mix(bottom,0xffafc4d4,.20f):UiArt.mix(bottom,0xff020c15,.36f);
+                RectF face=new RectF(2*u,2*u,w-2*u,h-depth-2*u);p.setStyle(Paint.Style.FILL);p.setShader(null);p.setColor(skin==ThemeSkin.LIGHT?0xffbac9d7:0xff000b14);c.drawRoundRect(2*u,7*u,w-2*u,h-1*u,rr,rr,p);p.setStyle(Paint.Style.STROKE);int bloom=coloured?requestedTop:edge;for(int n=3;n>=1;n--){p.setStrokeWidth((3+n*3)*u);p.setColor((Math.round(52f/(n+1))<<24)|(bloom&0xffffff));c.drawRoundRect(face,rr,rr,p);}p.setStyle(Paint.Style.FILL);
+                int dark=skin==ThemeSkin.LIGHT?UiArt.mix(bottom,0xffafc4d4,.20f):UiArt.mix(bottom,0xff020c15,coloured?.72f:.46f);
                 p.setShader(new LinearGradient(0,0,w,h,new int[]{top,bottom,dark},new float[]{0,.57f,1},Shader.TileMode.CLAMP));c.drawRoundRect(face,rr,rr,p);p.setShader(null);
                 int save=c.save();Path clip=new Path();clip.addRoundRect(face,rr,rr,Path.Direction.CW);c.clipPath(clip);
                 p.setShader(new RadialGradient(w*.11f,h*.07f,w*.83f,new int[]{skin==ThemeSkin.LIGHT?0x70ffffff:0x45ffffff,0},null,Shader.TileMode.CLAMP));c.drawRect(face,p);p.setShader(null);
