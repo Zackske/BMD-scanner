@@ -47,10 +47,11 @@ final class UiArt {
     }
     static Drawable mist(Context context){return new Drawable(){
         private final Bitmap smoke=ReferenceArt.bitmap(context,R.drawable.header_smoke);
+        private final ColorFilter tint=new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN);
         private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
         private final Runnable tick=this::invalidateSelf;
         @Override public void draw(Canvas canvas){Rect r=getBounds();float w=r.width(),h=r.height();boolean motion=android.animation.ValueAnimator.areAnimatorsEnabled();float drift=motion?(float)Math.sin(android.os.SystemClock.uptimeMillis()/4200.0):0;
-            p.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));p.setAlpha(ThemeSkin.active==ThemeSkin.LIGHT?54:86);
+            p.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));p.setAlpha(ThemeSkin.active==ThemeSkin.LIGHT?54:86);p.setColorFilter(tint);
             canvas.drawBitmap(smoke,null,new RectF(r.left+w*.008f*drift,r.top+h*(.02f+.014f*drift),r.right+w*.008f*drift,r.bottom-h*.06f),p);
             unscheduleSelf(tick);if(motion&&isVisible())scheduleSelf(tick,android.os.SystemClock.uptimeMillis()+80);
         }
