@@ -11,8 +11,8 @@ import androidx.core.view.WindowCompat;
 
 /** Shared application chrome. Physical camera images and lot identities never pass through it. */
 final class ThemeSkin {
-    static final String[] IDS={"bmd","translumina","dark","light","lime","violet"};
-    static final String[] NAMES={"Blue Medical","Translumina","Dark","Light","Lime","Dark violet"};
+    static final String[] IDS={"bmd","translumina","lime","violet","light","dark"};
+    static final String[] NAMES={"Blue Medical","Translumina","Lime","Dark violet","Light","Dark"};
     static final ThemeSkin BMD=new ThemeSkin("bmd",0xff00152d,0xff083d62,0xff063853,0xff00182c,0xffffffff,0xffc7dae9,0xff00dce9,0xff60a8c5);
     static final ThemeSkin TRANSLUMINA=new ThemeSkin("translumina",0xff300008,0xff9b1328,0xff740f24,0xff38000b,0xffffffff,0xffefdce1,0xffff4a62,0xffd0a4af);
     static final ThemeSkin DARK=new ThemeSkin("dark",0xff101214,0xff2b3034,0xff30363b,0xff181c20,0xfff7f9fb,0xffd0d8de,0xffb6c8d2,0xff8c9da8);
