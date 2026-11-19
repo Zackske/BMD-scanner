@@ -23,5 +23,4 @@
     <string name="ui_review_all">Vérifier tous les produits de ce lot</string>
     <string name="ui_qr_count_check" formatted="false">Contrôle QR/quantité</string>
     <string name="ui_box_pallet_check" formatted="false">Contrôle carton/palette</string>
-    <string name="ui_scan_menu_title" formatted="false">Numérisation</string>
 </resources>
