@@ -53,7 +53,7 @@
     <string name="ui_normal" formatted="false">Normaal</string>
     <string name="ui_high" formatted="false">Hoog</string>
     <string name="ui_vibrate" formatted="false">Trillen na scan</string>
-    <string name="ui_vibrate_hint" formatted="false">Een korte trilling per gescande code</string>
+    <string name="ui_vibrate_hint" formatted="false">Na elke succesvol herkende code</string>
     <string name="ui_lamp" formatted="false">Lamp</string>
     <string name="ui_on" formatted="false">AAN</string>
     <string name="ui_off" formatted="false">UIT</string>

@@ -23,7 +23,7 @@ final class ScannerSettingsPopup {
     private final Context context;
     private final int originalResolution;
     private int resolution,sensitivity;
-    private boolean vibration,closing,disposed;
+    private boolean vibration,closing,disposed;private float progress;
     private ValueAnimator transition;
     private PopupWindow choices;
     private final TextView resolutionValue;
@@ -35,7 +35,7 @@ final class ScannerSettingsPopup {
         originalResolution=resolution=Math.max(0,Math.min(CameraResolutionOptions.TARGETS.length-1,prefs.getInt("cameraResolution",1)));
         sensitivity=Math.max(0,Math.min(2,prefs.getInt("sensitivity",1)));vibration=prefs.getBoolean("vibrateAfterScan",true);
         layer=new FrameLayout(context);layer.setTag("scanner-settings-overlay");layer.setClickable(true);layer.setFocusableInTouchMode(true);
-        scrim=new View(context);scrim.setBackgroundColor(0xa6001020);layer.addView(scrim,new FrameLayout.LayoutParams(-1,-1));
+        scrim=new View(context);scrim.setBackgroundColor(0xa6001020);scrim.setAlpha(0);layer.addView(scrim,new FrameLayout.LayoutParams(-1,-1));
         panel=column();panel.setTag("scanner-settings-panel");panel.setPadding(dp(14),dp(14),dp(14),dp(18));panel.setBackground(surface(ScannerControls.accent(),26));panel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         LinearLayout header=new LinearLayout(context);header.setGravity(Gravity.CENTER_VERTICAL);
         header.addView(new ScannerControls.Gear(context),new LinearLayout.LayoutParams(dp(34),dp(34)));
@@ -73,9 +73,9 @@ final class ScannerSettingsPopup {
         ScrollView scroll=new ScrollView(context);scroll.addView(rows);choices=new PopupWindow(scroll,Math.min(panel.getWidth()-dp(28),dp(360)),Math.min(host.getHeight()-dp(64),dp(380)),true);choices.setBackgroundDrawable(surface(ThemeSkin.active.edge,16));choices.setOutsideTouchable(true);choices.setElevation(dp(4));choices.showAtLocation(layer,Gravity.CENTER,0,0);
     }
     private void animate(boolean opening){
-        if(transition!=null)transition.cancel();int[] a=new int[2],b=new int[2];anchor.getLocationOnScreen(a);panel.getLocationOnScreen(b);float px=Math.max(0,Math.min(panel.getWidth(),a[0]+anchor.getWidth()/2f-b[0])),py=a[1]+anchor.getHeight()/2f-b[1];panel.setPivotX(px);panel.setPivotY(py);
-        if(!ValueAnimator.areAnimatorsEnabled()){panel.setScaleX(opening?1:.08f);panel.setScaleY(opening?1:.08f);panel.setAlpha(opening?1:0);scrim.setAlpha(opening?1:0);if(!opening)remove(true);return;}
-        final float from=opening?0:1,to=opening?1:0;transition=ValueAnimator.ofFloat(from,to);transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.addUpdateListener(v->{float value=(Float)v.getAnimatedValue();panel.setScaleX(.08f+.92f*value);panel.setScaleY(.08f+.92f*value);panel.setAlpha(value);scrim.setAlpha(value);});transition.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(!opening&&!disposed)remove(true);}});transition.start();
+        if(transition!=null)transition.cancel();if(opening){int[] a=new int[2],b=new int[2];anchor.getLocationOnScreen(a);panel.getLocationOnScreen(b);float px=Math.max(0,Math.min(panel.getWidth(),a[0]+anchor.getWidth()/2f-b[0])),py=a[1]+anchor.getHeight()/2f-b[1];panel.setPivotX(px);panel.setPivotY(py);}
+        if(!ValueAnimator.areAnimatorsEnabled()){progress=opening?1:0;panel.setScaleX(opening?1:.08f);panel.setScaleY(opening?1:.08f);panel.setAlpha(opening?1:0);scrim.setAlpha(opening?1:0);if(!opening)remove(true);return;}
+        final float from=progress,to=opening?1:0;transition=ValueAnimator.ofFloat(from,to);transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.addUpdateListener(v->{float value=(Float)v.getAnimatedValue();progress=value;panel.setScaleX(.08f+.92f*value);panel.setScaleY(.08f+.92f*value);panel.setAlpha(value);scrim.setAlpha(value);});transition.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(!opening&&!disposed)remove(true);}});transition.start();
     }
     boolean resolutionChanged(){return resolution!=originalResolution;}
     boolean isShowing(){return !disposed;}
