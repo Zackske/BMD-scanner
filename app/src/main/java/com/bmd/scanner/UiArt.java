@@ -117,12 +117,13 @@ final class UiArt {
     static int mix(int a,int b,float amount){return Color.rgb(Math.round(Color.red(a)*(1-amount)+Color.red(b)*amount),Math.round(Color.green(a)*(1-amount)+Color.green(b)*amount),Math.round(Color.blue(a)*(1-amount)+Color.blue(b)*amount));}
 
     static class Icon extends View {
-        private final String kind;private final int color;private final Paint p=new Paint(3);
+        private final String kind;private final int color;private final boolean flat;private final Paint p=new Paint(3);
         Icon(Context c,String kind){this(c,kind,Color.WHITE);}
-        Icon(Context c,String kind,int color){super(c);this.kind=kind;this.color=ThemeSkin.icon(color);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        Icon(Context c,String kind,int color){this(c,kind,color,false);}
+        Icon(Context c,String kind,int color,boolean flat){super(c);this.kind=kind;this.flat=flat;this.color=flat?color:ThemeSkin.icon(color);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         @Override protected void onDraw(Canvas canvas){
             float size=Math.min(getWidth(),getHeight());canvas.save();canvas.translate((getWidth()-size)/2,(getHeight()-size)/2);canvas.scale(size/64,size/64);
-            p.setShader(new LinearGradient(0,0,64,64,new int[]{ThemeSkin.active==ThemeSkin.LIGHT?color:Color.WHITE,color,mix(color,ThemeSkin.active.bottom,.28f)},new float[]{0,.43f,1},Shader.TileMode.CLAMP));p.setColor(color);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
+            p.setShader(flat?null:new LinearGradient(0,0,64,64,new int[]{ThemeSkin.active==ThemeSkin.LIGHT?color:Color.WHITE,color,mix(color,ThemeSkin.active.bottom,.28f)},new float[]{0,.43f,1},Shader.TileMode.CLAMP));p.setColor(color);p.setStrokeWidth(3.5f);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);p.setStyle(Paint.Style.STROKE);
             switch(kind){
                 case "qr":
                     cbox(canvas,8,8);cbox(canvas,38,8);cbox(canvas,8,38);
