@@ -76,8 +76,11 @@ jobs:
       - name: Enable emulator acceleration
         run: sudo chmod 666 /dev/kvm
 
-      - name: Verify native design, languages and live scanner on Android
+      - name: Verify pinch zoom and settings on Android
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          BMD_SUITE: scanner-settings
+          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest
         with:
           api-level: 35
           target: google_apis
@@ -90,11 +93,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
           script: bash ci/design-tests.sh
 
-      - name: Verify pinch zoom and settings on a fresh Android emulator
+      - name: Verify existing features on a fresh Android emulator
         uses: reactivecircus/android-emulator-runner@v2
-        env:
-          BMD_SUITE: scanner-settings
-          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest
         with:
           api-level: 35
           target: google_apis

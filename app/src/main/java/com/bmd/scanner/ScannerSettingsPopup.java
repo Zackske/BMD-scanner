@@ -30,13 +30,13 @@ final class ScannerSettingsPopup {
     private final Words words;
 
     ScannerSettingsPopup(FrameLayout host,View anchor,Words words,Runnable onClosed){
-        this.host=host;this.context=host.getContext();this.anchor=anchor;this.words=words;this.onClosed=onClosed;
+        android.util.Log.i("BMD-settings","construct viewport="+host.getWidth()+"x"+host.getHeight());this.host=host;this.context=host.getContext();this.anchor=anchor;this.words=words;this.onClosed=onClosed;
         prefs=context.getSharedPreferences("MainActivity",0);
         originalResolution=resolution=Math.max(0,Math.min(CameraResolutionOptions.TARGETS.length-1,prefs.getInt("cameraResolution",1)));
         sensitivity=Math.max(0,Math.min(2,prefs.getInt("sensitivity",1)));vibration=prefs.getBoolean("vibrateAfterScan",true);
         layer=new FrameLayout(context);layer.setTag("scanner-settings-overlay");layer.setClickable(true);layer.setFocusableInTouchMode(true);
         scrim=new View(context);scrim.setBackgroundColor(0xa6001020);scrim.setAlpha(0);layer.addView(scrim,new FrameLayout.LayoutParams(-1,-1));
-        panel=column();panel.setTag("scanner-settings-panel");panel.setPadding(dp(14),dp(14),dp(14),dp(18));panel.setBackground(surface(ScannerControls.accent(),26));panel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+        panel=column();panel.setLayerType(View.LAYER_TYPE_SOFTWARE,null);panel.setTag("scanner-settings-panel");panel.setPadding(dp(14),dp(14),dp(14),dp(18));panel.setBackground(surface(ScannerControls.accent(),26));panel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         LinearLayout header=new LinearLayout(context);header.setGravity(Gravity.CENTER_VERTICAL);
         header.addView(new ScannerControls.Gear(context),new LinearLayout.LayoutParams(dp(34),dp(34)));
         TextView title=label(words.get("scanner_settings"),20,true);title.setPadding(dp(10),0,0,0);title.setSingleLine(true);title.setAutoSizeTextTypeUniformWithConfiguration(13,20,1,android.util.TypedValue.COMPLEX_UNIT_SP);header.addView(title,new LinearLayout.LayoutParams(0,dp(52),1));
@@ -54,7 +54,7 @@ final class ScannerSettingsPopup {
         int availableHeight=host.getHeight(),availableWidth=host.getWidth();int width=Math.min(availableWidth-dp(24),dp(430));panel.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(Math.max(0,availableHeight-dp(24)),View.MeasureSpec.AT_MOST));
         int fixed=dp(14+18+52+48);scroll.getLayoutParams().height=Math.min(scroll.getMeasuredHeight(),Math.max(dp(72),availableHeight-dp(24)-fixed));
         FrameLayout.LayoutParams placement=new FrameLayout.LayoutParams(width,-2,Gravity.CENTER);layer.addView(panel,placement);panel.setVisibility(View.INVISIBLE);
-        host.addView(layer,new FrameLayout.LayoutParams(-1,-1));layer.requestFocus();layer.setOnKeyListener((v,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});
+        android.util.Log.i("BMD-settings","panel measured="+panel.getMeasuredWidth()+"x"+panel.getMeasuredHeight()+" scroll="+scroll.getLayoutParams().height);host.addView(layer,new FrameLayout.LayoutParams(-1,-1));layer.requestFocus();layer.setOnKeyListener((v,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});
         host.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         for(int i=0;i<host.getChildCount();i++)if(host.getChildAt(i)!=layer)host.getChildAt(i).setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         if(Build.VERSION.SDK_INT>=28)panel.setAccessibilityPaneTitle(words.get("scanner_settings"));
@@ -72,7 +72,7 @@ final class ScannerSettingsPopup {
         if(closing||disposed)return;if(choices!=null)choices.dismiss();LinearLayout rows=column();rows.setPadding(dp(8),dp(8),dp(8),dp(8));String[] labels=CameraResolutionOptions.labels(words.get("highest"));for(int n=0;n<labels.length;n++){final int index=n;TextView row=action(labels[n],labels[n]);row.setTag("scanner-resolution-"+n);row.setTextSize(14);row.setMinHeight(dp(48));row.setGravity(Gravity.CENTER_VERTICAL);row.setPadding(dp(8),0,dp(8),0);row.setSelected(n==resolution);if(n==resolution)row.setTextColor(ScannerControls.accent());rows.addView(row,new LinearLayout.LayoutParams(-1,dp(48)));row.setOnClickListener(v->{resolution=index;updateResolution();choices.dismiss();});}
         ScrollView scroll=new ScrollView(context);scroll.addView(rows);choices=new PopupWindow(scroll,Math.min(panel.getWidth()-dp(28),dp(360)),Math.min(host.getHeight()-dp(64),dp(380)),true);choices.setBackgroundDrawable(surface(ThemeSkin.active.edge,16));choices.setOutsideTouchable(true);choices.setElevation(dp(4));choices.showAtLocation(layer,Gravity.CENTER,0,0);
     }
-    private void animate(boolean opening){
+    private void animate(boolean opening){android.util.Log.i("BMD-settings","animate open="+opening+" panel="+panel.getWidth()+"x"+panel.getHeight());
         if(transition!=null)transition.cancel();if(opening){int[] a=new int[2],b=new int[2];anchor.getLocationOnScreen(a);panel.getLocationOnScreen(b);float px=Math.max(0,Math.min(panel.getWidth(),a[0]+anchor.getWidth()/2f-b[0])),py=a[1]+anchor.getHeight()/2f-b[1];panel.setPivotX(px);panel.setPivotY(py);}
         if(!ValueAnimator.areAnimatorsEnabled()){progress=opening?1:0;panel.setScaleX(opening?1:.08f);panel.setScaleY(opening?1:.08f);panel.setAlpha(opening?1:0);scrim.setAlpha(opening?1:0);if(!opening)remove(true);return;}
         final float from=progress,to=opening?1:0;transition=ValueAnimator.ofFloat(from,to);transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.addUpdateListener(v->{float value=(Float)v.getAnimatedValue();progress=value;panel.setScaleX(.08f+.92f*value);panel.setScaleY(.08f+.92f*value);panel.setAlpha(value);scrim.setAlpha(value);});transition.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(!opening&&!disposed)remove(true);}});transition.start();
