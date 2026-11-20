@@ -1,8 +1,8 @@
-name: Build BMD Scan APK
+name: Capture released stack screens
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'preview/stack-themes-4.2.1']
   pull_request:
   workflow_dispatch:
 
@@ -98,26 +98,22 @@ jobs:
           path: device-screenshots/
           if-no-files-found: ignore
 
-      - name: Save native scanner and lot test screenshots
-        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Save stack screenshots on preview branch
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/preview/stack-themes-4.2.1'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          evidence="docs/screenshots/attempt-${GITHUB_RUN_NUMBER}"
+          evidence="docs/screenshots/stack-theme-preview"
           mkdir -p "$evidence"
-          find device-screenshots -name '*.png' -exec cp {} "$evidence/" \;
-          if [[ "${{ job.status }}" == "success" ]]; then
-            mkdir -p docs/screenshots/build3
-            find device-screenshots -name 'build3-*.png' -exec cp {} docs/screenshots/build3/ \;
-          fi
-          git fetch origin main
-          if [[ "$(git rev-parse origin/main)" != "$GITHUB_SHA" ]]; then exit 0; fi
+          find device-screenshots -name 'stack-theme-*.png' -exec cp {} "$evidence/" \;
+          git fetch origin preview/stack-themes-4.2.1
+          if [[ "$(git rev-parse origin/preview/stack-themes-4.2.1)" != "$GITHUB_SHA" ]]; then exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/screenshots
+          git add "$evidence"
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "docs: save Android check evidence [skip ci]"
-          git push origin HEAD:main
+          git commit -m "docs: capture stack screens in six themes [skip ci]"
+          git push origin HEAD:preview/stack-themes-4.2.1
 
       - name: Publish APK for phone testing
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
