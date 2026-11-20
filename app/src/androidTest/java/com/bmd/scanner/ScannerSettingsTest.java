@@ -14,6 +14,13 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ScannerSettingsTest {
     private static View settingsRoot(BoxScanActivity a){return a.settingsPopup.content();}
+    private static void nativeShot(String name)throws Exception{
+        SystemClock.sleep(450);android.util.Log.i("BMD-settings","screencap start "+name);
+        DeviceSupport.shell("mkdir -p /data/local/tmp/bmd-screenshots");
+        DeviceSupport.shell("screencap -p /data/local/tmp/bmd-screenshots/"+name+".png");
+        assertTrue("Android screencap must write a real PNG",DeviceSupport.shell("test -s /data/local/tmp/bmd-screenshots/"+name+".png && echo BMD_SCREENSHOT_OK").contains("BMD_SCREENSHOT_OK"));
+        android.util.Log.i("BMD-settings","screencap done "+name);
+    }
     private void ready(ActivityScenario<BoxScanActivity> scenario)throws Exception{
         AtomicBoolean ready=new AtomicBoolean();long end=SystemClock.elapsedRealtime()+45000;
         while(SystemClock.elapsedRealtime()<end){scenario.onActivity(a->{ScanTracker live=(ScanTracker)DeviceSupport.get(a,"live");ready.set((Boolean)DeviceSupport.get(a,"ready")&&live.visible(SystemClock.elapsedRealtime()).size()==3);});if(ready.get())return;SystemClock.sleep(200);}throw new AssertionError("Live camera must decode three separate products");
@@ -27,11 +34,11 @@ public class ScannerSettingsTest {
                 ready(scenario);android.util.Log.i("BMD-settings","camera ready theme="+theme);Object[] original=new Object[4];
                 scenario.onActivity(a->{original[0]=a.session;original[1]=DeviceSupport.get(a,"preview");original[2]=DeviceSupport.get(a,"camera");original[3]=DeviceSupport.get(a,"epoch");a.session.tracker.importCode(new ScanTracker.Detection("settings-preservation-fixture","QR",.1f,.1f,.2f,.2f),0);DeviceSupport.tag(a.getWindow().getDecorView(),"box-settings").performClick();});SystemClock.sleep(900);
                 scenario.onActivity(a->{assertNotNull(a.settingsPopup);View root=settingsRoot(a);View panel=DeviceSupport.tag(root,"scanner-settings-panel");assertNotNull(panel);assertEquals(1,panel.getScaleX(),.01);assertEquals(0,panel.getElevation(),0);assertTrue(panel.getWidth()>250*a.getResources().getDisplayMetrics().density);assertTrue(DeviceSupport.hasText(panel,"Scannerinstellingen"));assertNotNull(DeviceSupport.tag(panel,"scanner-settings-resolution"));assertTrue(DeviceSupport.tag(panel,"scanner-settings-sensitivity-2").isSelected());assertSame(original[2],DeviceSupport.get(a,"camera"));});
-                android.util.Log.i("BMD-settings","popup measured theme="+theme);DeviceSupport.shot(null,"build43-scanner-settings-"+theme);android.util.Log.i("BMD-settings","popup screenshot theme="+theme);
+                android.util.Log.i("BMD-settings","popup measured theme="+theme);nativeShot("build43-scanner-settings-"+theme);android.util.Log.i("BMD-settings","popup screenshot theme="+theme);
                 scenario.onActivity(a->{View root=settingsRoot(a);DeviceSupport.tag(root,"scanner-settings-sensitivity-1").performClick();((Switch)DeviceSupport.tag(root,"scanner-settings-vibration")).setChecked(false);DeviceSupport.tag(root,"scanner-settings-close").performClick();});SystemClock.sleep(450);
                 scenario.onActivity(a->{android.util.Log.i("BMD-settings","closed theme="+theme);assertNull(a.settingsPopup);assertNull(DeviceSupport.tag(a.getWindow().getDecorView(),"scanner-settings-overlay"));assertSame(original[0],a.session);assertSame(original[1],DeviceSupport.get(a,"preview"));assertSame("Closing settings cannot rebind the camera",original[2],DeviceSupport.get(a,"camera"));assertEquals(original[3],DeviceSupport.get(a,"epoch"));assertEquals(1,a.session.tracker.items().size());assertEquals(3,a.session.expected);assertEquals(1,a.getSharedPreferences("MainActivity",0).getInt("sensitivity",-1));assertFalse(a.getSharedPreferences("MainActivity",0).getBoolean("vibrateAfterScan",true));DeviceSupport.tag(a.getWindow().getDecorView(),"box-settings").performClick();});SystemClock.sleep(800);
                 scenario.onActivity(a->{View root=settingsRoot(a);assertTrue(DeviceSupport.tag(root,"scanner-settings-sensitivity-1").isSelected());assertFalse(((Switch)DeviceSupport.tag(root,"scanner-settings-vibration")).isChecked());a.getOnBackPressedDispatcher().onBackPressed();});SystemClock.sleep(450);ready(scenario);
-                scenario.onActivity(a->{assertNull(a.settingsPopup);assertSame(original[1],DeviceSupport.get(a,"preview"));assertEquals(1,a.session.tracker.items().size());});DeviceSupport.shot(null,"build43-scanner-resumed-"+theme);
+                scenario.onActivity(a->{assertNull(a.settingsPopup);assertSame(original[1],DeviceSupport.get(a,"preview"));assertEquals(1,a.session.tracker.items().size());});nativeShot("build43-scanner-resumed-"+theme);
                 scenario.onActivity(a->{DeviceSupport.call(a,"settings",new Class<?>[]{});DeviceSupport.tag(settingsRoot(a),"scanner-settings-close").performClick();});SystemClock.sleep(450);scenario.onActivity(a->{assertNull("A fast X press cannot reopen the popup",a.settingsPopup);assertSame(original[1],DeviceSupport.get(a,"preview"));});
             }
         }
