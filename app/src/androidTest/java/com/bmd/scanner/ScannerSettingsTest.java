@@ -19,7 +19,7 @@ public class ScannerSettingsTest {
         SystemClock.sleep(450);android.util.Log.i("BMD-settings","screencap start "+name);
         DeviceSupport.shell("mkdir -p /data/local/tmp/bmd-screenshots");
         DeviceSupport.shell("screencap -p /data/local/tmp/bmd-screenshots/"+name+".png");
-        assertTrue("Android screencap must write a real PNG",DeviceSupport.shell("test -s /data/local/tmp/bmd-screenshots/"+name+".png && echo BMD_SCREENSHOT_OK").contains("BMD_SCREENSHOT_OK"));
+        String bytes=DeviceSupport.shell("stat -c %s /data/local/tmp/bmd-screenshots/"+name+".png").trim();assertTrue("Android screencap must write a real PNG: "+bytes,Long.parseLong(bytes)>0);
         android.util.Log.i("BMD-settings","screencap done "+name);
     }
     private void ready(ActivityScenario<BoxScanActivity> scenario)throws Exception{
