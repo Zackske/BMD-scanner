@@ -24,7 +24,7 @@ final class ScannerSettingsPopup {
     private final int originalResolution;
     private int resolution,sensitivity;
     private boolean vibration,closing,disposed;private float progress;
-    private ValueAnimator transition;
+    private android.view.animation.Animation transition;
     private PopupWindow choices;
     private final TextView resolutionValue;
     private final Words words;
@@ -54,7 +54,7 @@ final class ScannerSettingsPopup {
         int availableHeight=host.getHeight(),availableWidth=host.getWidth();int width=Math.min(availableWidth-dp(24),dp(430));panel.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(Math.max(0,availableHeight-dp(24)),View.MeasureSpec.AT_MOST));
         int fixed=dp(14+18+52+48);scroll.getLayoutParams().height=Math.min(scroll.getMeasuredHeight(),Math.max(dp(72),availableHeight-dp(24)-fixed));
         FrameLayout.LayoutParams placement=new FrameLayout.LayoutParams(width,-2,Gravity.CENTER);layer.addView(panel,placement);panel.setVisibility(View.INVISIBLE);
-        android.util.Log.i("BMD-settings","panel measured="+panel.getMeasuredWidth()+"x"+panel.getMeasuredHeight()+" scroll="+scroll.getLayoutParams().height);dialog=new Dialog(context);dialog.setContentView(layer);dialog.setCancelable(false);dialog.setCanceledOnTouchOutside(false);dialog.setOnKeyListener((d,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});dialog.setOnDismissListener(d->{if(!disposed)remove(false);});dialog.show();Window window=dialog.getWindow();window.setBackgroundDrawableResource(android.R.color.transparent);window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);window.setGravity(Gravity.CENTER);window.setLayout(host.getWidth(),host.getHeight());
+        android.util.Log.i("BMD-settings","panel measured="+panel.getMeasuredWidth()+"x"+panel.getMeasuredHeight()+" scroll="+scroll.getLayoutParams().height);dialog=new Dialog(context){@Override public void onBackPressed(){ScannerSettingsPopup.this.close();}};dialog.setContentView(layer);dialog.setCancelable(false);dialog.setCanceledOnTouchOutside(false);dialog.setOnKeyListener((d,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});dialog.setOnDismissListener(d->{if(!disposed)remove(false);});dialog.show();Window window=dialog.getWindow();window.setBackgroundDrawableResource(android.R.color.transparent);window.setWindowAnimations(0);window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);window.setGravity(Gravity.CENTER);window.setLayout(host.getWidth(),host.getHeight());
         layer.post(()->{if(disposed||closing)return;panel.setVisibility(View.VISIBLE);animate(true);close.requestFocus();});
     }
     private int dp(float value){return Math.round(value*context.getResources().getDisplayMetrics().density);}
@@ -69,16 +69,22 @@ final class ScannerSettingsPopup {
         if(closing||disposed)return;if(choices!=null)choices.dismiss();LinearLayout rows=column();rows.setPadding(dp(8),dp(8),dp(8),dp(8));String[] labels=CameraResolutionOptions.labels(words.get("highest"));for(int n=0;n<labels.length;n++){final int index=n;TextView row=action(labels[n],labels[n]);row.setTag("scanner-resolution-"+n);row.setTextSize(14);row.setMinHeight(dp(48));row.setGravity(Gravity.CENTER_VERTICAL);row.setPadding(dp(8),0,dp(8),0);row.setSelected(n==resolution);if(n==resolution)row.setTextColor(ScannerControls.accent());rows.addView(row,new LinearLayout.LayoutParams(-1,dp(48)));row.setOnClickListener(v->{resolution=index;updateResolution();choices.dismiss();});}
         ScrollView scroll=new ScrollView(context);scroll.addView(rows);choices=new PopupWindow(scroll,Math.min(panel.getWidth()-dp(28),dp(360)),Math.min(host.getHeight()-dp(64),dp(380)),true);choices.setBackgroundDrawable(surface(ThemeSkin.active.edge,16));choices.setOutsideTouchable(true);choices.setElevation(dp(4));choices.showAtLocation(layer,Gravity.CENTER,0,0);
     }
-    private void animate(boolean opening){android.util.Log.i("BMD-settings","animate open="+opening+" panel="+panel.getWidth()+"x"+panel.getHeight());
-        if(transition!=null)transition.cancel();if(opening){int[] a=new int[2],b=new int[2];anchor.getLocationOnScreen(a);panel.getLocationOnScreen(b);float px=Math.max(0,Math.min(panel.getWidth(),a[0]+anchor.getWidth()/2f-b[0])),py=a[1]+anchor.getHeight()/2f-b[1];panel.setPivotX(px);panel.setPivotY(py);}
-        if(!ValueAnimator.areAnimatorsEnabled()){progress=opening?1:0;panel.setScaleX(opening?1:.08f);panel.setScaleY(opening?1:.08f);panel.setAlpha(opening?1:0);scrim.setAlpha(opening?1:0);if(!opening)remove(true);return;}
-        final float from=progress,to=opening?1:0;transition=ValueAnimator.ofFloat(from,to);transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.addUpdateListener(v->{float value=(Float)v.getAnimatedValue();progress=value;panel.setScaleX(.08f+.92f*value);panel.setScaleY(.08f+.92f*value);panel.setAlpha(value);scrim.setAlpha(value);});transition.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(!opening&&!disposed)remove(true);}});transition.start();
+    private void animate(boolean opening){
+        android.util.Log.i("BMD-settings","animate open="+opening+" panel="+panel.getWidth()+"x"+panel.getHeight());
+        if(transition!=null){transition.setAnimationListener(null);transition.cancel();}panel.clearAnimation();scrim.clearAnimation();
+        if(!ValueAnimator.areAnimatorsEnabled()){progress=opening?1:0;panel.setAlpha(opening?1:0);scrim.setAlpha(opening?1:0);if(!opening)remove(true);return;}
+        int[] a=new int[2],b=new int[2];anchor.getLocationOnScreen(a);panel.getLocationOnScreen(b);
+        final float dx=a[0]+anchor.getWidth()/2f-b[0]-panel.getWidth()/2f,dy=a[1]+anchor.getHeight()/2f-b[1]-panel.getHeight()/2f;
+        final float from=progress,to=opening?1:0;panel.setAlpha(1);scrim.setAlpha(1);
+        transition=new android.view.animation.Animation(){@Override protected void applyTransformation(float time,android.view.animation.Transformation frame){progress=from+(to-from)*time;float scale=.08f+.92f*progress;frame.getMatrix().setScale(scale,scale,panel.getWidth()/2f,panel.getHeight()/2f);frame.getMatrix().postTranslate(dx*(1-progress),dy*(1-progress));frame.setAlpha(progress);}};
+        transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.setFillAfter(true);transition.setAnimationListener(new android.view.animation.Animation.AnimationListener(){public void onAnimationStart(android.view.animation.Animation a){}public void onAnimationRepeat(android.view.animation.Animation a){}public void onAnimationEnd(android.view.animation.Animation a){if(!opening&&!disposed)remove(true);}});
+        android.view.animation.AlphaAnimation dim=new android.view.animation.AlphaAnimation(from,to);dim.setDuration(opening?380:260);dim.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));dim.setFillAfter(true);scrim.startAnimation(dim);panel.startAnimation(transition);
     }
     boolean resolutionChanged(){return resolution!=originalResolution;}
     View content(){return layer;}
     boolean isShowing(){return !disposed&&dialog.isShowing();}
-    void close(){if(closing||disposed)return;closing=true;apply();if(choices!=null)choices.dismiss();animate(false);}
+    void close(){if(closing||disposed)return;closing=true;apply();if(choices!=null)choices.dismiss();if(panel.getVisibility()!=View.VISIBLE){remove(true);return;}animate(false);}
     private void apply(){prefs.edit().putInt("cameraResolution",resolution).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibration).apply();}
-    void dispose(){if(disposed)return;apply();if(transition!=null){transition.removeAllListeners();transition.cancel();}if(choices!=null)choices.dismiss();remove(false);}
+    void dispose(){if(disposed)return;apply();if(transition!=null){transition.setAnimationListener(null);transition.cancel();panel.clearAnimation();scrim.clearAnimation();}if(choices!=null)choices.dismiss();remove(false);}
     private void remove(boolean callback){if(disposed)return;disposed=true;dialog.dismiss();anchor.requestFocus();if(callback)onClosed.run();}
 }
