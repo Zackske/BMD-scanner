@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">Крок 1 · Тип сканування</string>
+    <string name="ui_wizard_step_count" formatted="false">Крок 2 · Кількість</string>
+    <string name="ui_wizard_type" formatted="false">Тип</string>
+    <string name="ui_wizard_count" formatted="false">Кількість</string>
+    <string name="ui_wizard_type_question" formatted="false">Що ви хочете сканувати?</string>
+    <string name="ui_wizard_box" formatted="false">Повна коробка</string>
+    <string name="ui_wizard_stack" formatted="false">Сканування стосу</string>
+    <string name="ui_wizard_box_hint" formatted="false">З мітками та детальними фото</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Сканування без міток</string>
+    <string name="ui_wizard_next_count" formatted="false">Далі вкажіть кількість виробів.</string>
+    <string name="ui_wizard_count_question" formatted="false">Скільки виробів ви очікуєте?</string>
+    <string name="ui_wizard_products" formatted="false">Кількість виробів</string>
+    <string name="ui_wizard_count_hint" formatted="false">Введіть очікувану кількість виробів.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Ця кількість використовується для перевірки.</string>
+    <string name="ui_wizard_next" formatted="false">Далі</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Сканувати знову</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Новий знімок замінить попереднє сканування стосу.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Нове сканування</string>
+</resources>

@@ -7,8 +7,8 @@ android {
         applicationId 'com.bmd.scanner'
         minSdk 26
         targetSdk 35
-        versionCode 27
-        versionName '3.5.4'
+        versionCode 28
+        versionName '4.0.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments timeout_msec: '180000'
     }

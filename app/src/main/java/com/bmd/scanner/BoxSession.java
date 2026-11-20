@@ -8,8 +8,9 @@ final class BoxSession {
     final ProductCatalog products=new ProductCatalog();
     final List<Shot> shots=new ArrayList<>();
     final List<Integer> expectedHistory=new ArrayList<>();
-    int expected; boolean reviewed;
-    BoxSession(int expected){setExpected(expected);}
+    int expected; boolean reviewed;final boolean stacked;
+    BoxSession(int expected){this(expected,false);}
+    BoxSession(int expected,boolean stacked){this.stacked=stacked;setExpected(expected);}
     void setExpected(int n){if(n<1||n>10000)throw new IllegalArgumentException("count");expected=n;expectedHistory.add(n);reviewed=false;}
     static boolean marker(String value){return value.matches("BMD-BOX-[ABCD]");}
     static List<ScanTracker.Detection> select(List<ScanTracker.Detection> codes,String mode){List<ScanTracker.Detection> result=new ArrayList<>();for(ScanTracker.Detection d:codes)if(marker(d.value)||mode.equals("both")||mode.equals("bar")&&d.kind.equals("Barcode")||mode.equals("qr")&&(d.kind.equals("QR")||d.kind.equals("Data Matrix")))result.add(d);return result;}
@@ -26,5 +27,6 @@ final class BoxSession {
         shots.add(new Shot(file,map,ids,observations));reviewed=false;products.project(tracker.items());return ids;
     }
     boolean countMatches(){return products.view(tracker.items()).size()==expected;}
-    boolean ready(){if(shots.size()<4||!reviewed||!countMatches())return false;for(ProductCatalog.Product p:products.view(tracker.items()))if(p.conflict||p.lot.isEmpty())return false;return true;}
+    boolean hasRequiredPhotos(){return shots.size()>=(stacked?1:4);}
+    boolean ready(){if(!hasRequiredPhotos()||!reviewed||!countMatches())return false;for(ProductCatalog.Product p:products.view(tracker.items()))if(p.conflict||p.lot.isEmpty())return false;return true;}
 }

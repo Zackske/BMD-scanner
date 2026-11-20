@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">चरण 1 · स्कैन का प्रकार</string>
+    <string name="ui_wizard_step_count" formatted="false">चरण 2 · संख्या</string>
+    <string name="ui_wizard_type" formatted="false">प्रकार</string>
+    <string name="ui_wizard_count" formatted="false">संख्या</string>
+    <string name="ui_wizard_type_question" formatted="false">आप क्या स्कैन करना चाहते हैं?</string>
+    <string name="ui_wizard_box" formatted="false">पूरा बॉक्स</string>
+    <string name="ui_wizard_stack" formatted="false">स्टैक स्कैन</string>
+    <string name="ui_wizard_box_hint" formatted="false">मार्कर और विस्तृत फ़ोटो के साथ</string>
+    <string name="ui_wizard_stack_hint" formatted="false">बिना मार्कर सीधे स्कैन करें</string>
+    <string name="ui_wizard_next_count" formatted="false">इसके बाद उत्पादों की संख्या दर्ज करें।</string>
+    <string name="ui_wizard_count_question" formatted="false">कितने उत्पाद अपेक्षित हैं?</string>
+    <string name="ui_wizard_products" formatted="false">उत्पादों की संख्या</string>
+    <string name="ui_wizard_count_hint" formatted="false">उत्पादों की अपेक्षित संख्या दर्ज करें।</string>
+    <string name="ui_wizard_count_usage" formatted="false">यह संख्या जाँच के लिए उपयोग की जाती है।</string>
+    <string name="ui_wizard_next" formatted="false">आगे</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">फिर से स्कैन करें</string>
+    <string name="ui_wizard_retake_hint" formatted="false">नई तस्वीर पिछला स्टैक स्कैन बदल देगी।</string>
+    <string name="ui_wizard_new_scan" formatted="false">नया स्कैन</string>
+</resources>

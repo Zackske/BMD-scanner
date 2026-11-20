@@ -15,4 +15,6 @@ public class BoxSessionTest {
 
     @Test public void photoModeFiltersProductsButRetainsCalibrationMarkers(){List<ScanTracker.Detection> all=Arrays.asList(new ScanTracker.Detection("qr","QR",.1f,.1f,.2f,.2f),new ScanTracker.Detection("dm","Data Matrix",.3f,.1f,.4f,.2f),new ScanTracker.Detection("bar","Barcode",.5f,.1f,.6f,.2f),new ScanTracker.Detection("BMD-BOX-A","QR",.7f,.1f,.8f,.2f));assertEquals(4,BoxSession.select(all,"both").size());assertEquals(3,BoxSession.select(all,"qr").size());List<ScanTracker.Detection> bar=BoxSession.select(all,"bar");assertEquals(2,bar.size());assertEquals("Barcode",bar.get(0).kind);assertTrue(BoxSession.marker(bar.get(1).value));}
 
+    @Test public void stackNeedsARealCaptureAndReviewButNotFourBoxDetails(){BoxSession s=new BoxSession(2,true);s.reviewed=true;assertFalse(s.ready());s.add("capture.jpg",Arrays.asList(code(.1f,.1f),code(.1f,.2f)),I);assertTrue(s.hasRequiredPhotos());assertFalse(s.ready());s.reviewed=true;assertTrue(s.ready());s.setExpected(3);s.reviewed=true;assertFalse(s.ready());assertEquals(2,s.tracker.items().size());}
+    @Test public void emptyStackCaptureNeverFillsExpectedQuantity(){BoxSession s=new BoxSession(95,true);s.add("capture.jpg",Collections.emptyList(),I);s.reviewed=true;assertTrue(s.hasRequiredPhotos());assertTrue(s.tracker.items().isEmpty());assertFalse(s.ready());}
 }
