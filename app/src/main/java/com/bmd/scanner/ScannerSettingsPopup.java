@@ -1,6 +1,7 @@
 package com.bmd.scanner;
 
 import android.animation.*;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -8,14 +9,13 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.*;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.PathInterpolator;
 import android.widget.*;
 
 /** Settings stay above the existing PreviewView; closing never replaces the scan session. */
 final class ScannerSettingsPopup {
     interface Words { String get(String key); }
-    private final FrameLayout host,layer;
+    private final FrameLayout host,layer;private final Dialog dialog;
     private final LinearLayout panel;
     private final View anchor,scrim;
     private final SharedPreferences prefs;
@@ -54,11 +54,8 @@ final class ScannerSettingsPopup {
         int availableHeight=host.getHeight(),availableWidth=host.getWidth();int width=Math.min(availableWidth-dp(24),dp(430));panel.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(Math.max(0,availableHeight-dp(24)),View.MeasureSpec.AT_MOST));
         int fixed=dp(14+18+52+48);scroll.getLayoutParams().height=Math.min(scroll.getMeasuredHeight(),Math.max(dp(72),availableHeight-dp(24)-fixed));
         FrameLayout.LayoutParams placement=new FrameLayout.LayoutParams(width,-2,Gravity.CENTER);layer.addView(panel,placement);panel.setVisibility(View.INVISIBLE);
-        android.util.Log.i("BMD-settings","panel measured="+panel.getMeasuredWidth()+"x"+panel.getMeasuredHeight()+" scroll="+scroll.getLayoutParams().height);host.addView(layer,new FrameLayout.LayoutParams(-1,-1));layer.requestFocus();layer.setOnKeyListener((v,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});
-        host.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
-        for(int i=0;i<host.getChildCount();i++)if(host.getChildAt(i)!=layer)host.getChildAt(i).setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-        if(Build.VERSION.SDK_INT>=28)panel.setAccessibilityPaneTitle(words.get("scanner_settings"));
-        layer.post(()->{if(disposed||closing)return;panel.setVisibility(View.VISIBLE);animate(true);close.requestFocus();panel.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);});
+        android.util.Log.i("BMD-settings","panel measured="+panel.getMeasuredWidth()+"x"+panel.getMeasuredHeight()+" scroll="+scroll.getLayoutParams().height);dialog=new Dialog(context);dialog.setContentView(layer);dialog.setCancelable(false);dialog.setCanceledOnTouchOutside(false);dialog.setOnKeyListener((d,key,event)->{if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)close();return true;}return false;});dialog.setOnDismissListener(d->{if(!disposed)remove(false);});dialog.show();Window window=dialog.getWindow();window.setBackgroundDrawableResource(android.R.color.transparent);window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);window.setGravity(Gravity.CENTER);window.setLayout(host.getWidth(),host.getHeight());
+        layer.post(()->{if(disposed||closing)return;panel.setVisibility(View.VISIBLE);animate(true);close.requestFocus();});
     }
     private int dp(float value){return Math.round(value*context.getResources().getDisplayMetrics().density);}
     private LinearLayout column(){LinearLayout l=new LinearLayout(context);l.setOrientation(LinearLayout.VERTICAL);return l;}
@@ -78,9 +75,10 @@ final class ScannerSettingsPopup {
         final float from=progress,to=opening?1:0;transition=ValueAnimator.ofFloat(from,to);transition.setDuration(opening?380:260);transition.setInterpolator(new PathInterpolator(.22f,.8f,.22f,1));transition.addUpdateListener(v->{float value=(Float)v.getAnimatedValue();progress=value;panel.setScaleX(.08f+.92f*value);panel.setScaleY(.08f+.92f*value);panel.setAlpha(value);scrim.setAlpha(value);});transition.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator a){if(!opening&&!disposed)remove(true);}});transition.start();
     }
     boolean resolutionChanged(){return resolution!=originalResolution;}
-    boolean isShowing(){return !disposed;}
+    View content(){return layer;}
+    boolean isShowing(){return !disposed&&dialog.isShowing();}
     void close(){if(closing||disposed)return;closing=true;apply();if(choices!=null)choices.dismiss();animate(false);}
     private void apply(){prefs.edit().putInt("cameraResolution",resolution).putInt("sensitivity",sensitivity).putBoolean("vibrateAfterScan",vibration).apply();}
     void dispose(){if(disposed)return;apply();if(transition!=null){transition.removeAllListeners();transition.cancel();}if(choices!=null)choices.dismiss();remove(false);}
-    private void remove(boolean callback){if(disposed)return;disposed=true;host.removeView(layer);for(int i=0;i<host.getChildCount();i++)host.getChildAt(i).setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);anchor.requestFocus();if(callback)onClosed.run();}
+    private void remove(boolean callback){if(disposed)return;disposed=true;dialog.dismiss();anchor.requestFocus();if(callback)onClosed.run();}
 }
