@@ -34,6 +34,7 @@ timeout 20s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || tr
 grep -E "BMD-real|BMD-bulk|BMD-box" "device-screenshots/$suite/logcat.txt" | tail -n 80 || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
+  sudo dmesg | tail -n 40 || true
   free -m
   ps -eo pid,rss,comm --sort=-rss | head -n 12
   tail -n 120 "device-screenshots/$suite/logcat.txt" || true
