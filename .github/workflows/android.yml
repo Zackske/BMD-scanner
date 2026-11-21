@@ -84,7 +84,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         env:
           BMD_SUITE: scanner-settings
-          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest
+          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest,com.bmd.scanner.BoxCaptureFlowTest
         with:
           api-level: 35
           target: google_apis

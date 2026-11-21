@@ -59,6 +59,14 @@ final class ScannerControls {
         @Override protected void onDetachedFromWindow(){if(motion!=null)motion.cancel();super.onDetachedFromWindow();}
     }
 
+    static final class PhotoStep extends View {
+        private final Paint p=new Paint(3);private final String step,caption;private ValueAnimator motion;private float scale=1;
+        PhotoStep(Context c,String step,String caption,String accessible){super(c);this.step=step;this.caption=caption;setContentDescription(accessible);setClickable(true);setFocusable(true);}
+        @Override public void setPressed(boolean pressed){super.setPressed(pressed);if(motion!=null)motion.cancel();float target=pressed?.94f:1;if(!ValueAnimator.areAnimatorsEnabled()){scale=target;invalidate();return;}motion=ValueAnimator.ofFloat(scale,target);motion.setDuration(pressed?100:320);if(!pressed)motion.setInterpolator(new OvershootInterpolator(1.6f));motion.addUpdateListener(a->{scale=(Float)a.getAnimatedValue();invalidate();});motion.start();}
+        @Override protected void onDraw(Canvas c){float size=Math.min(getWidth(),getHeight());c.save();c.translate(getWidth()/2f,getHeight()/2f);c.scale(scale*size/100,scale*size/100);Path ring=new Path();ring.addCircle(0,0,48,Path.Direction.CW);ring.addCircle(0,0,42.5f,Path.Direction.CCW);ring.setFillType(Path.FillType.EVEN_ODD);satin(c,ring,p,new RectF(-48,-48,48,48));p.setColor(Color.WHITE);p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(-30,-44,35,44,new int[]{UiArt.mix(cameraTop(),Color.WHITE,.23f),cameraTop(),cameraBottom()},new float[]{0,.4f,1},Shader.TileMode.CLAMP));c.drawCircle(0,0,42,p);p.setShader(null);p.setColor(Color.WHITE);p.setTextAlign(Paint.Align.CENTER);p.setTypeface(ReferenceArt.face(getContext(),false,750));p.setTextSize(22);while(p.measureText(step)>71&&p.getTextSize()>10)p.setTextSize(p.getTextSize()-.5f);c.drawText(step,0,-2,p);p.setTypeface(ReferenceArt.face(getContext(),false,550));p.setTextSize(11);while(p.measureText(caption)>70&&p.getTextSize()>7)p.setTextSize(p.getTextSize()-.5f);c.drawText(caption,0,19,p);p.setTextAlign(Paint.Align.LEFT);p.setColor(Color.WHITE);c.restore();}
+        @Override public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info){super.onInitializeAccessibilityNodeInfo(info);info.setClassName("android.widget.Button");}
+        @Override protected void onDetachedFromWindow(){if(motion!=null)motion.cancel();super.onDetachedFromWindow();}
+    }
     static final class Torch extends View {
         private final Paint paint=new Paint(3);private final String onLabel,offLabel,caption;
         private boolean lit,pending,available=true;private float phase=1;private ValueAnimator effect;

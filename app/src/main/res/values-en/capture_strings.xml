@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_capture_step">Step %1$d</string>
+    <string name="ui_capture_photo">Take photo</string>
+    <string name="ui_photo_step">Photo %1$d of 5</string>
+    <string name="ui_marker_setup">Place the 4 markers first</string>
+    <string name="ui_marker_ack">Got it · photo 1</string>
+    <string name="ui_marker_info">Marker instructions</string>
+</resources>
