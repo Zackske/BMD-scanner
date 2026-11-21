@@ -31,7 +31,7 @@ public class ScannerSettingsTest {
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
             scenario.onActivity(a->{frame[0]=new android.widget.FrameLayout(a);frame[0].setBackgroundColor(0xff001b32);anchor[0]=new View(a);android.widget.FrameLayout.LayoutParams lp=new android.widget.FrameLayout.LayoutParams(88,88,android.view.Gravity.TOP|android.view.Gravity.END);frame[0].addView(anchor[0],lp);a.setContentView(frame[0]);});SystemClock.sleep(350);
             scenario.onActivity(a->popup[0]=new ScannerSettingsPopup(frame[0],anchor[0],key->a.s(key),()->popup[0]=null));SystemClock.sleep(700);
-            assertNotNull(popup[0]);nativeShot("build43-settings-without-camera");scenario.onActivity(a->DeviceSupport.tag(popup[0].content(),"scanner-settings-close").performClick());SystemClock.sleep(450);assertNull(popup[0]);
+            try{assertNotNull(popup[0]);nativeShot("build43-settings-without-camera");scenario.onActivity(a->DeviceSupport.tag(popup[0].content(),"scanner-settings-close").performClick());AtomicBoolean closed=new AtomicBoolean();long deadline=SystemClock.elapsedRealtime()+4000;while(SystemClock.elapsedRealtime()<deadline){scenario.onActivity(a->closed.set(popup[0]==null));if(closed.get())break;SystemClock.sleep(50);}assertTrue("Animated X must finish closing",closed.get());}finally{scenario.onActivity(a->{if(popup[0]!=null)popup[0].dispose();});}
         }
     }
     @Test public void closeResumesSameLiveCameraAndKeepsProductsInAllSixThemes()throws Exception{
