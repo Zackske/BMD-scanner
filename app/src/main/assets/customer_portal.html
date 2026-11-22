@@ -1,0 +1,269 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"></head><body>
+<div id="bmd-customers-preview" aria-label="Klantenportaal">
+  <section class="cp-screen" data-theme="bmd" aria-label="Klantenportaal">
+    <div class="cp-appbar"><img class="cp-scanner" alt="" /><div class="cp-wordmark">BMD <span>ScanTovenaar</span></div><i data-lucide="sparkles" aria-hidden="true"></i></div>
+    <div class="cp-wave" aria-hidden="true"></div>
+    <header class="cp-heading"><span class="cp-heading-icon"><i data-lucide="users-round" aria-hidden="true"></i></span><h2 class="cp-title">Klantenportaal</h2></header>
+    <p class="cp-total" aria-live="polite">65 klanten</p>
+    <div class="cp-grid" aria-label="Klanten"></div>
+    <div class="cp-paging"><button type="button" class="cp-nav cp-previous cursor-interaction"><i data-lucide="chevron-left" aria-hidden="true"></i><span>Vorige</span></button><span class="cp-position" aria-live="polite"></span><button type="button" class="cp-nav cp-next cursor-interaction"><span>Volgende</span><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
+    <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><span class="cp-detail-icon"><i data-lucide="building-2" aria-hidden="true"></i></span><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><button type="button" class="cp-close cursor-interaction">Sluiten</button></section></div>
+    <div class="cp-brand"><img alt="Blue Medical" /></div>
+    <div class="cp-wave cp-bottom" aria-hidden="true"></div>
+    <div class="cp-home-indicator" aria-hidden="true"></div>
+  </section>
+</div>
+<style>
+@font-face{font-family:'Nunito';font-style:normal;font-weight:500 900;src:url('https://bmd.invalid/assets/fonts/nunito_regular.ttf') format('truetype');font-display:swap}
+#bmd-customers-preview {display:flex;justify-content:center;padding:16px 0 4px;isolation:isolate}
+#bmd-customers-preview * {box-sizing:border-box}
+#bmd-customers-preview [hidden] {display:none!important}
+#bmd-customers-preview .cp-screen {--cp-bg:#00172e;--cp-halo:#083d62;--cp-text:#fff;--cp-secondary:#c7dae9;--cp-accent:#00dce9;--cp-top:#063853;--cp-bottom:#00182c;--cp-gradient:linear-gradient(100deg,#7af4ee,#89c8ef,#a975df);--cp-ink:#092b3d;--cp-veil:#00111ad9;position:relative;width:100%;max-width:448px;overflow:hidden;border-radius:28px;background:radial-gradient(ellipse at 95% 10%,var(--cp-halo),transparent 58%),var(--cp-bg);color:var(--cp-text);font-family:'Nunito',system-ui,sans-serif;padding:16px 18px 12px;color-scheme:dark}
+#bmd-customers-preview .cp-screen[data-theme="translumina"] {--cp-bg:#300008;--cp-halo:#740f24;--cp-secondary:#efdce1;--cp-accent:#ff4a62;--cp-top:#740f24;--cp-bottom:#38000b;--cp-gradient:linear-gradient(100deg,#ffc4b6,#ff897d,#ff786f);--cp-ink:#350009;--cp-veil:#1f0006db}
+#bmd-customers-preview .cp-screen[data-theme="lime"] {--cp-bg:#051d09;--cp-halo:#234e10;--cp-secondary:#e0edcd;--cp-accent:#c3ff39;--cp-top:#23440d;--cp-bottom:#0a230b;--cp-gradient:linear-gradient(100deg,#edffca,#c1ff63,#6fe542);--cp-ink:#173a08;--cp-veil:#031706db}
+#bmd-customers-preview .cp-screen[data-theme="violet"] {--cp-bg:#19082d;--cp-halo:#4c206a;--cp-secondary:#e7d8f5;--cp-accent:#c58bff;--cp-top:#3e1c5a;--cp-bottom:#210c37;--cp-gradient:linear-gradient(100deg,#f3ddff,#d5a2ff,#a86aec);--cp-ink:#26113b;--cp-veil:#10031fdb}
+#bmd-customers-preview .cp-screen[data-theme="dark"] {--cp-bg:#101214;--cp-halo:#2b3034;--cp-text:#f7f9fb;--cp-secondary:#d0d8de;--cp-accent:#b6c8d2;--cp-top:#30363b;--cp-bottom:#181c20;--cp-gradient:linear-gradient(100deg,#f0f6fa,#c3d8e4,#91acbf);--cp-ink:#142633;--cp-veil:#080a0ddc}
+#bmd-customers-preview .cp-screen[data-theme="light"] {--cp-bg:#edf3f8;--cp-halo:#dbeafa;--cp-text:#12263c;--cp-secondary:#41586c;--cp-accent:#007c9f;--cp-top:#f9fcff;--cp-bottom:#dce7f0;--cp-gradient:linear-gradient(100deg,#00687c,#345db0,#752d9c);--cp-ink:#fff;--cp-veil:#e4edf4e8;color-scheme:light}
+#bmd-customers-preview .cp-appbar {display:flex;align-items:center;justify-content:center;gap:8px;min-height:69px;padding-inline:0 6px}
+#bmd-customers-preview .cp-scanner {width:53px;height:65px;object-fit:contain}
+#bmd-customers-preview .cp-wordmark {font-weight:900;letter-spacing:.1px;font-size:21px;white-space:nowrap}
+#bmd-customers-preview .cp-wordmark span {font-family:'Lobster','Nunito',sans-serif;font-weight:400;font-size:23px;background:var(--cp-gradient);background-clip:text;-webkit-text-fill-color:transparent}
+#bmd-customers-preview .cp-wordmark img {width:159px;height:32px;object-fit:contain;vertical-align:middle}
+#bmd-customers-preview .cp-appbar>svg {width:17px;height:17px;color:#ffd35b;flex-shrink:0}
+#bmd-customers-preview .cp-wave {height:14px;margin:0 -24px 14px;border-bottom:2px solid var(--cp-accent);border-radius:0 0 52% 25%;filter:drop-shadow(0 0 3px var(--cp-accent));transform:rotate(-1deg)}
+#bmd-customers-preview .cp-heading {display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0 0}
+#bmd-customers-preview .cp-heading-icon {display:grid;place-items:center;width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#52ed9b,#00a666 55%,#014231);box-shadow:inset 0 1px 1px #d7ffe5a8,0 3px 6px #00100c55;color:#fff}
+#bmd-customers-preview .cp-heading-icon svg {width:27px;height:27px}
+#bmd-customers-preview .cp-heading-icon img {width:36px;height:36px;object-fit:contain}
+#bmd-customers-preview .cp-title {margin:0;font:900 28px/1.2 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-total {margin:9px 0 18px;text-align:center;font-size:14px;font-weight:700;color:var(--cp-secondary)}
+#bmd-customers-preview .cp-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(160px,auto);gap:13px;align-items:stretch;align-content:start;min-height:682px}
+#bmd-customers-preview .cp-customer {position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;width:100%;min-width:0;min-height:160px;margin:0;padding:17px 10px 13px;border:1.5px solid #61f4a1;border-radius:24px;color:#fff;font:inherit;text-align:center;background:radial-gradient(ellipse at 0 0,#72f3a5a3,transparent 67%),linear-gradient(140deg,#13be78,#007444 52%,#002b26);box-shadow:inset 0 2px 1px #d4ffecc9,inset 0 -3px 1px #001c2566,0 4px 0 #002e27,0 6px 7px #000c1540;isolation:isolate;transition:transform .16s ease,border-color .16s ease}
+#bmd-customers-preview .cp-customer::before {content:'';position:absolute;z-index:-1;inset:3px 3px auto;height:39%;border-radius:21px 21px 70% 5%;background:linear-gradient(180deg,#e8fff575,#dffff20a);pointer-events:none}
+#bmd-customers-preview .cp-customer:hover {transform:translateY(-2px);border-color:#d3ffe6}
+#bmd-customers-preview .cp-customer:active {transform:translateY(2px)}
+#bmd-customers-preview .cp-customer:focus-visible,#bmd-customers-preview button:focus-visible {outline:3px solid var(--cp-accent);outline-offset:4px}
+#bmd-customers-preview .cp-customer[aria-pressed="true"] {border-color:#f4fff9;box-shadow:inset 0 2px 1px #fff,0 0 0 2px var(--cp-accent),0 4px 0 #002e27}
+#bmd-customers-preview .cp-tile-icon {position:relative;display:grid;place-items:center;min-height:35px;width:43px;color:#f0faff;filter:drop-shadow(0 2px 1px #001e2166)}
+#bmd-customers-preview .cp-tile-icon>svg {width:31px;height:31px;stroke-width:1.65}
+#bmd-customers-preview .cp-tile-icon>img {width:47px;height:47px;object-fit:contain}
+#bmd-customers-preview .cp-tile-icon::after {content:'✦';font-size:14px;color:#ffdc69;position:absolute;right:-4px;top:-6px}
+#bmd-customers-preview .cp-name {position:relative;z-index:3;display:flex;align-items:center;justify-content:center;flex:1;width:100%;min-height:86px;margin:8px 0 5px;padding:9px 5px;border-radius:13px;background:linear-gradient(90deg,#00172dc2,#00172ddd 50%,#00172dc2);color:#fff;font-size:22px;font-weight:900;line-height:1.2;letter-spacing:0;overflow-wrap:normal;word-break:normal;hyphens:none;text-shadow:none}
+#bmd-customers-preview .cp-name-text {display:block;max-width:100%;text-wrap:balance}
+#bmd-customers-preview .cp-name[data-name-size="compact"] {font-size:20px}
+#bmd-customers-preview .cp-country {display:flex;align-items:center;justify-content:center;gap:6px;width:100%;color:#e4fff1;font-size:12px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-flag {display:block;flex-shrink:0;width:22px;height:16px;object-fit:contain;filter:drop-shadow(0 1px 1px #002d3040)}
+#bmd-customers-preview .cp-paging {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:20px}
+#bmd-customers-preview .cp-nav {display:flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:8px 11px;border:1px solid var(--cp-accent);border-radius:17px;background:linear-gradient(135deg,var(--cp-top),var(--cp-bottom));color:var(--cp-text);font:800 13px/1.2 'Nunito',sans-serif}
+#bmd-customers-preview .cp-nav svg {width:17px;height:17px;flex-shrink:0}
+#bmd-customers-preview .cp-nav:disabled {opacity:.36}
+#bmd-customers-preview .cp-position {text-align:center;font-size:12px;font-weight:700;color:var(--cp-secondary)}
+#bmd-customers-preview .cp-brand {display:flex;align-items:center;justify-content:center;padding:24px 0 6px;min-height:79px}
+#bmd-customers-preview .cp-brand img {max-width:66%;width:255px;max-height:58px;height:auto;object-fit:contain}
+#bmd-customers-preview .cp-bottom {margin-top:5px;margin-bottom:17px;transform:rotate(1deg)}
+#bmd-customers-preview .cp-home-indicator {height:4px;width:29%;border-radius:8px;background:var(--cp-text);margin:0 auto;opacity:.9}
+#bmd-customers-preview .cp-modal-layer {position:relative;z-index:2;display:block;margin-top:14px}
+#bmd-customers-preview .cp-detail {width:100%;display:flex;flex-direction:column;align-items:stretch;gap:15px;padding:0;color:var(--cp-text);text-align:center}
+#bmd-customers-preview .cp-detail-icon {color:var(--cp-accent)}
+#bmd-customers-preview .cp-detail-icon svg {width:46px;height:46px}
+#bmd-customers-preview .cp-detail-icon img {width:58px;height:58px;object-fit:contain}
+#bmd-customers-preview .cp-detail h3 {margin:0;font:900 24px/1.2 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-detail-country {display:flex;align-items:center;justify-content:center;gap:9px;margin:0;font-size:17px;font-weight:700}
+#bmd-customers-preview .cp-close {min-height:46px;width:100%;padding:10px;border:0;border-radius:18px;background:var(--cp-accent);color:var(--cp-ink);font:900 16px/1.2 'Nunito',sans-serif}
+#bmd-customers-preview .cp-fields {text-align:left;display:flex;flex-direction:column;gap:12px}
+#bmd-customers-preview .cp-fields details {padding:15px;border:1px solid color-mix(in srgb,var(--cp-accent) 50%,transparent);border-radius:22px;background:linear-gradient(130deg,var(--cp-top),var(--cp-bottom))}
+#bmd-customers-preview .cp-fields summary {font-size:16px;font-weight:900;min-height:24px;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-fields dl {display:grid;grid-template-columns:minmax(85px,.8fr) minmax(0,1.4fr);gap:12px 10px;margin:16px 0 0}
+#bmd-customers-preview .cp-fields dt {font-weight:700;color:var(--cp-secondary);font-size:12px;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-fields dd {margin:0;overflow-wrap:anywhere;white-space:pre-wrap;font-size:14px;font-weight:700;line-height:1.4}
+#bmd-customers-preview .cp-fields .cp-notes {white-space:pre-wrap;overflow-wrap:anywhere;font:600 14px/1.5 'Nunito',sans-serif;margin:13px 0 0}
+#bmd-customers-preview .cp-missing {color:var(--cp-secondary);font-size:13px;font-weight:700;margin:0;padding:8px 0;text-align:center}
+#bmd-customers-preview .cp-source {margin:0;color:var(--cp-secondary);font-size:12px;font-weight:600;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-source-table {width:100%;border-collapse:collapse;margin-top:14px;text-align:left;table-layout:fixed}
+#bmd-customers-preview .cp-source-table td {padding:8px 0;font-size:12px;vertical-align:top;overflow-wrap:anywhere;white-space:pre-wrap;border-bottom:1px solid color-mix(in srgb,var(--cp-secondary) 20%,transparent)}
+#bmd-customers-preview .cp-source-table td:first-child {width:45px;color:var(--cp-secondary)}
+#bmd-customers-preview .cp-source-image {max-width:100%;max-height:100px;object-fit:contain}
+#bmd-customers-preview .cp-grid {grid-auto-rows:minmax(230px,auto);min-height:962px}
+#bmd-customers-preview .cp-customer {display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(56px,auto) minmax(86px,1fr) auto;justify-items:center;align-items:start;min-height:230px;gap:4px;padding:12px 10px;border-color:var(--nation-a);overflow:visible;background:linear-gradient(155deg,#00152a00,#00152a45),linear-gradient(145deg,var(--nation-a) 0% 26%,var(--nation-b) 44% 53%,var(--nation-c) 72% 100%);box-shadow:inset 0 2px 1px #f4fbffc2,inset 0 -3px 1px #00122588,0 4px 0 color-mix(in srgb,var(--nation-c) 65%,#00172b),0 6px 7px #000c1533}
+#bmd-customers-preview .cp-customer .cp-name {align-self:stretch}
+#bmd-customers-preview .cp-customer::before {z-index:2;height:22%;background:linear-gradient(160deg,#ffffff50,#ffffff05)}
+#bmd-customers-preview .cp-customer:hover {border-color:var(--nation-b)}
+#bmd-customers-preview .cp-country {position:relative;z-index:3;min-height:31px;padding:5px 6px;border-radius:10px;background:#00172dd1;color:#fff;font-size:13px}
+#bmd-customers-preview .cp-country .cp-flag {width:25px;height:18px}
+#bmd-customers-preview .cp-map-stage {position:absolute;z-index:1;inset:4px 4px 26px;display:block;pointer-events:none}
+#bmd-customers-preview .cp-mini-map {display:block;width:100%;height:100%;overflow:visible}
+#bmd-customers-preview .cp-mini-map .cp-world-land {fill:#d8eaf746;stroke:#fff9;stroke-width:.3}
+#bmd-customers-preview .cp-mini-map .cp-world-country {fill:var(--nation-a);stroke:#fff;stroke-width:1;filter:drop-shadow(0 0 2px #00172dbb)}
+#bmd-customers-preview .cp-mini-map .cp-country-marker {fill:var(--nation-a);stroke:#fff;stroke-width:.8}
+#bmd-customers-preview .cp-national-map {position:absolute;right:7px;top:0;display:block;width:56px;height:56px;overflow:visible;filter:drop-shadow(0 2px 2px #00152899)}
+#bmd-customers-preview .cp-national-map .cp-outline {fill:none;stroke:#f6fbff;stroke-width:1.2;stroke-linejoin:round}
+#bmd-customers-preview [data-group="eu"] {--group-bg:var(--cp-eu-bg);--group-text:var(--cp-eu-text);--group-soft:var(--cp-eu-soft)}
+#bmd-customers-preview [data-group="world"] {--group-bg:var(--cp-world-bg);--group-text:var(--cp-world-text);--group-soft:var(--cp-world-soft)}
+#bmd-customers-preview [data-group="non-eu"] {--group-bg:var(--cp-non-eu-bg);--group-text:var(--cp-non-eu-text);--group-soft:var(--cp-non-eu-soft)}
+#bmd-customers-preview .cp-shipping-group {position:relative;justify-self:start;z-index:4;max-width:calc(100% - 64px);min-height:24px;display:flex;align-items:center;justify-content:center;padding:5px 6px;border:1px solid var(--group-soft);border-radius:10px;background:var(--group-bg);color:var(--group-text);font:800 11px/1.15 'Nunito',sans-serif;overflow-wrap:anywhere;text-align:center}
+#bmd-customers-preview .cp-detail-group {align-self:center;max-width:100%;margin:0;padding:7px 12px;border:1px solid var(--group-soft);border-radius:13px;background:var(--group-bg);color:var(--group-text);font:800 13px/1.3 'Nunito',sans-serif;overflow-wrap:anywhere}
+@media(max-width:360px) {#bmd-customers-preview .cp-screen {padding:14px 12px 10px;border-radius:22px}#bmd-customers-preview .cp-wordmark {font-size:18px}#bmd-customers-preview .cp-wordmark span {font-size:20px}#bmd-customers-preview .cp-scanner {width:42px;height:55px}#bmd-customers-preview .cp-appbar {gap:5px}#bmd-customers-preview .cp-title {font-size:24px}#bmd-customers-preview .cp-grid {gap:10px;min-height:870px}#bmd-customers-preview .cp-customer {padding-inline:7px}#bmd-customers-preview .cp-name {font-size:19px;padding-inline:4px;letter-spacing:0}#bmd-customers-preview .cp-country {font-size:12px;padding-inline:4px;gap:4px}#bmd-customers-preview .cp-nav {padding-inline:7px;font-size:12px}}
+@media(prefers-reduced-motion:reduce) {#bmd-customers-preview * {transition:none!important;animation:none!important}}
+@media(max-width:360px) {#bmd-customers-preview .cp-name[data-name-size="compact"] {font-size:18px}}
+@media(max-width:360px) {#bmd-customers-preview .cp-wordmark img {width:134px;height:29px}#bmd-customers-preview .cp-appbar {gap:4px}#bmd-customers-preview .cp-appbar>svg {width:14px;height:14px}}
+html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adjust:100%}
+#bmd-customers-preview {display:block;padding:0;min-height:100vh}
+#bmd-customers-preview .cp-screen {max-width:none;min-height:100vh;border-radius:0}
+#bmd-customers-preview .cp-appbar {padding-left:30px;padding-right:12px}
+#bmd-customers-preview .cp-home-indicator {display:none}
+#bmd-customers-preview .cp-bottom {margin-bottom:6px}
+#bmd-customers-preview .cp-localized-wordmark {font-style:italic;font-family:'Nunito',sans-serif;font-weight:900;font-size:21px}
+@media(max-width:360px) {
+ #bmd-customers-preview .cp-wordmark {font-size:16px}
+ #bmd-customers-preview .cp-wordmark img {width:125px;height:29px}
+ #bmd-customers-preview .cp-appbar {padding-left:32px;padding-right:0;gap:3px}
+ #bmd-customers-preview .cp-localized-wordmark {font-size:19px}
+}
+#bmd-customers-preview .cp-import {margin:24px 0;padding:20px;border:1px solid var(--cp-accent);border-radius:22px;background:linear-gradient(140deg,var(--cp-top),var(--cp-bottom));text-align:center;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-import h2 {font-size:22px;margin:0 0 12px}
+#bmd-customers-preview .cp-import p {font-size:16px;line-height:1.5}
+#bmd-customers-preview .cp-import-button {min-height:48px;max-width:100%;padding:12px 18px;border:1px solid var(--cp-accent);border-radius:16px;background:var(--cp-bg);color:var(--cp-text);font:800 16px/1.4 'Nunito',sans-serif}
+#bmd-customers-preview .cp-import-error {color:var(--cp-text)}
+#bmd-customers-preview [hidden] {display:none!important}
+
+</style>
+<script>
+(() => {
+  const root=document.getElementById('bmd-customers-preview');
+  const app=root.querySelector('.cp-screen'),grid=root.querySelector('.cp-grid'),layer=root.querySelector('.cp-modal-layer');
+  const customers=/*BMD_CUSTOMER_DATA*/[];
+  const assets=/*BMD_PORTAL_ASSETS*/{};
+  const copy={
+    nl:{title:'Klantenportaal',count:'klanten',previous:'Vorige',next:'Volgende',of:'van',close:'Sluiten',selected:'Geselecteerde klant',theme:'Thema',language:'Taal'},
+    en:{title:'Customer portal',count:'customers',previous:'Previous',next:'Next',of:'of',close:'Close',selected:'Selected customer',theme:'Theme',language:'Language'},
+    uk:{title:'Клієнтський портал',count:'клієнтів',previous:'Назад',next:'Далі',of:'з',close:'Закрити',selected:'Вибраний клієнт',theme:'Тема',language:'Мова'},
+    tr:{title:'Müşteri portalı',count:'müşteri',previous:'Önceki',next:'Sonraki',of:'/',close:'Kapat',selected:'Seçilen müşteri',theme:'Tema',language:'Dil'},
+    it:{title:'Portale clienti',count:'clienti',previous:'Indietro',next:'Avanti',of:'di',close:'Chiudi',selected:'Cliente selezionato',theme:'Tema',language:'Lingua'},
+    de:{title:'Kundenportal',count:'Kunden',previous:'Zurück',next:'Weiter',of:'von',close:'Schließen',selected:'Ausgewählter Kunde',theme:'Thema',language:'Sprache'},
+    fr:{title:'Portail clients',count:'clients',previous:'Précédent',next:'Suivant',of:'sur',close:'Fermer',selected:'Client sélectionné',theme:'Thème',language:'Langue'},
+    es:{title:'Portal de clientes',count:'clientes',previous:'Anterior',next:'Siguiente',of:'de',close:'Cerrar',selected:'Cliente seleccionado',theme:'Tema',language:'Idioma'},
+    pt:{title:'Portal de clientes',count:'clientes',previous:'Anterior',next:'Seguinte',of:'de',close:'Fechar',selected:'Cliente selecionado',theme:'Tema',language:'Idioma'},
+    hi:{title:'ग्राहक पोर्टल',count:'ग्राहक',previous:'पिछला',next:'अगला',of:'/',close:'बंद करें',selected:'चुना गया ग्राहक',theme:'थीम',language:'भाषा'}
+  };
+  const themeIds=['bmd','translumina','lime','violet','light','dark'];
+  const shippingCopy={nl:['Europese Unie','NON EU Unie','Rest van de wereld','Groep ontbreekt','Verzendgroep'],en:['European Union','NON EU Union','Rest of the World','Group not set','Shipping group'],uk:['Європейський Союз','Поза ЄС','Решта світу','Групу не вказано','Група доставки'],tr:['Avrupa Birliği','AB dışı','Dünyanın geri kalanı','Grup belirtilmemiş','Gönderim grubu'],it:['Unione europea','Extra UE','Resto del mondo','Gruppo non indicato','Gruppo di spedizione'],de:['Europäische Union','Nicht EU','Rest der Welt','Gruppe fehlt','Versandgruppe'],fr:['Union européenne','Hors UE','Reste du monde','Groupe non renseigné','Groupe d’expédition'],es:['Unión Europea','Fuera de la UE','Resto del mundo','Grupo no indicado','Grupo de envío'],pt:['União Europeia','Fora da UE','Resto do mundo','Grupo não indicado','Grupo de envio'],hi:['यूरोपीय संघ','गैर-यूरोपीय संघ','शेष विश्व','समूह दर्ज नहीं है','शिपिंग समूह']};
+  const nationalColours={GE:['#f34b5d','#fff4f4','#a8273f'],LV:['#b94662','#fff4f5','#661a39'],SA:['#3ac28b','#f0fff8','#125c44'],SK:['#5d9bff','#fff','#e5465a'],CZ:['#589bff','#fff','#e9495e'],MA:['#eb455b','#f7d5d5','#189463'],IT:['#32c798','#fff','#e94c5d'],AT:['#f15c6e','#fff','#ae2947'],GR:['#68a9ff','#fff','#2063c9'],NL:['#f15c71','#fff','#4d86ea'],DE:['#f4c95d','#fff1bd','#ed4b64'],MY:['#5b93ed','#ffdf65','#ee516b'],TH:['#7190ee','#fff','#e94c66'],ID:['#f36d7b','#fff','#c42a49'],ES:['#ffd05b','#fff0bc','#e04b55'],EG:['#ee5b69','#fff','#b4843f'],MX:['#36ba91','#fff','#e24d64'],CL:['#eb596d','#fff','#4e8eea'],MU:['#ed5570','#f4d86a','#38b991'],ZA:['#39ba91','#ffd960','#e25362'],SE:['#4c9de8','#ffe27a','#245caa'],CY:['#edb86d','#fff','#52a57b'],AE:['#3cc393','#fff','#ed5669'],BG:['#55c9a3','#fff','#df5667'],PA:['#5a96f0','#fff','#eb6571'],VN:['#ee5c65','#ffe16a','#ac273e'],MT:['#ef6a78','#fff','#b62f50'],AR:['#85d8ff','#fff','#edc660'],PK:['#38b685','#fff','#126848'],IQ:['#ec606c','#fff','#35a579'],BO:['#f1ce5d','#fff5bf','#40af7e'],HR:['#f26a79','#fff','#5794ed'],SI:['#70a0f7','#fff','#ec6575'],BR:['#43c380','#fadd67','#4c8bea'],PT:['#41ba91','#ffdb70','#e45967'],TN:['#f06879','#fff','#af2a4b'],AM:['#f4796c','#f5c37d','#628ff3'],UZ:['#5ad4ec','#fff','#58bc8c'],OM:['#ec6876','#fff','#49b88e'],RO:['#638df2','#ffe26c','#ed5c6e'],KW:['#54c194','#fff','#e56576'],LB:['#ed6e7d','#fff','#3eae82'],PE:['#f56c7e','#fff','#ad2850'],XK:['#5995ef','#f4d97b','#d4eaff'],KR:['#f3707e','#fff','#5895eb'],SG:['#f67583','#fff','#b73554'],EE:['#63acfa','#fff','#244464'],FI:['#70a9f4','#fff','#245baf'],PH:['#658ef5','#ffe073','#f16e7e'],KE:['#df6473','#fff','#3aaf7f'],GB:['#678deb','#fff','#ee677b'],IR:['#51c799','#fff','#e26173'],DO:['#5d97eb','#fff','#ed657d'],LT:['#f4cb66','#fff0b9','#3fb18b'],CH:['#f57282','#fff','#b83355'],AU:['#688df4','#fff','#ec6379'],RU:['#739af1','#fff','#ed6179'],LK:['#d38168','#f7d078','#76aa6e'],HU:['#ed7480','#fff','#4db68c'],TW:['#ed6e7e','#fff','#608ce9'],TR:['#f37384','#fff','#b72e52'],IN:['#f5b76b','#fff','#52bd8d'],PL:['#f47b8d','#fff','#c03e64']};
+  const fieldCopy={
+    nl:['Klantgegevens','Adres','Verzending','Documenten op de doos','Overige gegevens','Brongegevens','Klantnummer','Contactpersoon','E-mail','Btw-nummer','Straat 1','Straat 2','Straat 3','Postcode','Plaats','Land','Verzendwijze','Extra verzendinformatie','Niet ingevuld','Geen Excelgegevens','Terug naar klanten','Regio volgens Excel','Excelstatus','Ja','Nee'],
+    en:['Customer details','Address','Shipping','Documents on the box','Other information','Source data','Customer ID','Contact person','Email','VAT number','Street 1','Street 2','Street 3','Postal code','City','Country','Shipping method','Additional shipping information','Not provided','No Excel data','Back to customers','Region in Excel','Excel status','Yes','No'],
+    uk:['Дані клієнта','Адреса','Доставка','Документи на коробці','Інші дані','Дані джерела','Номер клієнта','Контактна особа','Ел. пошта','Номер ПДВ','Вулиця 1','Вулиця 2','Вулиця 3','Поштовий індекс','Місто','Країна','Спосіб доставки','Додаткові дані доставки','Не вказано','Немає даних Excel','До клієнтів','Регіон в Excel','Статус в Excel','Так','Ні'],
+    tr:['Müşteri bilgileri','Adres','Gönderim','Kutu üzerindeki belgeler','Diğer bilgiler','Kaynak veriler','Müşteri numarası','İlgili kişi','E-posta','KDV numarası','Sokak 1','Sokak 2','Sokak 3','Posta kodu','Şehir','Ülke','Gönderim yöntemi','Ek gönderim bilgileri','Belirtilmemiş','Excel verisi yok','Müşterilere dön','Excel’deki bölge','Excel durumu','Evet','Hayır'],
+    it:['Dati cliente','Indirizzo','Spedizione','Documenti sulla scatola','Altre informazioni','Dati originali','Codice cliente','Referente','E-mail','Partita IVA','Via 1','Via 2','Via 3','CAP','Città','Paese','Modalità di spedizione','Ulteriori informazioni di spedizione','Non indicato','Nessun dato Excel','Torna ai clienti','Regione in Excel','Stato in Excel','Sì','No'],
+    de:['Kundendaten','Adresse','Versand','Dokumente auf dem Karton','Weitere Angaben','Quelldaten','Kundennummer','Kontaktperson','E-Mail','USt-IdNr.','Straße 1','Straße 2','Straße 3','Postleitzahl','Ort','Land','Versandart','Zusätzliche Versandangaben','Nicht angegeben','Keine Excel-Daten','Zurück zu Kunden','Region laut Excel','Excel-Status','Ja','Nein'],
+    fr:['Coordonnées client','Adresse','Expédition','Documents sur le carton','Autres informations','Données sources','Numéro client','Contact','E-mail','Numéro de TVA','Adresse 1','Adresse 2','Adresse 3','Code postal','Ville','Pays','Mode d’expédition','Informations supplémentaires','Non renseigné','Aucune donnée Excel','Retour aux clients','Région dans Excel','Statut Excel','Oui','Non'],
+    es:['Datos del cliente','Dirección','Envío','Documentos sobre la caja','Otros datos','Datos originales','Número de cliente','Persona de contacto','Correo electrónico','Número de IVA','Dirección 1','Dirección 2','Dirección 3','Código postal','Ciudad','País','Método de envío','Información adicional de envío','No indicado','Sin datos de Excel','Volver a clientes','Región en Excel','Estado de Excel','Sí','No'],
+    pt:['Dados do cliente','Morada','Envio','Documentos na caixa','Outros dados','Dados de origem','Número do cliente','Pessoa de contacto','E-mail','Número de IVA','Morada 1','Morada 2','Morada 3','Código postal','Localidade','País','Método de envio','Informações adicionais de envio','Não indicado','Sem dados Excel','Voltar aos clientes','Região no Excel','Estado no Excel','Sim','Não'],
+    hi:['ग्राहक विवरण','पता','शिपिंग','डिब्बे पर दस्तावेज़','अन्य जानकारी','मूल डेटा','ग्राहक संख्या','संपर्क व्यक्ति','ईमेल','वैट संख्या','पता 1','पता 2','पता 3','पिन कोड','शहर','देश','शिपिंग का तरीका','अतिरिक्त शिपिंग जानकारी','दर्ज नहीं है','Excel डेटा नहीं है','ग्राहकों पर वापस जाएँ','Excel में क्षेत्र','Excel स्थिति','हाँ','नहीं']
+  };
+  const bootstrap=/*BMD_NATIVE_STATE*/null;
+  const state={language:'nl',theme:'bmd',page:0,selected:null};
+  let nativeBrand=bootstrap?.brand||'ScanTovenaar',listScroll=0;
+  const pageSize=8,totalPages=Math.max(1,Math.ceil(customers.length/pageSize));
+  let lastTrigger=null;
+  let localRevision=0;
+  function esc(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function country(code){return assets.countryNames[state.language]?.[code]||assets.countryNames.en[code]||code;}
+  function flag(code){return '<img class="cp-flag" alt="" src="'+assets.flags[code]+'" />';}
+  function shippingGroup(c){return shippingCopy[state.language][({'eu':0,'non-eu':1,'world':2})[c.shippingGroup]??3];}
+  function countryMaps(c){const m=assets.maps.countries[c.country],clip='cp-country-'+c.id;return '<span class="cp-map-stage"><svg class="cp-mini-map" viewBox="0 0 180 88" role="img" aria-label="'+esc(country(c.country))+'"><path class="cp-world-land" d="'+assets.maps.world+'"></path><path class="cp-world-country" d="'+m.world+'"></path>'+(m.small?'<circle class="cp-country-marker" cx="'+m.point[0]+'" cy="'+m.point[1]+'" r="2.1"></circle>':'')+'</svg><svg class="cp-national-map" viewBox="0 0 72 72" aria-hidden="true"><defs><clipPath id="'+clip+'"><path d="'+m.outline+'"></path></clipPath></defs><image href="'+assets.flags[c.country]+'" width="72" height="72" preserveAspectRatio="xMidYMid slice" clip-path="url(#'+clip+')"></image><path class="cp-outline" d="'+m.outline+'"></path></svg></span>';}
+  function icons(){if(globalThis.lucide)globalThis.lucide.createIcons({attrs:{width:20,height:20}});}
+  function fitNames(){
+    const maxLines=app.clientWidth<=360?3:2;
+    for(const name of grid.querySelectorAll('.cp-name')){
+      if(!name.getClientRects().length)continue;
+      name.style.removeProperty('font-size');
+      const text=name.querySelector('.cp-name-text');let size=parseFloat(getComputedStyle(name).fontSize);
+      while(size>16&&(text.scrollWidth>text.clientWidth+1||text.getBoundingClientRect().height>parseFloat(getComputedStyle(name).lineHeight)*maxLines+1)){
+        size=Math.max(16,size-.5);name.style.fontSize=size+'px';
+      }
+    }
+  }
+  function persist(){if(window.BmdPortalSession)window.BmdPortalSession.remember(JSON.stringify(state));}
+  function restore(saved){if(!saved||typeof saved!=='object'||localRevision&&(Number(saved.revision)||0)<localRevision)return;if(copy[saved.language])state.language=saved.language;if(themeIds.includes(saved.theme))state.theme=saved.theme;if(Number.isInteger(saved.page))state.page=Math.max(0,Math.min(totalPages-1,saved.page));state.selected=customers.some(c=>c.id===saved.selected)?saved.selected:null;}
+  function render(){
+    for(const [group,palette] of Object.entries(assets.shippingGroups)){app.style.setProperty('--cp-'+group+'-bg',palette.background);app.style.setProperty('--cp-'+group+'-text',palette.foreground);app.style.setProperty('--cp-'+group+'-soft',palette.soft);}
+    const t=copy[state.language];app.dataset.theme=state.theme;app.lang=state.language;app.setAttribute('aria-label',t.title);root.querySelector('.cp-title').textContent=t.title;root.querySelector('.cp-total').textContent=customers.length+' '+t.count;
+    root.querySelector('.cp-scanner').src=assets.scanners[state.theme];root.querySelector('.cp-wordmark').innerHTML='BMD <img src="'+assets.wordmarks[state.theme]+'" alt="ScanTovenaar" />';root.querySelector('.cp-heading-icon').innerHTML='<img src="'+assets.customerIcon+'" alt="" />';root.querySelector('.cp-detail-icon').innerHTML='<img src="'+assets.customerIcon+'" alt="" />';const brand=root.querySelector('.cp-brand img');brand.src=assets.brands[state.theme];brand.alt=state.theme==='translumina'?'Translumina':'Blue Medical';
+    grid.setAttribute('aria-label',t.title);grid.innerHTML=customers.slice(state.page*pageSize,(state.page+1)*pageSize).map(c=>{const colours=nationalColours[c.country],label=c.displayName||c.name,compact=label.length>18||label.split(/\s+/).some(word=>word.length>=11);return '<button type="button" class="cp-customer cursor-interaction" style="--nation-a:'+colours[0]+';--nation-b:'+colours[1]+';--nation-c:'+colours[2]+';--nation-flag:url('+assets.flags[c.country]+')" data-customer="'+c.id+'" aria-pressed="'+(c.id===state.selected)+'" aria-label="'+esc(c.name+', '+country(c.country)+', '+shippingCopy[state.language][4]+': '+shippingGroup(c))+'"'+(label!==c.name?' data-tooltip="'+esc(c.name)+'"':'')+'><span class="cp-shipping-group" data-group="'+(c.shippingGroup||'unset')+'">'+esc(shippingGroup(c))+'</span>'+countryMaps(c)+'<span class="cp-name" data-name-size="'+(compact?'compact':'normal')+'"><span class="cp-name-text">'+esc(label)+'</span></span><span class="cp-country">'+flag(c.country)+'<span>'+esc(country(c.country))+'</span></span></button>';}).join('');
+    const previous=root.querySelector('.cp-previous'),next=root.querySelector('.cp-next');previous.disabled=state.page===0;next.disabled=state.page===totalPages-1;previous.querySelector('span').textContent=t.previous;next.querySelector('span').textContent=t.next;
+    root.querySelector('.cp-position').textContent=(state.page*pageSize+1)+'–'+Math.min(customers.length,(state.page+1)*pageSize)+' '+t.of+' '+customers.length;
+    const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-close').textContent=f[20];grid.hidden=!!detail;root.querySelector('.cp-paging').hidden=!!detail||!customers.length;root.querySelector('.cp-total').hidden=!!detail;
+    root.querySelector('.cp-detail').removeAttribute('aria-modal');root.querySelector('.cp-detail').setAttribute('role','region');
+    if(detail){root.querySelector('#cp-detail-title').textContent=detail.name;root.querySelector('.cp-detail-country').innerHTML=flag(detail.country)+'<span>'+esc(country(detail.country))+'</span>';root.querySelector('.cp-detail-group').dataset.group=detail.shippingGroup;root.querySelector('.cp-detail-group').textContent=shippingCopy[state.language][4]+' · '+shippingGroup(detail);let fields=root.querySelector('.cp-fields');if(!fields){fields=document.createElement('div');fields.className='cp-fields';root.querySelector('.cp-detail').append(fields);}fields.innerHTML=customerDetails(detail,f);}
+    if(nativeBrand!=='ScanTovenaar')root.querySelector('.cp-wordmark').innerHTML='BMD <span class="cp-localized-wordmark">'+esc(nativeBrand)+'</span>';
+    renderImport();
+    icons();
+    fitNames();
+  }
+  function customerDetails(c,f){
+    const empty=f[18],yesNo=v=>v===true?f[23]:v===false?f[24]:String(v??empty);
+    const pair=(label,value)=>'<dt>'+esc(label)+'</dt><dd>'+esc(value||empty)+'</dd>';
+    const section=(label,html,open=false)=>'<details'+(open?' open':'')+'><summary>'+esc(label)+'</summary>'+html+'</details>';
+    let html=section(f[0],'<dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email)+pair(f[9],c.vat)+'</dl>',true);
+    const source=c.identitySource,identityProvenance=source?'<p class="cp-source">'+esc(source.file)+' · '+esc(source.sheet)+' · '+esc(source.row?'A'+source.row+':C'+source.row:source.rows.map(r=>'A'+r+':C'+r).join(', '))+'</p>':'';
+    if(!c.sourceSheet)return html+section(f[1],'<dl>'+pair(f[15],country(c.country))+'</dl>',true)+(source?section(f[5],identityProvenance):'<p class="cp-missing">'+esc(f[19])+'</p>');
+    const a=c.address;html+=section(f[1],'<dl>'+pair(f[10],a.street1)+(a.street2?pair(f[11],a.street2):'')+(a.street3?pair(f[12],a.street3):'')+pair(f[13],a.postalCode)+pair(f[14],a.city)+pair(f[15],country(c.country))+'</dl>',true);
+    html+=section(f[2],'<dl>'+pair(f[16],c.shipping.join('\n'))+pair(f[17],c.extraShipping.join('\n'))+'</dl>');
+    html+=section(f[3],'<p class="cp-notes">'+esc(c.documents.join('\n')||empty)+'</p>');
+    if(c.other.length||Object.keys(c.sourceStatus).length)html+=section(f[4],'<dl>'+pair(f[21],c.sourceGroup)+Object.entries(c.sourceStatus).map(([k,v])=>pair(f[22]+' · '+k,yesNo(v))).join('')+c.other.map(item=>pair(item.cell,yesNo(item.value))).join('')+'</dl>');
+    html+=section(f[5],identityProvenance+'<p class="cp-source">'+esc(c.sourceSheet)+'</p><table class="cp-source-table" aria-label="'+esc(f[5])+'"><tbody>'+c.rawCells.map(item=>'<tr><td>'+esc(item.cell)+'</td><td>'+(item.kind==='image'?'<img class="cp-source-image" src="'+assets.media[item.media]+'" alt="'+esc(country(c.country))+'" />':esc(yesNo(item.value)))+'</td></tr>').join('')+'</tbody></table>');
+    return html;
+  }
+  function page(amount){state.page=Math.max(0,Math.min(totalPages-1,state.page+amount));render();window.scrollTo(0,0);persist();}
+  function close(){const id=state.selected;state.selected=null;render();const trigger=root.querySelector('[data-customer="'+id+'"]');if(trigger)trigger.focus({preventScroll:true});window.scrollTo(0,listScroll);persist();}
+  root.querySelector('.cp-next').addEventListener('click',()=>page(1));root.querySelector('.cp-previous').addEventListener('click',()=>page(-1));
+  grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;listScroll=window.scrollY;state.selected=button.dataset.customer;lastTrigger=button;render();const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-close').focus({preventScroll:true});window.scrollTo(0,0);persist();});
+  root.querySelector('.cp-close').addEventListener('click',close);layer.addEventListener('click',e=>{if(e.target===layer)close();});
+  root.addEventListener('keydown',e=>{if(state.selected&&e.key==='Escape'){e.preventDefault();close();}});
+  
+  document.fonts.ready.then(fitNames);
+  let lastWidth=app.clientWidth;new ResizeObserver(()=>{if(app.clientWidth!==lastWidth){lastWidth=app.clientWidth;fitNames();}}).observe(app);
+  function icons(){
+    const paths={'chevron-left':'<path d="m15 18-6-6 6-6"/>','chevron-right':'<path d="m9 18 6-6-6-6"/>','sparkles':'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/>'};
+    root.querySelectorAll('[data-lucide]').forEach(node=>{const path=paths[node.dataset.lucide];if(path)node.outerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+path+'</svg>';});
+  }
+  const privateCopy={
+    nl:['Privé klantenlijst','Importeer je klantenbestand. De gegevens blijven op dit apparaat en werken daarna offline.','Klantenbestand importeren','Klantenbestand vervangen','Dit bestand kan niet worden geïmporteerd. Gebruik het meegeleverde klantenbestand. Je bestaande lijst blijft behouden.'],
+    en:['Private customer register','Import your customer file. The data stays on this device and works offline.','Import customer file','Replace customer file','This file could not be imported. Use the supplied customer file. Your existing register is unchanged.'],
+    uk:['Приватний список клієнтів','Імпортуйте файл клієнтів. Дані залишаються на цьому пристрої та працюють офлайн.','Імпортувати файл клієнтів','Замінити файл клієнтів','Не вдалося імпортувати файл. Використайте наданий файл клієнтів. Поточний список збережено.'],
+    tr:['Özel müşteri listesi','Müşteri dosyanızı içe aktarın. Veriler bu cihazda kalır ve çevrimdışı çalışır.','Müşteri dosyasını içe aktar','Müşteri dosyasını değiştir','Dosya içe aktarılamadı. Sağlanan müşteri dosyasını kullanın. Mevcut listeniz korundu.'],
+    it:['Elenco clienti privato','Importa il file clienti. I dati restano su questo dispositivo e funzionano offline.','Importa file clienti','Sostituisci file clienti','Impossibile importare il file. Usa il file clienti fornito. L’elenco attuale è stato conservato.'],
+    de:['Private Kundenliste','Importiere deine Kundendatei. Die Daten bleiben auf diesem Gerät und funktionieren offline.','Kundendatei importieren','Kundendatei ersetzen','Diese Datei konnte nicht importiert werden. Verwende die bereitgestellte Kundendatei. Deine bisherige Liste bleibt erhalten.'],
+    fr:['Liste de clients privée','Importez votre fichier clients. Les données restent sur cet appareil et fonctionnent hors ligne.','Importer le fichier clients','Remplacer le fichier clients','Impossible d’importer ce fichier. Utilisez le fichier clients fourni. Votre liste actuelle est conservée.'],
+    es:['Lista privada de clientes','Importa tu archivo de clientes. Los datos permanecen en este dispositivo y funcionan sin conexión.','Importar archivo de clientes','Reemplazar archivo de clientes','No se pudo importar este archivo. Usa el archivo de clientes facilitado. Tu lista actual se conserva.'],
+    pt:['Lista privada de clientes','Importe o ficheiro de clientes. Os dados ficam neste dispositivo e funcionam offline.','Importar ficheiro de clientes','Substituir ficheiro de clientes','Não foi possível importar este ficheiro. Utilize o ficheiro fornecido. A lista atual foi preservada.'],
+    hi:['निजी ग्राहक सूची','ग्राहक फ़ाइल आयात करें। डेटा इसी डिवाइस पर रहता है और ऑफ़लाइन काम करता है।','ग्राहक फ़ाइल आयात करें','ग्राहक फ़ाइल बदलें','यह फ़ाइल आयात नहीं हो सकी। दी गई ग्राहक फ़ाइल का उपयोग करें। आपकी मौजूदा सूची सुरक्षित है।']
+  };
+  function renderImport(){
+    const t=privateCopy[state.language],detail=!!state.selected;
+    let panel=root.querySelector('.cp-import');
+    if(!panel){panel=document.createElement('section');panel.className='cp-import';root.querySelector('.cp-brand').before(panel);}
+    panel.hidden=detail;
+    panel.innerHTML=(!customers.length?'<h2>'+esc(t[0])+'</h2><p>'+esc(t[1])+'</p>':'')+'<button type="button" class="cp-import-button">'+esc(t[customers.length?3:2])+'</button><p class="cp-import-error" role="alert" hidden></p>';
+    panel.querySelector('button').onclick=()=>window.BmdPortalSession?.importCustomers();
+    if(!customers.length){grid.hidden=true;root.querySelector('.cp-paging').hidden=true;root.querySelector('.cp-position').textContent='';}
+  }
+  window.BmdCustomerPortal={
+    ready:false,
+    back(){if(state.selected){close();return true;}return false;},
+    snapshot(){return {...state};},
+    importError(){const e=root.querySelector('.cp-import-error');e.textContent=privateCopy[state.language][4];e.hidden=false;},
+    applyAppearance(theme,language,brand){
+      if(!themeIds.includes(theme)||!copy[language])return false;
+      state.theme=theme;state.language=language;nativeBrand=brand||'ScanTovenaar';
+      render();persist();return true;
+    }
+  };
+  restore(bootstrap);render();
+  document.fonts.ready.then(()=>{fitNames();window.BmdCustomerPortal.ready=true;});
+
+})();
+</script>
+
+</body></html>
