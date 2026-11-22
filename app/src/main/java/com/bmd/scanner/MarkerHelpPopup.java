@@ -25,7 +25,7 @@ final class MarkerHelpPopup {
     void dispose(){disposed=true;panel.clearAnimation();dialog.setOnCancelListener(null);dialog.setOnDismissListener(null);dialog.dismiss();}
     private static final class MarkerMap extends View{
         final Paint p=new Paint(3);final Bitmap box;MarkerMap(Context c){super(c);box=ReferenceArt.bitmap(c,R.drawable.wizard_full_box);}
-        @Override protected void onDraw(Canvas c){float d=getResources().getDisplayMetrics().density,w=Math.min(getWidth()-16*d,280*d),h=Math.min(getHeight(),w*.5f),left=(getWidth()-w)/2,top=(getHeight()-h)/2;RectF bounds=new RectF(left,top,left+w,top+h);c.drawBitmap(box,null,bounds,p);
+        @Override protected void onDraw(Canvas c){float d=getResources().getDisplayMetrics().density,w=Math.min(Math.min(getWidth()-16*d,280*d),getHeight()*2f),h=Math.min(getHeight(),w*.5f),left=(getWidth()-w)/2,top=(getHeight()-h)/2;RectF bounds=new RectF(left,top,left+w,top+h);c.drawBitmap(box,null,bounds,p);
             for(int n=0;n<4;n++){float x=left+w*(n%2==0?.34f:.66f),y=top+h*(n/2==0?.35f:.70f),r=10*d;p.setStyle(Paint.Style.FILL);p.setColor(Color.WHITE);c.drawRoundRect(x-r,y-r,x+r,y+r,3*d,3*d,p);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(d);p.setColor(ScannerControls.accent());c.drawRoundRect(x-r,y-r,x+r,y+r,3*d,3*d,p);p.setStyle(Paint.Style.FILL);p.setColor(0xff001b32);p.setTextSize(15*d);p.setTextAlign(Paint.Align.CENTER);p.setTypeface(Typeface.DEFAULT_BOLD);c.drawText(String.valueOf((char)('A'+n)),x,y+5*d,p);}
         }
     }
