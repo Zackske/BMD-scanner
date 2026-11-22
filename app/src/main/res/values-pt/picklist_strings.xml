@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Etapa %1$d · %2$s</string>
     <string name="ui_pl_picklist">Lista de separação</string>
+    <string name="ui_pl_picklist_short">Lista</string>
     <string name="ui_pl_products">Produtos</string>
     <string name="ui_pl_capture">Digitalizar lista</string>
     <string name="ui_pl_frame">Enquadre a página inteira.</string>

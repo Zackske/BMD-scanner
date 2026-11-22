@@ -14,7 +14,7 @@ final class PicklistJob {
     JSONArray mappingHistory=new JSONArray();
     int capacity=113;int[] allocation;String order="";boolean confirmed;
     PicklistJob(File dir){directory=dir;}
-    static PicklistJob create(Context c)throws IOException{File d=new File(new File(c.getFilesDir(),"picklists"),UUID.randomUUID().toString());if(!d.mkdirs())throw new IOException("Folder");return new PicklistJob(d);}
+    static PicklistJob create(Context c)throws IOException{File d=new File(new File(c.getFilesDir(),"picklists"),UUID.randomUUID().toString());if(!d.mkdirs())throw new IOException("Folder");return new PicklistJob(d.getCanonicalFile());}
     static PicklistJob load(Context c,String path)throws Exception{
         File root=new File(c.getFilesDir(),"picklists").getCanonicalFile(),dir=new File(path).getCanonicalFile();
         if(!root.equals(dir.getParentFile()))throw new IOException("Session");
@@ -43,7 +43,7 @@ final class PicklistJob {
     Map<String,Integer> observed(int index)throws Exception{
         if(!cartons.containsKey(index))return null;
         JSONObject o=new JSONObject(new String(java.nio.file.Files.readAllBytes(new File(cartons.get(index),"session.json").toPath()),StandardCharsets.UTF_8));
-        if(!o.optString("picklistJob").equals(directory.getPath())||o.optInt("cartonIndex",-1)!=index)return null;
+        if(!new File(o.optString("picklistJob")).getCanonicalFile().equals(directory.getCanonicalFile())||o.optInt("cartonIndex",-1)!=index)return null;
         if(!o.optBoolean("complete")||!o.optBoolean("reviewed")||o.getInt("expected")!=plan().quantities[index])return null;
         JSONArray products=o.getJSONArray("products"),items=o.getJSONArray("items");Map<String,Integer> result=new LinkedHashMap<>();
         if(products.length()!=plan().quantities[index])return null;

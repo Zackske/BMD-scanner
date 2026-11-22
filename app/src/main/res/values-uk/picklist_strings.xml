@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Крок %1$d · %2$s</string>
     <string name="ui_pl_picklist">Лист комплектації</string>
+    <string name="ui_pl_picklist_short">Список</string>
     <string name="ui_pl_products">Вироби</string>
     <string name="ui_pl_capture">Сканувати лист</string>
     <string name="ui_pl_frame">Умістіть усю сторінку в кадр.</string>

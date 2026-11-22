@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Paso %1$d · %2$s</string>
     <string name="ui_pl_picklist">Lista de preparación</string>
+    <string name="ui_pl_picklist_short">Lista</string>
     <string name="ui_pl_products">Productos</string>
     <string name="ui_pl_capture">Escanear lista</string>
     <string name="ui_pl_frame">Encuadra toda la página.</string>

@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Stap %1$d · %2$s</string>
     <string name="ui_pl_picklist">Picklist</string>
+    <string name="ui_pl_picklist_short">Picklist</string>
     <string name="ui_pl_products">Producten</string>
     <string name="ui_pl_capture">Picklist scannen</string>
     <string name="ui_pl_frame">Breng de hele pagina in beeld.</string>

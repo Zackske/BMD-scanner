@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Schritt %1$d · %2$s</string>
     <string name="ui_pl_picklist">Kommissionierliste</string>
+    <string name="ui_pl_picklist_short">Pickliste</string>
     <string name="ui_pl_products">Produkte</string>
     <string name="ui_pl_capture">Liste scannen</string>
     <string name="ui_pl_frame">Die ganze Seite aufnehmen.</string>

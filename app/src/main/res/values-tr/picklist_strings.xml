@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Adım %1$d · %2$s</string>
     <string name="ui_pl_picklist">Toplama listesi</string>
+    <string name="ui_pl_picklist_short">Liste</string>
     <string name="ui_pl_products">Ürünler</string>
     <string name="ui_pl_capture">Listeyi tara</string>
     <string name="ui_pl_frame">Sayfanın tamamını kadraja alın.</string>

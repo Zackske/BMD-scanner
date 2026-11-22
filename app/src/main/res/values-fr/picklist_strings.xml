@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">Étape %1$d · %2$s</string>
     <string name="ui_pl_picklist">Liste de prélèvement</string>
+    <string name="ui_pl_picklist_short">Liste</string>
     <string name="ui_pl_products">Produits</string>
     <string name="ui_pl_capture">Scanner la liste</string>
     <string name="ui_pl_frame">Cadrez toute la page.</string>

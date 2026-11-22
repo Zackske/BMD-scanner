@@ -1,6 +1,7 @@
 <resources>
     <string name="ui_pl_step">चरण %1$d · %2$s</string>
     <string name="ui_pl_picklist">पिकलिस्ट</string>
+    <string name="ui_pl_picklist_short">पिकलिस्ट</string>
     <string name="ui_pl_products">उत्पाद</string>
     <string name="ui_pl_capture">पिकलिस्ट स्कैन करें</string>
     <string name="ui_pl_frame">पूरा पृष्ठ फ़्रेम में रखें।</string>
