@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Guided box scan</string>
+    <string name="ui_box_scan" formatted="false">Final check</string>
     <string name="ui_live_scan" formatted="false">Live scanning</string>
     <string name="ui_count_question" formatted="false">How many products do you expect in this box?</string>
     <string name="ui_expected_count" formatted="false">Expected count</string>
     <string name="ui_count_hint" formatted="false">Enter the actual expected count. This never fills missing scans.</string>
     <string name="ui_count_invalid" formatted="false">Enter a whole number from 1 to 10000.</string>
     <string name="ui_box_instructions" formatted="false">1. Take an overview. 2. Capture four areas with 30% overlap. 3. Review every placement and the product list.</string>
-    <string name="ui_marker_help" formatted="false">Print A, B, C and D and place them at top left, top right, bottom left and bottom right. Keep markers and products stationary. Details need visible markers or clear overlap.</string>
+    <string name="ui_marker_help" formatted="false">Print A, B, C and D. Place them on top of products inside the carton: A upper left, B upper right, C lower left, D lower right. Keep product codes visible and everything stationary. Detail photos need visible markers or clear overlap.</string>
     <string name="ui_box_limits" formatted="false">Experimental: hidden or entirely missed codes may remain invisible. Identical products and repeated patterns may be linked incorrectly.</string>
     <string name="ui_marker_sheet" formatted="false">Share marker sheet</string>
     <string name="ui_make_overview" formatted="false">Take overview photo</string>

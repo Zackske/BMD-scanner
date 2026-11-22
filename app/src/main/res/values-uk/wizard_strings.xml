@@ -4,11 +4,11 @@
     <string name="ui_wizard_type" formatted="false">Тип</string>
     <string name="ui_wizard_count" formatted="false">Кількість</string>
     <string name="ui_wizard_type_question" formatted="false">Що ви хочете сканувати?</string>
-    <string name="ui_wizard_box" formatted="false">Повна коробка</string>
-    <string name="ui_wizard_stack" formatted="false">Сканування стосу</string>
+    <string name="ui_wizard_box" formatted="false">Кінцева перевірка</string>
+    <string name="ui_wizard_stack" formatted="false">Окрема стопка</string>
     <string name="ui_wizard_box_hint" formatted="false">З мітками та детальними фото</string>
     <string name="ui_wizard_stack_hint" formatted="false">Сканування без міток</string>
-    <string name="ui_wizard_next_count" formatted="false">Далі вкажіть кількість виробів.</string>
+    <string name="ui_wizard_next_count" formatted="false">Кінцева перевірка починається з листа.</string>
     <string name="ui_wizard_count_question" formatted="false">Скільки виробів ви очікуєте?</string>
     <string name="ui_wizard_products" formatted="false">Кількість виробів</string>
     <string name="ui_wizard_count_hint" formatted="false">Введіть очікувану кількість виробів.</string>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Begeleide doosscan</string>
+    <string name="ui_box_scan" formatted="false">Eindcontrole</string>
     <string name="ui_live_scan" formatted="false">Live scannen</string>
     <string name="ui_count_question" formatted="false">Hoeveel producten verwacht je in deze doos?</string>
     <string name="ui_expected_count" formatted="false">Verwacht aantal</string>
     <string name="ui_count_hint" formatted="false">Vul het werkelijke verwachte aantal in. Dit vult geen scans aan.</string>
     <string name="ui_count_invalid" formatted="false">Vul een geheel getal van 1 t/m 10000 in.</string>
     <string name="ui_box_instructions" formatted="false">1. Maak een overzicht. 2. Fotografeer vier delen met 30% overlap. 3. Controleer elke plaatsing en de productlijst.</string>
-    <string name="ui_marker_help" formatted="false">Print A, B, C en D en plaats ze linksboven, rechtsboven, linksonder en rechtsonder. Houd markeringen en producten op hun plek. Detailfoto’s hebben zichtbare markeringen of duidelijke overlap nodig.</string>
+    <string name="ui_marker_help" formatted="false">Print A, B, C en D. Leg ze boven op de producten ín de doos: A linksboven, B rechtsboven, C linksonder, D rechtsonder. Houd productcodes vrij en laat alles liggen. Detailfoto’s hebben zichtbare markeringen of duidelijke overlap nodig.</string>
     <string name="ui_box_limits" formatted="false">Experimenteel: verborgen of volledig gemiste codes kunnen onzichtbaar blijven. Identieke producten en herhaalde patronen kunnen fout worden gekoppeld.</string>
     <string name="ui_marker_sheet" formatted="false">Markerblad delen</string>
     <string name="ui_make_overview" formatted="false">Maak overzichtsfoto</string>

@@ -4,11 +4,11 @@
     <string name="ui_wizard_type" formatted="false">Art</string>
     <string name="ui_wizard_count" formatted="false">Anzahl</string>
     <string name="ui_wizard_type_question" formatted="false">Was möchtest du scannen?</string>
-    <string name="ui_wizard_box" formatted="false">Voller Karton</string>
-    <string name="ui_wizard_stack" formatted="false">Stapelscan</string>
+    <string name="ui_wizard_box" formatted="false">Endkontrolle</string>
+    <string name="ui_wizard_stack" formatted="false">Einzelstapel</string>
     <string name="ui_wizard_box_hint" formatted="false">Mit Markierungen und Detailfotos</string>
     <string name="ui_wizard_stack_hint" formatted="false">Direkt scannen, ohne Markierungen</string>
-    <string name="ui_wizard_next_count" formatted="false">Danach gibst du die Produktanzahl ein.</string>
+    <string name="ui_wizard_next_count" formatted="false">Die Endkontrolle beginnt mit der Liste.</string>
     <string name="ui_wizard_count_question" formatted="false">Wie viele Produkte erwartest du?</string>
     <string name="ui_wizard_products" formatted="false">Produktanzahl</string>
     <string name="ui_wizard_count_hint" formatted="false">Gib die erwartete Produktanzahl ein.</string>

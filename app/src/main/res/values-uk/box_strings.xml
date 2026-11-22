@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Покрокове сканування коробки</string>
+    <string name="ui_box_scan" formatted="false">Кінцева перевірка</string>
     <string name="ui_live_scan" formatted="false">Сканування наживо</string>
     <string name="ui_count_question" formatted="false">Скільки виробів ви очікуєте в цій коробці?</string>
     <string name="ui_expected_count" formatted="false">Очікувана кількість</string>
     <string name="ui_count_hint" formatted="false">Укажіть фактичну очікувану кількість. Пропущені сканування не додаються.</string>
     <string name="ui_count_invalid" formatted="false">Уведіть ціле число від 1 до 10000.</string>
     <string name="ui_box_instructions" formatted="false">1. Зробіть загальний знімок. 2. Зніміть чотири ділянки з перекриттям 30%. 3. Перевірте розташування та список.</string>
-    <string name="ui_marker_help" formatted="false">Розмістіть A, B, C і D зверху ліворуч, зверху праворуч, знизу ліворуч і знизу праворуч. Не рухайте мітки й вироби. Детальні фото потребують видимих міток або чіткого перекриття.</string>
+    <string name="ui_marker_help" formatted="false">Надрукуйте A, B, C і D. Покладіть їх на вироби всередині коробки: A вгорі ліворуч, B вгорі праворуч, C внизу ліворуч, D внизу праворуч. Не закривайте коди й нічого не рухайте. Деталі потребують маркерів або перекриття.</string>
     <string name="ui_box_limits" formatted="false">Експериментально: приховані або повністю пропущені коди можуть залишатися невидимими. Однакові вироби й повторювані візерунки можуть зіставлятися помилково.</string>
     <string name="ui_marker_sheet" formatted="false">Поділитися мітками</string>
     <string name="ui_make_overview" formatted="false">Зробити загальний знімок</string>

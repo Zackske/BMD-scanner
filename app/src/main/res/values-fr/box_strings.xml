@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Scan guidé du carton</string>
+    <string name="ui_box_scan" formatted="false">Contrôle final</string>
     <string name="ui_live_scan" formatted="false">Scan en direct</string>
     <string name="ui_count_question" formatted="false">Combien de produits attendez-vous dans ce carton ?</string>
     <string name="ui_expected_count" formatted="false">Quantité attendue</string>
     <string name="ui_count_hint" formatted="false">Saisissez la quantité réelle attendue. Aucun scan manquant ne sera ajouté.</string>
     <string name="ui_count_invalid" formatted="false">Saisissez un entier de 1 à 10000.</string>
     <string name="ui_box_instructions" formatted="false">1. Prenez une vue générale. 2. Photographiez quatre zones avec 30% de chevauchement. 3. Vérifiez les positions et la liste.</string>
-    <string name="ui_marker_help" formatted="false">Placez A, B, C et D en haut à gauche, en haut à droite, en bas à gauche et en bas à droite. Ne déplacez ni repères ni produits. Les détails nécessitent des repères visibles ou un chevauchement clair.</string>
+    <string name="ui_marker_help" formatted="false">Imprimez A, B, C et D. Posez-les sur les produits dans le carton : A haut gauche, B haut droite, C bas gauche, D bas droite. Gardez les codes visibles et ne déplacez rien. Les détails nécessitent des repères ou un chevauchement.</string>
     <string name="ui_box_limits" formatted="false">Expérimental : les codes cachés ou non détectés peuvent rester invisibles. Des produits identiques et motifs répétés peuvent être mal associés.</string>
     <string name="ui_marker_sheet" formatted="false">Partager les repères</string>
     <string name="ui_make_overview" formatted="false">Prendre la vue générale</string>

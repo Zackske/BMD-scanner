@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Rehberli kutu taraması</string>
+    <string name="ui_box_scan" formatted="false">Son kontrol</string>
     <string name="ui_live_scan" formatted="false">Canlı tarama</string>
     <string name="ui_count_question" formatted="false">Bu kutuda kaç ürün bekliyorsunuz?</string>
     <string name="ui_expected_count" formatted="false">Beklenen adet</string>
     <string name="ui_count_hint" formatted="false">Gerçek beklenen adedi girin. Eksik taramalar doldurulmaz.</string>
     <string name="ui_count_invalid" formatted="false">1 ile 10000 arasında tam sayı girin.</string>
     <string name="ui_box_instructions" formatted="false">1. Genel fotoğraf çekin. 2. Dört alanı %30 örtüşmeyle çekin. 3. Konumları ve ürün listesini kontrol edin.</string>
-    <string name="ui_marker_help" formatted="false">A, B, C ve D işaretlerini sol üst, sağ üst, sol alt ve sağ alta yerleştirin. İşaretleri ve ürünleri oynatmayın. Ayrıntılarda görünür işaretler veya belirgin örtüşme gerekir.</string>
+    <string name="ui_marker_help" formatted="false">A, B, C ve D yazdırın. Koli içindeki ürünlerin üstüne koyun: A sol üst, B sağ üst, C sol alt, D sağ alt. Kodları kapatmayın, hiçbir şeyi oynatmayın. Detay fotoğraflarında işaretler veya belirgin örtüşme gerekir.</string>
     <string name="ui_box_limits" formatted="false">Deneyseldir: gizli veya hiç algılanmayan kodlar görünmez kalabilir. Aynı ürünler ve tekrarlanan desenler yanlış eşleşebilir.</string>
     <string name="ui_marker_sheet" formatted="false">İşaret sayfasını paylaş</string>
     <string name="ui_make_overview" formatted="false">Genel fotoğraf çek</string>

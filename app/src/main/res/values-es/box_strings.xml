@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Escaneo guiado de caja</string>
+    <string name="ui_box_scan" formatted="false">Control final</string>
     <string name="ui_live_scan" formatted="false">Escaneo en directo</string>
     <string name="ui_count_question" formatted="false">¿Cuántos productos esperas en esta caja?</string>
     <string name="ui_expected_count" formatted="false">Cantidad esperada</string>
     <string name="ui_count_hint" formatted="false">Introduce la cantidad real esperada. No se rellenan escaneos faltantes.</string>
     <string name="ui_count_invalid" formatted="false">Introduce un entero de 1 a 10000.</string>
     <string name="ui_box_instructions" formatted="false">1. Toma una vista general. 2. Fotografía cuatro zonas con un 30% de solapamiento. 3. Revisa posiciones y lista.</string>
-    <string name="ui_marker_help" formatted="false">Coloca A, B, C y D arriba a la izquierda, arriba a la derecha, abajo a la izquierda y abajo a la derecha. No muevas marcas ni productos. Los detalles necesitan marcas visibles o solapamiento claro.</string>
+    <string name="ui_marker_help" formatted="false">Imprime A, B, C y D. Colócalos sobre los productos dentro de la caja: A arriba izquierda, B arriba derecha, C abajo izquierda, D abajo derecha. No tapes códigos ni muevas nada. Las fotos de detalle requieren marcadores o solapamiento.</string>
     <string name="ui_box_limits" formatted="false">Experimental: los códigos ocultos o no detectados pueden seguir invisibles. Los productos idénticos y patrones repetidos pueden asociarse incorrectamente.</string>
     <string name="ui_marker_sheet" formatted="false">Compartir marcadores</string>
     <string name="ui_make_overview" formatted="false">Tomar vista general</string>

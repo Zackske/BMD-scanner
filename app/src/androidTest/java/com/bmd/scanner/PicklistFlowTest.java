@@ -1,0 +1,49 @@
+package com.bmd.scanner;
+
+import android.content.*;
+import android.content.res.Configuration;
+import android.graphics.*;
+import android.graphics.pdf.PdfDocument;
+import android.widget.*;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import java.io.*;
+import java.util.*;
+import org.junit.*;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
+
+@RunWith(AndroidJUnit4.class)
+public class PicklistFlowTest {
+    @Before public void before()throws Exception{DeviceSupport.clear();DeviceSupport.permission();}
+    private static final String[] ARTICLES={"PRO2020","PRO2030","PRO2520","PRO2530","PRO3030","PRO3520","PRO3530"};
+    private static final String[] LOTS={"2610129","2610092","2610139","2610151","2610103","2610112","2610136"};
+    private static final String[] DATES={"2028-04-15","2028-04-08","2028-04-18","2028-04-19","2028-04-11","2028-04-13","2028-04-15"};
+    private static final int[] COUNTS={4,3,7,8,2,2,2};
+    static File fixture()throws Exception{
+        File file=new File(DeviceSupport.context().getCacheDir(),"anonymous-shipment-columns.pdf");PdfDocument pdf=new PdfDocument();PdfDocument.Page page=pdf.startPage(new PdfDocument.PageInfo.Builder(595,842,1).create());Canvas c=page.getCanvas();c.drawColor(Color.WHITE);Paint p=new Paint(3);p.setColor(Color.BLACK);p.setTextSize(17);c.drawText("Picklist - test fixture",40,65,p);p.setTextSize(12);c.drawText("Order 20260488",40,95,p);p.setTextSize(10);c.drawText("Part ID",40,260,p);c.drawText("Description",112,260,p);c.drawText("Backorder",305,260,p);c.drawText("Enclosed",371,260,p);c.drawText("Lot Number",423,260,p);c.drawText("Exp Date",510,260,p);
+        for(int n=0;n<7;n++){int y=282+n*22;c.drawText(ARTICLES[n],40,y,p);c.drawText("Protege DEB PTCA Cath.",112,y,p);c.drawText("0",335,y,p);c.drawText(Integer.toString(COUNTS[n]),393,y,p);c.drawText(LOTS[n],423,y,p);c.drawText(DATES[n],510,y,p);}c.drawText("Total",305,480,p);c.drawText("0",335,480,p);c.drawText("28",393,480,p);c.drawText("Page 1 of 1",490,805,p);pdf.finishPage(page);try(OutputStream out=new FileOutputStream(file)){pdf.writeTo(out);}pdf.close();return file;
+    }
+    @Test public void realPdfOcrRecognizesSevenLotsAndRequiresHumanConfirmation()throws Exception{
+        PicklistData data=PicklistData.parse(PicklistReader.read(DeviceSupport.context(),fixture(),"application/pdf"));assertEquals("OCR must preserve all table rows",7,data.rows.size());assertEquals(28,data.total());assertTrue(data.consistent());for(int n=0;n<7;n++){assertEquals(ARTICLES[n],data.rows.get(n).article);assertEquals(LOTS[n],data.rows.get(n).lot);assertEquals(COUNTS[n],data.rows.get(n).quantity);}
+        PicklistJob job=PicklistJob.create(DeviceSupport.context());job.save();File source=new File(job.directory,"test-source.pdf");java.nio.file.Files.copy(fixture().toPath(),source.toPath());android.net.Uri sourceUri=androidx.core.content.FileProvider.getUriForFile(DeviceSupport.context(),DeviceSupport.context().getPackageName()+".provider",source);
+        try(ActivityScenario<PicklistActivity> scene=ActivityScenario.launch(new Intent(DeviceSupport.context(),PicklistActivity.class).putExtra("language","nl").putExtra("picklistJob",job.directory.getPath()))){scene.onActivity(a->a.importDocuments(Collections.singletonList(sourceUri)));long deadline=android.os.SystemClock.elapsedRealtime()+90000;java.util.concurrent.atomic.AtomicBoolean loaded=new java.util.concurrent.atomic.AtomicBoolean();while(android.os.SystemClock.elapsedRealtime()<deadline){scene.onActivity(a->loaded.set(a.data.rows.size()==7&&DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-review")!=null));if(loaded.get())break;Thread.sleep(200);}assertTrue("Imported PDF must reach native review",loaded.get());DeviceSupport.shot(null,"build46-picklist-review-nl");scene.onActivity(a->{assertNotNull(DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-review"));DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-next").performClick();assertNull(DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-total"));((CheckBox)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-ack")).setChecked(true);DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-next").performClick();assertEquals("28",((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-total")).getText().toString());});DeviceSupport.shot(null,"build46-picklist-count-28");scene.recreate();scene.onActivity(a->assertEquals("28",((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-total")).getText().toString()));}
+    }
+    @Test public void reviewAndCapacityScreensSupportAllSixtyLanguageThemeCombinations()throws Exception{
+        for(String theme:ThemeSkin.IDS)for(String language:MainActivity.LANGS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).commit();PicklistJob job=PicklistJob.create(DeviceSupport.context());job.rows.add(new PicklistData.Row("PRO2020","2610129","2028-04-15",556,false));job.save();
+            try(ActivityScenario<PicklistActivity> scene=ActivityScenario.launch(new Intent(DeviceSupport.context(),PicklistActivity.class).putExtra("language",language).putExtra("picklistJob",job.directory.getPath()))){scene.onActivity(a->{assertNotNull(DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-review"));((CheckBox)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-ack")).setChecked(true);DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-next").performClick();TextView total=(TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-total"),boxes=(TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-boxes");assertEquals("556",total.getText().toString());assertNotNull(boxes);assertEquals(5,a.job.plan().boxes);assertArrayEquals(new int[]{112,111,111,111,111},a.job.plan().quantities);assertTrue("Box statistic is green",Color.green(boxes.getCurrentTextColor())>Color.red(boxes.getCurrentTextColor()));});if(language.equals("nl"))DeviceSupport.shot(null,"build46-capacity-"+theme);}
+        }
+    }
+    @Test public void allNewStringsAreLocalizedAndMarkerGeometryAllowsInsetPositions()throws Exception{
+        for(String language:MainActivity.LANGS){Configuration cfg=new Configuration(DeviceSupport.context().getResources().getConfiguration());cfg.setLocale(Locale.forLanguageTag(language));Context c=DeviceSupport.context().createConfigurationContext(cfg);for(String key:new String[]{"pl_capture","pl_review","pl_pending","pl_control","pl_mapping","pl_mismatch","pl_products"}){int id=c.getResources().getIdentifier("ui_"+key,"string",c.getPackageName());assertTrue(id!=0);assertFalse(c.getString(id).isEmpty());}}
+        List<ScanTracker.Detection> markers=new ArrayList<>();for(int n=0;n<4;n++){float x=n%2==0?.30f:.70f,y=n/2==0?.30f:.70f;markers.add(new ScanTracker.Detection("BMD-BOX-"+(char)('A'+n),"QR",x-.02f,y-.02f,x+.02f,y+.02f));}BoxRegistration.Result result=BoxRegistration.markers(markers,markers);assertNotNull(result);assertTrue(BoxRegistration.valid(result.map));
+    }
+    @Test public void cartonComparisonNeedsExplicitIdentityAndDetectsChangedExpiry()throws Exception{
+        PicklistJob job=PicklistJob.create(DeviceSupport.context());job.rows.add(new PicklistData.Row("PRO2020","2610129","2028-04-15",4,false));job.confirmed=true;
+        File folder=new File(new File(DeviceSupport.context().getFilesDir(),"boxes"),"fixture-"+UUID.randomUUID());assertTrue(folder.mkdirs());job.cartons.put(0,folder.getPath());job.save();
+        org.json.JSONObject session=new org.json.JSONObject().put("picklistJob",job.directory.getPath()).put("cartonIndex",0).put("complete",true).put("reviewed",true).put("expected",4);org.json.JSONArray products=new org.json.JSONArray(),items=new org.json.JSONArray();for(int n=1;n<=4;n++){products.put(new org.json.JSONObject().put("lot","2610129").put("conflict",false).put("ids",new org.json.JSONArray().put(n)));items.put(new org.json.JSONObject().put("id",n).put("value","(01)08720634200066(17)280415(10)2610129").put("deleted",false));}session.put("products",products).put("items",items);File report=new File(folder,"session.json");java.nio.file.Files.write(report.toPath(),session.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        assertNull("Lot equality cannot invent a part number",job.observed(0));assertFalse(job.complete());job.gtinArticles.put("08720634200066","PRO2020");job.save();assertTrue(job.complete());
+        items.getJSONObject(0).put("value","(01)08720634200066(17)280416(10)2610129");java.nio.file.Files.write(report.toPath(),session.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));assertFalse("Same total with a different expiry must fail",job.complete());assertFalse(PicklistData.within(job.rows,job.totals()));
+    }
+}

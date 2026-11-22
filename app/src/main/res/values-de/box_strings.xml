@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Geführter Kartonscan</string>
+    <string name="ui_box_scan" formatted="false">Endkontrolle</string>
     <string name="ui_live_scan" formatted="false">Live scannen</string>
     <string name="ui_count_question" formatted="false">Wie viele Produkte erwartest du in diesem Karton?</string>
     <string name="ui_expected_count" formatted="false">Erwartete Anzahl</string>
     <string name="ui_count_hint" formatted="false">Gib die tatsächliche erwartete Anzahl ein. Fehlende Scans werden nicht ergänzt.</string>
     <string name="ui_count_invalid" formatted="false">Gib eine ganze Zahl von 1 bis 10000 ein.</string>
     <string name="ui_box_instructions" formatted="false">1. Übersicht aufnehmen. 2. Vier Bereiche mit 30% Überlappung fotografieren. 3. Jede Position und die Produktliste prüfen.</string>
-    <string name="ui_marker_help" formatted="false">A, B, C und D oben links, oben rechts, unten links und unten rechts platzieren. Marker und Produkte nicht bewegen. Detailbilder benötigen sichtbare Marker oder klare Überlappung.</string>
+    <string name="ui_marker_help" formatted="false">A, B, C und D drucken. Auf die Produkte im Karton legen: A oben links, B oben rechts, C unten links, D unten rechts. Codes frei lassen und nichts bewegen. Detailfotos benötigen Marker oder deutliche Überlappung.</string>
     <string name="ui_box_limits" formatted="false">Experimentell: verdeckte oder vollständig übersehene Codes können unsichtbar bleiben. Identische Produkte und wiederholte Muster können falsch zugeordnet werden.</string>
     <string name="ui_marker_sheet" formatted="false">Markerblatt teilen</string>
     <string name="ui_make_overview" formatted="false">Übersicht aufnehmen</string>

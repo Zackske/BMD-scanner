@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">निर्देशित बॉक्स स्कैन</string>
+    <string name="ui_box_scan" formatted="false">अंतिम जाँच</string>
     <string name="ui_live_scan" formatted="false">लाइव स्कैन</string>
     <string name="ui_count_question" formatted="false">इस बॉक्स में कितने उत्पाद होने चाहिए?</string>
     <string name="ui_expected_count" formatted="false">अपेक्षित संख्या</string>
     <string name="ui_count_hint" formatted="false">वास्तविक अपेक्षित संख्या दर्ज करें। इससे छूटे स्कैन नहीं भरते।</string>
     <string name="ui_count_invalid" formatted="false">1 से 10000 तक पूर्णांक दर्ज करें।</string>
     <string name="ui_box_instructions" formatted="false">1. पूरा बॉक्स खींचें। 2. चार हिस्सों की फोटो 30% ओवरलैप के साथ लें। 3. हर स्थिति और उत्पाद सूची जाँचें।</string>
-    <string name="ui_marker_help" formatted="false">A, B, C और D को ऊपर बाएँ, ऊपर दाएँ, नीचे बाएँ और नीचे दाएँ रखें। निशान और उत्पाद न हिलाएँ। विस्तृत फोटो में निशान या स्पष्ट ओवरलैप चाहिए।</string>
+    <string name="ui_marker_help" formatted="false">A, B, C और D प्रिंट करें। डिब्बे में उत्पादों पर रखें: A ऊपर बाएँ, B ऊपर दाएँ, C नीचे बाएँ, D नीचे दाएँ। कोड खुले रखें और कुछ न हिलाएँ। नज़दीकी फ़ोटो में मार्कर या स्पष्ट ओवरलैप चाहिए।</string>
     <string name="ui_box_limits" formatted="false">प्रायोगिक: छिपे या पूरी तरह छूटे कोड अदृश्य रह सकते हैं। समान उत्पाद और दोहराए पैटर्न गलत जुड़ सकते हैं।</string>
     <string name="ui_marker_sheet" formatted="false">मार्कर शीट साझा करें</string>
     <string name="ui_make_overview" formatted="false">पूरे बॉक्स की फोटो लें</string>

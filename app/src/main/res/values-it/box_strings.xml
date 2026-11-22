@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Scansione guidata della scatola</string>
+    <string name="ui_box_scan" formatted="false">Controllo finale</string>
     <string name="ui_live_scan" formatted="false">Scansione dal vivo</string>
     <string name="ui_count_question" formatted="false">Quanti prodotti prevedi in questa scatola?</string>
     <string name="ui_expected_count" formatted="false">Quantità prevista</string>
     <string name="ui_count_hint" formatted="false">Inserisci la quantità reale prevista. Non completa scansioni mancanti.</string>
     <string name="ui_count_invalid" formatted="false">Inserisci un numero intero da 1 a 10000.</string>
     <string name="ui_box_instructions" formatted="false">1. Scatta una panoramica. 2. Riprendi quattro aree con il 30% di sovrapposizione. 3. Controlla posizioni ed elenco.</string>
-    <string name="ui_marker_help" formatted="false">Stampa A, B, C e D e posizionali in alto a sinistra, in alto a destra, in basso a sinistra e in basso a destra. Non muovere marcatori o prodotti. Nei dettagli servono marcatori visibili o una chiara sovrapposizione.</string>
+    <string name="ui_marker_help" formatted="false">Stampa A, B, C e D. Posizionali sopra i prodotti dentro la scatola: A alto sinistra, B alto destra, C basso sinistra, D basso destra. Lascia visibili i codici e non spostare nulla. Le foto di dettaglio richiedono marcatori o sovrapposizione.</string>
     <string name="ui_box_limits" formatted="false">Sperimentale: i codici nascosti o non rilevati possono restare invisibili. Prodotti identici e motivi ripetuti possono essere associati male.</string>
     <string name="ui_marker_sheet" formatted="false">Condividi marcatori</string>
     <string name="ui_make_overview" formatted="false">Scatta panoramica</string>
