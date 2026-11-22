@@ -38,6 +38,16 @@ public class ScanWizardTest {
             }
         }
     }
+    @Test public void productChoiceArtworkIsTransparentAndKeepsItsWideAspect(){
+        for(int resource:new int[]{R.drawable.wizard_full_box,R.drawable.wizard_stack}){
+            android.graphics.Bitmap image=ReferenceArt.bitmap(DeviceSupport.context(),resource);
+            assertTrue("Product art needs real alpha",image.hasAlpha());
+            assertTrue("Wide carton and stack must not be stretched",image.getWidth()>=image.getHeight()*1.8f);
+            assertEquals(0,android.graphics.Color.alpha(image.getPixel(0,0)));
+            assertTrue(android.graphics.Color.alpha(image.getPixel(image.getWidth()/2,image.getHeight()/2))>200);
+        }
+    }
+
     @Test public void menuCompletionStartsTheChosenBoxRouteWithTheEnteredCount()throws Exception{
         Instrumentation inst=InstrumentationRegistry.getInstrumentation();Instrumentation.ActivityMonitor monitor=inst.addMonitor(BoxScanActivity.class.getName(),null,false);Activity launched=null;
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){

@@ -56,13 +56,20 @@ final class ReferenceHome extends FrameLayout {
         namePaint.setTextSize(nameSize);namePaint.getTextBounds(heading,0,heading.length(),nameInk);
         float inkHeight=nameInk.height(),nameY=menu?y+(height-inkHeight)*.5f:y+height*.56f;
         namePaint.setShader(new LinearGradient(x,0,x+Math.max(1,namePaint.measureText(heading)),0,ThemeSkin.active.titleGradient(),null,Shader.TileMode.CLAMP));
-        canvas.drawText(heading,x-nameInk.left,nameY-nameInk.top,namePaint);
+        drawOutlinedWord(canvas,heading,x-nameInk.left,nameY-nameInk.top,namePaint);
         if(!menu){
             TextPaint initials=new TextPaint(3);initials.setTypeface(ReferenceArt.face(getContext(),true,850));initials.setTextSize(100);Rect initialsInk=new Rect();initials.getTextBounds("BMD",0,3,initialsInk);
             initials.setTextSize(100*inkHeight/Math.max(1,initialsInk.height()));initials.getTextBounds("BMD",0,3,initialsInk);initials.setColor(ThemeSkin.active==ThemeSkin.LIGHT?0xff173e7b:0xfff5f9ff);
-            canvas.drawText("BMD",x-initialsInk.left,y+height*.16f-initialsInk.top,initials);
+            drawOutlinedWord(canvas,"BMD",x-initialsInk.left,y+height*.16f-initialsInk.top,initials);
         }
         headerNameRight=x+namePaint.measureText(heading);spark(canvas,Math.min(getWidth()-18*artworkScale,headerNameRight+18*artworkScale),nameY+inkHeight*.5f,13*artworkScale);
+    }
+    /** A thin contour follows the shaped glyphs, without changing their gradient or layout. */
+    private void drawOutlinedWord(Canvas canvas,String text,float x,float y,TextPaint face){
+        TextPaint contour=new TextPaint(face);contour.setShader(null);contour.clearShadowLayer();
+        contour.setColor(0xff00101f);contour.setStyle(Paint.Style.STROKE);
+        contour.setStrokeJoin(Paint.Join.ROUND);contour.setStrokeWidth(Math.max(1.5f,5f*artworkScale));
+        canvas.drawText(text,x,y,contour);canvas.drawText(text,x,y,face);
     }
     private void drawLabel(Canvas canvas,Rect rect,String text,boolean title){TextPaint p=new TextPaint(Paint.ANTI_ALIAS_FLAG);p.setColor(title?ThemeSkin.active.accent:ThemeSkin.active.text);p.setTypeface(title?ReferenceArt.magicFace(getContext(),text):ReferenceArt.face(getContext(),false,850));if(title)p.setShader(new LinearGradient(0,0,rect.width(),0,ThemeSkin.active.titleGradient(),null,Shader.TileMode.CLAMP));StaticLayout layout=null;for(int size=title?62:Math.max(24,Math.round(rect.width()*.14f));size>=14;size--){p.setTextSize(size);layout=StaticLayout.Builder.obtain(text,0,text.length(),p,rect.width()).setAlignment(title?Layout.Alignment.ALIGN_NORMAL:Layout.Alignment.ALIGN_CENTER).setIncludePad(false).build();if(layout.getHeight()<=rect.height()-8&&layout.getLineCount()<=(title?1:(text.contains(" ")||text.contains("/")?2:1)))break;}if(layout!=null){if(title){float width=0;for(int line=0;line<layout.getLineCount();line++)width=Math.max(width,layout.getLineWidth(line));headerNameRight=rect.left+width;}canvas.save();canvas.translate(rect.left,rect.top+(rect.height()-layout.getHeight())/2f);layout.draw(canvas);canvas.restore();}}
     private void spark(Canvas canvas,float x,float y,float r){Paint p=new Paint(3);p.setColor(0xffffd436);Path star=new Path();star.moveTo(x,y-r);star.quadTo(x+r*.15f,y-r*.15f,x+r,y);star.quadTo(x+r*.15f,y+r*.15f,x,y+r);star.quadTo(x-r*.15f,y+r*.15f,x-r,y);star.quadTo(x-r*.15f,y-r*.15f,x,y-r);canvas.drawPath(star,p);}
