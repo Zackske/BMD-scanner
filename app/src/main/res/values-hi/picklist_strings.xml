@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">पुष्ट पिकलिस्ट से अपने आप भरा गया</string>
     <string name="ui_pl_order">पिकलिस्ट · ऑर्डर %1$s</string>
     <string name="ui_pl_boxes">%1$d डिब्बे</string>
+    <string name="ui_pl_box_one">1 डिब्बा</string>
     <string name="ui_pl_average">प्रति डिब्बा औसत %1$s</string>
     <string name="ui_pl_standard">मानक</string>
     <string name="ui_pl_large">बड़ा</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">वितरण: %1$d / %2$d उत्पाद · बदलने के लिए डिब्बा दबाएँ</string>
     <string name="ui_pl_carton">डिब्बा %1$d / %2$d</string>
     <string name="ui_pl_free">%1$d जगह खाली</string>
+    <string name="ui_pl_free_one">1 जगह खाली</string>
     <string name="ui_pl_not_scanned">अभी स्कैन नहीं हुआ</string>
     <string name="ui_pl_adjust">पिकलिस्ट बदलें</string>
     <string name="ui_pl_continue">उत्पादों पर आगे बढ़ें</string>

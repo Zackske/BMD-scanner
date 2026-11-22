@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">Automatisch ingevuld uit de bevestigde picklist</string>
     <string name="ui_pl_order">Picklist · Order %1$s</string>
     <string name="ui_pl_boxes">%1$d dozen</string>
+    <string name="ui_pl_box_one">1 doos</string>
     <string name="ui_pl_average">Gemiddeld %1$s per doos</string>
     <string name="ui_pl_standard">Standaard</string>
     <string name="ui_pl_large">Groot</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">Verdeling: %1$d / %2$d producten · tik op een doos om aan te passen</string>
     <string name="ui_pl_carton">Doos %1$d van %2$d</string>
     <string name="ui_pl_free">%1$d plekken vrij</string>
+    <string name="ui_pl_free_one">1 plek vrij</string>
     <string name="ui_pl_not_scanned">Nog te scannen</string>
     <string name="ui_pl_adjust">Picklist aanpassen</string>
     <string name="ui_pl_continue">Verder naar producten</string>

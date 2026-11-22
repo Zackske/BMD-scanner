@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">Onaylanan listeden otomatik dolduruldu</string>
     <string name="ui_pl_order">Liste · Sipariş %1$s</string>
     <string name="ui_pl_boxes">%1$d koli</string>
+    <string name="ui_pl_box_one">1 koli</string>
     <string name="ui_pl_average">Koli başına ortalama %1$s</string>
     <string name="ui_pl_standard">Standart</string>
     <string name="ui_pl_large">Büyük</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">Dağılım: %1$d / %2$d ürün · düzenlemek için koliye dokunun</string>
     <string name="ui_pl_carton">Koli %1$d / %2$d</string>
     <string name="ui_pl_free">%1$d boş yer</string>
+    <string name="ui_pl_free_one">1 boş yer</string>
     <string name="ui_pl_not_scanned">Henüz taranmadı</string>
     <string name="ui_pl_adjust">Listeyi düzenle</string>
     <string name="ui_pl_continue">Ürünlere devam et</string>

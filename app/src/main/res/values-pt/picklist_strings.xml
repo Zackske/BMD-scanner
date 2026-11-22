@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">Preenchido pela lista confirmada</string>
     <string name="ui_pl_order">Lista · Pedido %1$s</string>
     <string name="ui_pl_boxes">%1$d caixas</string>
+    <string name="ui_pl_box_one">1 caixa</string>
     <string name="ui_pl_average">Média %1$s por caixa</string>
     <string name="ui_pl_standard">Padrão</string>
     <string name="ui_pl_large">Grande</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">Distribuição: %1$d / %2$d produtos · toque numa caixa para editar</string>
     <string name="ui_pl_carton">Caixa %1$d de %2$d</string>
     <string name="ui_pl_free">%1$d lugares livres</string>
+    <string name="ui_pl_free_one">1 lugar livre</string>
     <string name="ui_pl_not_scanned">Por digitalizar</string>
     <string name="ui_pl_adjust">Editar lista</string>
     <string name="ui_pl_continue">Continuar para produtos</string>

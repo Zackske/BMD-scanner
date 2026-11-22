@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">Rempli depuis la liste confirmée</string>
     <string name="ui_pl_order">Liste · Commande %1$s</string>
     <string name="ui_pl_boxes">%1$d cartons</string>
+    <string name="ui_pl_box_one">1 carton</string>
     <string name="ui_pl_average">Moyenne %1$s par carton</string>
     <string name="ui_pl_standard">Standard</string>
     <string name="ui_pl_large">Grand</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">Répartition : %1$d / %2$d produits · touchez un carton pour modifier</string>
     <string name="ui_pl_carton">Carton %1$d sur %2$d</string>
     <string name="ui_pl_free">%1$d places libres</string>
+    <string name="ui_pl_free_one">1 place libre</string>
     <string name="ui_pl_not_scanned">À scanner</string>
     <string name="ui_pl_adjust">Modifier la liste</string>
     <string name="ui_pl_continue">Continuer vers les produits</string>

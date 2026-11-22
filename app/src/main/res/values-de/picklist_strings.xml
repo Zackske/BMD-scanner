@@ -29,6 +29,7 @@
     <string name="ui_pl_auto">Aus der bestätigten Liste übernommen</string>
     <string name="ui_pl_order">Liste · Auftrag %1$s</string>
     <string name="ui_pl_boxes">%1$d Kartons</string>
+    <string name="ui_pl_box_one">1 Karton</string>
     <string name="ui_pl_average">Ø %1$s pro Karton</string>
     <string name="ui_pl_standard">Standard</string>
     <string name="ui_pl_large">Groß</string>
@@ -37,6 +38,7 @@
     <string name="ui_pl_plan_total">Verteilung: %1$d / %2$d Produkte · Karton zum Bearbeiten antippen</string>
     <string name="ui_pl_carton">Karton %1$d von %2$d</string>
     <string name="ui_pl_free">%1$d Plätze frei</string>
+    <string name="ui_pl_free_one">1 Platz frei</string>
     <string name="ui_pl_not_scanned">Noch zu scannen</string>
     <string name="ui_pl_adjust">Liste bearbeiten</string>
     <string name="ui_pl_continue">Weiter zu Produkten</string>

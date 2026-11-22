@@ -46,4 +46,11 @@ public class PicklistFlowTest {
         assertNull("Lot equality cannot invent a part number",job.observed(0));assertFalse(job.complete());job.gtinArticles.put("08720634200066","PRO2020");job.save();assertTrue(job.complete());
         items.getJSONObject(0).put("value","(01)08720634200066(17)280416(10)2610129");java.nio.file.Files.write(report.toPath(),session.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));assertFalse("Same total with a different expiry must fail",job.complete());assertFalse(PicklistData.within(job.rows,job.totals()));
     }
+    @Test public void changedCartonAmountsSurviveRecreationAndWrongSumCannotStartCapture()throws Exception{
+        PicklistJob job=PicklistJob.create(DeviceSupport.context());job.rows.add(new PicklistData.Row("PRO2020","2610129","2028-04-15",556,false));job.save();
+        try(ActivityScenario<PicklistActivity> scene=ActivityScenario.launch(new Intent(DeviceSupport.context(),PicklistActivity.class).putExtra("language","nl").putExtra("picklistJob",job.directory.getPath()))){
+            scene.onActivity(a->{((CheckBox)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-ack")).setChecked(true);DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-next").performClick();a.job.allocation[0]=113;a.countPage();DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-next").performClick();assertFalse(a.job.confirmed);assertNotNull(DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-count"));});
+            scene.recreate();scene.onActivity(a->{assertEquals(113,a.job.allocation[0]);assertFalse(a.job.confirmed);assertEquals("556",((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"picklist-total")).getText().toString());a.job.allocation=new int[]{113,113,113,113,104};assertEquals(556,a.job.plan().total);});
+        }
+    }
 }
