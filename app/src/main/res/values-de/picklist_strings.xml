@@ -34,6 +34,7 @@
     <string name="ui_pl_large">Groß</string>
     <string name="ui_pl_max">Max. %1$d</string>
     <string name="ui_pl_proposal">Vorgeschlagene Verteilung</string>
+    <string name="ui_pl_plan_total">Verteilung: %1$d / %2$d Produkte · Karton zum Bearbeiten antippen</string>
     <string name="ui_pl_carton">Karton %1$d von %2$d</string>
     <string name="ui_pl_free">%1$d Plätze frei</string>
     <string name="ui_pl_not_scanned">Noch zu scannen</string>

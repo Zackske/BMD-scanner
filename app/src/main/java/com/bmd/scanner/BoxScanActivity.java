@@ -164,7 +164,9 @@ public class BoxScanActivity extends AppCompatActivity {
                 if(picklistJob.reference(p.gtin,raw.toString()).isEmpty()){
                     List<String> candidates=picklistJob.candidates(p.lot,p.expiry);
                     if(p.gtin.isEmpty()||candidates.isEmpty()){Toast.makeText(this,s("pl_identity_missing"),Toast.LENGTH_LONG).show();return;}
-                    new android.app.AlertDialog.Builder(this).setTitle(s("pl_mapping")).setMessage(s("pl_mapping_hint")+"\nGTIN "+p.gtin+"\n"+p.lot+" · "+PicklistData.date(p.expiry)).setPositiveButton(s("pl_choose_article"),(dialog,which)->new android.app.AlertDialog.Builder(this).setTitle(s("pl_article")).setItems(candidates.toArray(new String[0]),(d,n)->{try{picklistJob.link(p.gtin,candidates.get(n));completePicklistCarton();}catch(Exception e){error(e);}}).setNegativeButton(s("back"),null).show();return;
+                    new android.app.AlertDialog.Builder(this).setTitle(s("pl_mapping")).setMessage(s("pl_mapping_hint")+"\nGTIN "+p.gtin+"\n"+p.lot+" · "+PicklistData.date(p.expiry)).setPositiveButton(s("pl_choose_article"),(dialog,which)->{
+                        new android.app.AlertDialog.Builder(this).setTitle(s("pl_article")).setItems(candidates.toArray(new String[0]),(d,n)->{try{picklistJob.link(p.gtin,candidates.get(n));completePicklistCarton();}catch(Exception error){error(error);}}).setNegativeButton(s("back"),null).show();
+                    }).setNegativeButton(s("back"),null).show();return;
                 }
             }
             persist();Map<String,Integer> observed=picklistJob.observed(cartonIndex);

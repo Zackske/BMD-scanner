@@ -34,6 +34,7 @@
     <string name="ui_pl_large">Grande</string>
     <string name="ui_pl_max">Max. %1$d</string>
     <string name="ui_pl_proposal">Distribuzione proposta</string>
+    <string name="ui_pl_plan_total">Distribuzione: %1$d / %2$d prodotti · tocca una scatola per modificare</string>
     <string name="ui_pl_carton">Scatola %1$d di %2$d</string>
     <string name="ui_pl_free">%1$d posti liberi</string>
     <string name="ui_pl_not_scanned">Da scansionare</string>

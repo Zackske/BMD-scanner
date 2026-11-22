@@ -34,6 +34,7 @@
     <string name="ui_pl_large">Grand</string>
     <string name="ui_pl_max">Max. %1$d</string>
     <string name="ui_pl_proposal">Répartition proposée</string>
+    <string name="ui_pl_plan_total">Répartition : %1$d / %2$d produits · touchez un carton pour modifier</string>
     <string name="ui_pl_carton">Carton %1$d sur %2$d</string>
     <string name="ui_pl_free">%1$d places libres</string>
     <string name="ui_pl_not_scanned">À scanner</string>

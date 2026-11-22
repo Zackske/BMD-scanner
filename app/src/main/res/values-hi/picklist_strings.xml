@@ -34,6 +34,7 @@
     <string name="ui_pl_large">बड़ा</string>
     <string name="ui_pl_max">अधिकतम %1$d</string>
     <string name="ui_pl_proposal">प्रस्तावित वितरण</string>
+    <string name="ui_pl_plan_total">वितरण: %1$d / %2$d उत्पाद · बदलने के लिए डिब्बा दबाएँ</string>
     <string name="ui_pl_carton">डिब्बा %1$d / %2$d</string>
     <string name="ui_pl_free">%1$d जगह खाली</string>
     <string name="ui_pl_not_scanned">अभी स्कैन नहीं हुआ</string>

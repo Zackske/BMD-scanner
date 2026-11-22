@@ -34,6 +34,7 @@
     <string name="ui_pl_large">Büyük</string>
     <string name="ui_pl_max">En fazla %1$d</string>
     <string name="ui_pl_proposal">Önerilen dağılım</string>
+    <string name="ui_pl_plan_total">Dağılım: %1$d / %2$d ürün · düzenlemek için koliye dokunun</string>
     <string name="ui_pl_carton">Koli %1$d / %2$d</string>
     <string name="ui_pl_free">%1$d boş yer</string>
     <string name="ui_pl_not_scanned">Henüz taranmadı</string>
