@@ -58,6 +58,8 @@ public class CustomerPortalActivity extends AppCompatActivity {
 
         FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(ThemeSkin.active.background);
         portal=new WebView(this);portal.setTag("customer-portal");portal.setBackgroundColor(ThemeSkin.active.background);
+        // Keep SVG flag masks and overlapping tile layers consistent across WebView GPU drivers.
+        portal.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
         WebSettings settings=portal.getSettings();settings.setJavaScriptEnabled(true);
         settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);
         settings.setBlockNetworkLoads(true);settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);

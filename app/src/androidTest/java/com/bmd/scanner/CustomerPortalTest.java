@@ -57,6 +57,12 @@ public class CustomerPortalTest {
         fail("The offline customer portal did not finish loading");
     }
     private String brand(String language){Configuration c=new Configuration(DeviceSupport.context().getResources().getConfiguration());c.setLocale(Locale.forLanguageTag(language));return DeviceSupport.context().createConfigurationContext(c).getString(R.string.ui_short_name);}
+    private void shot(ActivityScenario<CustomerPortalActivity> scenario,String name)throws Exception{
+        CountDownLatch rendered=new CountDownLatch(1);
+        scenario.onActivity(a->a.portal.postVisualStateCallback(SystemClock.uptimeMillis(),new android.webkit.WebView.VisualStateCallback(){@Override public void onComplete(long id){rendered.countDown();}}));
+        assertTrue("Web content must be ready before taking a screenshot",rendered.await(15,TimeUnit.SECONDS));
+        DeviceSupport.shot(scenario,name);
+    }
     @Test public void all84OfflineCustomersRemainSeparateAndCorrect()throws Exception{
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
             ready(scenario);scenario.onActivity(a->{assertTrue(a.portal.getSettings().getBlockNetworkLoads());assertFalse(a.portal.getSettings().getAllowFileAccess());assertFalse(a.portal.getSettings().getAllowContentAccess());});
@@ -78,7 +84,7 @@ public class CustomerPortalTest {
             assertEquals(84,ids.size());assertEquals(11,pages);assertEquals(2,shared);
             long imagesEnd=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<imagesEnd&&!"true".equals(js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)")))SystemClock.sleep(100);
             assertEquals("true",js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)"));
-            DeviceSupport.shot(scenario,"portal-last-page");
+            shot(scenario,"portal-last-page");
         }
     }
     @Test public void allSixThemesAndTenLanguagesFitTheRealPhoneViewport()throws Exception{
@@ -91,9 +97,10 @@ public class CustomerPortalTest {
                     assertEquals(JSONObject.quote(language),js(scenario,"document.querySelector('.cp-screen').lang"));
                     assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-name,.cp-shipping-group,.cp-country,.cp-title,.cp-nav,.cp-appbar'),e=>!e.getClientRects().length||e.scrollWidth<=e.clientWidth+2).every(Boolean)"));
                     assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-customer'),c=>c.querySelector('.cp-shipping-group').getBoundingClientRect().bottom<=c.querySelector('.cp-name').getBoundingClientRect().top+1).every(Boolean)"));
+                    assertEquals("Customer captions stay inside their own tile","true",js(scenario,"Array.from(document.querySelectorAll('.cp-customer'),c=>{const b=c.getBoundingClientRect();return Array.from(c.querySelectorAll('.cp-name,.cp-country,.cp-shipping-group'),e=>{const r=e.getBoundingClientRect();return r.left>=b.left-1&&r.right<=b.right+1&&r.top>=b.top-1&&r.bottom<=b.bottom+1;}).every(Boolean);}).every(Boolean)"));
                 }
                 js(scenario,"window.BmdCustomerPortal.applyAppearance('"+theme+"','nl','ScanTovenaar')");
-                DeviceSupport.shot(scenario,"portal-theme-"+theme);
+                shot(scenario,"portal-theme-"+theme);
             }
         }
     }
@@ -110,7 +117,7 @@ public class CustomerPortalTest {
             long end=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<end&&"true".equals(js(scenario,"document.querySelector('.cp-grid').hidden")))SystemClock.sleep(100);
             assertEquals("false",js(scenario,"document.querySelector('.cp-grid').hidden"));
             assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().page"));
-            DeviceSupport.shot(scenario,"portal-return-to-list");
+            shot(scenario,"portal-return-to-list");
         }
     }
     @Test public void emptyRegisterImportCancellationAndTranslations()throws Exception{
@@ -127,7 +134,7 @@ public class CustomerPortalTest {
             js(scenario,"document.querySelector('.cp-import-button').click();true");
             UiDevice device=UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());device.waitForIdle();SystemClock.sleep(500);device.pressBack();ready(scenario);
             assertEquals("0",js(scenario,"document.querySelectorAll('.cp-customer').length"));
-            DeviceSupport.shot(scenario,"portal-private-import");
+            shot(scenario,"portal-private-import");
         }
     }
     @Test public void validDocumentImportPersistsAndInvalidImportKeepsPriorData()throws Exception{
