@@ -35,7 +35,8 @@ final class MenuHeader extends ViewGroup {
         title=new TextView(context);title.setTag("page-title");title.setText(caption);
         title.setTextColor(ThemeSkin.active.text);title.setTypeface(ReferenceArt.face(context,false,900));
         title.setGravity(Gravity.CENTER_VERTICAL);title.setIncludeFontPadding(false);title.setMaxLines(2);
-        title.setPadding(dp(1),0,dp(1),0);title.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
+        title.setBreakStrategy(android.text.Layout.BREAK_STRATEGY_SIMPLE);title.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
+        title.setPadding(dp(4),0,dp(4),0);title.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
         wave=new UiArt.Wave(context);wave.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
         addView(smoke);addView(back);addView(icon);addView(title);addView(wave);
     }
@@ -46,13 +47,13 @@ final class MenuHeader extends ViewGroup {
         int button=dp(available<=dp(360)?44:48),art=dp(38),reserved=compact?dp(58):dp(100),gap=dp(8);
         back.measure(MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY));
         icon.measure(MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY));
-        int titleLimit=Math.max(1,available-reserved-art-gap),inkLimit=Math.max(1,titleLimit-dp(2));
+        int titleLimit=Math.max(1,available-reserved-art-gap),inkLimit=Math.max(1,titleLimit-dp(8));
         float scaled=getResources().getDisplayMetrics().scaledDensity,size=26;
         android.text.TextPaint probe=new android.text.TextPaint(title.getPaint());
         probe.setTextSize(size*scaled);
-        while(size>18&&probe.measureText(title.getText().toString())>inkLimit){size-=.5f;probe.setTextSize(size*scaled);}
+        while(size>18&&android.text.Layout.getDesiredWidth(title.getText(),probe)>inkLimit){size-=.5f;probe.setTextSize(size*scaled);}
         if(Math.abs(title.getTextSize()-size*scaled)>.1f)title.setTextSize(TypedValue.COMPLEX_UNIT_PX,size*scaled);
-        int titleWidth=Math.min(titleLimit,(int)Math.ceil(probe.measureText(title.getText().toString()))+dp(2));
+        int titleWidth=Math.min(titleLimit,(int)Math.ceil(android.text.Layout.getDesiredWidth(title.getText(),probe))+dp(8)+2);
         title.measure(MeasureSpec.makeMeasureSpec(Math.max(1,titleWidth),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(dp(64),MeasureSpec.AT_MOST));
         rowHeight=Math.max(dp(69),title.getMeasuredHeight()+dp(12));
         smoke.measure(MeasureSpec.makeMeasureSpec(Math.round(available*.92f),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(rowHeight+dp(8),MeasureSpec.EXACTLY));
@@ -84,15 +85,25 @@ final class MenuHeader extends ViewGroup {
         private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
         private final RectF bounds=new RectF();
         private final Runnable tick=this::invalidate;
+        private Bitmap texture;
+        private long motionUntil;
         Smoke(Context context){super(context);image=ReferenceArt.bitmap(context,R.drawable.header_smoke);paint.setAlpha(46);paint.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onSizeChanged(int width,int height,int oldWidth,int oldHeight){bounds.set(0,height*.02f,width,height*.94f);}
+        @Override protected void onSizeChanged(int width,int height,int oldWidth,int oldHeight){
+            if(texture!=null){texture.recycle();texture=null;}
+            if(width>0&&height>0){
+                texture=Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+                bounds.set(0,height*.02f,width,height*.94f);
+                new Canvas(texture).drawBitmap(image,null,bounds,paint);
+            }
+        }
         @Override protected void onDraw(Canvas canvas){
-            boolean motion=ValueAnimator.areAnimatorsEnabled();float shift=motion?(float)Math.sin(android.os.SystemClock.uptimeMillis()/4200.0)*2*getResources().getDisplayMetrics().density:0;
-            canvas.save();canvas.translate(shift,0);canvas.drawBitmap(image,null,bounds,paint);canvas.restore();
+            boolean motion=ValueAnimator.areAnimatorsEnabled()&&hasWindowFocus()&&android.os.SystemClock.uptimeMillis()<motionUntil;float shift=motion?(float)Math.sin(android.os.SystemClock.uptimeMillis()/4200.0)*2*getResources().getDisplayMetrics().density:0;
+            if(texture!=null)canvas.drawBitmap(texture,shift,0,null);
             removeCallbacks(tick);if(motion&&isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown())postDelayed(tick,80);
         }
         private void refreshMotion(){if(tick==null)return;removeCallbacks(tick);if(isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown())invalidate();}
-        @Override protected void onAttachedToWindow(){super.onAttachedToWindow();refreshMotion();}
+        @Override protected void onAttachedToWindow(){super.onAttachedToWindow();motionUntil=android.os.SystemClock.uptimeMillis()+8400;refreshMotion();}
+        @Override public void onWindowFocusChanged(boolean focused){super.onWindowFocusChanged(focused);refreshMotion();}
         @Override protected void onVisibilityChanged(View changed,int visibility){super.onVisibilityChanged(changed,visibility);refreshMotion();}
         @Override protected void onWindowVisibilityChanged(int visibility){super.onWindowVisibilityChanged(visibility);refreshMotion();}
         @Override protected void onDetachedFromWindow(){removeCallbacks(tick);super.onDetachedFromWindow();}
