@@ -108,7 +108,7 @@ public class CustomerPortalTest {
                     assertTrue(row.getString("full").startsWith("Synthetic Customer "));
                     if(row.getString("id").equals("fixture-0")||row.getString("id").equals("fixture-1")){
                         js(scenario,"document.querySelector('[data-customer=\""+row.getString("id")+"\"]').click();true");
-                        assertEquals("true",js(scenario,"document.querySelector('.cp-fields details').textContent.includes('TEST-SHARED')"));shared++;
+                        assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').textContent.includes('TEST-SHARED')"));shared++;
                         js(scenario,"window.BmdCustomerPortal.back()");
                     }
                 }
@@ -138,15 +138,46 @@ public class CustomerPortalTest {
             }
         }
     }
+    @Test public void shippingDocumentsKeepTheirOrderPouchesAndSignatureRequirements()throws Exception{
+        JSONObject data=new JSONObject(fixture(1));JSONObject row=data.getJSONArray("customers").getJSONObject(0);
+        row.put("shipping",new JSONArray().put("CoO (Certificate of Origin)").put("EUR.1").put("Shipmentlist").put("Costumer Invoice").put("Invoice NEFEZA in Excel format").put("HAWB (House Air Way Bill)").put("CoA (Certificate of Analysis)"));
+        row.put("extraShipping",new JSONArray().put("EX-WORKS").put("* Customer arranges Pick-UP").put("Documents directly to costumer in DHL envelope:").put("Shipmentlist (Signature + Stamp)").put("Invoice (Signature + Stamp)").put("Original CoO (Signature + Stamp)").put("Original CoA (Signature + Stamp)").put("Copy EUR.1 (Signature + Stamp)"));
+        row.put("documents",new JSONArray().put("Documents on top of Box").put("3x Shipmentlist (Signature+Stamp)").put("3x Invoice (Signature+Stamp)").put("Original EUR.1 (Signature + Stamp)").put("No Documents in box!"));
+        register().importText(data.toString());
+        try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
+            ready(scenario);js(scenario,"document.querySelector('.cp-customer').click();document.querySelector('[data-shipping-tab=\"1\"]').click();true");
+            assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-shipping-panel:not([hidden]) li'),e=>e.textContent).join('|')==='CoO|EUR.1|CoC|Verzendlijst|Klantfactuur|NEFEZA-factuur in Excel-formaat|(H)AWB'"));
+            js(scenario,"document.querySelector('[data-shipping-tab=\"2\"]').click();true");
+            assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-pouch-item>span'),e=>e.textContent).join('|')==='3 × Factuur|3 × Verzendlijst|Originele EUR.1'"));
+            assertEquals("true",js(scenario,"document.querySelectorAll('.cp-pouch-item small').length===3&&Array.from(document.querySelectorAll('.cp-pouch-item small'),e=>e.textContent==='Handtekening + stempel').every(Boolean)"));
+            shot(scenario,"portal-document-pouches");
+            js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
+            assertEquals("true",js(scenario,"document.querySelectorAll('.cp-requirement-item small').length===5&&Array.from(document.querySelectorAll('.cp-requirement-item small'),e=>parseFloat(getComputedStyle(e).fontSize)<parseFloat(getComputedStyle(e.parentElement.querySelector('span')).fontSize)).every(Boolean)"));
+            shot(scenario,"portal-extra-info");
+            js(scenario,"document.querySelector('[data-detail-tab=\"1\"]').click();true");
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length>0&&document.querySelector('.cp-order-empty').getClientRects().length>0"));
+        }
+    }
     @Test public void detailNamesBackAndRecreationPreserveTheSelectedCustomer()throws Exception{
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("translumina","en")){
             ready(scenario);js(scenario,"document.querySelector('.cp-next').click();document.querySelector('.cp-customer').click();true");
             String title=js(scenario,"document.querySelector('#cp-detail-title').textContent");
             assertEquals("true",js(scenario,"document.querySelector('.cp-grid').hidden"));
             assertEquals("true",js(scenario,"window.BmdCustomerPortal.snapshot().selected!==null"));
+            assertEquals("2",js(scenario,"document.querySelectorAll('.cp-detail-tab').length"));
+            assertEquals("4",js(scenario,"document.querySelectorAll('.cp-shipping-tab').length"));
+            js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
+            assertEquals("3",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
             SystemClock.sleep(200);scenario.recreate();ready(scenario);
             assertEquals(title,js(scenario,"document.querySelector('#cp-detail-title').textContent"));
             assertEquals("true",js(scenario,"document.querySelector('.cp-grid').hidden"));
+            assertEquals("3",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
+            assertEquals("1",js(scenario,"document.querySelectorAll('.cp-detail-panel:not([hidden])').length"));
+            js(scenario,"document.querySelector('[data-detail-tab=\"1\"]').click();true");
+            assertEquals("true",js(scenario,"!document.querySelector('.cp-customer-details').hidden&&document.querySelector('.cp-customer-details').getClientRects().length>0"));
+            SystemClock.sleep(200);scenario.recreate();ready(scenario);
+            assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().detailTab"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length>0&&!document.querySelector('.cp-order-empty').hidden"));
             scenario.onActivity(a->{View back=DeviceSupport.tag(a.getWindow().getDecorView(),"customer-portal-back");assertNotNull(back);back.performClick();});
             long end=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<end&&"true".equals(js(scenario,"document.querySelector('.cp-grid').hidden")))SystemClock.sleep(100);
             assertEquals("false",js(scenario,"document.querySelector('.cp-grid').hidden"));
@@ -233,4 +264,3 @@ public class CustomerPortalTest {
         }
     }
 }
-

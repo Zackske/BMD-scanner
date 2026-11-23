@@ -9,7 +9,7 @@
     <div class="cp-grid" aria-label="Klanten"></div>
     <p class="cp-no-results" role="status" hidden></p>
     <div class="cp-paging"><button type="button" class="cp-nav cp-previous cursor-interaction"><i data-lucide="arrow-left" aria-hidden="true"></i><span>Vorige</span></button><span class="cp-position" aria-live="polite"></span><button type="button" class="cp-nav cp-next cursor-interaction"><span>Volgende</span><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
-    <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><span class="cp-detail-icon"><i data-lucide="building-2" aria-hidden="true"></i></span><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><button type="button" class="cp-close cursor-interaction"><span class="cp-back-face" aria-hidden="true"><i data-lucide="arrow-left"></i><span class="cp-back-fallback">←</span></span><span class="cp-return-label">Terug naar klanten</span></button></section></div>
+    <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><span class="cp-detail-icon"><i data-lucide="building-2" aria-hidden="true"></i></span><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><section class="cp-shipping-summary"></section></section></div>
     <div class="cp-brand"><img alt="Blue Medical" /></div>
     <div class="cp-wave cp-bottom" aria-hidden="true"></div>
     <div class="cp-home-indicator" aria-hidden="true"></div>
@@ -33,7 +33,7 @@
 #bmd-customers-preview .cp-back>i,#bmd-customers-preview .cp-back-face>i {display:none}
 #bmd-customers-preview .cp-back-fallback {font:500 29px/1 system-ui,sans-serif}
 #bmd-customers-preview .cp-back:has(svg)>.cp-back-fallback,#bmd-customers-preview .cp-back-face:has(svg)>.cp-back-fallback {display:none}
-#bmd-customers-preview .cp-back:active,#bmd-customers-preview .cp-close:active .cp-back-face {transform:scale(.93)}
+#bmd-customers-preview .cp-back:active {transform:scale(.93)}
 #bmd-customers-preview .cp-back:focus-visible {outline:3px solid var(--cp-accent);outline-offset:4px}
 #bmd-customers-preview .cp-scanner {width:53px;height:65px;object-fit:contain}
 #bmd-customers-preview .cp-wordmark {font-weight:900;letter-spacing:.1px;font-size:21px;white-space:nowrap}
@@ -86,15 +86,61 @@
 #bmd-customers-preview .cp-detail-icon img {width:58px;height:58px;object-fit:contain}
 #bmd-customers-preview .cp-detail h3 {margin:0;font:900 24px/1.2 'Nunito',sans-serif;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-detail-country {display:flex;align-items:center;justify-content:center;gap:9px;margin:0;font-size:17px;font-weight:700}
-#bmd-customers-preview .cp-close {display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;width:100%;padding:0;border:0;background:transparent;color:var(--cp-text);font:900 16px/1.3 'Nunito',sans-serif}
-#bmd-customers-preview .cp-return-label {min-width:0;overflow-wrap:anywhere;text-align:left}
-#bmd-customers-preview .cp-fields {text-align:left;display:flex;flex-direction:column;gap:12px}
-#bmd-customers-preview .cp-fields details {padding:15px;border:1px solid color-mix(in srgb,var(--cp-accent) 50%,transparent);border-radius:22px;background:linear-gradient(130deg,var(--cp-top),var(--cp-bottom))}
-#bmd-customers-preview .cp-fields summary {font-size:16px;font-weight:900;min-height:24px;overflow-wrap:anywhere}
-#bmd-customers-preview .cp-fields dl {display:grid;grid-template-columns:minmax(85px,.8fr) minmax(0,1.4fr);gap:12px 10px;margin:16px 0 0}
-#bmd-customers-preview .cp-fields dt {font-weight:700;color:var(--cp-secondary);font-size:12px;overflow-wrap:anywhere}
-#bmd-customers-preview .cp-fields dd {margin:0;overflow-wrap:anywhere;white-space:pre-wrap;font-size:14px;font-weight:700;line-height:1.4}
-#bmd-customers-preview .cp-fields .cp-notes {white-space:pre-wrap;overflow-wrap:anywhere;font:600 14px/1.5 'Nunito',sans-serif;margin:13px 0 0}
+#bmd-customers-preview .cp-shipping-summary {display:flex;align-items:center;gap:11px;min-width:0;min-height:62px;padding:13px 15px;border:1px solid color-mix(in srgb,var(--cp-accent) 52%,var(--cp-bottom));border-radius:17px;background:linear-gradient(130deg,var(--cp-top),var(--cp-bottom));text-align:start;box-shadow:inset 0 1px 0 #ffffff35}
+#bmd-customers-preview .cp-shipping-summary>.cp-detail-tab-icon {width:27px;height:27px}
+#bmd-customers-preview .cp-shipping-lines {display:flex;flex-wrap:wrap;align-items:center;gap:7px 11px;min-width:0;font:800 14px/1.4 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-shipping-terms {padding:3px 8px;border-radius:7px;background:color-mix(in srgb,var(--cp-accent) 14%,var(--cp-bottom));color:var(--cp-accent);white-space:nowrap}
+#bmd-customers-preview .cp-shipping-route {display:block;min-width:0;max-width:100%}
+#bmd-customers-preview .cp-fields {text-align:left;display:flex;flex-direction:column;gap:19px}
+#bmd-customers-preview .cp-detail-tabs {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#bmd-customers-preview .cp-detail-tab {position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:106px;padding:12px 9px 16px;text-align:center;border:1px solid color-mix(in srgb,var(--cp-accent) 44%,var(--cp-bottom));border-radius:21px;background:linear-gradient(135deg,color-mix(in srgb,var(--cp-top),#fff 10%),var(--cp-bottom));color:var(--cp-secondary);font:800 14px/1.25 'Nunito',sans-serif;box-shadow:0 5px 0 color-mix(in srgb,var(--cp-bg),#000 35%),inset 0 2px 1px #ffffff65,inset 0 -3px 1px #00000055;transition:transform .16s ease,border-color .16s ease}
+#bmd-customers-preview .cp-detail-tab:active {transform:scale(.98)}
+#bmd-customers-preview .cp-detail-tab[aria-selected="true"] {color:var(--cp-text);border-color:var(--cp-accent);background:linear-gradient(140deg,color-mix(in srgb,var(--cp-accent) 38%,var(--cp-top)),var(--cp-bottom))}
+#bmd-customers-preview .cp-detail-tab[aria-selected="true"]::after {content:'';position:absolute;left:39%;right:39%;bottom:7px;height:2px;border-radius:2px;background:var(--cp-accent)}
+#bmd-customers-preview .cp-detail-tab:focus-visible {outline:2px solid var(--cp-accent);outline-offset:3px}
+#bmd-customers-preview .cp-detail-tab-label {max-width:100%;min-width:0;hyphens:auto;overflow-wrap:normal}
+#bmd-customers-preview .cp-detail-tab-icon {display:block;flex:0 0 auto;width:31px;height:31px;background:var(--cp-accent);mask:var(--cp-tab-icon) center / contain no-repeat;-webkit-mask:var(--cp-tab-icon) center / contain no-repeat}
+#bmd-customers-preview .cp-detail-panels {min-width:0;padding:18px;border:1px solid color-mix(in srgb,var(--cp-accent) 44%,var(--cp-bottom));border-radius:21px;background:linear-gradient(145deg,var(--cp-top),var(--cp-bottom) 65%);box-shadow:inset 0 1px 0 #ffffff1b}
+#bmd-customers-preview .cp-detail-panel {min-width:0;min-height:260px}
+#bmd-customers-preview .cp-detail-panel h4 {display:flex;align-items:center;gap:9px;margin:0 0 15px;font:900 19px/1.25 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-detail-panel h4 .cp-detail-tab-icon {width:24px;height:24px}
+#bmd-customers-preview .cp-address-tile {display:flex;align-items:center;gap:12px;width:100%;min-height:65px;margin-top:18px;padding:13px 15px;border:1px solid color-mix(in srgb,var(--cp-accent) 48%,var(--cp-bottom));border-radius:16px;background:linear-gradient(140deg,color-mix(in srgb,var(--cp-top),#fff 9%),var(--cp-bottom));box-shadow:0 3px 0 color-mix(in srgb,var(--cp-bg),#000 30%),inset 0 1px 0 #ffffff60;color:var(--cp-text);font:800 16px/1.3 'Nunito',sans-serif;text-align:start}
+#bmd-customers-preview .cp-address-tile .cp-detail-tab-icon {width:26px;height:26px}
+#bmd-customers-preview .cp-address-tile .cp-address-chevron {margin-inline-start:auto;width:20px;height:20px;transition:transform .18s ease}
+#bmd-customers-preview .cp-address-tile[aria-expanded="true"] .cp-address-chevron {transform:rotate(180deg)}
+#bmd-customers-preview .cp-address-panel {padding-top:16px}
+#bmd-customers-preview .cp-order-empty {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:180px;color:var(--cp-secondary);text-align:center;font-size:16px;line-height:1.4}
+#bmd-customers-preview .cp-order-empty .cp-detail-tab-icon {width:43px;height:43px}
+#bmd-customers-preview .cp-fields dl {display:grid;grid-template-columns:minmax(80px,.8fr) minmax(0,1.4fr);gap:0 13px;margin:0}
+#bmd-customers-preview .cp-fields dt,#bmd-customers-preview .cp-fields dd {padding:14px 0;margin:0;border-bottom:1px solid color-mix(in srgb,var(--cp-secondary) 15%,transparent);overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.4}
+#bmd-customers-preview .cp-fields dt {font-weight:700;color:var(--cp-secondary);font-size:12px}
+#bmd-customers-preview .cp-fields dd {font-size:14px;font-weight:800}
+#bmd-customers-preview .cp-fields .cp-notes {white-space:pre-wrap;overflow-wrap:anywhere;font:600 14px/1.55 'Nunito',sans-serif;margin:0}
+#bmd-customers-preview .cp-customer-details {min-width:0;padding:18px;border:1px solid color-mix(in srgb,var(--cp-accent) 44%,var(--cp-bottom));border-radius:21px;background:linear-gradient(145deg,var(--cp-top),var(--cp-bottom) 65%);box-shadow:inset 0 1px 0 #ffffff1b}
+#bmd-customers-preview .cp-customer-details h4 {display:flex;align-items:center;gap:9px;margin:0 0 12px;font:900 19px/1.25 'Nunito',sans-serif}
+#bmd-customers-preview .cp-customer-details h4 .cp-detail-tab-icon {width:24px;height:24px}
+#bmd-customers-preview .cp-shipping-tabs {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;align-items:stretch}
+#bmd-customers-preview .cp-shipping-tab {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:100px;padding:11px 3px;border:1px solid color-mix(in srgb,var(--cp-accent) 27%,var(--cp-bottom));border-radius:12px;background:var(--cp-bottom);color:var(--cp-secondary);font:800 12px/1.3 'Nunito',sans-serif;text-align:center;transition:transform .16s ease,background .16s ease}
+#bmd-customers-preview .cp-shipping-tab>.cp-detail-tab-icon {width:22px;height:22px}
+#bmd-customers-preview .cp-shipping-tab>span:last-child {min-width:0;max-width:100%;hyphens:auto;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-shipping-tab[aria-selected="true"] {border-color:var(--cp-accent);color:var(--cp-text);background:color-mix(in srgb,var(--cp-accent) 18%,var(--cp-top))}
+#bmd-customers-preview .cp-shipping-tab:active {transform:scale(.97)}
+#bmd-customers-preview .cp-shipping-panel {padding-top:19px;min-width:0}
+#bmd-customers-preview .cp-document-list {margin:0;padding-inline-start:21px;font:700 14px/1.55 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-document-list li {padding-inline-start:3px;margin-block:9px}
+#bmd-customers-preview .cp-document-list li::marker {color:var(--cp-accent)}
+#bmd-customers-preview .cp-info-intro {margin:0 0 12px;font:800 14px/1.55 'Nunito',sans-serif;overflow-wrap:anywhere;white-space:pre-line}
+#bmd-customers-preview .cp-pouch-table {display:flex;flex-direction:column;margin:0 0 16px}
+#bmd-customers-preview .cp-pouch-group {display:grid;grid-template-columns:minmax(80px,.95fr) minmax(0,1.5fr);gap:13px;padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--cp-secondary) 15%,transparent)}
+#bmd-customers-preview .cp-pouch-group h5 {margin:0;color:var(--cp-secondary);font:800 12px/1.5 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-pouch-item {display:flex;flex-direction:column;gap:3px;margin:0 0 14px;font:800 14px/1.5 'Nunito',sans-serif;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-pouch-item:last-child {margin-bottom:0}
+#bmd-customers-preview .cp-pouch-item small,#bmd-customers-preview .cp-requirement-item small {font:700 12px/1.5 'Nunito',sans-serif;color:var(--cp-secondary)}
+#bmd-customers-preview .cp-requirement-item {display:flex;flex-direction:column;gap:3px;font-weight:800}
+@media(max-width:360px){#bmd-customers-preview .cp-detail-tab {font-size:12px}#bmd-customers-preview .cp-detail-panels,#bmd-customers-preview .cp-customer-details {padding:15px}#bmd-customers-preview .cp-detail-panel h4,#bmd-customers-preview .cp-customer-details h4 {font-size:17px}#bmd-customers-preview .cp-shipping-tab {font-size:11px}}
+@media(max-width:360px){#bmd-customers-preview .cp-fields dt {font-size:11px}}
+@media(prefers-reduced-motion:reduce){#bmd-customers-preview .cp-detail-tab {transition:none}}
+@media(max-width:360px){#bmd-customers-preview .cp-customer-details dt {font-size:11px}}
 #bmd-customers-preview .cp-missing {color:var(--cp-secondary);font-size:13px;font-weight:700;margin:0;padding:8px 0;text-align:center}
 #bmd-customers-preview .cp-source {margin:0;color:var(--cp-secondary);font-size:12px;font-weight:600;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-source-table {width:100%;border-collapse:collapse;margin-top:14px;text-align:left;table-layout:fixed}
@@ -192,16 +238,40 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   const shippingCopy={nl:['Europese Unie','NON EU Unie','Rest van de wereld','Groep ontbreekt','Verzendgroep'],en:['European Union','NON EU Union','Rest of the World','Group not set','Shipping group'],uk:['Європейський Союз','Поза ЄС','Решта світу','Групу не вказано','Група доставки'],tr:['Avrupa Birliği','AB dışı','Dünyanın geri kalanı','Grup belirtilmemiş','Gönderim grubu'],it:['Unione europea','Extra UE','Resto del mondo','Gruppo non indicato','Gruppo di spedizione'],de:['Europäische Union','Nicht EU','Rest der Welt','Gruppe fehlt','Versandgruppe'],fr:['Union européenne','Hors UE','Reste du monde','Groupe non renseigné','Groupe d’expédition'],es:['Unión Europea','Fuera de la UE','Resto del mundo','Grupo no indicado','Grupo de envío'],pt:['União Europeia','Fora da UE','Resto do mundo','Grupo não indicado','Grupo de envio'],hi:['यूरोपीय संघ','गैर-यूरोपीय संघ','शेष विश्व','समूह दर्ज नहीं है','शिपिंग समूह']};
   const nationalColours={GE:['#f34b5d','#fff4f4','#a8273f'],LV:['#b94662','#fff4f5','#661a39'],SA:['#3ac28b','#f0fff8','#125c44'],SK:['#5d9bff','#fff','#e5465a'],CZ:['#589bff','#fff','#e9495e'],MA:['#eb455b','#f7d5d5','#189463'],IT:['#32c798','#fff','#e94c5d'],AT:['#f15c6e','#fff','#ae2947'],GR:['#68a9ff','#fff','#2063c9'],NL:['#f15c71','#fff','#4d86ea'],DE:['#f4c95d','#fff1bd','#ed4b64'],MY:['#5b93ed','#ffdf65','#ee516b'],TH:['#7190ee','#fff','#e94c66'],ID:['#f36d7b','#fff','#c42a49'],ES:['#ffd05b','#fff0bc','#e04b55'],EG:['#ee5b69','#fff','#b4843f'],MX:['#36ba91','#fff','#e24d64'],CL:['#eb596d','#fff','#4e8eea'],MU:['#ed5570','#f4d86a','#38b991'],ZA:['#39ba91','#ffd960','#e25362'],SE:['#4c9de8','#ffe27a','#245caa'],CY:['#edb86d','#fff','#52a57b'],AE:['#3cc393','#fff','#ed5669'],BG:['#55c9a3','#fff','#df5667'],PA:['#5a96f0','#fff','#eb6571'],VN:['#ee5c65','#ffe16a','#ac273e'],MT:['#ef6a78','#fff','#b62f50'],AR:['#85d8ff','#fff','#edc660'],PK:['#38b685','#fff','#126848'],IQ:['#ec606c','#fff','#35a579'],BO:['#f1ce5d','#fff5bf','#40af7e'],HR:['#f26a79','#fff','#5794ed'],SI:['#70a0f7','#fff','#ec6575'],BR:['#43c380','#fadd67','#4c8bea'],PT:['#41ba91','#ffdb70','#e45967'],TN:['#f06879','#fff','#af2a4b'],AM:['#f4796c','#f5c37d','#628ff3'],UZ:['#5ad4ec','#fff','#58bc8c'],OM:['#ec6876','#fff','#49b88e'],RO:['#638df2','#ffe26c','#ed5c6e'],KW:['#54c194','#fff','#e56576'],LB:['#ed6e7d','#fff','#3eae82'],PE:['#f56c7e','#fff','#ad2850'],XK:['#5995ef','#f4d97b','#d4eaff'],KR:['#f3707e','#fff','#5895eb'],SG:['#f67583','#fff','#b73554'],EE:['#63acfa','#fff','#244464'],FI:['#70a9f4','#fff','#245baf'],PH:['#658ef5','#ffe073','#f16e7e'],KE:['#df6473','#fff','#3aaf7f'],GB:['#678deb','#fff','#ee677b'],IR:['#51c799','#fff','#e26173'],DO:['#5d97eb','#fff','#ed657d'],LT:['#f4cb66','#fff0b9','#3fb18b'],CH:['#f57282','#fff','#b83355'],AU:['#688df4','#fff','#ec6379'],RU:['#739af1','#fff','#ed6179'],LK:['#d38168','#f7d078','#76aa6e'],HU:['#ed7480','#fff','#4db68c'],TW:['#ed6e7e','#fff','#608ce9'],TR:['#f37384','#fff','#b72e52'],IN:['#f5b76b','#fff','#52bd8d'],PL:['#f47b8d','#fff','#c03e64']};
   const fieldCopy={
-    nl:['Klantgegevens','Adres','Verzending','Documenten op de doos','Overige gegevens','Brongegevens','Klantnummer','Contactpersoon','E-mail','Btw-nummer','Straat 1','Straat 2','Straat 3','Postcode','Plaats','Land','Verzendwijze','Extra verzendinformatie','Niet ingevuld','Geen Excelgegevens','Terug naar klanten','Regio volgens Excel','Excelstatus','Ja','Nee'],
-    en:['Customer details','Address','Shipping','Documents on the box','Other information','Source data','Customer ID','Contact person','Email','VAT number','Street 1','Street 2','Street 3','Postal code','City','Country','Shipping method','Additional shipping information','Not provided','No Excel data','Back to customers','Region in Excel','Excel status','Yes','No'],
-    uk:['Дані клієнта','Адреса','Доставка','Документи на коробці','Інші дані','Дані джерела','Номер клієнта','Контактна особа','Ел. пошта','Номер ПДВ','Вулиця 1','Вулиця 2','Вулиця 3','Поштовий індекс','Місто','Країна','Спосіб доставки','Додаткові дані доставки','Не вказано','Немає даних Excel','До клієнтів','Регіон в Excel','Статус в Excel','Так','Ні'],
-    tr:['Müşteri bilgileri','Adres','Gönderim','Kutu üzerindeki belgeler','Diğer bilgiler','Kaynak veriler','Müşteri numarası','İlgili kişi','E-posta','KDV numarası','Sokak 1','Sokak 2','Sokak 3','Posta kodu','Şehir','Ülke','Gönderim yöntemi','Ek gönderim bilgileri','Belirtilmemiş','Excel verisi yok','Müşterilere dön','Excel’deki bölge','Excel durumu','Evet','Hayır'],
-    it:['Dati cliente','Indirizzo','Spedizione','Documenti sulla scatola','Altre informazioni','Dati originali','Codice cliente','Referente','E-mail','Partita IVA','Via 1','Via 2','Via 3','CAP','Città','Paese','Modalità di spedizione','Ulteriori informazioni di spedizione','Non indicato','Nessun dato Excel','Torna ai clienti','Regione in Excel','Stato in Excel','Sì','No'],
-    de:['Kundendaten','Adresse','Versand','Dokumente auf dem Karton','Weitere Angaben','Quelldaten','Kundennummer','Kontaktperson','E-Mail','USt-IdNr.','Straße 1','Straße 2','Straße 3','Postleitzahl','Ort','Land','Versandart','Zusätzliche Versandangaben','Nicht angegeben','Keine Excel-Daten','Zurück zu Kunden','Region laut Excel','Excel-Status','Ja','Nein'],
-    fr:['Coordonnées client','Adresse','Expédition','Documents sur le carton','Autres informations','Données sources','Numéro client','Contact','E-mail','Numéro de TVA','Adresse 1','Adresse 2','Adresse 3','Code postal','Ville','Pays','Mode d’expédition','Informations supplémentaires','Non renseigné','Aucune donnée Excel','Retour aux clients','Région dans Excel','Statut Excel','Oui','Non'],
-    es:['Datos del cliente','Dirección','Envío','Documentos sobre la caja','Otros datos','Datos originales','Número de cliente','Persona de contacto','Correo electrónico','Número de IVA','Dirección 1','Dirección 2','Dirección 3','Código postal','Ciudad','País','Método de envío','Información adicional de envío','No indicado','Sin datos de Excel','Volver a clientes','Región en Excel','Estado de Excel','Sí','No'],
-    pt:['Dados do cliente','Morada','Envio','Documentos na caixa','Outros dados','Dados de origem','Número do cliente','Pessoa de contacto','E-mail','Número de IVA','Morada 1','Morada 2','Morada 3','Código postal','Localidade','País','Método de envio','Informações adicionais de envio','Não indicado','Sem dados Excel','Voltar aos clientes','Região no Excel','Estado no Excel','Sim','Não'],
-    hi:['ग्राहक विवरण','पता','शिपिंग','डिब्बे पर दस्तावेज़','अन्य जानकारी','मूल डेटा','ग्राहक संख्या','संपर्क व्यक्ति','ईमेल','वैट संख्या','पता 1','पता 2','पता 3','पिन कोड','शहर','देश','शिपिंग का तरीका','अतिरिक्त शिपिंग जानकारी','दर्ज नहीं है','Excel डेटा नहीं है','ग्राहकों पर वापस जाएँ','Excel में क्षेत्र','Excel स्थिति','हाँ','नहीं']
+    nl:['Klantgegevens','Adres','Verzend Info','Documenten op de doos','Overige gegevens','Brongegevens','Klantnummer','Contactpersoon','E-mail','Btw-nummer','Straat 1','Straat 2','Straat 3','Postcode','Plaats','Land','Verzendwijze','Extra verzendinformatie','Niet ingevuld','Geen Excelgegevens','Terug naar klanten','Regio volgens Excel','Excelstatus','Ja','Nee'],
+    en:['Customer details','Address','Shipping Info','Documents on the box','Other information','Source data','Customer ID','Contact person','Email','VAT number','Street 1','Street 2','Street 3','Postal code','City','Country','Shipping method','Additional shipping information','Not provided','No Excel data','Back to customers','Region in Excel','Excel status','Yes','No'],
+    uk:['Дані клієнта','Адреса','Інфо доставки','Документи на коробці','Інші дані','Дані джерела','Номер клієнта','Контактна особа','Ел. пошта','Номер ПДВ','Вулиця 1','Вулиця 2','Вулиця 3','Поштовий індекс','Місто','Країна','Спосіб доставки','Додаткові дані доставки','Не вказано','Немає даних Excel','До клієнтів','Регіон в Excel','Статус в Excel','Так','Ні'],
+    tr:['Müşteri bilgileri','Adres','Gönderim Bilgisi','Kutu üzerindeki belgeler','Diğer bilgiler','Kaynak veriler','Müşteri numarası','İlgili kişi','E-posta','KDV numarası','Sokak 1','Sokak 2','Sokak 3','Posta kodu','Şehir','Ülke','Gönderim yöntemi','Ek gönderim bilgileri','Belirtilmemiş','Excel verisi yok','Müşterilere dön','Excel’deki bölge','Excel durumu','Evet','Hayır'],
+    it:['Dati cliente','Indirizzo','Info spedizione','Documenti sulla scatola','Altre informazioni','Dati originali','Codice cliente','Referente','E-mail','Partita IVA','Via 1','Via 2','Via 3','CAP','Città','Paese','Modalità di spedizione','Ulteriori informazioni di spedizione','Non indicato','Nessun dato Excel','Torna ai clienti','Regione in Excel','Stato in Excel','Sì','No'],
+    de:['Kundendaten','Adresse','Versandinfo','Dokumente auf dem Karton','Weitere Angaben','Quelldaten','Kundennummer','Kontaktperson','E-Mail','USt-IdNr.','Straße 1','Straße 2','Straße 3','Postleitzahl','Ort','Land','Versandart','Zusätzliche Versandangaben','Nicht angegeben','Keine Excel-Daten','Zurück zu Kunden','Region laut Excel','Excel-Status','Ja','Nein'],
+    fr:['Coordonnées client','Adresse','Infos d’envoi','Documents sur le carton','Autres informations','Données sources','Numéro client','Contact','E-mail','Numéro de TVA','Adresse 1','Adresse 2','Adresse 3','Code postal','Ville','Pays','Mode d’expédition','Informations supplémentaires','Non renseigné','Aucune donnée Excel','Retour aux clients','Région dans Excel','Statut Excel','Oui','Non'],
+    es:['Datos del cliente','Dirección','Info de envío','Documentos sobre la caja','Otros datos','Datos originales','Número de cliente','Persona de contacto','Correo electrónico','Número de IVA','Dirección 1','Dirección 2','Dirección 3','Código postal','Ciudad','País','Método de envío','Información adicional de envío','No indicado','Sin datos de Excel','Volver a clientes','Región en Excel','Estado de Excel','Sí','No'],
+    pt:['Dados do cliente','Morada','Info de envio','Documentos na caixa','Outros dados','Dados de origem','Número do cliente','Pessoa de contacto','E-mail','Número de IVA','Morada 1','Morada 2','Morada 3','Código postal','Localidade','País','Método de envio','Informações adicionais de envio','Não indicado','Sem dados Excel','Voltar aos clientes','Região no Excel','Estado no Excel','Sim','Não'],
+    hi:['ग्राहक विवरण','पता','शिपिंग जानकारी','डिब्बे पर दस्तावेज़','अन्य जानकारी','मूल डेटा','ग्राहक संख्या','संपर्क व्यक्ति','ईमेल','वैट संख्या','पता 1','पता 2','पता 3','पिन कोड','शहर','देश','शिपिंग का तरीका','अतिरिक्त शिपिंग जानकारी','दर्ज नहीं है','Excel डेटा नहीं है','ग्राहकों पर वापस जाएँ','Excel में क्षेत्र','Excel स्थिति','हाँ','नहीं']
+  };
+  const orderCopy={
+    nl:['Orderhistorie','Nog geen gekoppelde orders'],
+    en:['Order history','No linked orders yet'],
+    uk:['Історія замовлень','Поки немає пов’язаних замовлень'],
+    tr:['Sipariş geçmişi','Henüz bağlantılı sipariş yok'],
+    it:['Cronologia ordini','Nessun ordine collegato'],
+    de:['Bestellverlauf','Noch keine verknüpften Bestellungen'],
+    fr:['Historique des commandes','Aucune commande associée pour le moment'],
+    es:['Historial de pedidos','Aún no hay pedidos vinculados'],
+    pt:['Histórico de encomendas','Ainda não há encomendas associadas'],
+    hi:['ऑर्डर इतिहास','अभी कोई जुड़ा हुआ ऑर्डर नहीं है']
+  };
+  const deliveryCopy={
+    nl:['Verzendafspraken','Klant regelt ophaling','Klantaccount','Klantaccount niet ingevuld','Blue Medical-account','Vervoerder / ophaling niet ingevuld','Verzendafspraken niet ingevuld'],
+    en:['Shipping arrangements','Customer arranges pickup','Customer account','Customer account not provided','Blue Medical account','Carrier / pickup not provided','Shipping arrangements not provided'],
+    uk:['Умови доставки','Клієнт організовує забір','Рахунок клієнта','Рахунок клієнта не вказано','Рахунок Blue Medical','Перевізника / забір не вказано','Умови доставки не вказано'],
+    tr:['Gönderim düzeni','Teslim almayı müşteri düzenler','Müşteri hesabı','Müşteri hesabı belirtilmemiş','Blue Medical hesabı','Taşıyıcı / teslim alma belirtilmemiş','Gönderim düzeni belirtilmemiş'],
+    it:['Accordi di spedizione','Il cliente organizza il ritiro','Conto cliente','Conto cliente non indicato','Conto Blue Medical','Corriere / ritiro non indicato','Accordi di spedizione non indicati'],
+    de:['Versandvereinbarungen','Kunde organisiert die Abholung','Kundenkonto','Kundenkonto nicht angegeben','Blue Medical-Konto','Versanddienst / Abholung nicht angegeben','Versandvereinbarungen nicht angegeben'],
+    fr:['Modalités d’expédition','Le client organise l’enlèvement','Compte client','Compte client non renseigné','Compte Blue Medical','Transporteur / enlèvement non renseigné','Modalités d’expédition non renseignées'],
+    es:['Condiciones de envío','El cliente organiza la recogida','Cuenta del cliente','Cuenta del cliente no indicada','Cuenta de Blue Medical','Transportista / recogida no indicado','Condiciones de envío no indicadas'],
+    pt:['Condições de envio','O cliente organiza a recolha','Conta do cliente','Conta do cliente não indicada','Conta Blue Medical','Transportadora / recolha não indicada','Condições de envio não indicadas'],
+    hi:['शिपिंग व्यवस्था','ग्राहक पिकअप की व्यवस्था करता है','ग्राहक खाता','ग्राहक खाता दर्ज नहीं है','Blue Medical खाता','कूरियर / पिकअप दर्ज नहीं है','शिपिंग व्यवस्था दर्ज नहीं है']
   };
   const searchCopy={
     nl:['Zoek klanten…','Geen klanten gevonden','Zoek op naam, land of klantnummer'],
@@ -216,8 +286,10 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     hi:['ग्राहक खोजें…','कोई ग्राहक नहीं मिला','नाम, देश या ग्राहक संख्या से खोजें']
   };
   const bootstrap=/*BMD_NATIVE_STATE*/null;
-  const state={language:'nl',theme:'bmd',page:0,selected:null,query:''};
+  const state={language:'nl',theme:'bmd',page:0,selected:null,query:'',detailTab:0};
   let nativeBrand=bootstrap?.brand||'ScanTovenaar',listScroll=0;
+  state.detailLayout=3;
+  state.shippingTab=0;
   const pageSize=8;
   let lastTrigger=null;
   let localRevision=0;
@@ -237,11 +309,27 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   }
   function pageCount(){return Math.max(1,Math.ceil(filteredCustomers().length/pageSize));}
   function shippingGroup(c){return shippingCopy[state.language][({'eu':0,'non-eu':1,'world':2})[c.shippingGroup]??3];}
+  function shippingSummary(c){
+    const t=deliveryCopy[state.language],lines=[...(c.shipping||[]),...(c.extraShipping||[])].filter(v=>typeof v==='string').flatMap(v=>v.split(/\r?\n/)).map(v=>v.replace(/^\s*[*•]\s*/,'').trim()).filter(Boolean);
+    const ex=lines.some(v=>/\bex[\s-]*works\b/i.test(v)),pickup=lines.some(v=>/\bcustomer\s+arranges?\s+pick[\s-]*up\b/i.test(v));
+    const carrier=/\b(?:fed\s*ex|ups|dhl|tnt|dpd)\b/i,seen=new Set(),routes=[];
+    for(let i=0;i<lines.length;i++){
+      const line=lines[i];if(!carrier.test(line)||/\b(?:documents?|invoice|envelope)\b/i.test(line)||line.length>100)continue;
+      const own=/\bblue\s*medical\b.*\baccount\b/i.test(line),next=lines[i+1]||'';
+      const account=!own&&/\d/.test(next)&&/^[A-Z0-9][A-Z0-9 .-]{3,}(?:\s*\([^)]*\))?$/i.test(next)&&!carrier.test(next)?next:'';
+      const name=(own?line.match(carrier)[0]:line).replace(/fed\s*ex/ig,'FedEx').replace(/\b(?:ups|dhl|tnt|dpd)\b/ig,v=>v.toUpperCase());
+      const route=name+' · '+(own?t[4]:account?t[2]+' '+account:t[3]);if(!seen.has(route)){routes.push(route);seen.add(route);}
+    }
+    if(pickup)routes.push(t[1]);if(!routes.length)routes.push(ex?t[5]:t[6]);
+    const icon='<span class="cp-detail-tab-icon" style="--cp-tab-icon:url('+assets.detailTabIcons.shipping+')" aria-hidden="true"></span>';
+    return icon+'<div class="cp-shipping-lines">'+(ex?'<span class="cp-shipping-terms">EX-WORKS</span>':'')+routes.map(v=>'<span class="cp-shipping-route">'+esc(v)+'</span>').join('')+'</div>';
+  }
   function countryMaps(c){const m=assets.maps.countries[c.country],clip='cp-country-'+c.id;return '<span class="cp-map-stage"><svg class="cp-mini-map" viewBox="0 0 180 88" role="img" aria-label="'+esc(country(c.country))+'"><path class="cp-world-land" d="'+assets.maps.world+'"></path><path class="cp-world-country" d="'+m.world+'"></path>'+(m.small?'<circle class="cp-country-marker" cx="'+m.point[0]+'" cy="'+m.point[1]+'" r="2.1"></circle>':'')+'</svg><svg class="cp-national-map" viewBox="0 0 72 72" aria-hidden="true"><defs><clipPath id="'+clip+'"><path d="'+m.outline+'"></path></clipPath></defs><image href="'+assets.flags[c.country]+'" width="72" height="72" preserveAspectRatio="xMidYMid slice" clip-path="url(#'+clip+')"></image><path class="cp-outline" d="'+m.outline+'"></path></svg></span>';}
   function icons(){if(globalThis.lucide)globalThis.lucide.createIcons({attrs:{width:20,height:20}});}
   function fitNames(){
     const heading=root.querySelector('.cp-title');
-    if(heading.getClientRects().length){heading.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(heading).fontSize);while(size>18&&(heading.scrollWidth>heading.clientWidth+1||heading.scrollHeight>56)){size-=.5;heading.style.fontSize=size+'px';}}
+    if(heading.getClientRects().length){heading.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(heading).fontSize);while(size>16&&(heading.scrollWidth>heading.clientWidth+1||heading.scrollHeight>56)){size-=.5;heading.style.fontSize=size+'px';}}
+    fitDetailTabs();
     for(const badge of grid.querySelectorAll('.cp-country')){
       if(!badge.getClientRects().length)continue;
       const label=badge.querySelector('.cp-country-label'),header=badge.parentElement;
@@ -262,7 +350,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     }
   }
   function persist(){if(window.BmdPortalSession)window.BmdPortalSession.remember(JSON.stringify(state));}
-  function restore(saved){if(!saved||typeof saved!=='object'||localRevision&&(Number(saved.revision)||0)<localRevision)return;if(copy[saved.language])state.language=saved.language;if(themeIds.includes(saved.theme))state.theme=saved.theme;if(typeof saved.query==='string')state.query=saved.query.slice(0,120);if(Number.isInteger(saved.page))state.page=Math.max(0,Math.min(pageCount()-1,saved.page));state.selected=customers.some(c=>c.id===saved.selected)?saved.selected:null;}
+  function restore(saved){if(!saved||typeof saved!=='object'||localRevision&&(Number(saved.revision)||0)<localRevision)return;if(copy[saved.language])state.language=saved.language;if(themeIds.includes(saved.theme))state.theme=saved.theme;if(typeof saved.query==='string')state.query=saved.query.slice(0,120);if(Number.isInteger(saved.page))state.page=Math.max(0,Math.min(pageCount()-1,saved.page));state.selected=customers.some(c=>c.id===saved.selected)?saved.selected:null;const oldTab=Number.isInteger(saved.detailTab)&&saved.detailTab>=0&&saved.detailTab<4?saved.detailTab:0;if(saved.detailLayout===3){state.detailTab=oldTab<2?oldTab:0;state.shippingTab=Number.isInteger(saved.shippingTab)&&saved.shippingTab>=0&&saved.shippingTab<4?saved.shippingTab:0;}else{const tab=saved.detailLayout===2?oldTab:[0,0,1,2][oldTab];state.detailTab=tab===3?1:0;state.shippingTab=tab===2?2:tab===1?1:0;}}
   function render(){
     app.style.setProperty('--cp-smoke-mask','url('+assets.smoke+')');
     for(const [group,palette] of Object.entries(assets.shippingGroups)){app.style.setProperty('--cp-'+group+'-bg',palette.background);app.style.setProperty('--cp-'+group+'-text',palette.foreground);app.style.setProperty('--cp-'+group+'-soft',palette.soft);}
@@ -276,37 +364,120 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     grid.querySelectorAll('[data-customer]').forEach(button=>{const pressed=String(button.dataset.customer===state.selected);if(button.getAttribute('aria-pressed')!==pressed)button.setAttribute('aria-pressed',pressed);});
     const previous=root.querySelector('.cp-previous'),next=root.querySelector('.cp-next');previous.disabled=state.page===0;next.disabled=state.page===totalPages-1;previous.querySelector('span').textContent=t.previous;next.querySelector('span').textContent=t.next;
     root.querySelector('.cp-position').textContent=matches.length?(state.page*pageSize+1)+'–'+Math.min(matches.length,(state.page+1)*pageSize)+' '+t.of+' '+matches.length:'';
-    const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-return-label').textContent=f[20];root.querySelector('.cp-back')?.setAttribute('aria-label',t.previous);grid.hidden=!!detail||!matches.length;grid.classList.toggle('cp-search-results',!!state.query.trim());root.querySelector('.cp-paging').hidden=!!detail||!matches.length;root.querySelector('.cp-total').hidden=!!detail;
+    const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-back')?.setAttribute('aria-label',detail?f[20]:t.previous);grid.hidden=!!detail||!matches.length;grid.classList.toggle('cp-search-results',!!state.query.trim());root.querySelector('.cp-paging').hidden=!!detail||!matches.length;root.querySelector('.cp-total').hidden=!!detail;
     root.querySelector('.cp-search').hidden=!!detail||!customers.length;
     const empty=root.querySelector('.cp-no-results');empty.hidden=!!detail||!!matches.length||!customers.length;empty.textContent=q[1];
     root.querySelector('.cp-detail').removeAttribute('aria-modal');root.querySelector('.cp-detail').setAttribute('role','region');
     const detailKey=detail?state.language+':'+detail.id:null;
+    if(detail&&detailKey!==renderedDetailKey){const row=root.querySelector('.cp-shipping-summary');row.setAttribute('aria-label',deliveryCopy[state.language][0]);row.innerHTML=shippingSummary(detail);}
     if(detail&&detailKey!==renderedDetailKey){root.querySelector('#cp-detail-title').textContent=detail.name;root.querySelector('.cp-detail-country').innerHTML=flag(detail.country)+'<span>'+esc(country(detail.country))+'</span>';root.querySelector('.cp-detail-group').dataset.group=detail.shippingGroup;root.querySelector('.cp-detail-group').textContent=shippingCopy[state.language][4]+' · '+shippingGroup(detail);let fields=root.querySelector('.cp-fields');if(!fields){fields=document.createElement('div');fields.className='cp-fields';root.querySelector('.cp-detail').append(fields);}fields.innerHTML=customerDetails(detail,f);renderedDetailKey=detailKey;}
     renderImport();
     icons();
+    updateDetailTab();
     if(appearanceChanged||!grid.hidden&&(lastFittedGridKey!==gridKey||lastFittedWidth!==app.clientWidth)){fitNames();if(!grid.hidden){lastFittedGridKey=gridKey;lastFittedWidth=app.clientWidth;}}
   }
-  function customerDetails(c,f){
-    const empty=f[18],yesNo=v=>v===true?f[23]:v===false?f[24]:String(v??empty);
-    const pair=(label,value)=>'<dt>'+esc(label)+'</dt><dd>'+esc(value||empty)+'</dd>';
-    const section=(label,html,open=false)=>'<details'+(open?' open':'')+'><summary>'+esc(label)+'</summary>'+html+'</details>';
-    let html=section(f[0],'<dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email)+pair(f[9],c.vat)+'</dl>',true);
-    const source=c.identitySource,identityProvenance=source?'<p class="cp-source">'+esc(source.file)+' · '+esc(source.sheet)+' · '+esc(source.row?'A'+source.row+':C'+source.row:source.rows.map(r=>'A'+r+':C'+r).join(', '))+'</p>':'';
-    if(!c.sourceSheet)return html+section(f[1],'<dl>'+pair(f[15],country(c.country))+'</dl>',true)+(source?section(f[5],identityProvenance):'<p class="cp-missing">'+esc(f[19])+'</p>');
-    const a=c.address;html+=section(f[1],'<dl>'+pair(f[10],a.street1)+(a.street2?pair(f[11],a.street2):'')+(a.street3?pair(f[12],a.street3):'')+pair(f[13],a.postalCode)+pair(f[14],a.city)+pair(f[15],country(c.country))+'</dl>',true);
-    html+=section(f[2],'<dl>'+pair(f[16],c.shipping.join('\n'))+pair(f[17],c.extraShipping.join('\n'))+'</dl>');
-    html+=section(f[3],'<p class="cp-notes">'+esc(c.documents.join('\n')||empty)+'</p>');
-    if(c.other.length||Object.keys(c.sourceStatus).length)html+=section(f[4],'<dl>'+pair(f[21],c.sourceGroup)+Object.entries(c.sourceStatus).map(([k,v])=>pair(f[22]+' · '+k,yesNo(v))).join('')+c.other.map(item=>pair(item.cell,yesNo(item.value))).join('')+'</dl>');
-    html+=section(f[5],identityProvenance+'<p class="cp-source">'+esc(c.sourceSheet)+'</p><table class="cp-source-table" aria-label="'+esc(f[5])+'"><tbody>'+c.rawCells.map(item=>'<tr><td>'+esc(item.cell)+'</td><td>'+(item.kind==='image'?'<img class="cp-source-image" src="'+assets.media[item.media]+'" alt="'+esc(country(c.country))+'" />':esc(yesNo(item.value)))+'</td></tr>').join('')+'</tbody></table>');
-    return html;
+  function shippingInfoLines(values){return (values||[]).filter(v=>typeof v==='string').flatMap(v=>v.split(/\r?\n/)).map(v=>v.trim()).filter(v=>v&&!/^(?:ex[\s-]*works|customer\s+arranges?\s+pick[\s-]*up|we\s+send\s+dimensions\s+as\s+soon\s+as\s+we\s+have\s+all\s+documents|extra\s+shipping\s+info)[.!:]?$/i.test(v.replace(/^\s*[*•]\s*/,'')));}
+    const shippingWords={
+    nl:['Benodigde (douane) documenten','Documenten op doos','Extra info','CoO','EUR.1','Verzendlijst','Klantfactuur','NEFEZA-factuur in Excel-formaat','(H)AWB','CoC','Factuur','Origineel','Kopie','Handtekening + stempel','Stempel','Verstuur de documenten rechtstreeks naar de klant in een DHL-envelop:','Verstuur de documenten rechtstreeks naar de klant in een envelop:','Plak documenten op de doos.\nVerzendlijst en factuur in de documentenpouch.\nEUR.1 in de daarvoor bestemde A4-pouch.','Geen documenten in de doos!','Originele EUR.1','Alle documenten in een envelop meegeven aan de chauffeur','Dozen op een pallet','Dozen in folie wikkelen','Maximale pallethoogte: 145 cm','Afmetingen doorgeven aan de klant','Datalogger','Etiket voor India','Prioriteit','Factuur voor','van','Verstuur alle originele documenten rechtstreeks naar het kantoor van {office} via hun DHL-account','Etiket op de doos; boekje in de doos en bij de e-mail','ATR-document vereist','Ophalen'],
+    en:['Required (customs) documents','Documents on box','Extra info','CoO','EUR.1','Shipment list','Customer invoice','NEFEZA invoice in Excel format','(H)AWB','CoC','Invoice','Original','Copy','Signature + stamp','Stamp','Send the documents directly to the customer in a DHL envelope:','Send the documents directly to the customer in an envelope:','Attach the documents to the box.\nPut the shipment list and invoice in the document pouch.\nPut EUR.1 in the designated A4 pouch.','No documents inside the box!','Original EUR.1','Give all documents to the driver in an envelope','Boxes on a pallet','Wrap boxes in foil','Maximum pallet height: 145 cm','Send dimensions to the customer','Data logger','India label','Priority','Invoice for','belongs to','Send all original documents directly to the {office} office using their DHL account','Label on the box; booklet inside the box and attached to the email','ATR document required','Pickup'],
+    uk:['Необхідні (митні) документи','Документи на коробці','Додаткова інформація','CoO','EUR.1','Відвантажувальний список','Рахунок клієнта','Рахунок NEFEZA у форматі Excel','(H)AWB','CoC','Рахунок','Оригінал','Копія','Підпис + печатка','Печатка','Надішліть документи безпосередньо клієнту в конверті DHL:','Надішліть документи безпосередньо клієнту в конверті:','Прикріпіть документи до коробки.\nПокладіть відвантажувальний список і рахунок у пакет для документів.\nПокладіть EUR.1 у призначений для нього пакет формату A4.','Не кладіть документи всередину коробки!','Оригінал EUR.1','Передайте водію всі документи в конверті','Коробки на палеті','Оберніть коробки плівкою','Максимальна висота палети: 145 см','Передайте розміри клієнту','Реєстратор даних','Етикетка для Індії','Пріоритет','Рахунок для','належить','Надішліть усі оригінали документів безпосередньо до офісу {office} через їхній рахунок DHL','Етикетка на коробці; буклет усередині коробки та в електронному листі','Потрібен документ ATR','Забір'],
+    tr:['Gerekli (gümrük) belgeleri','Kutu üzerindeki belgeler','Ek bilgi','CoO','EUR.1','Sevkiyat listesi','Müşteri faturası','Excel formatında NEFEZA faturası','(H)AWB','CoC','Fatura','Asıl','Kopya','İmza + kaşe','Kaşe','Belgeleri DHL zarfında doğrudan müşteriye gönderin:','Belgeleri bir zarf içinde doğrudan müşteriye gönderin:','Belgeleri kutuya yapıştırın.\nSevkiyat listesini ve faturayı belge cebine koyun.\nEUR.1 belgesini bunun için ayrılmış A4 cebe koyun.','Kutunun içine belge koymayın!','Asıl EUR.1','Tüm belgeleri bir zarf içinde sürücüye verin','Kutular palet üzerinde','Kutuları folyoya sarın','Azami palet yüksekliği: 145 cm','Boyutları müşteriye bildirin','Veri kaydedici','Hindistan etiketi','Öncelik','Faturanın muhatabı','hesap sahibi','Tüm asıl belgeleri {office} ofisine doğrudan kendi DHL hesaplarıyla gönderin','Etiket kutunun üzerinde; kitapçık kutunun içinde ve e-postanın ekinde','ATR belgesi gerekli','Teslim alma'],
+    it:['Documenti (doganali) richiesti','Documenti sul collo','Info extra','CoO','EUR.1','Lista di spedizione','Fattura cliente','Fattura NEFEZA in formato Excel','(H)AWB','CoC','Fattura','Originale','Copia','Firma + timbro','Timbro','Inviare i documenti direttamente al cliente in una busta DHL:','Inviare i documenti direttamente al cliente in una busta:','Applicare i documenti sulla scatola.\nInserire la lista di spedizione e la fattura nella tasca portadocumenti.\nInserire EUR.1 nell’apposita tasca A4.','Nessun documento dentro la scatola!','Originale EUR.1','Consegnare tutti i documenti all’autista in una busta','Scatole su pallet','Avvolgere le scatole con pellicola','Altezza massima del pallet: 145 cm','Comunicare le dimensioni al cliente','Registratore di dati','Etichetta per l’India','Priorità','Fattura per','appartiene a','Inviare tutti i documenti originali direttamente all’ufficio {office} tramite il loro conto DHL','Etichetta sulla scatola; opuscolo nella scatola e allegato all’e-mail','Documento ATR richiesto','Ritiro'],
+    de:['Erforderliche (Zoll-)Dokumente','Dokumente am Karton','Zusatzinfo','CoO','EUR.1','Versandliste','Kundenrechnung','NEFEZA-Rechnung im Excel-Format','(H)AWB','CoC','Rechnung','Original','Kopie','Unterschrift + Stempel','Stempel','Dokumente direkt in einem DHL-Umschlag an den Kunden senden:','Dokumente direkt in einem Umschlag an den Kunden senden:','Dokumente am Karton befestigen.\nVersandliste und Rechnung in die Dokumententasche legen.\nEUR.1 in die dafür vorgesehene A4-Tasche legen.','Keine Dokumente im Karton!','Original EUR.1','Alle Dokumente dem Fahrer in einem Umschlag mitgeben','Kartons auf einer Palette','Kartons in Folie wickeln','Maximale Palettenhöhe: 145 cm','Abmessungen dem Kunden mitteilen','Datenlogger','Etikett für Indien','Priorität','Rechnung für','gehört zu','Alle Originaldokumente direkt über deren DHL-Konto an das {office}-Büro senden','Etikett auf dem Karton; Broschüre im Karton und als E-Mail-Anhang','ATR-Dokument erforderlich','Abholung'],
+    fr:['Documents (douaniers) requis','Documents sur le colis','Infos supplémentaires','CoO','EUR.1','Liste d’expédition','Facture client','Facture NEFEZA au format Excel','(H)AWB','CoC','Facture','Original','Copie','Signature + cachet','Cachet','Envoyer les documents directement au client dans une enveloppe DHL :','Envoyer les documents directement au client dans une enveloppe :','Coller les documents sur le carton.\nPlacer la liste d’expédition et la facture dans la pochette porte-documents.\nPlacer EUR.1 dans la pochette A4 prévue à cet effet.','Aucun document à l’intérieur du carton !','Original EUR.1','Remettre tous les documents au chauffeur dans une enveloppe','Cartons sur une palette','Envelopper les cartons de film','Hauteur maximale de la palette : 145 cm','Communiquer les dimensions au client','Enregistreur de données','Étiquette pour l’Inde','Priorité','Facture pour','appartient à','Envoyer tous les documents originaux directement au bureau {office} via leur compte DHL','Étiquette sur le carton ; livret dans le carton et joint à l’e-mail','Document ATR requis','Enlèvement'],
+    es:['Documentos (aduaneros) requeridos','Documentos en la caja','Información adicional','CoO','EUR.1','Lista de envío','Factura del cliente','Factura NEFEZA en formato Excel','(H)AWB','CoC','Factura','Original','Copia','Firma + sello','Sello','Enviar los documentos directamente al cliente en un sobre DHL:','Enviar los documentos directamente al cliente en un sobre:','Pegue los documentos en la caja.\nIntroduzca la lista de envío y la factura en la bolsa portadocumentos.\nIntroduzca EUR.1 en la bolsa A4 destinada a este documento.','¡No poner documentos dentro de la caja!','Original EUR.1','Entregar todos los documentos al conductor en un sobre','Cajas sobre un palé','Envolver las cajas con película','Altura máxima del palé: 145 cm','Comunicar las dimensiones al cliente','Registrador de datos','Etiqueta para India','Prioridad','Factura para','pertenece a','Enviar todos los documentos originales directamente a la oficina de {office} mediante su cuenta DHL','Etiqueta en la caja; folleto dentro de la caja y adjunto al correo','Documento ATR obligatorio','Recogida'],
+    pt:['Documentos (aduaneiros) necessários','Documentos na caixa','Informação adicional','CoO','EUR.1','Lista de expedição','Fatura do cliente','Fatura NEFEZA em formato Excel','(H)AWB','CoC','Fatura','Original','Cópia','Assinatura + carimbo','Carimbo','Enviar os documentos diretamente ao cliente num envelope DHL:','Enviar os documentos diretamente ao cliente num envelope:','Cole os documentos na caixa.\nColoque a lista de expedição e a fatura na bolsa para documentos.\nColoque EUR.1 na bolsa A4 destinada a esse documento.','Não colocar documentos dentro da caixa!','Original EUR.1','Entregar todos os documentos ao motorista num envelope','Caixas numa palete','Envolver as caixas em película','Altura máxima da palete: 145 cm','Comunicar as dimensões ao cliente','Registador de dados','Etiqueta para a Índia','Prioridade','Fatura para','pertence a','Enviar todos os documentos originais diretamente para o escritório da {office} através da conta DHL do cliente','Etiqueta na caixa; folheto dentro da caixa e anexado ao e-mail','Documento ATR obrigatório','Recolha'],
+    hi:['आवश्यक (सीमा शुल्क) दस्तावेज़','डिब्बे पर दस्तावेज़','अतिरिक्त जानकारी','CoO','EUR.1','शिपमेंट सूची','ग्राहक का चालान','Excel प्रारूप में NEFEZA चालान','(H)AWB','CoC','चालान','मूल प्रति','प्रतिलिपि','हस्ताक्षर + मुहर','मुहर','दस्तावेज़ DHL लिफ़ाफ़े में सीधे ग्राहक को भेजें:','दस्तावेज़ लिफ़ाफ़े में सीधे ग्राहक को भेजें:','दस्तावेज़ डिब्बे पर चिपकाएँ।\nशिपमेंट सूची और चालान दस्तावेज़ पाउच में रखें।\nEUR.1 को उसके लिए निर्धारित A4 पाउच में रखें।','डिब्बे के अंदर दस्तावेज़ न रखें!','मूल EUR.1','सभी दस्तावेज़ लिफ़ाफ़े में चालक को दें','डिब्बे पैलेट पर रखें','डिब्बों को फ़िल्म में लपेटें','पैलेट की अधिकतम ऊँचाई: 145 सेमी','माप ग्राहक को भेजें','डेटा लॉगर','भारत के लिए लेबल','प्राथमिकता','इसके लिए चालान','खाता धारक','सभी मूल दस्तावेज़ {office} कार्यालय को सीधे उनके DHL खाते से भेजें','डिब्बे पर लेबल; पुस्तिका डिब्बे के अंदर और ईमेल के साथ','ATR दस्तावेज़ आवश्यक','पिकअप']
+  };
+  const shippingTabCopy={nl:['Adres','Benodigde (douane) documenten','Documenten op doos','Extra info'],en:['Address','Required (customs) documents','Box documents','Extra info'],uk:['Адреса','Необхідні (митні) документи','Документи на коробці','Додаткова інформація'],tr:['Adres','Gerekli (gümrük) belgeleri','Kutu belgeleri','Ek bilgi'],it:['Indirizzo','Documenti (doganali) richiesti','Documenti sul collo','Info extra'],de:['Adresse','Erforderliche (Zoll-)Dokumente','Kartondokumente','Zusatzinfo'],fr:['Adresse','Documents (douaniers) requis','Documents sur colis','Infos suppl.'],es:['Dirección','Documentos (aduaneros) requeridos','Documentos en caja','Info adicional'],pt:['Morada','Documentos (aduaneiros) necessários','Documentos na caixa','Info extra'],hi:['पता','आवश्यक (सीमा शुल्क) दस्तावेज़','डिब्बे पर दस्तावेज़','अतिरिक्त जानकारी']};
+  function noteKey(value){return String(value).replace(/^\s*[*•]\s*/,'').trim().replace(/\s+/g,' ').toLowerCase();}
+  const noteKeys={'coo':3,'coo (certificate of origin)':3,'eur.1':4,'eur. 1':4,'shipmentlist':5,'costumer invoice':6,'customer invoice':6,'invoice nefeza in excel format':7,'hawb (house air way bill)':8,'coa (certificate of analysis)':9,'coa':9,'invoice':10,'documents directly to costumer in dhl envelope:':15,'documents directly to costumer in envelope:':16,'documents on top of box':17,'no documents in box!':18,'no documents in the box!':18,'original eur.1 goes with shipper':19,'all documents in evolope that goes with the driver':20,'boxes on pallet':21,'boxes wrapped foil':22,'maximum pallet high 145cm':23,'sent dimentions':24,'sent dimentions to customer':24,'data loggin':25,'india label':26,'prio':27,'label on the box, buklet inside of the box and in the email':31,'atr document required':32};
+  Object.assign(noteKeys,{'coc':9,'hawb':8,'awb':8,'(h)awb':8,'original eur.1':19});
+  function translateShippingLine(value){
+    const text=String(value).replace(/^\s*[*•]\s*/,'').trim(),key=noteKey(text),w=shippingWords[state.language];
+    if(Object.hasOwn(noteKeys,key))return w[noteKeys[key]];
+    if(/^(?:coc\/s|coc|cos)$/i.test(text))return text;
+    let match=text.match(/^(\d+)\s*x\s*(.+)$/i);if(match)return match[1]+' × '+translateShippingLine(match[2]);
+    match=text.match(/^(.*?)\s*\(\s*(?:signature\s*\+\s*)?\+?\s*stamp\s*\)$/i);if(match)return translateShippingLine(match[1])+' ('+w[/signature/i.test(text)?13:14]+')';
+    match=text.match(/^(original|copy)\s+(.+)$/i);if(match)return w[match[1].toLowerCase()==='original'?11:12]+' '+translateShippingLine(match[2]);
+    match=text.match(/^all original documents must be sen[dt] to the office of (.+?) directly,\s*using their dhl account$/i);if(match)return w[30].replace('{office}',match[1]);
+    match=text.match(/^invoice\s*=\s*(.+)$/i)||text.match(/^invoice\s+(.+)$/i);if(match)return w[28]+' '+match[1];
+    return text;
   }
+  function shippingSections(c){
+    const customs=[],extra=[];const doc=/^(?:coo(?: \(certificate of origin\))?|eur\.\s*1|shipmentlist|costumer invoice|customer invoice|invoice nefeza in excel format|hawb \(house air way bill\)|coa(?: \(certificate of analysis\))?|coc\/s|coc|cos|atr document required|invoice .+)$/i;
+    for(const raw of shippingInfoLines([...(c.shipping||[]),...(c.extraShipping||[])])){
+      const text=raw.replace(/^\s*[*•]\s*/,'').trim();
+      if((doc.test(text)||/^(?:\(h\)awb|h?awb)$/i.test(text))&&!/(?:signature|stamp)/i.test(text)){if(!customs.some(v=>noteKey(v)===noteKey(text)))customs.push(text);continue;}
+      if(/\b(?:fed\s*ex|ups|dhl|tnt|dpd)\b/i.test(text)&&!Object.hasOwn(noteKeys,noteKey(text))&&!/\b(?:documents?|envelope)\b/i.test(text))continue;
+      if(!Object.hasOwn(noteKeys,noteKey(text))&&/^[A-Z0-9][A-Z0-9.-]{3,}(?:\s*\([^)]*\))?$/i.test(text)&&/\d/.test(text))continue;
+      extra.push(text);
+    }
+    const rank=value=>/^coo(?:\s*\(|$)/i.test(value)?0:/^eur\.\s*1$/i.test(value)?1:/^co[ac](?:\s*\(|$)/i.test(value)?2:3;
+    const ordered=customs.map((value,index)=>({value,index,rank:rank(value)})).sort((a,b)=>a.rank-b.rank||a.index-b.index).map(row=>row.value);
+    return {customs:ordered,extra,box:(c.documents||[]).filter(v=>typeof v==='string'&&v.trim())};
+  }
+  function documentList(values,eurRequired=false,smallRequirements=false){
+    if(!values.length)return '<p class="cp-notes">'+esc(fieldCopy[state.language][18])+'</p>';
+    let html='',items=[];const flush=()=>{if(items.length){html+='<ul class="cp-document-list">'+items.map(v=>'<li>'+v+'</li>').join('')+'</ul>';items=[];}};
+    for(const value of values){const translated=translateShippingLine(value);if(noteKey(value)==='documents on top of box'){flush();const hasEur=eurRequired||values.some(v=>/eur\.\s*1/i.test(v));html+='<p class="cp-info-intro">'+esc(translated.split('\n').filter((line,i)=>i!==2||hasEur).join('\n'))+'</p>';}else if(/[:：]\s*$/.test(translated)){flush();html+='<p class="cp-info-intro">'+esc(translated)+'</p>';}else{const plain=value.replace(/\s*\(\s*(?:signature\s*\+\s*)?\+?\s*stamp\s*\)\s*$/i,'');if(smallRequirements&&plain!==value){const requirement=shippingWords[state.language][/signature/i.test(value)?13:14];items.push('<span class="cp-requirement-item"><span>'+esc(translateShippingLine(plain))+'</span><small>'+esc(requirement)+'</small></span>');}else items.push(esc(translated));}}flush();return html;
+  }
+  const pouchCopy={nl:['Plak boven op doos','Documenten\u00adpouch','A4-pouch'],en:['Attach to the top of the box','Document pouch','A4 pouch'],uk:['Прикріпіть зверху на коробці','Пакет для документів','Пакет A4'],tr:['Kutunun üstüne yapıştırın','Belge cebi','A4 cep'],it:['Applicare sopra la scatola','Tasca portadocumenti','Tasca A4'],de:['Oben auf den Karton kleben','Dokumententasche','A4-Tasche'],fr:['Coller sur le dessus du carton','Pochette porte-documents','Pochette A4'],es:['Pegar en la parte superior de la caja','Bolsa portadocumentos','Bolsa A4'],pt:['Colar na parte superior da caixa','Bolsa para documentos','Bolsa A4'],hi:['डिब्बे के ऊपर चिपकाएँ','दस्तावेज़ पाउच','A4 पाउच']};
+  function boxDocumentList(values){
+    if(!values.some(value=>noteKey(value)==='documents on top of box'))return documentList(values);
+    const copy=pouchCopy[state.language],w=shippingWords[state.language],invoices=[],shipments=[],eur=[],other=[];
+    for(const value of values){
+      if(noteKey(value)==='documents on top of box')continue;
+      const text=value.replace(/^\s*[*•]\s*/,'').trim(),plain=text.replace(/\s*\(\s*(?:signature\s*\+\s*)?\+?\s*stamp\s*\)\s*$/i,'');
+      const requirements=plain!==text?w[/signature/i.test(text)?13:14]:'';
+      const item='<div class="cp-pouch-item"><span>'+esc(translateShippingLine(plain))+'</span>'+(requirements?'<small>'+esc(requirements)+'</small>':'')+'</div>';
+      if(/^(?:\d+\s*x\s*)?invoice\b/i.test(text))invoices.push(item);
+      else if(/^(?:\d+\s*x\s*)?shipmentlist\b/i.test(text))shipments.push(item);
+      else if(/\beur\.\s*1\b/i.test(text))eur.push(item);
+      else other.push(value);
+    }
+    const group=(label,items)=>items.length?'<div class="cp-pouch-group"><h5>'+esc(label)+':</h5><div>'+items.join('')+'</div></div>':'';
+    return '<p class="cp-info-intro">'+esc(copy[0])+'</p><div class="cp-pouch-table">'+group(copy[1],[...invoices,...shipments])+group(copy[2],eur)+'</div>'+(other.length?documentList(other):'');
+  }
+
+  function shippingTabLabel(title){return esc(title).replace(/Zolldokumente/g,'Zoll\u00addoku\u00admente').replace(/document(?:en|s|i|os)?|Dokumente|документи/gi,word=>word.slice(0,4)+'\u00ad'+word.slice(4));}
+  function customerDetails(c,f){
+    const empty=f[18];
+    const pair=(label,value)=>'<dt>'+esc(label)+'</dt><dd>'+esc(value||empty)+'</dd>';
+    const glyph=(key,extra='')=>'<span class="cp-detail-tab-icon '+extra+'" style="--cp-tab-icon:url('+assets.detailTabIcons[key]+')" aria-hidden="true"></span>';
+    const a=c.address||{},base='cp-customer-'+c.id,order=orderCopy[state.language],titles=[f[2],order[0]],keys=['shipping','history'];
+    const personal='<section class="cp-customer-details" aria-labelledby="'+base+'-details"><h4 id="'+base+'-details">'+glyph('customer')+'<span>'+esc(f[0])+'</span></h4><dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email)+pair(f[9],c.vat)+'</dl></section>';
+    const address='<dl>'+pair(f[10],a.street1)+(a.street2?pair(f[11],a.street2):'')+(a.street3?pair(f[12],a.street3):'')+pair(f[13],a.postalCode)+pair(f[14],a.city)+pair(f[15],country(c.country))+'</dl>';
+    const sections=shippingSections(c),subTitles=shippingTabCopy[state.language],subKeys=['address','customs','documents','info'],subContents=[address,documentList(sections.customs),boxDocumentList(sections.box),documentList(sections.extra,false,true)];
+    const shipping='<div class="cp-shipping-tabs" role="tablist" aria-label="'+esc(f[2])+'">'+subKeys.map((key,i)=>'<button type="button" class="cp-shipping-tab cursor-interaction" role="tab" id="'+base+'-shipping-tab-'+i+'" data-shipping-tab="'+i+'" aria-selected="'+(state.shippingTab===i)+'" aria-controls="'+base+'-shipping-panel-'+i+'">'+glyph(key)+'<span>'+shippingTabLabel(subTitles[i])+'</span></button>').join('')+'</div>'+subContents.map((html,i)=>'<section class="cp-shipping-panel" role="tabpanel" id="'+base+'-shipping-panel-'+i+'" aria-labelledby="'+base+'-shipping-tab-'+i+'"'+(state.shippingTab===i?'':' hidden')+'><h4>'+glyph(subKeys[i])+'<span>'+esc(subTitles[i])+'</span></h4>'+html+'</section>').join('');
+    const contents=[shipping,'<h4>'+glyph('history')+'<span>'+esc(order[0])+'</span></h4><div class="cp-order-empty">'+glyph('history')+'<span>'+esc(order[1])+'</span></div>'];
+    return personal+'<div class="cp-detail-tabs" role="tablist" aria-label="'+esc(c.displayName||c.name)+'">'+keys.map((key,i)=>'<button type="button" class="cp-detail-tab cursor-interaction" role="tab" id="'+base+'-tab-'+i+'" data-detail-tab="'+i+'" aria-selected="'+(state.detailTab===i)+'" aria-controls="'+base+'-panel-'+i+'">'+glyph(key)+'<span class="cp-detail-tab-label">'+esc(titles[i])+'</span></button>').join('')+'</div><div class="cp-detail-panels">'+contents.map((html,i)=>'<section class="cp-detail-panel" role="tabpanel" id="'+base+'-panel-'+i+'" aria-labelledby="'+base+'-tab-'+i+'"'+(state.detailTab===i?'':' hidden')+'>'+html+'</section>').join('')+'</div>';
+  }
+  function fitDetailTabs(){
+    for(const button of root.querySelectorAll('.cp-detail-tab,.cp-shipping-tab')){
+      if(!button.getClientRects().length)continue;
+      button.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(button).fontSize);
+      while(size>11&&button.scrollWidth>button.clientWidth+1){size-=.25;button.style.fontSize=size+'px';}
+    }
+  }
+  function updateDetailTab(animate=false){
+    root.querySelectorAll('.cp-detail-tab').forEach(button=>button.setAttribute('aria-selected',String(Number(button.dataset.detailTab)===state.detailTab)));
+    root.querySelectorAll('.cp-detail-panel').forEach((panel,index)=>{panel.hidden=index!==state.detailTab;if(animate&&!panel.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches)panel.animate([{opacity:.5,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});});
+    updateShippingTab();
+    fitDetailTabs();
+  }
+  function updateShippingTab(animate=false){root.querySelectorAll('.cp-shipping-tab').forEach(button=>button.setAttribute('aria-selected',String(Number(button.dataset.shippingTab)===state.shippingTab)));root.querySelectorAll('.cp-shipping-panel').forEach((panel,i)=>{panel.hidden=i!==state.shippingTab;if(animate&&!panel.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches)panel.animate([{opacity:.5,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});});fitDetailTabs();}
+  function selectDetailTab(i){if(!Number.isInteger(i)||i<0||i>1)return;state.detailTab=i;updateDetailTab(true);persist();}
+  function selectShippingTab(i){if(!Number.isInteger(i)||i<0||i>3)return;state.shippingTab=i;updateShippingTab(true);persist();}
+  layer.addEventListener('click',event=>{const main=event.target.closest('[data-detail-tab]'),sub=event.target.closest('[data-shipping-tab]');if(main)selectDetailTab(Number(main.dataset.detailTab));if(sub)selectShippingTab(Number(sub.dataset.shippingTab));});
+  layer.addEventListener('keydown',event=>{const button=event.target.closest('[data-detail-tab],[data-shipping-tab]');if(!button)return;const sub=button.hasAttribute('data-shipping-tab'),count=sub?4:2,delta={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[event.key];if(delta===undefined&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();const i=event.key==='Home'?0:event.key==='End'?count-1:(Number(sub?button.dataset.shippingTab:button.dataset.detailTab)+delta+count)%count;(sub?selectShippingTab:selectDetailTab)(i);root.querySelector('['+(sub?'data-shipping-tab':'data-detail-tab')+'="'+i+'"]').focus({preventScroll:true});});
   function page(amount){state.page=Math.max(0,Math.min(pageCount()-1,state.page+amount));render();window.scrollTo(0,0);persist();}
   function close(){const id=state.selected;state.selected=null;render();const trigger=root.querySelector('[data-customer="'+id+'"]');if(trigger)trigger.focus({preventScroll:true});window.scrollTo(0,listScroll);persist();}
   root.querySelector('.cp-search-input').addEventListener('input',e=>{state.query=e.target.value;state.page=0;state.selected=null;render();persist();});
   root.querySelector('.cp-next').addEventListener('click',()=>page(1));root.querySelector('.cp-previous').addEventListener('click',()=>page(-1));
-  grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;listScroll=window.scrollY;state.selected=button.dataset.customer;lastTrigger=button;render();const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-close').focus({preventScroll:true});window.scrollTo(0,0);persist();});
+  grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;listScroll=window.scrollY;state.selected=button.dataset.customer;state.detailTab=0;state.shippingTab=0;lastTrigger=button;render();const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-detail-tab').focus({preventScroll:true});window.scrollTo(0,0);persist();});
   root.querySelector('.cp-back')?.addEventListener('click',()=>{if(state.selected){close();return;}const back=root.querySelector('.cp-back');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)back.animate([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:220});});
-  root.querySelector('.cp-close').addEventListener('click',close);layer.addEventListener('click',e=>{if(e.target===layer)close();});
+  layer.addEventListener('click',e=>{if(e.target===layer)close();});
   root.addEventListener('keydown',e=>{if(state.selected&&e.key==='Escape'){e.preventDefault();close();}});
   
   document.fonts.ready.then(fitNames);
