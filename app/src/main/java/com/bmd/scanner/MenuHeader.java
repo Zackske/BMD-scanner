@@ -35,7 +35,8 @@ final class MenuHeader extends ViewGroup {
         title=new TextView(context);title.setTag("page-title");title.setText(caption);
         title.setTextColor(ThemeSkin.active.text);title.setTypeface(ReferenceArt.face(context,false,900));
         title.setGravity(Gravity.CENTER_VERTICAL);title.setIncludeFontPadding(false);title.setMaxLines(2);
-        title.setBreakStrategy(android.text.Layout.BREAK_STRATEGY_SIMPLE);title.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
+        if(android.os.Build.VERSION.SDK_INT>=29)title.setBreakStrategy(android.graphics.text.LineBreaker.BREAK_STRATEGY_SIMPLE);
+        title.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
         title.setPadding(dp(4),0,dp(4),0);title.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
         wave=new UiArt.Wave(context);wave.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
         addView(smoke);addView(back);addView(icon);addView(title);addView(wave);
