@@ -9,10 +9,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,18 +79,23 @@ final class MenuHeader extends ViewGroup {
         wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
     }
     /** Cache the illustration separately: drifting smoke must never remeasure the heading. */
-    private static final class Smoke extends androidx.appcompat.widget.AppCompatImageView {
-        private ObjectAnimator drift;
-        Smoke(Context context){super(context);setImageBitmap(ReferenceArt.bitmap(context,R.drawable.header_smoke));setScaleType(ScaleType.FIT_XY);setImageAlpha(46);setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_HARDWARE,null);}
-        private void motion(){
-            boolean active=isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown()&&ValueAnimator.areAnimatorsEnabled();
-            if(!active){if(drift!=null){drift.cancel();drift=null;}return;}
-            if(drift==null){float distance=2*getResources().getDisplayMetrics().density;drift=ObjectAnimator.ofFloat(this,View.TRANSLATION_X,-distance,distance);drift.setDuration(8400);drift.setInterpolator(new AccelerateDecelerateInterpolator());drift.setRepeatCount(ValueAnimator.INFINITE);drift.setRepeatMode(ValueAnimator.REVERSE);drift.start();}
+    private static final class Smoke extends View {
+        private final Bitmap image;
+        private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+        private final RectF bounds=new RectF();
+        private final Runnable tick=this::invalidate;
+        Smoke(Context context){super(context);image=ReferenceArt.bitmap(context,R.drawable.header_smoke);paint.setAlpha(46);paint.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        @Override protected void onSizeChanged(int width,int height,int oldWidth,int oldHeight){bounds.set(0,height*.02f,width,height*.94f);}
+        @Override protected void onDraw(Canvas canvas){
+            boolean motion=ValueAnimator.areAnimatorsEnabled();float shift=motion?(float)Math.sin(android.os.SystemClock.uptimeMillis()/4200.0)*2*getResources().getDisplayMetrics().density:0;
+            canvas.save();canvas.translate(shift,0);canvas.drawBitmap(image,null,bounds,paint);canvas.restore();
+            removeCallbacks(tick);if(motion&&isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown())postDelayed(tick,80);
         }
-        @Override protected void onAttachedToWindow(){super.onAttachedToWindow();motion();}
-        @Override protected void onVisibilityChanged(View changed,int visibility){super.onVisibilityChanged(changed,visibility);motion();}
-        @Override protected void onWindowVisibilityChanged(int visibility){super.onWindowVisibilityChanged(visibility);motion();}
-        @Override protected void onDetachedFromWindow(){if(drift!=null){drift.cancel();drift=null;}super.onDetachedFromWindow();}
+        private void refreshMotion(){if(tick==null)return;removeCallbacks(tick);if(isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown())invalidate();}
+        @Override protected void onAttachedToWindow(){super.onAttachedToWindow();refreshMotion();}
+        @Override protected void onVisibilityChanged(View changed,int visibility){super.onVisibilityChanged(changed,visibility);refreshMotion();}
+        @Override protected void onWindowVisibilityChanged(int visibility){super.onWindowVisibilityChanged(visibility);refreshMotion();}
+        @Override protected void onDetachedFromWindow(){removeCallbacks(tick);super.onDetachedFromWindow();}
     }
     static View icon(Context context,String key){
         int resource;
