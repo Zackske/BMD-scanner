@@ -18,8 +18,6 @@ jobs:
     name: Build Android APK
     runs-on: ubuntu-24.04
     timeout-minutes: 40
-    env:
-      BMD_DEBUG_KEYSTORE: ${{ runner.temp }}/bmd-signing/debug.keystore
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -51,6 +49,9 @@ jobs:
           java -version
           gradle --version
           gradle --version | grep -Fx 'Gradle 8.9'
+
+      - name: Set test signing path
+        run: echo "BMD_DEBUG_KEYSTORE=${RUNNER_TEMP}/bmd-signing/debug.keystore" >> "$GITHUB_ENV"
 
       - name: Restore test signing key
         id: signing-key
