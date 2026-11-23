@@ -104,11 +104,37 @@ jobs:
           echo 1 | sudo tee /sys/module/kvm/parameters/ignore_msrs
           cat /sys/module/kvm/parameters/ignore_msrs
 
+      - name: Verify customer portal and menu responsiveness on Android
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          BMD_SUITE: portal-menus
+          BMD_ANDROID_CLASSES: com.bmd.scanner.CustomerPortalTest,com.bmd.scanner.ThemeIntegrationTest
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          ram-size: 1536M
+          heap-size: 256M
+          emulator-boot-timeout: 240
+          disable-animations: false
+          emulator-options: -no-window -gpu swangle -feature -Vulkan -no-snapshot -noaudio -no-boot-anim -camera-back imagefile:${{ github.workspace }}/camera-fixture.png -camera-front none
+          script: bash ci/design-tests.sh
+
+      - name: Upload portal and heading evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: BMD-Scan-portal-checks
+          path: device-screenshots/
+          if-no-files-found: ignore
+
       - name: Verify pinch zoom and settings on Android
+        # Portal and heading checks run first, while camera checks retain a fresh emulator.
         uses: reactivecircus/android-emulator-runner@v2
         env:
           BMD_SUITE: scanner-settings
-          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest,com.bmd.scanner.BoxCaptureFlowTest,com.bmd.scanner.PicklistFlowTest,com.bmd.scanner.CustomerPortalTest
+          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest,com.bmd.scanner.BoxCaptureFlowTest,com.bmd.scanner.PicklistFlowTest
         with:
           api-level: 35
           target: google_apis
@@ -123,6 +149,8 @@ jobs:
 
       - name: Verify existing features on a fresh Android emulator
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          BMD_ANDROID_CLASSES: com.bmd.scanner.DesignValidationTest,com.bmd.scanner.CameraControlsTest,com.bmd.scanner.NativeBulkTest,com.bmd.scanner.GuidedBoxTest,com.bmd.scanner.ScanWizardTest,com.bmd.scanner.MetalRenderingTest
         with:
           api-level: 35
           target: google_apis
@@ -186,3 +214,4 @@ jobs:
             build/reports/
           if-no-files-found: ignore
           retention-days: 7
+
