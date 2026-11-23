@@ -74,13 +74,12 @@ public class CustomerPortalActivity extends AppCompatActivity {
             @Override public WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request){return bundledResource(request.getUrl());}
         });
         shell.addView(portal,new FrameLayout.LayoutParams(-1,-1));
-        FrameLayout back=new FrameLayout(this);back.setTag("customer-portal-back");
-        back.setBackground(UiArt.raised(ThemeSkin.active.top,ThemeSkin.active.bottom,ThemeSkin.active.accent,dp(24)));
-        UiArt.Icon icon=new UiArt.Icon(this,"back");back.addView(icon,new FrameLayout.LayoutParams(dp(25),dp(25),Gravity.CENTER));
+        BackButton back=new BackButton(this,words.getString(R.string.ui_back));back.setTag("customer-portal-back");
         back.setContentDescription(words.getString(R.string.ui_back));back.setClickable(true);back.setFocusable(true);
         back.setOnClickListener(v->getOnBackPressedDispatcher().onBackPressed());
-        FrameLayout.LayoutParams bp=new FrameLayout.LayoutParams(dp(44),dp(44),Gravity.TOP|Gravity.START);
-        bp.leftMargin=dp(8);bp.topMargin=dp(10);shell.addView(back,bp);
+        boolean compact=getResources().getConfiguration().screenWidthDp<=360;
+        FrameLayout.LayoutParams bp=new FrameLayout.LayoutParams(dp(compact?44:48),dp(compact?44:48),Gravity.TOP|Gravity.START);
+        bp.leftMargin=dp(compact?12:18);bp.topMargin=dp(27);shell.addView(back,bp);
         ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{
             androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());
             view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;

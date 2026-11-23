@@ -110,7 +110,8 @@ final class UiArt {
         private void spark(Canvas c,float x,float y,float r,int colour){p.setColor(colour);Path q=new Path();q.moveTo(x,y-r);q.quadTo(x+r*.18f,y-r*.18f,x+r,y);q.quadTo(x+r*.18f,y+r*.18f,x,y+r);q.quadTo(x-r*.18f,y+r*.18f,x-r,y);q.quadTo(x-r*.18f,y-r*.18f,x,y-r);c.drawPath(q,p);}
         @Override protected void onDraw(Canvas c){float size=Math.min(getWidth(),getHeight());c.save();c.translate((getWidth()-size)/2,(getHeight()-size)/2);c.scale(size/100,size/100);ThemeSkin skin=ThemeSkin.active;
             if(boxed){p.setShader(new LinearGradient(0,0,100,100,new int[]{mix(tint,skin.top,.75f),skin.bottom},null,Shader.TileMode.CLAMP));c.drawRoundRect(1,1,99,99,23,23,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);p.setColor(tint);c.drawRoundRect(1,1,99,99,23,23,p);p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(0,0,0,48,new int[]{0x75ffffff,0x00ffffff},null,Shader.TileMode.CLAMP));c.drawRoundRect(3,3,97,48,20,20,p);p.setShader(null);}
-            orbit(c,false);glyph(c);orbit(c,true);spark(c,85,18,8,boxed?tint:0xffffd434);spark(c,94,29,3,0xffe7fcff);c.restore();
+            boolean navigation="back".equals(kind);
+            if(!navigation)orbit(c,false);glyph(c);if(!navigation){orbit(c,true);spark(c,85,18,8,boxed?tint:0xffffd434);spark(c,94,29,3,0xffe7fcff);}c.restore();
         }
     }
 

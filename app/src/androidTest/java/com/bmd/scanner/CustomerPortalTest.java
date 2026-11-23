@@ -96,7 +96,7 @@ public class CustomerPortalTest {
                     assertEquals(JSONObject.quote(theme),js(scenario,"document.querySelector('.cp-screen').dataset.theme"));
                     assertEquals(JSONObject.quote(language),js(scenario,"document.querySelector('.cp-screen').lang"));
                     assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-name,.cp-shipping-group,.cp-country,.cp-title,.cp-nav,.cp-appbar'),e=>!e.getClientRects().length||e.scrollWidth<=e.clientWidth+2).every(Boolean)"));
-                    assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-customer'),c=>c.querySelector('.cp-shipping-group').getBoundingClientRect().bottom<=c.querySelector('.cp-name').getBoundingClientRect().top+1).every(Boolean)"));
+                    assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-customer'),c=>c.querySelector('.cp-country').getBoundingClientRect().bottom<=c.querySelector('.cp-name').getBoundingClientRect().top+1&&c.querySelector('.cp-name').getBoundingClientRect().bottom<=c.querySelector('.cp-shipping-group').getBoundingClientRect().top+1).every(Boolean)"));
                     assertEquals("Customer captions stay inside their own tile","true",js(scenario,"Array.from(document.querySelectorAll('.cp-customer'),c=>{const b=c.getBoundingClientRect();return Array.from(c.querySelectorAll('.cp-name,.cp-country,.cp-shipping-group'),e=>{const r=e.getBoundingClientRect();return r.left>=b.left-1&&r.right<=b.right+1&&r.top>=b.top-1&&r.bottom<=b.bottom+1;}).every(Boolean);}).every(Boolean)"));
                 }
                 js(scenario,"window.BmdCustomerPortal.applyAppearance('"+theme+"','nl','ScanTovenaar')");
@@ -158,6 +158,36 @@ public class CustomerPortalTest {
             }
             try{CustomerRegister.readText(new java.io.ByteArrayInputStream(new byte[CustomerRegister.MAX_BYTES+1]));fail("Oversized input accepted");}catch(IllegalArgumentException expected){}
         }finally{input.delete();}
+    }
+    private void search(ActivityScenario<CustomerPortalActivity> scenario,String value)throws Exception{
+        js(scenario,"(()=>{const input=document.querySelector('.cp-search-input');input.value="+JSONObject.quote(value)+";input.dispatchEvent(new Event('input',{bubbles:true}));return true;})()");
+    }
+    @Test public void searchFindsNamesCountriesAndLinkedNumbersAndSurvivesRecreation()throws Exception{
+        try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
+            ready(scenario);
+            assertEquals("0",js(scenario,"document.querySelectorAll('.cp-wordmark').length"));
+            assertEquals(JSONObject.quote("Klantenportaal"),js(scenario,"document.querySelector('.cp-title').textContent.trim()"));
+            search(scenario,"Demo Client 83");
+            assertEquals("1",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            js(scenario,"document.querySelector('.cp-customer').click();true");
+            assertEquals(JSONObject.quote("Synthetic Customer 83"),js(scenario,"document.querySelector('#cp-detail-title').textContent"));
+            js(scenario,"window.BmdCustomerPortal.back()");
+            assertEquals(JSONObject.quote("Demo Client 83"),js(scenario,"document.querySelector('.cp-search-input').value"));
+            search(scenario,"TEST-SHARED");
+            assertEquals("2",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            SystemClock.sleep(150);scenario.recreate();ready(scenario);
+            assertEquals("2",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            assertEquals(JSONObject.quote("TEST-SHARED"),js(scenario,"document.querySelector('.cp-search-input').value"));
+            search(scenario,"Zwitserland");
+            assertEquals("true",js(scenario,"document.querySelector('.cp-total').textContent.startsWith('42 ')"));
+            search(scenario,"__no_customer_matches__");
+            assertEquals("0",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            assertEquals("false",js(scenario,"document.querySelector('.cp-no-results').hidden"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-paging').hidden"));
+            search(scenario,"");
+            assertEquals("8",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            assertEquals("false",js(scenario,"document.querySelector('.cp-next').disabled"));
+        }
     }
     @Test public void homeTileOpensThePortalInsteadOfWorkInProgress()throws Exception{
         DeviceSupport.clear();
