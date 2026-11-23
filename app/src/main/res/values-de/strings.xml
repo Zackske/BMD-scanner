@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD ScanZauberer</string>
+    <string name="ui_short_name" formatted="false">ScanZauberer</string>
+    <string name="ui_scan" formatted="false">Scannen</string>
+    <string name="ui_photos" formatted="false">Fotos hochladen</string>
+    <string name="ui_results" formatted="false">Ergebnisse</string>
+    <string name="ui_settings" formatted="false">Einstellungen</string>
+    <string name="ui_language" formatted="false">Sprache</string>
+    <string name="ui_choose_language" formatted="false">Sprache wählen</string>
+    <string name="ui_scanner_settings" formatted="false">Scannereinstellungen</string>
+    <string name="ui_scanner" formatted="false">Scanner</string>
+    <string name="ui_scanner_hint" formatted="false">Auflösung, Empfindlichkeit und Vibration</string>
+    <string name="ui_document_type" formatted="false">Dokumenttyp</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word und PDF</string>
+    <string name="ui_about" formatted="false">Über die App</string>
+    <string name="ui_back" formatted="false">Zurück</string>
+    <string name="ui_close" formatted="false">Schließen</string>
+    <string name="ui_done" formatted="false">Fertig</string>
+    <string name="ui_apply" formatted="false">Anwenden</string>
+    <string name="ui_cancel" formatted="false">Abbrechen</string>
+    <string name="ui_save" formatted="false">Speichern</string>
+    <string name="ui_save_changes" formatted="false">Änderungen speichern</string>
+    <string name="ui_live" formatted="false">LIVE-ERKENNUNG</string>
+    <string name="ui_both" formatted="false">QR + Barcodes</string>
+    <string name="ui_qr_only" formatted="false">Nur QR</string>
+    <string name="ui_bar_only" formatted="false">Nur Barcodes</string>
+    <string name="ui_code_filter" formatted="false">Codes scannen</string>
+    <string name="ui_count" formatted="false">%1$d Codes gescannt</string>
+    <string name="ui_split" formatted="false">%1$d QR-Codes · %2$d Barcodes</string>
+    <string name="ui_same_hint" formatted="false">Gleicher Inhalt zählt je Produkt</string>
+    <string name="ui_empty" formatted="false">Kamera auf die Codes richten</string>
+    <string name="ui_all_results" formatted="false">Alle Ergebnisse ansehen</string>
+    <string name="ui_capture" formatted="false">Foto aufnehmen</string>
+    <string name="ui_captured" formatted="false">Foto aufgenommen</string>
+    <string name="ui_local_save" formatted="false">Lokal speichern</string>
+    <string name="ui_local_hint" formatted="false">Foto und Scanergebnisse speichern</string>
+    <string name="ui_share" formatted="false">Teilen</string>
+    <string name="ui_share_hint" formatted="false">E-Mail oder andere Apps</string>
+    <string name="ui_again" formatted="false">Erneut scannen</string>
+    <string name="ui_list" formatted="false">Gescannte Codes</string>
+    <string name="ui_edit" formatted="false">Code korrigieren</string>
+    <string name="ui_delete" formatted="false">Entfernen</string>
+    <string name="ui_reset" formatted="false">Scan zurücksetzen</string>
+    <string name="ui_reset_hint" formatted="false">Neue Scansitzung gestartet</string>
+    <string name="ui_resolution" formatted="false">Auflösung</string>
+    <string name="ui_actual" formatted="false">Tatsächlich</string>
+    <string name="ui_highest" formatted="false">Höchste unterstützte Auflösung</string>
+    <string name="ui_fallback" formatted="false">Die Kamera wählt bei Bedarf die nächste unterstützte Größe</string>
+    <string name="ui_sensitivity" formatted="false">Empfindlichkeit</string>
+    <string name="ui_stability" formatted="false">Stabilität der Codeerkennung</string>
+    <string name="ui_low" formatted="false">Niedrig</string>
+    <string name="ui_normal" formatted="false">Normal</string>
+    <string name="ui_high" formatted="false">Hoch</string>
+    <string name="ui_vibrate" formatted="false">Nach Scan vibrieren</string>
+    <string name="ui_vibrate_hint" formatted="false">Eine kurze Vibration je gescanntem Code</string>
+    <string name="ui_lamp" formatted="false">Licht</string>
+    <string name="ui_on" formatted="false">AN</string>
+    <string name="ui_off" formatted="false">AUS</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Dokumenteinstellungen</string>
+    <string name="ui_choose_format" formatted="false">Dateiformat wählen</string>
+    <string name="ui_filename" formatted="false">Dateiname</string>
+    <string name="ui_extension_hint" formatted="false">Die Dateiendung wird automatisch ergänzt</string>
+    <string name="ui_export" formatted="false">Dokument erstellen</string>
+    <string name="ui_saved" formatted="false">Gespeichert</string>
+    <string name="ui_busy" formatted="false">Wird verarbeitet…</string>
+    <string name="ui_error" formatted="false">Ein Fehler ist aufgetreten</string>
+    <string name="ui_permission" formatted="false">Zum Scannen ist Kamerazugriff erforderlich</string>
+    <string name="ui_no_camera" formatted="false">Keine nutzbare Kamera gefunden</string>
+    <string name="ui_no_lamp" formatted="false">Diese Kamera hat kein Licht</string>
+    <string name="ui_no_results" formatted="false">Noch keine Scanergebnisse</string>
+    <string name="ui_nr" formatted="false">Nr.</string>
+    <string name="ui_type" formatted="false">Typ</string>
+    <string name="ui_code" formatted="false">Code</string>
+    <string name="ui_barcode" formatted="false">Barcode</string>
+    <string name="ui_photo_error" formatted="false">Einige Fotos konnten nicht gelesen werden</string>
+    <string name="ui_choose_folder" formatted="false">Ordner für Foto und Dokument wählen</string>
+    <string name="ui_tracking_note" formatted="false">Produkte bis zur Aufnahme im Bild behalten</string>
+    <string name="ui_confirm_reset" formatted="false">Aktuelle Scansitzung löschen?</string>
+    <string name="ui_delete_question" formatted="false">Diesen Scan entfernen?</string>
+    <string name="ui_flash">Blitz</string>
+    <string name="ui_camera">Kamera</string>
+    <string name="ui_gallery">Aus Galerie scannen</string>
+    <string name="ui_detected">%1$d Codes erkannt</string>
+    <string name="ui_scan_button">Scannen</string>
+    <string name="ui_switch_camera">Kamera wechseln</string>
+    <string name="ui_camera_mode" formatted="false">Kameramodus</string>
+    <string name="ui_save_scan" formatted="false">Scan speichern</string>
+    <string name="ui_review_products" formatted="false">Produkte prüfen</string>
+    <string name="ui_product_count" formatted="false">%1$d Produkte</string>
+    <string name="ui_product" formatted="false">Produkt</string>
+    <string name="ui_review" formatted="false">prüfen</string>
+    <string name="ui_unknown_lot" formatted="false">Los unbekannt</string>
+    <string name="ui_conflict" formatted="false">Widersprüchliche Daten</string>
+    <string name="ui_group_hint" formatted="false">Etiketten bleiben getrennt. Nur Codes derselben Schachtel gruppieren. Anzahl und Lose prüfen; manuelle Lose bleiben markiert.</string>
+    <string name="ui_group_selected" formatted="false">Ausgewählte Codes gruppieren</string>
+    <string name="ui_split_selected" formatted="false">Ausgewählte Gruppen trennen</string>
+    <string name="ui_grouping_error" formatted="false">Keine verschiedenen Lose oder Produkte gruppieren. Widersprüchliche Codes trennen.</string>
+</resources>

@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">Stap 1 · Scantype</string>
+    <string name="ui_wizard_step_count" formatted="false">Stap 2 · Aantal</string>
+    <string name="ui_wizard_type" formatted="false">Type</string>
+    <string name="ui_wizard_count" formatted="false">Aantal</string>
+    <string name="ui_wizard_type_question" formatted="false">Wat wil je scannen?</string>
+    <string name="ui_wizard_box" formatted="false">Eindcontrole</string>
+    <string name="ui_wizard_stack" formatted="false">Losse stapel</string>
+    <string name="ui_wizard_box_hint" formatted="false">Met markeringen en deelopnamen</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Direct scannen, zonder markeringen</string>
+    <string name="ui_wizard_next_count" formatted="false">Bij Eindcontrole lees je eerst de picklist in.</string>
+    <string name="ui_wizard_count_question" formatted="false">Hoeveel producten verwacht je?</string>
+    <string name="ui_wizard_products" formatted="false">Aantal producten</string>
+    <string name="ui_wizard_count_hint" formatted="false">Vul het verwachte aantal producten in.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Dit aantal wordt gebruikt voor de controle.</string>
+    <string name="ui_wizard_next" formatted="false">Verder</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Opnieuw scannen</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Een nieuwe opname vervangt de vorige stapelscan.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Nieuwe scan</string>
+</resources>

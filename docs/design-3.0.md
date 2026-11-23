@@ -1,0 +1,9 @@
+# BMD Scan 3.0
+
+Installed Android name is BMD Scan in all ten languages. Launcher artwork is the approved scanner-and-sparks illustration with transparent PNG foreground and safe adaptive padding; legacy launcher densities are supplied.
+
+Home: clean text-free artwork with the orange tile fading to burgundy. Native translated labels and app title are painted directly without rectangular covering patches or letter shadows. Approved larger/lowered tiles and raised footer logo remain proportionate, using the existing full-height background-gap layout.
+
+Scanner: native density-independent navy/cyan chrome; no gallery, list or reset button on the main scan screen. Camera mode cycles QR -> Barcode -> QR + barcode, with matching vector icons and status. The same modes are available in settings. Flash retains OFF/ON with a gold activation pulse. The scan frame is horizontally centered on the full preview. Zoom is narrow, vertically centered and hardware-clamped, with the approved spring/ripple and directional particle animation (system reduced-motion preferences honored). The counter is centered below the frame and remains tappable to edit the code list. Save scan is a large raised native button that captures a still and opens the existing local-save/share flow. Camera switching and session reset remain accessible under scanner settings. Resolution choices, sensitivity, individual-success haptics, duplicate physical-code tracking, document formats and translations remain supported.
+
+Validation pipeline: Java 17 / Gradle 8.9; build, lint, JVM tests, Android 35 emulator DesignValidationTest and CameraControlsTest, APK package/signature verification. Emulator uses a real camera imagefile fixture containing six codes (including identical QR content on three separate physical labels). Native screenshots and diagnostic artifacts are saved. Physical Samsung hardware has not been tested by the agent. Release is published only after pipeline success.

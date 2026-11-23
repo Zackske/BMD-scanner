@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">Adım 1 · Tarama türü</string>
+    <string name="ui_wizard_step_count" formatted="false">Adım 2 · Adet</string>
+    <string name="ui_wizard_type" formatted="false">Tür</string>
+    <string name="ui_wizard_count" formatted="false">Adet</string>
+    <string name="ui_wizard_type_question" formatted="false">Ne taramak istiyorsunuz?</string>
+    <string name="ui_wizard_box" formatted="false">Son kontrol</string>
+    <string name="ui_wizard_stack" formatted="false">Tek yığın</string>
+    <string name="ui_wizard_box_hint" formatted="false">İşaretler ve ayrıntı fotoğraflarıyla</string>
+    <string name="ui_wizard_stack_hint" formatted="false">İşaret olmadan doğrudan tarama</string>
+    <string name="ui_wizard_next_count" formatted="false">Son kontrolde önce liste okunur.</string>
+    <string name="ui_wizard_count_question" formatted="false">Kaç ürün bekliyorsunuz?</string>
+    <string name="ui_wizard_products" formatted="false">Ürün sayısı</string>
+    <string name="ui_wizard_count_hint" formatted="false">Beklenen ürün sayısını girin.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Bu sayı kontrol için kullanılır.</string>
+    <string name="ui_wizard_next" formatted="false">İleri</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Yeniden tara</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Yeni çekim, önceki yığın taramasının yerini alır.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Yeni tarama</string>
+</resources>

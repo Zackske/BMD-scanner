@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD Mago del Escaneo</string>
+    <string name="ui_short_name" formatted="false">Mago del Escaneo</string>
+    <string name="ui_scan" formatted="false">Escanear</string>
+    <string name="ui_photos" formatted="false">Subir fotos</string>
+    <string name="ui_results" formatted="false">Resultados</string>
+    <string name="ui_settings" formatted="false">Ajustes</string>
+    <string name="ui_language" formatted="false">Idioma</string>
+    <string name="ui_choose_language" formatted="false">Elegir idioma</string>
+    <string name="ui_scanner_settings" formatted="false">Ajustes del escáner</string>
+    <string name="ui_scanner" formatted="false">Escáner</string>
+    <string name="ui_scanner_hint" formatted="false">Resolución, sensibilidad y vibración</string>
+    <string name="ui_document_type" formatted="false">Tipo de documento</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word y PDF</string>
+    <string name="ui_about" formatted="false">Acerca de la aplicación</string>
+    <string name="ui_back" formatted="false">Atrás</string>
+    <string name="ui_close" formatted="false">Cerrar</string>
+    <string name="ui_done" formatted="false">Listo</string>
+    <string name="ui_apply" formatted="false">Aplicar</string>
+    <string name="ui_cancel" formatted="false">Cancelar</string>
+    <string name="ui_save" formatted="false">Guardar</string>
+    <string name="ui_save_changes" formatted="false">Guardar cambios</string>
+    <string name="ui_live" formatted="false">DETECCIÓN EN VIVO</string>
+    <string name="ui_both" formatted="false">QR + códigos de barras</string>
+    <string name="ui_qr_only" formatted="false">Solo QR</string>
+    <string name="ui_bar_only" formatted="false">Solo códigos de barras</string>
+    <string name="ui_code_filter" formatted="false">Escanear códigos</string>
+    <string name="ui_count" formatted="false">%1$d códigos escaneados</string>
+    <string name="ui_split" formatted="false">%1$d códigos QR · %2$d códigos de barras</string>
+    <string name="ui_same_hint" formatted="false">El mismo contenido cuenta por producto</string>
+    <string name="ui_empty" formatted="false">Apunta la cámara a los códigos</string>
+    <string name="ui_all_results" formatted="false">Ver todos los resultados</string>
+    <string name="ui_capture" formatted="false">Tomar foto</string>
+    <string name="ui_captured" formatted="false">Foto tomada</string>
+    <string name="ui_local_save" formatted="false">Guardar en el dispositivo</string>
+    <string name="ui_local_hint" formatted="false">Guardar foto y resultados</string>
+    <string name="ui_share" formatted="false">Compartir</string>
+    <string name="ui_share_hint" formatted="false">Correo u otras aplicaciones</string>
+    <string name="ui_again" formatted="false">Volver a escanear</string>
+    <string name="ui_list" formatted="false">Códigos escaneados</string>
+    <string name="ui_edit" formatted="false">Corregir código</string>
+    <string name="ui_delete" formatted="false">Eliminar</string>
+    <string name="ui_reset" formatted="false">Reiniciar escaneo</string>
+    <string name="ui_reset_hint" formatted="false">Nueva sesión iniciada</string>
+    <string name="ui_resolution" formatted="false">Resolución</string>
+    <string name="ui_actual" formatted="false">Real</string>
+    <string name="ui_highest" formatted="false">Máxima resolución compatible</string>
+    <string name="ui_fallback" formatted="false">La cámara elige el tamaño compatible más cercano</string>
+    <string name="ui_sensitivity" formatted="false">Sensibilidad</string>
+    <string name="ui_stability" formatted="false">Estabilidad del reconocimiento</string>
+    <string name="ui_low" formatted="false">Baja</string>
+    <string name="ui_normal" formatted="false">Normal</string>
+    <string name="ui_high" formatted="false">Alta</string>
+    <string name="ui_vibrate" formatted="false">Vibrar tras escanear</string>
+    <string name="ui_vibrate_hint" formatted="false">Una vibración corta por código</string>
+    <string name="ui_lamp" formatted="false">Linterna</string>
+    <string name="ui_on" formatted="false">ENCENDIDA</string>
+    <string name="ui_off" formatted="false">APAGADA</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Ajustes del documento</string>
+    <string name="ui_choose_format" formatted="false">Elige el formato del archivo</string>
+    <string name="ui_filename" formatted="false">Nombre del archivo</string>
+    <string name="ui_extension_hint" formatted="false">La extensión se añade automáticamente</string>
+    <string name="ui_export" formatted="false">Crear documento</string>
+    <string name="ui_saved" formatted="false">Guardado</string>
+    <string name="ui_busy" formatted="false">Procesando…</string>
+    <string name="ui_error" formatted="false">Se ha producido un error</string>
+    <string name="ui_permission" formatted="false">Se necesita permiso de cámara</string>
+    <string name="ui_no_camera" formatted="false">No se encontró una cámara disponible</string>
+    <string name="ui_no_lamp" formatted="false">Esta cámara no tiene linterna</string>
+    <string name="ui_no_results" formatted="false">Aún no hay resultados</string>
+    <string name="ui_nr" formatted="false">N.º</string>
+    <string name="ui_type" formatted="false">Tipo</string>
+    <string name="ui_code" formatted="false">Código</string>
+    <string name="ui_barcode" formatted="false">Código de barras</string>
+    <string name="ui_photo_error" formatted="false">No se pudieron leer algunas fotos</string>
+    <string name="ui_choose_folder" formatted="false">Elige una carpeta para la foto y el documento</string>
+    <string name="ui_tracking_note" formatted="false">Mantén los productos a la vista hasta tomar la foto</string>
+    <string name="ui_confirm_reset" formatted="false">¿Borrar la sesión actual?</string>
+    <string name="ui_delete_question" formatted="false">¿Eliminar este escaneo?</string>
+    <string name="ui_flash">Flash</string>
+    <string name="ui_camera">Cámara</string>
+    <string name="ui_gallery">Escanear desde galería</string>
+    <string name="ui_detected">%1$d códigos detectados</string>
+    <string name="ui_scan_button">Escanear</string>
+    <string name="ui_switch_camera">Cambiar cámara</string>
+    <string name="ui_camera_mode" formatted="false">Modo de cámara</string>
+    <string name="ui_save_scan" formatted="false">Guardar escaneo</string>
+    <string name="ui_review_products" formatted="false">Revisar productos</string>
+    <string name="ui_product_count" formatted="false">%1$d productos</string>
+    <string name="ui_product" formatted="false">Producto</string>
+    <string name="ui_review" formatted="false">revisar</string>
+    <string name="ui_unknown_lot" formatted="false">Lote desconocido</string>
+    <string name="ui_conflict" formatted="false">Datos contradictorios</string>
+    <string name="ui_group_hint" formatted="false">Las etiquetas quedan separadas. Agrupa solo códigos de la misma caja. Revisa cantidades y lotes; los lotes manuales quedan marcados.</string>
+    <string name="ui_group_selected" formatted="false">Agrupar códigos seleccionados</string>
+    <string name="ui_split_selected" formatted="false">Separar grupos seleccionados</string>
+    <string name="ui_grouping_error" formatted="false">No agrupes lotes o productos distintos. Separa códigos contradictorios.</string>
+</resources>

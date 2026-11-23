@@ -1,0 +1,26 @@
+<resources>
+    <string name="ui_portal">Portale clienti</string>
+    <string name="ui_work_instructions">Istruzioni di lavoro</string>
+    <string name="ui_email_check">Controllo email</string>
+    <string name="ui_document_check">Controllo documenti</string>
+    <string name="ui_in_development">Questa funzione è in sviluppo.</string>
+    <string name="ui_lots_title">Lotti scansionati</string>
+    <string name="ui_checklist">Visualizza lista di controllo</string>
+    <string name="ui_continue_save">Continua al salvataggio</string>
+    <string name="ui_include_images">Includi immagini</string>
+    <string name="ui_guided_mode">Cosa vuoi controllare?</string>
+    <string name="ui_complete_box">Scatola completa</string>
+    <string name="ui_inventory">Inventario</string>
+    <string name="ui_step_progress">Foto %1$d di 5 · %2$s</string>
+    <string name="ui_review_lot">Controlla lotto</string>
+    <string name="ui_exclude">Escludi</string>
+    <string name="ui_undo">Annulla</string>
+    <string name="ui_save_options">Salva e condividi</string>
+    <string name="ui_all_reviewed">Controllato manualmente</string>
+    <string name="ui_capture_first">Scatta prima la panoramica</string>
+    <string name="ui_photos_needed">Scatta almeno altre %1$d foto di dettaglio</string>
+    <string name="ui_manual_change">Modificato manualmente</string>
+    <string name="ui_review_all">Controlla tutti i prodotti di questo lotto</string>
+    <string name="ui_qr_count_check" formatted="false">Controllo QR/quantità</string>
+    <string name="ui_box_pallet_check" formatted="false">Controllo scatola/pallet</string>
+</resources>

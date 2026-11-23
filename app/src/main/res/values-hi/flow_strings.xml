@@ -1,0 +1,26 @@
+<resources>
+    <string name="ui_portal">ग्राहक पोर्टल</string>
+    <string name="ui_work_instructions">कार्य निर्देश</string>
+    <string name="ui_email_check">ईमेल जाँच</string>
+    <string name="ui_document_check">दस्तावेज़ जाँच</string>
+    <string name="ui_in_development">यह सुविधा विकसित की जा रही है।</string>
+    <string name="ui_lots_title">स्कैन किए गए लॉट</string>
+    <string name="ui_checklist">जाँच सूची देखें</string>
+    <string name="ui_continue_save">सहेजने के लिए आगे बढ़ें</string>
+    <string name="ui_include_images">स्कैन चित्र जोड़ें</string>
+    <string name="ui_guided_mode">आप क्या जाँचेंगे?</string>
+    <string name="ui_complete_box">पूरा बॉक्स</string>
+    <string name="ui_inventory">स्टॉक</string>
+    <string name="ui_step_progress">फ़ोटो %1$d / 5 · %2$s</string>
+    <string name="ui_review_lot">लॉट जाँचें</string>
+    <string name="ui_exclude">हटाएँ</string>
+    <string name="ui_undo">पूर्ववत करें</string>
+    <string name="ui_save_options">सहेजें और साझा करें</string>
+    <string name="ui_all_reviewed">मैन्युअल जाँच की गई</string>
+    <string name="ui_capture_first">पहले पूरा दृश्य लें</string>
+    <string name="ui_photos_needed">कम से कम %1$d और विस्तृत फ़ोटो लें</string>
+    <string name="ui_manual_change">मैन्युअल बदलाव</string>
+    <string name="ui_review_all">इस लॉट के सभी उत्पाद जाँचें</string>
+    <string name="ui_qr_count_check" formatted="false">QR/संख्या जाँच</string>
+    <string name="ui_box_pallet_check" formatted="false">बॉक्स/पैलेट जाँच</string>
+</resources>

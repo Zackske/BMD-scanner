@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">Étape 1 · Type de scan</string>
+    <string name="ui_wizard_step_count" formatted="false">Étape 2 · Quantité</string>
+    <string name="ui_wizard_type" formatted="false">Type</string>
+    <string name="ui_wizard_count" formatted="false">Quantité</string>
+    <string name="ui_wizard_type_question" formatted="false">Que souhaitez-vous scanner ?</string>
+    <string name="ui_wizard_box" formatted="false">Contrôle final</string>
+    <string name="ui_wizard_stack" formatted="false">Pile séparée</string>
+    <string name="ui_wizard_box_hint" formatted="false">Avec repères et photos de détail</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Scan direct, sans repères</string>
+    <string name="ui_wizard_next_count" formatted="false">Le contrôle final commence par la liste.</string>
+    <string name="ui_wizard_count_question" formatted="false">Combien de produits attendez-vous ?</string>
+    <string name="ui_wizard_products" formatted="false">Nombre de produits</string>
+    <string name="ui_wizard_count_hint" formatted="false">Saisissez le nombre de produits attendu.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Ce nombre sert au contrôle.</string>
+    <string name="ui_wizard_next" formatted="false">Suivant</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Scanner à nouveau</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Une nouvelle prise remplace le scan de pile précédent.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Nouveau scan</string>
+</resources>

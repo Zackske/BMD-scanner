@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -uo pipefail
+status=0
+mkdir -p device-demo device-screenshots
+cp camera-fixture.png device-screenshots/input-camera-fixture.png
+# Keep diagnostic evidence on the host even if the emulator exits.
+adb logcat -v threadtime > device-screenshots/device-logcat.txt 2>&1 &
+log_pid=$!
+(
+  while true; do
+    timeout 8s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ >/dev/null 2>&1 || true
+    timeout 8s adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 >/dev/null 2>&1 || true
+    sleep 8
+  done
+) &
+pull_pid=$!
+for classes in 'com.bmd.scanner.AppIdentityTest,com.bmd.scanner.HomeLayoutTest,com.bmd.scanner.ScannerDeviceTest,com.bmd.scanner.StorageDeviceTest' 'com.bmd.scanner.CameraControlsTest' 'com.bmd.scanner.AppDemoTest'; do
+  timeout 7m gradle --no-daemon --stacktrace :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="$classes" || { status=$?; break; }
+done
+kill "$pull_pid" "$log_pid" 2>/dev/null || true
+timeout 10s adb pull /data/local/tmp/bmd-demo/app-demo.mp4 device-demo/app-demo-raw.mp4 || true
+timeout 10s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
+timeout 10s adb pull /sdcard/Android/data/com.bmd.scanner/files/screenshots/. device-screenshots/ || true
+if [ "$status" -ne 0 ]; then
+  find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +
+  grep -E "BMD|FATAL|Fatal|crash|OutOfMemory|AssertionError" device-screenshots/device-logcat.txt | tail -n 100 || true
+  tail -n 35 device-screenshots/device-logcat.txt
+  sudo dmesg | tail -n 40 || true
+fi
+exit "$status"

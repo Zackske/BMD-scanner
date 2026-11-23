@@ -1,0 +1,26 @@
+<resources>
+    <string name="ui_portal">Klantenportaal</string>
+    <string name="ui_work_instructions">Werkinstructies</string>
+    <string name="ui_email_check">E-mailcontrole</string>
+    <string name="ui_document_check">Documentcontrole</string>
+    <string name="ui_in_development">Deze functie is in ontwikkeling.</string>
+    <string name="ui_lots_title">Gescande lots</string>
+    <string name="ui_checklist">Bekijk controlelijst</string>
+    <string name="ui_continue_save">Verder naar opslaan</string>
+    <string name="ui_include_images">Scanbeelden toevoegen</string>
+    <string name="ui_guided_mode">Wat ga je controleren?</string>
+    <string name="ui_complete_box">Complete doos</string>
+    <string name="ui_inventory">Voorraad</string>
+    <string name="ui_step_progress">Foto %1$d van 5 · %2$s</string>
+    <string name="ui_review_lot">Lot controleren</string>
+    <string name="ui_exclude">Uitsluiten</string>
+    <string name="ui_undo">Ongedaan maken</string>
+    <string name="ui_save_options">Opslaan en delen</string>
+    <string name="ui_all_reviewed">Handmatig gecontroleerd</string>
+    <string name="ui_capture_first">Maak eerst de overzichtsfoto</string>
+    <string name="ui_photos_needed">Maak nog minimaal %1$d detailfoto’s</string>
+    <string name="ui_manual_change">Handmatig aangepast</string>
+    <string name="ui_review_all">Controleer alle producten in deze lot</string>
+    <string name="ui_qr_count_check" formatted="false">QR-/aantalcontrole</string>
+    <string name="ui_box_pallet_check" formatted="false">Doos-/palletcontrole</string>
+</resources>

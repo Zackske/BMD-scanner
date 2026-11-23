@@ -1,0 +1,11 @@
+<resources>
+    <string name="ui_themes">Thema</string>
+    <string name="ui_colours_appearance">Kleuren en uitstraling</string>
+    <string name="ui_choose_theme">Thema kiezen</string>
+    <string name="ui_theme_dark">Donker</string>
+    <string name="ui_theme_light">Licht</string>
+    <string name="ui_theme_lime">Groen</string>
+    <string name="ui_theme_violet">Paars</string>
+    <string name="ui_theme_blue" formatted="false">Blauw</string>
+    <string name="ui_theme_red" formatted="false">Rood</string>
+</resources>

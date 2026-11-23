@@ -1,0 +1,20 @@
+<resources>
+    <string name="ui_wizard_step_type" formatted="false">Passo 1 · Tipo di scansione</string>
+    <string name="ui_wizard_step_count" formatted="false">Passo 2 · Quantità</string>
+    <string name="ui_wizard_type" formatted="false">Tipo</string>
+    <string name="ui_wizard_count" formatted="false">Quantità</string>
+    <string name="ui_wizard_type_question" formatted="false">Cosa vuoi scansionare?</string>
+    <string name="ui_wizard_box" formatted="false">Controllo finale</string>
+    <string name="ui_wizard_stack" formatted="false">Pila singola</string>
+    <string name="ui_wizard_box_hint" formatted="false">Con marcatori e foto di dettaglio</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Scansione diretta, senza marcatori</string>
+    <string name="ui_wizard_next_count" formatted="false">Il controllo finale inizia dalla lista.</string>
+    <string name="ui_wizard_count_question" formatted="false">Quanti prodotti ti aspetti?</string>
+    <string name="ui_wizard_products" formatted="false">Numero di prodotti</string>
+    <string name="ui_wizard_count_hint" formatted="false">Inserisci il numero previsto di prodotti.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Questo numero viene usato per il controllo.</string>
+    <string name="ui_wizard_next" formatted="false">Avanti</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Scansiona di nuovo</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Una nuova acquisizione sostituisce la precedente scansione della pila.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Nuova scansione</string>
+</resources>

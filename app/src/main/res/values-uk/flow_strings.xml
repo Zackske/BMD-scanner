@@ -1,0 +1,26 @@
+<resources>
+    <string name="ui_portal">Портал клієнтів</string>
+    <string name="ui_work_instructions">Робочі інструкції</string>
+    <string name="ui_email_check">Перевірка пошти</string>
+    <string name="ui_document_check">Перевірка документів</string>
+    <string name="ui_in_development">Ця функція розробляється.</string>
+    <string name="ui_lots_title">Скановані партії</string>
+    <string name="ui_checklist">Переглянути список перевірки</string>
+    <string name="ui_continue_save">Далі до збереження</string>
+    <string name="ui_include_images">Додати зображення</string>
+    <string name="ui_guided_mode">Що перевіряємо?</string>
+    <string name="ui_complete_box">Повна коробка</string>
+    <string name="ui_inventory">Запаси</string>
+    <string name="ui_step_progress">Фото %1$d із 5 · %2$s</string>
+    <string name="ui_review_lot">Перевірити партію</string>
+    <string name="ui_exclude">Виключити</string>
+    <string name="ui_undo">Скасувати</string>
+    <string name="ui_save_options">Зберегти та поділитися</string>
+    <string name="ui_all_reviewed">Перевірено вручну</string>
+    <string name="ui_capture_first">Спочатку зробіть загальне фото</string>
+    <string name="ui_photos_needed">Зробіть ще щонайменше %1$d детальних фото</string>
+    <string name="ui_manual_change">Змінено вручну</string>
+    <string name="ui_review_all">Перевірити всі вироби цієї партії</string>
+    <string name="ui_qr_count_check" formatted="false">Перевірка QR/кількості</string>
+    <string name="ui_box_pallet_check" formatted="false">Перевірка коробок/палет</string>
+</resources>

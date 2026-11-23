@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_capture_step">Étape %1$d</string>
+    <string name="ui_capture_photo">Prendre photo</string>
+    <string name="ui_photo_step">Photo %1$d sur 5</string>
+    <string name="ui_marker_setup">Placez les 4 repères avant la photo</string>
+    <string name="ui_marker_ack">Compris · photo 1</string>
+    <string name="ui_marker_info">Instructions des repères</string>
+</resources>

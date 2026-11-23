@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD ScanMagician</string>
+    <string name="ui_short_name" formatted="false">ScanMagician</string>
+    <string name="ui_scan" formatted="false">Scan</string>
+    <string name="ui_photos" formatted="false">Upload photos</string>
+    <string name="ui_results" formatted="false">Results</string>
+    <string name="ui_settings" formatted="false">Settings</string>
+    <string name="ui_language" formatted="false">Language</string>
+    <string name="ui_choose_language" formatted="false">Choose language</string>
+    <string name="ui_scanner_settings" formatted="false">Scanner settings</string>
+    <string name="ui_scanner" formatted="false">Scanner</string>
+    <string name="ui_scanner_hint" formatted="false">Resolution, sensitivity and vibration</string>
+    <string name="ui_document_type" formatted="false">Document type</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word and PDF</string>
+    <string name="ui_about" formatted="false">About the app</string>
+    <string name="ui_back" formatted="false">Back</string>
+    <string name="ui_close" formatted="false">Close</string>
+    <string name="ui_done" formatted="false">Done</string>
+    <string name="ui_apply" formatted="false">Apply</string>
+    <string name="ui_cancel" formatted="false">Cancel</string>
+    <string name="ui_save" formatted="false">Save</string>
+    <string name="ui_save_changes" formatted="false">Save changes</string>
+    <string name="ui_live" formatted="false">LIVE DETECTION</string>
+    <string name="ui_both" formatted="false">QR + barcodes</string>
+    <string name="ui_qr_only" formatted="false">QR only</string>
+    <string name="ui_bar_only" formatted="false">Barcodes only</string>
+    <string name="ui_code_filter" formatted="false">Scan codes</string>
+    <string name="ui_count" formatted="false">%1$d codes scanned</string>
+    <string name="ui_split" formatted="false">%1$d QR codes · %2$d barcodes</string>
+    <string name="ui_same_hint" formatted="false">Matching content counts per product</string>
+    <string name="ui_empty" formatted="false">Point the camera at the codes</string>
+    <string name="ui_all_results" formatted="false">View all results</string>
+    <string name="ui_capture" formatted="false">Capture photo</string>
+    <string name="ui_captured" formatted="false">Photo captured</string>
+    <string name="ui_local_save" formatted="false">Save locally</string>
+    <string name="ui_local_hint" formatted="false">Save photo and scan results</string>
+    <string name="ui_share" formatted="false">Share</string>
+    <string name="ui_share_hint" formatted="false">Email or other apps</string>
+    <string name="ui_again" formatted="false">Scan again</string>
+    <string name="ui_list" formatted="false">Scanned codes</string>
+    <string name="ui_edit" formatted="false">Correct code</string>
+    <string name="ui_delete" formatted="false">Remove</string>
+    <string name="ui_reset" formatted="false">Reset scan</string>
+    <string name="ui_reset_hint" formatted="false">New scan session started</string>
+    <string name="ui_resolution" formatted="false">Resolution</string>
+    <string name="ui_actual" formatted="false">Actual</string>
+    <string name="ui_highest" formatted="false">Highest supported resolution</string>
+    <string name="ui_fallback" formatted="false">The camera uses the closest supported size if needed</string>
+    <string name="ui_sensitivity" formatted="false">Sensitivity</string>
+    <string name="ui_stability" formatted="false">Code recognition stability</string>
+    <string name="ui_low" formatted="false">Low</string>
+    <string name="ui_normal" formatted="false">Normal</string>
+    <string name="ui_high" formatted="false">High</string>
+    <string name="ui_vibrate" formatted="false">Vibrate after scan</string>
+    <string name="ui_vibrate_hint" formatted="false">One short vibration per scanned code</string>
+    <string name="ui_lamp" formatted="false">Light</string>
+    <string name="ui_on" formatted="false">ON</string>
+    <string name="ui_off" formatted="false">OFF</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Document settings</string>
+    <string name="ui_choose_format" formatted="false">Choose your file format</string>
+    <string name="ui_filename" formatted="false">File name</string>
+    <string name="ui_extension_hint" formatted="false">The extension is added automatically</string>
+    <string name="ui_export" formatted="false">Create document</string>
+    <string name="ui_saved" formatted="false">Saved</string>
+    <string name="ui_busy" formatted="false">Processing…</string>
+    <string name="ui_error" formatted="false">Something went wrong</string>
+    <string name="ui_permission" formatted="false">Camera permission is required to scan</string>
+    <string name="ui_no_camera" formatted="false">No usable camera found</string>
+    <string name="ui_no_lamp" formatted="false">This camera has no light</string>
+    <string name="ui_no_results" formatted="false">No scan results yet</string>
+    <string name="ui_nr" formatted="false">No.</string>
+    <string name="ui_type" formatted="false">Type</string>
+    <string name="ui_code" formatted="false">Code</string>
+    <string name="ui_barcode" formatted="false">Barcode</string>
+    <string name="ui_photo_error" formatted="false">Some photos could not be read</string>
+    <string name="ui_choose_folder" formatted="false">Choose a folder for photo and document</string>
+    <string name="ui_tracking_note" formatted="false">Keep the products in view until you capture the photo</string>
+    <string name="ui_confirm_reset" formatted="false">Clear the current scan session?</string>
+    <string name="ui_delete_question" formatted="false">Remove this scan?</string>
+    <string name="ui_flash">Flash</string>
+    <string name="ui_camera">Camera</string>
+    <string name="ui_gallery">Scan from gallery</string>
+    <string name="ui_detected">%1$d codes detected</string>
+    <string name="ui_scan_button">Scan</string>
+    <string name="ui_switch_camera">Switch camera</string>
+    <string name="ui_camera_mode" formatted="false">Camera mode</string>
+    <string name="ui_save_scan" formatted="false">Save scan</string>
+    <string name="ui_review_products" formatted="false">Review products</string>
+    <string name="ui_product_count" formatted="false">%1$d products</string>
+    <string name="ui_product" formatted="false">Product</string>
+    <string name="ui_review" formatted="false">review</string>
+    <string name="ui_unknown_lot" formatted="false">Unknown lot</string>
+    <string name="ui_conflict" formatted="false">Conflicting data</string>
+    <string name="ui_group_hint" formatted="false">Labels stay separate. Group only codes on the same physical box. Review counts and lots; manual lots remain marked.</string>
+    <string name="ui_group_selected" formatted="false">Group selected codes</string>
+    <string name="ui_split_selected" formatted="false">Split selected groups</string>
+    <string name="ui_grouping_error" formatted="false">Do not group different lots or products. Split conflicting codes.</string>
+</resources>

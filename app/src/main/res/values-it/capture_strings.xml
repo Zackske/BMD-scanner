@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_capture_step">Passo %1$d</string>
+    <string name="ui_capture_photo">Scatta foto</string>
+    <string name="ui_photo_step">Foto %1$d di 5</string>
+    <string name="ui_marker_setup">Posiziona prima i 4 marcatori</string>
+    <string name="ui_marker_ack">Capito · foto 1</string>
+    <string name="ui_marker_info">Istruzioni sui marcatori</string>
+</resources>

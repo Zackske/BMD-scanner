@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_brand" formatted="false">BMD Tarama Büyücüsü</string>
+    <string name="ui_short_name" formatted="false">Tarama Büyücüsü</string>
+    <string name="ui_scan" formatted="false">Tara</string>
+    <string name="ui_photos" formatted="false">Fotoğraf yükle</string>
+    <string name="ui_results" formatted="false">Sonuçlar</string>
+    <string name="ui_settings" formatted="false">Ayarlar</string>
+    <string name="ui_language" formatted="false">Dil</string>
+    <string name="ui_choose_language" formatted="false">Dil seçin</string>
+    <string name="ui_scanner_settings" formatted="false">Tarayıcı ayarları</string>
+    <string name="ui_scanner" formatted="false">Tarayıcı</string>
+    <string name="ui_scanner_hint" formatted="false">Çözünürlük, hassasiyet ve titreşim</string>
+    <string name="ui_document_type" formatted="false">Belge türü</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word ve PDF</string>
+    <string name="ui_about" formatted="false">Uygulama hakkında</string>
+    <string name="ui_back" formatted="false">Geri</string>
+    <string name="ui_close" formatted="false">Kapat</string>
+    <string name="ui_done" formatted="false">Tamam</string>
+    <string name="ui_apply" formatted="false">Uygula</string>
+    <string name="ui_cancel" formatted="false">İptal</string>
+    <string name="ui_save" formatted="false">Kaydet</string>
+    <string name="ui_save_changes" formatted="false">Değişiklikleri kaydet</string>
+    <string name="ui_live" formatted="false">CANLI ALGILAMA</string>
+    <string name="ui_both" formatted="false">QR + barkodlar</string>
+    <string name="ui_qr_only" formatted="false">Yalnızca QR</string>
+    <string name="ui_bar_only" formatted="false">Yalnızca barkodlar</string>
+    <string name="ui_code_filter" formatted="false">Kodları tara</string>
+    <string name="ui_count" formatted="false">%1$d kod tarandı</string>
+    <string name="ui_split" formatted="false">%1$d QR kod · %2$d barkod</string>
+    <string name="ui_same_hint" formatted="false">Aynı içerik her ürün için sayılır</string>
+    <string name="ui_empty" formatted="false">Kamerayı kodlara yöneltin</string>
+    <string name="ui_all_results" formatted="false">Tüm sonuçları görüntüle</string>
+    <string name="ui_capture" formatted="false">Fotoğraf çek</string>
+    <string name="ui_captured" formatted="false">Fotoğraf çekildi</string>
+    <string name="ui_local_save" formatted="false">Cihaza kaydet</string>
+    <string name="ui_local_hint" formatted="false">Fotoğrafı ve sonuçları kaydet</string>
+    <string name="ui_share" formatted="false">Paylaş</string>
+    <string name="ui_share_hint" formatted="false">E-posta veya diğer uygulamalar</string>
+    <string name="ui_again" formatted="false">Yeniden tara</string>
+    <string name="ui_list" formatted="false">Taranan kodlar</string>
+    <string name="ui_edit" formatted="false">Kodu düzelt</string>
+    <string name="ui_delete" formatted="false">Kaldır</string>
+    <string name="ui_reset" formatted="false">Taramayı sıfırla</string>
+    <string name="ui_reset_hint" formatted="false">Yeni tarama oturumu başladı</string>
+    <string name="ui_resolution" formatted="false">Çözünürlük</string>
+    <string name="ui_actual" formatted="false">Gerçek</string>
+    <string name="ui_highest" formatted="false">Desteklenen en yüksek çözünürlük</string>
+    <string name="ui_fallback" formatted="false">Kamera gerekirse en yakın desteklenen boyutu seçer</string>
+    <string name="ui_sensitivity" formatted="false">Hassasiyet</string>
+    <string name="ui_stability" formatted="false">Kod tanıma kararlılığı</string>
+    <string name="ui_low" formatted="false">Düşük</string>
+    <string name="ui_normal" formatted="false">Normal</string>
+    <string name="ui_high" formatted="false">Yüksek</string>
+    <string name="ui_vibrate" formatted="false">Tarama sonrası titreşim</string>
+    <string name="ui_vibrate_hint" formatted="false">Taranan her kod için kısa titreşim</string>
+    <string name="ui_lamp" formatted="false">Işık</string>
+    <string name="ui_on" formatted="false">AÇIK</string>
+    <string name="ui_off" formatted="false">KAPALI</string>
+    <string name="ui_zoom" formatted="false">Yakınlaştırma</string>
+    <string name="ui_document_settings" formatted="false">Belge ayarları</string>
+    <string name="ui_choose_format" formatted="false">Dosya biçimini seçin</string>
+    <string name="ui_filename" formatted="false">Dosya adı</string>
+    <string name="ui_extension_hint" formatted="false">Uzantı otomatik eklenir</string>
+    <string name="ui_export" formatted="false">Belge oluştur</string>
+    <string name="ui_saved" formatted="false">Kaydedildi</string>
+    <string name="ui_busy" formatted="false">İşleniyor…</string>
+    <string name="ui_error" formatted="false">Bir hata oluştu</string>
+    <string name="ui_permission" formatted="false">Tarama için kamera izni gerekli</string>
+    <string name="ui_no_camera" formatted="false">Kullanılabilir kamera bulunamadı</string>
+    <string name="ui_no_lamp" formatted="false">Bu kamerada ışık yok</string>
+    <string name="ui_no_results" formatted="false">Henüz tarama sonucu yok</string>
+    <string name="ui_nr" formatted="false">No.</string>
+    <string name="ui_type" formatted="false">Tür</string>
+    <string name="ui_code" formatted="false">Kod</string>
+    <string name="ui_barcode" formatted="false">Barkod</string>
+    <string name="ui_photo_error" formatted="false">Bazı fotoğraflar okunamadı</string>
+    <string name="ui_choose_folder" formatted="false">Fotoğraf ve belge için klasör seçin</string>
+    <string name="ui_tracking_note" formatted="false">Fotoğrafı çekene kadar ürünleri kadrajda tutun</string>
+    <string name="ui_confirm_reset" formatted="false">Geçerli tarama oturumu silinsin mi?</string>
+    <string name="ui_delete_question" formatted="false">Bu tarama kaldırılsın mı?</string>
+    <string name="ui_flash">Flaş</string>
+    <string name="ui_camera">Kamera</string>
+    <string name="ui_gallery">Galeriden tara</string>
+    <string name="ui_detected">%1$d kod tanındı</string>
+    <string name="ui_scan_button">Tara</string>
+    <string name="ui_switch_camera">Kamerayı değiştir</string>
+    <string name="ui_camera_mode" formatted="false">Kamera modu</string>
+    <string name="ui_save_scan" formatted="false">Taramayı kaydet</string>
+    <string name="ui_review_products" formatted="false">Ürünleri kontrol et</string>
+    <string name="ui_product_count" formatted="false">%1$d ürün</string>
+    <string name="ui_product" formatted="false">Ürün</string>
+    <string name="ui_review" formatted="false">kontrol</string>
+    <string name="ui_unknown_lot" formatted="false">Lot bilinmiyor</string>
+    <string name="ui_conflict" formatted="false">Çelişkili veriler</string>
+    <string name="ui_group_hint" formatted="false">Etiketler ayrı kalır. Yalnız aynı kutudaki kodları gruplayın. Sayıları ve lotları kontrol edin; elle girilen lotlar işaretli kalır.</string>
+    <string name="ui_group_selected" formatted="false">Seçili kodları grupla</string>
+    <string name="ui_split_selected" formatted="false">Seçili grupları ayır</string>
+    <string name="ui_grouping_error" formatted="false">Farklı lotları veya ürünleri gruplamayın. Çelişkili kodları ayırın.</string>
+</resources>
