@@ -42,6 +42,20 @@ public class CustomerPortalTest {
     }
     @Before public void seedPrivateSyntheticRegister()throws Exception{register().importText(fixture(84));}
     @After public void reset(){new File(DeviceSupport.context().getNoBackupFilesDir(),CustomerRegister.FILE_NAME).delete();DeviceSupport.clear();}
+    @Test public void portalUsesGpuAndReusesCustomerTilesWhenOpeningDetails()throws Exception{
+        try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
+            ready(scenario);
+            scenario.onActivity(a->{
+                assertTrue("Portal window must support GPU rendering",a.portal.isHardwareAccelerated());
+                assertEquals("Portal must not force CPU rasterization",View.LAYER_TYPE_NONE,a.portal.getLayerType());
+            });
+            assertEquals("true",js(scenario,"window.originalCustomerTile=document.querySelector('.cp-customer');window.originalCustomerTile.click();true"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer')===window.originalCustomerTile"));
+            assertEquals("true",js(scenario,"window.BmdCustomerPortal.back();document.querySelector('.cp-customer')===window.originalCustomerTile"));
+            assertEquals("false",js(scenario,"document.querySelector('.cp-grid').hidden"));
+            shot(scenario,"portal-gpu-customer-tiles");
+        }
+    }
     private ActivityScenario<CustomerPortalActivity> launch(String theme,String language){
         DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().clear().putString("language",language).putString("colourTheme",theme).commit();
         return ActivityScenario.launch(new Intent(DeviceSupport.context(),CustomerPortalActivity.class).putExtra("language",language));

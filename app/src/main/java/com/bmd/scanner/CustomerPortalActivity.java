@@ -15,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -39,6 +40,7 @@ public class CustomerPortalActivity extends AppCompatActivity {
     private volatile String rememberedState="{}";
     private String language;
     private String brand;
+    private int loadGeneration;
     private CustomerRegister register;
     private final ExecutorService imports=Executors.newSingleThreadExecutor();
     private final ActivityResultLauncher<String[]> picker=registerForActivityResult(new ActivityResultContracts.OpenDocument(),uri->{if(uri!=null)importCustomers(uri);});
@@ -58,8 +60,9 @@ public class CustomerPortalActivity extends AppCompatActivity {
 
         FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(ThemeSkin.active.background);
         portal=new WebView(this);portal.setTag("customer-portal");portal.setBackgroundColor(ThemeSkin.active.background);
-        // Keep SVG flag masks and overlapping tile layers consistent across WebView GPU drivers.
-        portal.setLayerType(View.LAYER_TYPE_SOFTWARE,null);
+        // Let WebView composite and scroll with the window's GPU acceleration.
+        // A software layer rasterizes the whole portal on the UI thread.
+        portal.setLayerType(View.LAYER_TYPE_NONE,null);
         WebSettings settings=portal.getSettings();settings.setJavaScriptEnabled(true);
         settings.setAllowFileAccess(false);settings.setAllowContentAccess(false);
         settings.setBlockNetworkLoads(true);settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
@@ -73,13 +76,13 @@ public class CustomerPortalActivity extends AppCompatActivity {
             @Override public boolean shouldOverrideUrlLoading(WebView view,String url){return true;}
             @Override public WebResourceResponse shouldInterceptRequest(WebView view,WebResourceRequest request){return bundledResource(request.getUrl());}
         });
-        shell.addView(portal,new FrameLayout.LayoutParams(-1,-1));
-        BackButton back=new BackButton(this,words.getString(R.string.ui_back));back.setTag("customer-portal-back");
-        back.setContentDescription(words.getString(R.string.ui_back));back.setClickable(true);back.setFocusable(true);
-        back.setOnClickListener(v->getOnBackPressedDispatcher().onBackPressed());
-        boolean compact=getResources().getConfiguration().screenWidthDp<=360;
-        FrameLayout.LayoutParams bp=new FrameLayout.LayoutParams(dp(compact?44:48),dp(compact?44:48),Gravity.TOP|Gravity.START);
-        bp.leftMargin=dp(compact?12:18);bp.topMargin=dp(27);shell.addView(back,bp);
+        shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));
+        LinearLayout contents=new LinearLayout(this);contents.setOrientation(LinearLayout.VERTICAL);
+        MenuHeader header=new MenuHeader(this,"portal",words.getString(R.string.ui_portal),words.getString(R.string.ui_back),()->getOnBackPressedDispatcher().onBackPressed());
+        header.setPadding(dp(16),dp(8),dp(16),0);header.findViewWithTag("menu-back").setTag("customer-portal-back");
+        contents.addView(header,new LinearLayout.LayoutParams(-1,-2));
+        contents.addView(portal,new LinearLayout.LayoutParams(-1,0,1));
+        shell.addView(contents,new FrameLayout.LayoutParams(-1,-1));
         ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{
             androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());
             view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;
@@ -93,9 +96,11 @@ public class CustomerPortalActivity extends AppCompatActivity {
         loadPortal();
     }
     private void loadPortal(){
-        try{
-            JSONObject state=new JSONObject(rememberedState);
-            state.put("theme",ThemeSkin.active.id);state.put("language",language);state.put("brand",brand);
+        final int generation=++loadGeneration;
+        final String savedState=rememberedState,theme=ThemeSkin.active.id;
+        imports.execute(()->{try{
+            JSONObject state=new JSONObject(savedState);
+            state.put("theme",theme);state.put("language",language);state.put("brand",brand);
             JSONObject art=new JSONObject(readAsset("customer-portal/art.json"));art.put("maps",new JSONObject(readAsset("customer-portal/maps.json")));
             JSONArray customers;
             try{customers=register.read();}catch(Exception invalidPrivateFile){customers=new JSONArray();}
@@ -103,8 +108,10 @@ public class CustomerPortalActivity extends AppCompatActivity {
                 .replace("/*BMD_NATIVE_STATE*/null",state.toString().replace("<","\\u003c"))
                 .replace("/*BMD_CUSTOMER_DATA*/[]",customers.toString().replace("<","\\u003c"))
                 .replace("/*BMD_PORTAL_ASSETS*/{}",art.toString().replace("<","\\u003c"));
-            portal.loadDataWithBaseURL("https://bmd.invalid/customer-portal/",html,"text/html","UTF-8",null);
-        }catch(Exception failure){throw new IllegalStateException("Offline portal artwork could not be read",failure);}
+            runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&portal!=null&&generation==loadGeneration)
+                portal.loadDataWithBaseURL("https://bmd.invalid/customer-portal/",html,"text/html","UTF-8",null);});
+        }catch(Exception failure){runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&generation==loadGeneration)
+            throw new IllegalStateException("Offline portal artwork could not be read",failure);});}});
     }
     void importCustomers(Uri uri){
         imports.execute(()->{

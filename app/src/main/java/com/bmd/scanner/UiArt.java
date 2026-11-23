@@ -70,7 +70,7 @@ final class UiArt {
     static class Wave extends View {
         private final Paint p=new Paint(3);
         Wave(Context c){super(c);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
-        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,0,140,255));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
+        @Override protected void onDraw(Canvas c){float w=getWidth(),h=getHeight();Path wave=new Path();wave.moveTo(-10,h*.6f);wave.cubicTo(w*.27f,-h*.2f,w*.56f,h*1.3f,w+10,h*.3f);p.setStyle(Paint.Style.STROKE);for(int i=7;i>0;i--){p.setStrokeWidth(i*2);p.setColor(Color.argb(12,Color.red(ThemeSkin.active.accent),Color.green(ThemeSkin.active.accent),Color.blue(ThemeSkin.active.accent)));c.drawPath(wave,p);}p.setStrokeWidth(2);p.setColor(ThemeSkin.active.accent);c.drawPath(wave,p);p.setStrokeWidth(.7f);p.setColor(Color.WHITE);c.drawPath(wave,p);}
     }
     static class Brand extends androidx.appcompat.widget.AppCompatImageView {
         Brand(Context c){this(c,ThemeSkin.load(c));}
