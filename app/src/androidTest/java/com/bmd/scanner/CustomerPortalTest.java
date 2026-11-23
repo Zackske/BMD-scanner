@@ -60,6 +60,26 @@ public class CustomerPortalTest {
         DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().clear().putString("language",language).putString("colourTheme",theme).commit();
         return ActivityScenario.launch(new Intent(DeviceSupport.context(),CustomerPortalActivity.class).putExtra("language",language));
     }
+    @Test public void menuTitlesFitTheirMeasuredBoundsInEveryLanguage()throws Exception{
+        try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
+            ready(scenario);
+            scenario.onActivity(activity->{
+                for(String language:MainActivity.LANGS){
+                    Configuration config=new Configuration(activity.getResources().getConfiguration());config.setLocale(Locale.forLanguageTag(language));
+                    android.content.Context words=activity.createConfigurationContext(config);
+                    for(int resource:new int[]{R.string.ui_settings,R.string.ui_scan,R.string.ui_portal})for(int widthDp:new int[]{320,360,448}){
+                        MenuHeader header=new MenuHeader(words,"portal",words.getString(resource),words.getString(R.string.ui_back),()->{});
+                        int width=Math.round(widthDp*activity.getResources().getDisplayMetrics().density);
+                        header.setPadding(32,16,32,0);header.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));header.layout(0,0,width,header.getMeasuredHeight());
+                        android.text.Layout layout=header.title.getLayout();assertNotNull(layout);
+                        assertEquals("Every title character is laid out in "+language,header.title.length(),layout.getLineEnd(layout.getLineCount()-1));
+                        assertTrue("Title height must include all text lines in "+language,layout.getHeight()<=header.title.getHeight());
+                        for(int line=0;line<layout.getLineCount();line++)assertTrue("Title width must include all text in "+language,layout.getLineWidth(line)<=header.title.getWidth()-header.title.getPaddingLeft()-header.title.getPaddingRight()+1);
+                    }
+                }
+            });
+        }
+    }
     private String js(ActivityScenario<CustomerPortalActivity> scenario,String code)throws Exception{
         AtomicReference<String> result=new AtomicReference<>();CountDownLatch latch=new CountDownLatch(1);
         scenario.onActivity(a->a.portal.evaluateJavascript(code,v->{result.set(v);latch.countDown();}));

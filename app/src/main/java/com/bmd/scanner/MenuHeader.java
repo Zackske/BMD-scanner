@@ -7,16 +7,16 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import androidx.core.widget.TextViewCompat;
 import android.util.TypedValue;
 import java.util.HashMap;
 
@@ -25,38 +25,46 @@ final class MenuHeader extends ViewGroup {
     private final BackButton back;
     private final View icon;
     private final UiArt.Wave wave;
-    private final Drawable smoke;
+    private final Smoke smoke;
     final TextView title;
     private int rowHeight;
     private boolean compact;
 
     MenuHeader(Context context,String key,String caption,String backLabel,Runnable navigate){
-        super(context);setTag("menu-header");setClipChildren(false);setWillNotDraw(false);
-        smoke=UiArt.mist(context);smoke.setCallback(this);smoke.setAlpha(46);
-        smoke.setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));
+        super(context);setTag("menu-header");setClipChildren(false);
+        smoke=new Smoke(context);
         back=new BackButton(context,backLabel);back.setTag("menu-back");back.setOnClickListener(v->navigate.run());
         icon=icon(context,key);icon.setTag("menu-header-icon-"+key);
         title=new TextView(context);title.setTag("page-title");title.setText(caption);
         title.setTextColor(ThemeSkin.active.text);title.setTypeface(ReferenceArt.face(context,false,900));
         title.setGravity(Gravity.CENTER_VERTICAL);title.setIncludeFontPadding(false);title.setMaxLines(2);
-        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(title,18,26,1,TypedValue.COMPLEX_UNIT_SP);
+        title.setPadding(dp(1),0,dp(1),0);title.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
         wave=new UiArt.Wave(context);wave.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-        addView(back);addView(icon);addView(title);addView(wave);
+        addView(smoke);addView(back);addView(icon);addView(title);addView(wave);
     }
-    MenuHeader compact(){compact=true;TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(title,18,26,1,TypedValue.COMPLEX_UNIT_SP);requestLayout();return this;}
+    MenuHeader compact(){compact=true;smoke.setVisibility(GONE);requestLayout();return this;}
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     @Override protected void onMeasure(int widthSpec,int heightSpec){
         int width=MeasureSpec.getSize(widthSpec),available=Math.max(1,width-getPaddingLeft()-getPaddingRight());
         int button=dp(available<=dp(360)?44:48),art=dp(38),reserved=compact?dp(58):dp(100),gap=dp(8);
         back.measure(MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY));
         icon.measure(MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY));
-        title.measure(MeasureSpec.makeMeasureSpec(Math.max(1,available-reserved-art-gap),MeasureSpec.AT_MOST),MeasureSpec.makeMeasureSpec(dp(64),MeasureSpec.AT_MOST));
+        int titleLimit=Math.max(1,available-reserved-art-gap),inkLimit=Math.max(1,titleLimit-dp(2));
+        float scaled=getResources().getDisplayMetrics().scaledDensity,size=26;
+        android.text.TextPaint probe=new android.text.TextPaint(title.getPaint());
+        probe.setTextSize(size*scaled);
+        while(size>18&&probe.measureText(title.getText().toString())>inkLimit){size-=.5f;probe.setTextSize(size*scaled);}
+        if(Math.abs(title.getTextSize()-size*scaled)>.1f)title.setTextSize(TypedValue.COMPLEX_UNIT_PX,size*scaled);
+        int titleWidth=Math.min(titleLimit,(int)Math.ceil(probe.measureText(title.getText().toString()))+dp(2));
+        title.measure(MeasureSpec.makeMeasureSpec(Math.max(1,titleWidth),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(dp(64),MeasureSpec.AT_MOST));
         rowHeight=Math.max(dp(69),title.getMeasuredHeight()+dp(12));
+        smoke.measure(MeasureSpec.makeMeasureSpec(Math.round(available*.92f),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(rowHeight+dp(8),MeasureSpec.EXACTLY));
         wave.measure(MeasureSpec.makeMeasureSpec(available,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(dp(14),MeasureSpec.EXACTLY));
         setMeasuredDimension(width,resolveSize(rowHeight+dp(14)+getPaddingTop()+getPaddingBottom(),heightSpec));
     }
     @Override protected void onLayout(boolean changed,int l,int t,int r,int b){
         int left=getPaddingLeft(),top=getPaddingTop(),available=getWidth()-left-getPaddingRight();
+        smoke.layout(left+Math.round(available*.04f),top,getWidth()-getPaddingRight()-Math.round(available*.04f),top+rowHeight+dp(8));
         int button=back.getMeasuredWidth(),art=icon.getMeasuredWidth(),gap=dp(8),reserved=compact?dp(58):dp(100);
         if(!compact){
             back.layout(left,top+(rowHeight-button)/2,left+button,top+(rowHeight+button)/2);
@@ -73,15 +81,20 @@ final class MenuHeader extends ViewGroup {
         title.layout(x,y,x+title.getMeasuredWidth(),y+title.getMeasuredHeight());
         wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
     }
-    @Override protected void onDraw(Canvas canvas){
-        super.onDraw(canvas);if(compact)return;
-        int width=getWidth()-getPaddingLeft()-getPaddingRight();
-        smoke.setBounds(getPaddingLeft()+Math.round(width*.04f),getPaddingTop(),getWidth()-getPaddingRight()-Math.round(width*.04f),getPaddingTop()+rowHeight+dp(8));
-        smoke.draw(canvas);
+    /** Cache the illustration separately: drifting smoke must never remeasure the heading. */
+    private static final class Smoke extends ImageView {
+        private ObjectAnimator drift;
+        Smoke(Context context){super(context);setImageBitmap(ReferenceArt.bitmap(context,R.drawable.header_smoke));setScaleType(ScaleType.FIT_XY);setImageAlpha(46);setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_HARDWARE,null);}
+        private void motion(){
+            boolean active=isAttachedToWindow()&&getWindowVisibility()==VISIBLE&&isShown()&&ValueAnimator.areAnimatorsEnabled();
+            if(!active){if(drift!=null){drift.cancel();drift=null;}return;}
+            if(drift==null){float distance=2*getResources().getDisplayMetrics().density;drift=ObjectAnimator.ofFloat(this,View.TRANSLATION_X,-distance,distance);drift.setDuration(8400);drift.setInterpolator(new AccelerateDecelerateInterpolator());drift.setRepeatCount(ValueAnimator.INFINITE);drift.setRepeatMode(ValueAnimator.REVERSE);drift.start();}
+        }
+        @Override protected void onAttachedToWindow(){super.onAttachedToWindow();motion();}
+        @Override protected void onVisibilityChanged(View changed,int visibility){super.onVisibilityChanged(changed,visibility);motion();}
+        @Override protected void onWindowVisibilityChanged(int visibility){super.onWindowVisibilityChanged(visibility);motion();}
+        @Override protected void onDetachedFromWindow(){if(drift!=null){drift.cancel();drift=null;}super.onDetachedFromWindow();}
     }
-    @Override protected boolean verifyDrawable(Drawable drawable){return drawable==smoke||super.verifyDrawable(drawable);}
-    @Override protected void onAttachedToWindow(){super.onAttachedToWindow();smoke.setVisible(!compact,false);}
-    @Override protected void onDetachedFromWindow(){smoke.setVisible(false,false);super.onDetachedFromWindow();}
     static View icon(Context context,String key){
         int resource;
         switch(key){
