@@ -74,7 +74,7 @@ public class CustomerPortalTest {
                         android.text.Layout layout=header.title.getLayout();assertNotNull(layout);
                         assertEquals("Every title character is laid out in "+language,header.title.length(),layout.getLineEnd(layout.getLineCount()-1));
                         assertTrue("Title height must include all text lines in "+language,layout.getHeight()<=header.title.getHeight());
-                        for(int line=0;line<layout.getLineCount();line++)assertTrue("Title width must include all text in "+language,layout.getLineWidth(line)<=header.title.getWidth()-header.title.getPaddingLeft()-header.title.getPaddingRight()+1);
+                        for(int line=0;line<layout.getLineCount();line++)assertTrue("Title width must include all text in "+language+" caption="+header.title.getText()+" viewport="+widthDp+" line="+layout.getLineWidth(line)+" available="+(header.title.getWidth()-header.title.getPaddingLeft()-header.title.getPaddingRight()),layout.getLineWidth(line)<=header.title.getWidth()-header.title.getPaddingLeft()-header.title.getPaddingRight()+1);
                     }
                 }
             });
@@ -233,3 +233,4 @@ public class CustomerPortalTest {
         }
     }
 }
+
