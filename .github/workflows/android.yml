@@ -201,8 +201,9 @@ jobs:
           set -euo pipefail
           version="$(sed -n "s/.*versionName '\([^']*\)'.*/\1/p" app/build.gradle)"
           tag="v${version}-build.${GITHUB_RUN_NUMBER}"
-          cp app/build/outputs/apk/debug/app-debug.apk BMD-Scan.apk
-          gh release create "$tag" BMD-Scan.apk --target "$GITHUB_SHA" --title "BMD Scan ${version}" --notes-file "docs/releases/${version}.md"
+          apk="BMD-Scan-${version}-build.${GITHUB_RUN_NUMBER}.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "$apk"
+          gh release create "$tag" "$apk" --target "$GITHUB_SHA" --title "BMD Scan ${version} – build ${GITHUB_RUN_NUMBER}" --notes-file "docs/releases/${version}.md"
 
       - name: Upload diagnostic reports
         if: always()
