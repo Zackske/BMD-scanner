@@ -109,7 +109,7 @@
 #bmd-customers-preview .cp-country-header::before {content:none}
 #bmd-customers-preview .cp-customer:hover {border-color:var(--nation-b)}
 #bmd-customers-preview .cp-country {position:relative;justify-self:start;align-self:stretch;z-index:3;width:calc(100% - 72px);min-width:min(72px,calc(100% - 64px));max-width:calc(100% - 64px);min-height:44px;flex-direction:column;gap:3px;padding:4px 6px;border:1px solid var(--nation-a);border-left-width:8px;border-left-color:color-mix(in srgb,var(--nation-a) 72%,#000);padding-left:3px;border-radius:6px;background:color-mix(in srgb,var(--nation-a) 25%,#fff);color:#000;font-size:12px;line-height:1.2;text-align:center}
-#bmd-customers-preview .cp-country>span {width:100%;min-width:0;overflow-wrap:anywhere}
+#bmd-customers-preview .cp-country>span {width:100%;min-width:0;overflow-wrap:anywhere;text-wrap:balance}
 #bmd-customers-preview .cp-country .cp-flag {width:18px;height:14px}
 #bmd-customers-preview .cp-map-stage {position:absolute;z-index:1;inset:4px 4px 26px;display:block;pointer-events:none}
 #bmd-customers-preview .cp-mini-map {display:block;width:100%;height:100%;overflow:visible}
@@ -137,6 +137,8 @@
  #bmd-customers-preview .cp-back {width:44px;height:44px;margin-top:-22px}
 }
 @media(prefers-reduced-motion:reduce) {#bmd-customers-preview .cp-back {transition:none}}
+#bmd-customers-preview .cp-country {width:calc(100% - 60px);min-width:0;max-width:calc(100% - 56px);padding-inline:2px}
+@media(max-width:360px) {#bmd-customers-preview .cp-country {width:calc(100% - 56px);max-width:calc(100% - 56px);padding-inline:1px;border-left-width:6px}}
 html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adjust:100%}
 #bmd-customers-preview {display:block;padding:0;min-height:100vh}
 #bmd-customers-preview .cp-screen {max-width:none;min-height:100vh;border-radius:0}
