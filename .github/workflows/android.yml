@@ -18,6 +18,8 @@ jobs:
     name: Build Android APK
     runs-on: ubuntu-24.04
     timeout-minutes: 40
+    env:
+      BMD_DEBUG_KEYSTORE: ${{ runner.temp }}/bmd-signing/debug.keystore
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,11 +52,29 @@ jobs:
           gradle --version
           gradle --version | grep -Fx 'Gradle 8.9'
 
-      - name: Keep debug signing key for subsequent test builds
-        uses: actions/cache@v4
+      - name: Restore test signing key
+        id: signing-key
+        uses: actions/cache/restore@v4
         with:
-          path: ~/.android/debug.keystore
-          key: bmd-debug-keystore-v1
+          path: ${{ env.BMD_DEBUG_KEYSTORE }}
+          key: bmd-debug-signing-v2
+
+      - name: Prepare test signing key
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "$BMD_DEBUG_KEYSTORE")"
+          if [[ ! -s "$BMD_DEBUG_KEYSTORE" ]]; then
+            keytool -genkeypair -keystore "$BMD_DEBUG_KEYSTORE" -storetype JKS -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
+          keytool -list -keystore "$BMD_DEBUG_KEYSTORE" -storepass android -alias androiddebugkey
+
+      - name: Preserve signing key before emulator setup
+        if: steps.signing-key.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.BMD_DEBUG_KEYSTORE }}
+          key: bmd-debug-signing-v2
 
       - name: Build and lint Debug APK
         # Check offline artwork and ensure private registers are excluded.
