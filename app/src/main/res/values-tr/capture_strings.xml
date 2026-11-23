@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ui_capture_step">Adım %1$d</string>
-    <string name="ui_capture_photo">Fotoğraf çek</string>
-    <string name="ui_photo_step">Fotoğraf %1$d / 5</string>
-    <string name="ui_marker_setup">Önce 4 işaretçiyi yerleştirin</string>
-    <string name="ui_marker_ack">Anladım · fotoğraf 1</string>
-    <string name="ui_marker_info">İşaretçi açıklaması</string>
-</resources>

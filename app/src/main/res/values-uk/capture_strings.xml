@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ui_capture_step">Крок %1$d</string>
-    <string name="ui_capture_photo">Зробити фото</string>
-    <string name="ui_photo_step">Фото %1$d із 5</string>
-    <string name="ui_marker_setup">Спочатку розмістіть 4 маркери</string>
-    <string name="ui_marker_ack">Зрозуміло · фото 1</string>
-    <string name="ui_marker_info">Інструкція щодо маркерів</string>
-</resources>

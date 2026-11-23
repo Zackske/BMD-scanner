@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ui_capture_step">चरण %1$d</string>
-    <string name="ui_capture_photo">फ़ोटो लें</string>
-    <string name="ui_photo_step">फ़ोटो %1$d / 5</string>
-    <string name="ui_marker_setup">पहले 4 मार्कर रखें</string>
-    <string name="ui_marker_ack">समझ गया · फ़ोटो 1</string>
-    <string name="ui_marker_info">मार्कर संबंधी निर्देश</string>
-</resources>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="ui_capture_step">Stap %1$d</string>
-    <string name="ui_capture_photo">Foto maken</string>
-    <string name="ui_photo_step">Foto %1$d van 5</string>
-    <string name="ui_marker_setup">Plaats eerst de 4 markeringen</string>
-    <string name="ui_marker_ack">Begrepen · naar foto 1</string>
-    <string name="ui_marker_info">Uitleg over markeringen</string>
-</resources>

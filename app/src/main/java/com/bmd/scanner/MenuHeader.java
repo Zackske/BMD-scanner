@@ -82,7 +82,7 @@ final class MenuHeader extends ViewGroup {
         wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
     }
     /** Cache the illustration separately: drifting smoke must never remeasure the heading. */
-    private static final class Smoke extends ImageView {
+    private static final class Smoke extends androidx.appcompat.widget.AppCompatImageView {
         private ObjectAnimator drift;
         Smoke(Context context){super(context);setImageBitmap(ReferenceArt.bitmap(context,R.drawable.header_smoke));setScaleType(ScaleType.FIT_XY);setImageAlpha(46);setColorFilter(new PorterDuffColorFilter(ThemeSkin.active.mistInk(),PorterDuff.Mode.SRC_IN));setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);setLayerType(LAYER_TYPE_HARDWARE,null);}
         private void motion(){
