@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">अंतिम जाँच स्कैन</string>
+    <string name="ui_generic_scan" formatted="false">QR स्कैनर</string>
+    <string name="ui_pallet_scanner" formatted="false">पैलेट और बॉक्स स्कैन</string>
+    <string name="ui_document_scanner" formatted="false">दस्तावेज़ जाँच स्कैनर</string>
+    <string name="ui_picking_control" formatted="false">पिकिंग जाँच</string>
+    <string name="ui_picking_control_hint" formatted="false">पिकलिस्ट पढ़ें और उत्पाद व मात्रा जाँचें</string>
+    <string name="ui_final_control_hint" formatted="false">पिकलिस्ट पढ़ें और पैकिंग से पहले या बाद में जाँचें</string>
+    <string name="ui_control_picklist_first" formatted="false">दोनों जाँच पिकलिस्ट स्कैन करने से शुरू होती हैं।</string>
+    <string name="ui_packing_question" formatted="false">क्या उत्पाद पहले ही पैक हो चुके हैं?</string>
+    <string name="ui_packed_box" formatted="false">बॉक्स में</string>
+    <string name="ui_packed_box_hint" formatted="false">चिह्नों और 5 फ़ोटो चरणों के साथ</string>
+    <string name="ui_before_packing" formatted="false">पैकिंग से पहले</string>
+    <string name="ui_before_packing_hint" formatted="false">चिह्नों के बिना उत्पाद स्कैन करें</string>
+    <string name="ui_generic_hint" formatted="false">कैमरा QR कोड या बारकोड की ओर करें</string>
+    <string name="ui_generic_result" formatted="false">कोड मिला</string>
+    <string name="ui_generic_results" formatted="false">मिले हुए कोड</string>
+    <string name="ui_generic_open_link" formatted="false">लिंक खोलें</string>
+    <string name="ui_generic_copy" formatted="false">कॉपी करें</string>
+    <string name="ui_generic_copied" formatted="false">कॉपी हो गया</string>
+    <string name="ui_generic_empty" formatted="false">कोई पढ़ने योग्य कोड नहीं मिला</string>
+    <string name="ui_generic_error" formatted="false">स्कैन नहीं हो सका। फिर कोशिश करें।</string>
+</resources>

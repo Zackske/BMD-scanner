@@ -21,11 +21,12 @@ import java.util.HashMap;
 final class MenuHeader extends ViewGroup {
     private final BackButton back;
     private final View icon;
-    private final UiArt.Wave wave;
+    private final HeaderCurve wave;
     private final Smoke smoke;
     final TextView title;
+    private final TextView subtitle;
     private int rowHeight;
-    private boolean compact;
+    private boolean compact,prominent,homeSpacing;
 
     MenuHeader(Context context,String key,String caption,String backLabel,Runnable navigate){
         super(context);setTag("menu-header");setClipChildren(false);
@@ -38,47 +39,73 @@ final class MenuHeader extends ViewGroup {
         if(android.os.Build.VERSION.SDK_INT>=29)title.setBreakStrategy(android.graphics.text.LineBreaker.BREAK_STRATEGY_SIMPLE);
         title.setHyphenationFrequency(android.text.Layout.HYPHENATION_FREQUENCY_NONE);
         title.setPadding(dp(4),0,dp(4),0);title.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
-        wave=new UiArt.Wave(context);wave.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-        addView(smoke);addView(back);addView(icon);addView(title);addView(wave);
+        subtitle=new TextView(context);subtitle.setTag("menu-header-subtitle");subtitle.setVisibility(GONE);
+        subtitle.setTextColor(ThemeSkin.active==ThemeSkin.LIGHT?0xff8d6200:0xffffd166);
+        subtitle.setTypeface(ReferenceArt.face(context,false,800));subtitle.setIncludeFontPadding(false);
+        subtitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);subtitle.setSingleLine(true);subtitle.setPadding(dp(4),0,dp(4),0);
+        subtitle.setAutoSizeTextTypeUniformWithConfiguration(11,13,1,TypedValue.COMPLEX_UNIT_SP);
+        subtitle.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+        wave=new HeaderCurve(context);wave.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
+        addView(smoke);addView(back);addView(icon);addView(title);addView(subtitle);addView(wave);
+    }
+    void setSubtitle(String value){
+        String text=value==null?"":value;
+        if(text.contentEquals(subtitle.getText()))return;
+        subtitle.setText(text);subtitle.setVisibility(text.isEmpty()?GONE:VISIBLE);requestLayout();
     }
     MenuHeader compact(){compact=true;smoke.setVisibility(GONE);requestLayout();return this;}
+    MenuHeader prominent(){prominent=true;requestLayout();return this;}
+    MenuHeader homeSpacing(){homeSpacing=true;prominent=true;wave.homeSpacing=true;requestLayout();return this;}
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     @Override protected void onMeasure(int widthSpec,int heightSpec){
         int width=MeasureSpec.getSize(widthSpec),available=Math.max(1,width-getPaddingLeft()-getPaddingRight());
-        int button=dp(available<=dp(360)?44:48),art=dp(38),reserved=compact?dp(58):dp(100),gap=dp(8);
+        float visualScale=homeSpacing?width/(float)dp(360):1;
+        float maxSize=(homeSpacing?36:prominent?34:26)*visualScale,maxArt=(homeSpacing?76:prominent?52:38)*visualScale;
+        int button=dp(available<=dp(360)?44:48),art=dp(maxArt),reserved=button+dp(24),gap=dp(8);
         back.measure(MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(button,MeasureSpec.EXACTLY));
-        icon.measure(MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY));
-        int titleLimit=Math.max(1,available-reserved-art-gap),inkLimit=Math.max(1,titleLimit-dp(8));
-        float scaled=getResources().getDisplayMetrics().scaledDensity,size=26;
+        int titleLimit=Math.max(1,available-reserved-art-gap-dp(4)),inkLimit=Math.max(1,titleLimit-dp(8));
+        float scaled=getResources().getDisplayMetrics().scaledDensity,size=maxSize;
         android.text.TextPaint probe=new android.text.TextPaint(title.getPaint());
         probe.setTextSize(size*scaled);
-        while(size>18&&android.text.Layout.getDesiredWidth(title.getText(),probe)>inkLimit){size-=.5f;probe.setTextSize(size*scaled);}
+        while(size>18*visualScale&&android.text.Layout.getDesiredWidth(title.getText(),probe)>inkLimit){size-=.5f;probe.setTextSize(size*scaled);if(prominent){art=dp(Math.max(38*visualScale,maxArt*size/maxSize));titleLimit=Math.max(1,available-reserved-art-gap-dp(4));inkLimit=Math.max(1,titleLimit-dp(8));}}
+        icon.measure(MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(art,MeasureSpec.EXACTLY));
         if(Math.abs(title.getTextSize()-size*scaled)>.1f)title.setTextSize(TypedValue.COMPLEX_UNIT_PX,size*scaled);
         int titleWidth=Math.min(titleLimit,(int)Math.ceil(android.text.Layout.getDesiredWidth(title.getText(),probe))+dp(8)+2);
         title.measure(MeasureSpec.makeMeasureSpec(Math.max(1,titleWidth),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(dp(64),MeasureSpec.AT_MOST));
-        rowHeight=Math.max(dp(69),title.getMeasuredHeight()+dp(12));
+        boolean hasSubtitle=subtitle.getVisibility()!=GONE;
+        subtitle.measure(MeasureSpec.makeMeasureSpec(titleLimit,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(hasSubtitle?dp(24):0,MeasureSpec.AT_MOST));
+        int groupHeight=title.getMeasuredHeight()+(hasSubtitle?subtitle.getMeasuredHeight()+dp(3):0);
+        rowHeight=Math.max(homeSpacing?Math.round(width*300f/868)-dp(24):dp(69),Math.max(art,groupHeight)+dp(12));
         smoke.measure(MeasureSpec.makeMeasureSpec(Math.round(available*.92f),MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(rowHeight+dp(8),MeasureSpec.EXACTLY));
-        wave.measure(MeasureSpec.makeMeasureSpec(available,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(dp(14),MeasureSpec.EXACTLY));
-        setMeasuredDimension(width,resolveSize(rowHeight+dp(14)+getPaddingTop()+getPaddingBottom(),heightSpec));
+        int height=homeSpacing?Math.round(width*(300f/868+.04f))+dp(8):rowHeight+dp(14)+getPaddingTop()+getPaddingBottom();
+        height=Math.max(height,rowHeight+getPaddingTop()+getPaddingBottom());
+        wave.measure(MeasureSpec.makeMeasureSpec(homeSpacing?width:available,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(homeSpacing?height:dp(14),MeasureSpec.EXACTLY));
+        setMeasuredDimension(width,resolveSize(height,heightSpec));
     }
     @Override protected void onLayout(boolean changed,int l,int t,int r,int b){
         int left=getPaddingLeft(),top=getPaddingTop(),available=getWidth()-left-getPaddingRight();
         smoke.layout(left+Math.round(available*.04f),top,getWidth()-getPaddingRight()-Math.round(available*.04f),top+rowHeight+dp(8));
-        int button=back.getMeasuredWidth(),art=icon.getMeasuredWidth(),gap=dp(8),reserved=compact?dp(58):dp(100);
-        if(!compact){
-            back.layout(left,top+(rowHeight-button)/2,left+button,top+(rowHeight+button)/2);
-            int group=art+gap+title.getMeasuredWidth(),x=left+Math.max(0,(available-group)/2),centreY=top+rowHeight/2,y=centreY-art/2;
-            icon.layout(x,y,x+art,y+art);x+=art+gap;y=centreY-title.getMeasuredHeight()/2;
-            title.layout(x,y,x+title.getMeasuredWidth(),y+title.getMeasuredHeight());
-            wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));return;
-        }
+        int button=back.getMeasuredWidth(),art=icon.getMeasuredWidth(),gap=dp(8);
         back.layout(left,top+(rowHeight-button)/2,left+button,top+(rowHeight+button)/2);
-        int group=art+gap+title.getMeasuredWidth();
-        int x=left+reserved+Math.max(0,(available-reserved-group)/2),y=top+(rowHeight-art)/2;
+        int x=left+button+dp(24),y=top+(rowHeight-art)/2;
         icon.layout(x,y,x+art,y+art);x+=art+gap;
-        y=top+(rowHeight-title.getMeasuredHeight())/2;
+        boolean hasSubtitle=subtitle.getVisibility()!=GONE;
+        int groupHeight=title.getMeasuredHeight()+(hasSubtitle?subtitle.getMeasuredHeight()+dp(3):0);
+        y=top+(rowHeight-groupHeight)/2;
         title.layout(x,y,x+title.getMeasuredWidth(),y+title.getMeasuredHeight());
-        wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
+        int subtitleTop=y+title.getMeasuredHeight()+dp(3);
+        subtitle.layout(x,subtitleTop,x+subtitle.getMeasuredWidth(),subtitleTop+subtitle.getMeasuredHeight());
+        if(homeSpacing)wave.layout(0,0,getWidth(),getHeight());
+        else wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
+    }
+    /** Use Home's actual curve and width, including its edge-to-edge glow. */
+    private static final class HeaderCurve extends UiArt.Wave {
+        boolean homeSpacing;
+        HeaderCurve(Context context){super(context);}
+        @Override protected void onDraw(Canvas canvas){
+            if(homeSpacing)ReferenceArt.ribbon(canvas,getWidth(),getWidth()*300f/868+4*getResources().getDisplayMetrics().density,ThemeSkin.active,true);
+            else super.onDraw(canvas);
+        }
     }
     /** Cache the illustration separately: drifting smoke must never remeasure the heading. */
     private static final class Smoke extends View {
@@ -151,4 +178,3 @@ final class MenuHeader extends ViewGroup {
         }
     }
 }
-

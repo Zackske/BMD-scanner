@@ -37,6 +37,7 @@ import java.util.concurrent.Executors;
 /** The approved customer design, with offline artwork and a privately imported customer register. */
 public class CustomerPortalActivity extends AppCompatActivity {
     WebView portal;
+    private MenuHeader menuHeader;
     private volatile String rememberedState="{}";
     private String language;
     private String brand;
@@ -78,9 +79,9 @@ public class CustomerPortalActivity extends AppCompatActivity {
         });
         shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));
         LinearLayout contents=new LinearLayout(this);contents.setOrientation(LinearLayout.VERTICAL);
-        MenuHeader header=new MenuHeader(this,"portal",words.getString(R.string.ui_portal),words.getString(R.string.ui_back),()->getOnBackPressedDispatcher().onBackPressed());
-        header.setPadding(dp(16),dp(8),dp(16),0);header.findViewWithTag("menu-back").setTag("customer-portal-back");
-        contents.addView(header,new LinearLayout.LayoutParams(-1,-2));
+        menuHeader=new MenuHeader(this,"portal",words.getString(R.string.ui_portal),words.getString(R.string.ui_back),()->getOnBackPressedDispatcher().onBackPressed());
+        menuHeader.setPadding(dp(16),dp(8),dp(16),0);menuHeader.findViewWithTag("menu-back").setTag("customer-portal-back");
+        contents.addView(menuHeader,new LinearLayout.LayoutParams(-1,-2));
         contents.addView(portal,new LinearLayout.LayoutParams(-1,0,1));
         shell.addView(contents,new FrameLayout.LayoutParams(-1,-1));
         ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{
@@ -129,6 +130,10 @@ public class CustomerPortalActivity extends AppCompatActivity {
     }
 
     public final class SessionBridge {
+        @JavascriptInterface public void headerCount(String text){
+            if(text==null||text.length()>160)return;
+            runOnUiThread(()->{if(!isFinishing()&&!isDestroyed()&&menuHeader!=null)menuHeader.setSubtitle(text);});
+        }
         @JavascriptInterface public void importCustomers(){runOnUiThread(()->{if(!isFinishing()&&!isDestroyed())picker.launch(new String[]{"application/json","text/plain","application/octet-stream"});});}
         @JavascriptInterface public void remember(String state){
             if(state==null||state.length()>4096)return;

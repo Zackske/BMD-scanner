@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Son kontrol taraması</string>
+    <string name="ui_generic_scan" formatted="false">QR tarayıcı</string>
+    <string name="ui_pallet_scanner" formatted="false">Palet ve kutu taraması</string>
+    <string name="ui_document_scanner" formatted="false">Belge kontrol tarayıcı</string>
+    <string name="ui_picking_control" formatted="false">Toplama kontrolü</string>
+    <string name="ui_picking_control_hint" formatted="false">Toplama listesini oku, ürünleri ve adetleri kontrol et</string>
+    <string name="ui_final_control_hint" formatted="false">Listeyi oku, paketlemeden önce veya sonra kontrol et</string>
+    <string name="ui_control_picklist_first" formatted="false">Her iki kontrol de toplama listesini tarayarak başlar.</string>
+    <string name="ui_packing_question" formatted="false">Ürünler paketlendi mi?</string>
+    <string name="ui_packed_box" formatted="false">Kutunun içinde</string>
+    <string name="ui_packed_box_hint" formatted="false">İşaretçiler ve 5 fotoğraf adımıyla</string>
+    <string name="ui_before_packing" formatted="false">Paketlemeden önce</string>
+    <string name="ui_before_packing_hint" formatted="false">Ürünleri işaretçi olmadan tara</string>
+    <string name="ui_generic_hint" formatted="false">Kamerayı QR koda veya barkoda doğrult</string>
+    <string name="ui_generic_result" formatted="false">Kod algılandı</string>
+    <string name="ui_generic_results" formatted="false">Algılanan kodlar</string>
+    <string name="ui_generic_open_link" formatted="false">Bağlantıyı aç</string>
+    <string name="ui_generic_copy" formatted="false">Kopyala</string>
+    <string name="ui_generic_copied" formatted="false">Kopyalandı</string>
+    <string name="ui_generic_empty" formatted="false">Okunabilir kod bulunamadı</string>
+    <string name="ui_generic_error" formatted="false">Tarama başarısız. Tekrar deneyin.</string>
+</resources>

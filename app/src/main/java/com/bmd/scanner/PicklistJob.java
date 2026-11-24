@@ -12,23 +12,28 @@ final class PicklistJob {
     final File directory;final List<PicklistData.Row> rows=new ArrayList<>();
     final Map<String,String> gtinArticles=new LinkedHashMap<>();final Map<Integer,String> cartons=new LinkedHashMap<>();
     JSONArray mappingHistory=new JSONArray();
-    int capacity=113;int[] allocation;String order="";boolean confirmed;
+    int capacity=113;int[] allocation;String order="",controlMode="final",captureMode="box";boolean confirmed;
+    boolean isPicking(){return "picking".equals(controlMode);}
     PicklistJob(File dir){directory=dir;}
     static PicklistJob create(Context c)throws IOException{File d=new File(new File(c.getFilesDir(),"picklists"),UUID.randomUUID().toString());if(!d.mkdirs())throw new IOException("Folder");return new PicklistJob(d.getCanonicalFile());}
     static PicklistJob load(Context c,String path)throws Exception{
         File root=new File(c.getFilesDir(),"picklists").getCanonicalFile(),dir=new File(path).getCanonicalFile();
         if(!root.equals(dir.getParentFile()))throw new IOException("Session");
         PicklistJob j=new PicklistJob(dir);JSONObject o=new JSONObject(new String(java.nio.file.Files.readAllBytes(new File(dir,"picklist.json").toPath()),StandardCharsets.UTF_8));
+        j.controlMode=o.optString("controlMode","final");j.captureMode=o.optString("captureMode","box");
+        if(!j.controlMode.equals("final")&&!j.controlMode.equals("picking"))throw new IOException("Control mode");
+        if(!j.captureMode.equals("box")&&!j.captureMode.equals("stack"))throw new IOException("Capture mode");
+        if(j.isPicking()&&!j.captureMode.equals("stack"))throw new IOException("Picking mode");
         j.mappingHistory=o.optJSONArray("mappingHistory");if(j.mappingHistory==null)j.mappingHistory=new JSONArray();j.capacity=o.getInt("capacity");JSONArray allocation=o.optJSONArray("allocation");if(allocation!=null){j.allocation=new int[allocation.length()];for(int n=0;n<allocation.length();n++)j.allocation[n]=allocation.getInt(n);}j.order=o.optString("order");j.confirmed=o.optBoolean("confirmed");
         JSONArray rs=o.getJSONArray("rows");for(int n=0;n<rs.length();n++){JSONObject r=rs.getJSONObject(n);j.rows.add(new PicklistData.Row(r.getString("article"),r.getString("lot"),r.getString("expiry"),r.getInt("quantity"),r.optBoolean("manual")));}
         JSONObject maps=o.getJSONObject("gtinArticles");for(Iterator<String> it=maps.keys();it.hasNext();){String key=it.next();j.gtinArticles.put(key,maps.getString(key));}
         JSONObject boxes=o.getJSONObject("cartons");for(Iterator<String> it=boxes.keys();it.hasNext();){String key=it.next();String folder=boxes.getString(key);File f=new File(folder).getCanonicalFile();if(!new File(c.getFilesDir(),"boxes").getCanonicalFile().equals(f.getParentFile()))throw new IOException("Carton");j.cartons.put(Integer.parseInt(key),folder);}
         if(new HashSet<>(j.cartons.values()).size()!=j.cartons.size())throw new IOException("Duplicate carton session");if(!j.rows.isEmpty()){if(j.confirmed)j.plan();else new CartonPlan(j.total(),j.capacity);}else if(j.confirmed)throw new IOException("Rows");return j;
     }
-    CartonPlan plan(){return allocation==null?new CartonPlan(total(),capacity):new CartonPlan(total(),capacity,allocation);}
+    CartonPlan plan(){return isPicking()?CartonPlan.picking(total()):allocation==null?new CartonPlan(total(),capacity):new CartonPlan(total(),capacity,allocation);}
     int total(){int n=0;for(PicklistData.Row row:rows)n=Math.addExact(n,row.quantity);return n;}
     JSONObject json()throws JSONException{
-        JSONObject o=new JSONObject().put("version",1).put("order",order).put("capacity",capacity).put("confirmed",confirmed).put("shipmentApproved",false);
+        JSONObject o=new JSONObject().put("version",2).put("controlMode",controlMode).put("captureMode",captureMode).put("order",order).put("capacity",capacity).put("confirmed",confirmed).put("shipmentApproved",false);
         if(allocation!=null){JSONArray amounts=new JSONArray();for(int n:allocation)amounts.put(n);o.put("allocation",amounts);}JSONArray rs=new JSONArray();for(PicklistData.Row r:rows)rs.put(new JSONObject().put("article",r.article).put("lot",r.lot).put("expiry",r.expiry).put("quantity",r.quantity).put("manual",r.manual));
         JSONObject boxes=new JSONObject();for(Map.Entry<Integer,String> e:cartons.entrySet())boxes.put(e.getKey().toString(),e.getValue());
         o.put("mappingHistory",mappingHistory).put("rows",rs).put("gtinArticles",new JSONObject(gtinArticles)).put("cartons",boxes);return o;

@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Final check scan</string>
+    <string name="ui_generic_scan" formatted="false">QR scanner</string>
+    <string name="ui_pallet_scanner" formatted="false">Pallet and box scan</string>
+    <string name="ui_document_scanner" formatted="false">Document control scanner</string>
+    <string name="ui_picking_control" formatted="false">Picking control</string>
+    <string name="ui_picking_control_hint" formatted="false">Read the picklist and check products and quantities</string>
+    <string name="ui_final_control_hint" formatted="false">Read the picklist and check before or after packing</string>
+    <string name="ui_control_picklist_first" formatted="false">Both checks begin by scanning the picklist.</string>
+    <string name="ui_packing_question" formatted="false">Are the products already packed?</string>
+    <string name="ui_packed_box" formatted="false">In the box</string>
+    <string name="ui_packed_box_hint" formatted="false">With markers and 5 photo steps</string>
+    <string name="ui_before_packing" formatted="false">Before packing</string>
+    <string name="ui_before_packing_hint" formatted="false">Scan products without markers</string>
+    <string name="ui_generic_hint" formatted="false">Point the camera at a QR code or barcode</string>
+    <string name="ui_generic_result" formatted="false">Code detected</string>
+    <string name="ui_generic_results" formatted="false">Detected codes</string>
+    <string name="ui_generic_open_link" formatted="false">Open link</string>
+    <string name="ui_generic_copy" formatted="false">Copy</string>
+    <string name="ui_generic_copied" formatted="false">Copied</string>
+    <string name="ui_generic_empty" formatted="false">No readable code found</string>
+    <string name="ui_generic_error" formatted="false">Could not scan. Please try again.</string>
+</resources>

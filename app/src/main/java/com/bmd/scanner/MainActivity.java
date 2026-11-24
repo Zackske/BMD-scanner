@@ -103,13 +103,15 @@ public class MainActivity extends AppCompatActivity {
         GradientDrawable border=new GradientDrawable();border.setColor(0xb0000000);border.setCornerRadius(dp(9));border.setStroke(dp(1),0xcc000000);label.setBackground(border);label.setTextColor(ink);label.setPadding(dp(9),dp(4),dp(9),dp(4));
     }
     void showSettings(){
-        base("settings",s("settings"));View header=root.getChildAt(0);root.removeView(header);root.setPadding(0,0,0,0);
-        LinearLayout content=column();content.setPadding(dp(16),dp(8),dp(16),dp(12));
-        content.addView(header,new LinearLayout.LayoutParams(-1,-2));gap(content,18);
+        base("settings",s("settings"));MenuHeader header=(MenuHeader)root.getChildAt(0);root.removeView(header);root.setPadding(0,0,0,0);
+        header.homeSpacing();header.setPadding(dp(16),dp(8),dp(16),0);
+        LinearLayout content=column();content.setPadding(0,0,0,dp(12));
+        content.addView(header,new LinearLayout.LayoutParams(-1,-2));gap(content,12);
+        LinearLayout tiles=column();tiles.setPadding(dp(16),0,dp(16),0);content.addView(tiles,new LinearLayout.LayoutParams(-1,-2));
         int index=Arrays.asList(LANGS).indexOf(lang);
-        settingsTile(content,"language",s("language"),LANG_NAMES[index],"language",this::languages);
-        settingsTile(content,"palette",s("themes"),themeName(ThemeSkin.active.id),"themes",this::themes);
-        settingsTile(content,"info",s("about"),s("brand"),"about",this::about);
+        settingsTile(tiles,"language",s("language"),LANG_NAMES[index],"language",this::languages);
+        settingsTile(tiles,"palette",s("themes"),themeName(ThemeSkin.active.id),"themes",this::themes);
+        settingsTile(tiles,"info",s("about"),s("brand"),"about",this::about);
         root.addView(new BrandedSettings(this,content),new LinearLayout.LayoutParams(-1,0,1));
     }
     private LinearLayout sheet(String title){return sheet(title,title.equals(s("list"))||title.equals(s("review_products"))?"qr":title.equals(s("saved"))?"document":"scan");}
@@ -140,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
         scanWizard=new ScanStartWizard(this,lang,(mode,expected)->{scanWizard=null;startActivity(new Intent(this,BoxScanActivity.class).putExtra("language",lang).putExtra("flowMode",mode).putExtra("expected",expected));},()->scanWizard=null);
         if(saved!=null)scanWizard.restore(saved);scanWizard.show();
     }
-    void chooseScan(){base("scan-menu","");root.setPadding(0,0,0,0);ReferenceHome menu=new ReferenceHome(this,lang,new String[]{s("qr_count_check"),s("box_pallet_check"),s("document_check"),s("email_check")},s("short_name"),new Runnable[]{()->showScanStart(null),()->workInProgress(s("box_pallet_check"),"pallet"),()->workInProgress(s("document_check"),"document"),()->workInProgress(s("email_check"),"mail")}).menu(s("scan"));FrameLayout frame=new FrameLayout(this);frame.addView(menu,new FrameLayout.LayoutParams(-1,-1));MenuHeader heading=new MenuHeader(this,"scan",s("scan"),s("back"),homeAction(this::showHome));heading.setPadding(dp(16),dp(8),dp(16),0);frame.addView(heading,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));root.addView(frame,new LinearLayout.LayoutParams(-1,0,1));}
-    private void workInProgress(String title,String icon){LinearLayout panel=sheet(title,icon);gap(panel,16);TextView heading=text("Work in process",25,true);heading.setGravity(Gravity.CENTER);panel.addView(heading);TextView hint=text(s("in_development"),17,false);hint.setGravity(Gravity.CENTER);panel.addView(hint);gap(panel,24);panel.addView(action(s("back"),()->dialog.dismiss()));}
+    void chooseScan(){base("scan-menu","");root.setPadding(0,0,0,0);ReferenceHome menu=new ReferenceHome(this,lang,new String[]{s("bmd_control"),s("pallet_scanner"),s("document_scanner"),s("generic_scan")},s("short_name"),new Runnable[]{()->showScanStart(null),()->workInProgress(s("pallet_scanner"),"pallet"),()->workInProgress(s("document_scanner"),"document"),()->startActivity(new Intent(this,GenericScanActivity.class).putExtra("language",lang))}).menu(s("scan"));FrameLayout frame=new FrameLayout(this);frame.addView(menu,new FrameLayout.LayoutParams(-1,-1));MenuHeader heading=new MenuHeader(this,"scan",s("scan"),s("back"),homeAction(this::showHome)).homeSpacing();heading.setPadding(dp(16),dp(8),dp(16),0);frame.addView(heading,new FrameLayout.LayoutParams(-1,-2,Gravity.TOP));root.addView(frame,new LinearLayout.LayoutParams(-1,0,1));}
+    private void workInProgress(String title,String icon){LinearLayout panel=sheet(title,icon);gap(panel,16);TextView heading=text("Work in progress",25,true);heading.setGravity(Gravity.CENTER);panel.addView(heading);TextView hint=text(s("in_development"),17,false);hint.setGravity(Gravity.CENTER);panel.addView(hint);gap(panel,24);panel.addView(action(s("back"),()->dialog.dismiss()));}
 
     void openCamera(){if(ContextCompat.checkSelfPermission(this,Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED)showScanner();else permission.launch(Manifest.permission.CAMERA);}
     private View scannerHotspot(String label,Runnable action){FrameLayout v=new FrameLayout(this);android.graphics.drawable.GradientDrawable mask=new android.graphics.drawable.GradientDrawable();mask.setColor(Color.WHITE);mask.setCornerRadius(dp(22));v.setBackground(new android.graphics.drawable.RippleDrawable(android.content.res.ColorStateList.valueOf(0x3300dcff),null,mask));click(v,label,action);return v;}

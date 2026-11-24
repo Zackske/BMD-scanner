@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Сканування фінальної перевірки</string>
+    <string name="ui_generic_scan" formatted="false">QR-сканер</string>
+    <string name="ui_pallet_scanner" formatted="false">Сканування палет і коробок</string>
+    <string name="ui_document_scanner" formatted="false">Сканер перевірки документів</string>
+    <string name="ui_picking_control" formatted="false">Контроль комплектування</string>
+    <string name="ui_picking_control_hint" formatted="false">Зчитайте список і перевірте товари та кількість</string>
+    <string name="ui_final_control_hint" formatted="false">Зчитайте список і перевірте до або після пакування</string>
+    <string name="ui_control_picklist_first" formatted="false">Обидві перевірки починаються зі списку комплектування.</string>
+    <string name="ui_packing_question" formatted="false">Товари вже запаковані?</string>
+    <string name="ui_packed_box" formatted="false">У коробці</string>
+    <string name="ui_packed_box_hint" formatted="false">З мітками та 5 кроками фотографування</string>
+    <string name="ui_before_packing" formatted="false">Перед пакуванням</string>
+    <string name="ui_before_packing_hint" formatted="false">Скануйте товари без міток</string>
+    <string name="ui_generic_hint" formatted="false">Наведіть камеру на QR-код або штрихкод</string>
+    <string name="ui_generic_result" formatted="false">Код розпізнано</string>
+    <string name="ui_generic_results" formatted="false">Розпізнані коди</string>
+    <string name="ui_generic_open_link" formatted="false">Відкрити посилання</string>
+    <string name="ui_generic_copy" formatted="false">Копіювати</string>
+    <string name="ui_generic_copied" formatted="false">Скопійовано</string>
+    <string name="ui_generic_empty" formatted="false">Читабельного коду не знайдено</string>
+    <string name="ui_generic_error" formatted="false">Не вдалося сканувати. Спробуйте ще раз.</string>
+</resources>

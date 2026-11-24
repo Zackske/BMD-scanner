@@ -2,14 +2,13 @@
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'"></head><body>
 <div id="bmd-customers-preview" aria-label="Klantenportaal">
   <section class="cp-screen" data-theme="bmd" aria-label="Klantenportaal">
-    <div class="cp-appbar"><span class="cp-heading-smoke" aria-hidden="true"></span><header class="cp-heading"><span class="cp-heading-icon"><i data-lucide="users-round" aria-hidden="true"></i></span><h2 class="cp-title">Klantenportaal</h2></header></div>
+    <div class="cp-appbar"><span class="cp-heading-smoke" aria-hidden="true"></span><header class="cp-heading"><span class="cp-heading-icon"><i data-lucide="users-round" aria-hidden="true"></i></span><div class="cp-heading-text"><h2 class="cp-title">Klantenportaal</h2><p class="cp-total" aria-live="polite">84 klanten</p></div></header></div>
     <div class="cp-wave" aria-hidden="true"></div>
     <div class="cp-search" role="search"><i data-lucide="search" aria-hidden="true"></i><input class="cp-search-input" type="search" placeholder="Zoek klanten…" aria-label="Zoek klanten" maxlength="120" autocomplete="off" spellcheck="false" /></div>
-    <p class="cp-total" aria-live="polite">84 klanten</p>
+    <div class="cp-paging"><button type="button" class="cp-nav cp-previous cursor-interaction"><i data-lucide="arrow-left" aria-hidden="true"></i><span>Vorige</span></button><span class="cp-position" aria-live="polite"></span><button type="button" class="cp-nav cp-next cursor-interaction"><span>Volgende</span><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
     <div class="cp-grid" aria-label="Klanten"></div>
     <p class="cp-no-results" role="status" hidden></p>
-    <div class="cp-paging"><button type="button" class="cp-nav cp-previous cursor-interaction"><i data-lucide="arrow-left" aria-hidden="true"></i><span>Vorige</span></button><span class="cp-position" aria-live="polite"></span><button type="button" class="cp-nav cp-next cursor-interaction"><span>Volgende</span><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
-    <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><span class="cp-detail-icon"><i data-lucide="building-2" aria-hidden="true"></i></span><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><section class="cp-shipping-summary"></section></section></div>
+    <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><section class="cp-shipping-summary"></section></section></div>
     <div class="cp-brand"><img alt="Blue Medical" /></div>
     <div class="cp-wave cp-bottom" aria-hidden="true"></div>
     <div class="cp-home-indicator" aria-hidden="true"></div>
@@ -46,7 +45,9 @@
 #bmd-customers-preview .cp-heading-icon svg {width:27px;height:27px}
 #bmd-customers-preview .cp-heading-icon img {width:36px;height:36px;object-fit:contain}
 #bmd-customers-preview .cp-title {margin:0;font:900 26px/1.2 'Nunito',sans-serif;overflow-wrap:anywhere}
-#bmd-customers-preview .cp-total {margin:9px 0 18px;text-align:center;font-size:14px;font-weight:700;color:var(--cp-secondary)}
+#bmd-customers-preview .cp-heading-text {display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
+#bmd-customers-preview .cp-total {margin:0;text-align:start;font-size:13px;line-height:1.3;font-weight:800;color:#ffd166}
+#bmd-customers-preview .cp-screen[data-theme="light"] .cp-total {color:#8d6200}
 #bmd-customers-preview .cp-search {display:flex;align-items:center;gap:10px;min-height:50px;margin-top:8px;padding:10px 13px;border:1px solid color-mix(in srgb,var(--cp-accent) 65%,transparent);border-radius:16px;background:linear-gradient(135deg,var(--cp-top),var(--cp-bottom));color:var(--cp-accent)}
 #bmd-customers-preview .cp-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(160px,auto);gap:13px;align-items:stretch;align-content:start;min-height:682px}
 #bmd-customers-preview .cp-search:focus-within {border-color:var(--cp-accent)}
@@ -70,7 +71,7 @@
 #bmd-customers-preview .cp-name[data-name-size="compact"] {font-size:20px}
 #bmd-customers-preview .cp-country {display:flex;align-items:center;justify-content:center;gap:6px;width:100%;color:#e4fff1;font-size:12px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-flag {display:block;flex-shrink:0;width:22px;height:16px;object-fit:contain;filter:drop-shadow(0 1px 1px #002d3040)}
-#bmd-customers-preview .cp-paging {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:20px}
+#bmd-customers-preview .cp-paging {position:sticky;top:0;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 14px;padding:8px 0;background:var(--cp-bg)}
 #bmd-customers-preview .cp-nav {display:flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:8px 11px;border:1px solid var(--cp-accent);border-radius:17px;background:linear-gradient(135deg,var(--cp-top),var(--cp-bottom));color:var(--cp-text);font:800 13px/1.2 'Nunito',sans-serif}
 #bmd-customers-preview .cp-nav svg {width:17px;height:17px;flex-shrink:0}
 #bmd-customers-preview .cp-nav:disabled {opacity:.36}
@@ -81,9 +82,6 @@
 #bmd-customers-preview .cp-home-indicator {height:4px;width:29%;border-radius:8px;background:var(--cp-text);margin:0 auto;opacity:.9}
 #bmd-customers-preview .cp-modal-layer {position:relative;z-index:2;display:block;margin-top:14px}
 #bmd-customers-preview .cp-detail {width:100%;display:flex;flex-direction:column;align-items:stretch;gap:15px;padding:0;color:var(--cp-text);text-align:center}
-#bmd-customers-preview .cp-detail-icon {color:var(--cp-accent)}
-#bmd-customers-preview .cp-detail-icon svg {width:46px;height:46px}
-#bmd-customers-preview .cp-detail-icon img {width:58px;height:58px;object-fit:contain}
 #bmd-customers-preview .cp-detail h3 {margin:0;font:900 24px/1.2 'Nunito',sans-serif;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-detail-country {display:flex;align-items:center;justify-content:center;gap:9px;margin:0;font-size:17px;font-weight:700}
 #bmd-customers-preview .cp-shipping-summary {display:flex;align-items:center;gap:11px;min-width:0;min-height:62px;padding:13px 15px;border:1px solid color-mix(in srgb,var(--cp-accent) 52%,var(--cp-bottom));border-radius:17px;background:linear-gradient(130deg,var(--cp-top),var(--cp-bottom));text-align:start;box-shadow:inset 0 1px 0 #ffffff35}
@@ -115,12 +113,15 @@
 #bmd-customers-preview .cp-fields dt,#bmd-customers-preview .cp-fields dd {padding:14px 0;margin:0;border-bottom:1px solid color-mix(in srgb,var(--cp-secondary) 15%,transparent);overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.4}
 #bmd-customers-preview .cp-fields dt {font-weight:700;color:var(--cp-secondary);font-size:12px}
 #bmd-customers-preview .cp-fields dd {font-size:14px;font-weight:800}
+#bmd-customers-preview .cp-fields .cp-email-label {white-space:nowrap}
+#bmd-customers-preview .cp-fields .cp-email-value {min-width:0;white-space:nowrap;overflow-wrap:normal}
+#bmd-customers-preview .cp-email-text {display:block;max-width:100%;white-space:nowrap;overflow-wrap:normal;word-break:normal;overflow-x:auto}
 #bmd-customers-preview .cp-fields .cp-notes {white-space:pre-wrap;overflow-wrap:anywhere;font:600 14px/1.55 'Nunito',sans-serif;margin:0}
-#bmd-customers-preview .cp-customer-details {min-width:0;padding:18px;border:1px solid color-mix(in srgb,var(--cp-accent) 44%,var(--cp-bottom));border-radius:21px;background:linear-gradient(145deg,var(--cp-top),var(--cp-bottom) 65%);box-shadow:inset 0 1px 0 #ffffff1b}
+#bmd-customers-preview .cp-customer-details {min-width:0}
 #bmd-customers-preview .cp-customer-details h4 {display:flex;align-items:center;gap:9px;margin:0 0 12px;font:900 19px/1.25 'Nunito',sans-serif}
 #bmd-customers-preview .cp-customer-details h4 .cp-detail-tab-icon {width:24px;height:24px}
-#bmd-customers-preview .cp-shipping-tabs {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;align-items:stretch}
-#bmd-customers-preview .cp-shipping-tab {display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:100px;padding:11px 3px;border:1px solid color-mix(in srgb,var(--cp-accent) 27%,var(--cp-bottom));border-radius:12px;background:var(--cp-bottom);color:var(--cp-secondary);font:800 12px/1.3 'Nunito',sans-serif;text-align:center;transition:transform .16s ease,background .16s ease}
+#bmd-customers-preview .cp-shipping-tabs {display:grid;grid-template-columns:minmax(0,1fr);gap:7px;align-items:stretch}
+#bmd-customers-preview .cp-shipping-tab {display:flex;align-items:center;justify-content:flex-start;gap:12px;min-width:0;min-height:54px;padding:12px 14px;border:1px solid color-mix(in srgb,var(--cp-accent) 27%,var(--cp-bottom));border-radius:12px;background:var(--cp-bottom);color:var(--cp-secondary);font:800 14px/1.35 'Nunito',sans-serif;text-align:start;transition:transform .16s ease,background .16s ease}
 #bmd-customers-preview .cp-shipping-tab>.cp-detail-tab-icon {width:22px;height:22px}
 #bmd-customers-preview .cp-shipping-tab>span:last-child {min-width:0;max-width:100%;hyphens:auto;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-shipping-tab[aria-selected="true"] {border-color:var(--cp-accent);color:var(--cp-text);background:color-mix(in srgb,var(--cp-accent) 18%,var(--cp-top))}
@@ -137,7 +138,7 @@
 #bmd-customers-preview .cp-pouch-item:last-child {margin-bottom:0}
 #bmd-customers-preview .cp-pouch-item small,#bmd-customers-preview .cp-requirement-item small {font:700 12px/1.5 'Nunito',sans-serif;color:var(--cp-secondary)}
 #bmd-customers-preview .cp-requirement-item {display:flex;flex-direction:column;gap:3px;font-weight:800}
-@media(max-width:360px){#bmd-customers-preview .cp-detail-tab {font-size:12px}#bmd-customers-preview .cp-detail-panels,#bmd-customers-preview .cp-customer-details {padding:15px}#bmd-customers-preview .cp-detail-panel h4,#bmd-customers-preview .cp-customer-details h4 {font-size:17px}#bmd-customers-preview .cp-shipping-tab {font-size:11px}}
+@media(max-width:360px){#bmd-customers-preview .cp-detail-tab {font-size:12px}#bmd-customers-preview .cp-detail-panels {padding:15px}#bmd-customers-preview .cp-detail-panel h4 {font-size:17px}#bmd-customers-preview .cp-shipping-tab {font-size:13px}}
 @media(max-width:360px){#bmd-customers-preview .cp-fields dt {font-size:11px}}
 @media(prefers-reduced-motion:reduce){#bmd-customers-preview .cp-detail-tab {transition:none}}
 @media(max-width:360px){#bmd-customers-preview .cp-customer-details dt {font-size:11px}}
@@ -190,8 +191,11 @@
 #bmd-customers-preview .cp-country {width:calc(100% - 60px);min-width:0;max-width:calc(100% - 56px);padding-inline:2px}
 #bmd-customers-preview .cp-heading-smoke {position:absolute;left:4%;right:4%;top:0;height:77px;background:var(--cp-accent);mask-image:var(--cp-smoke-mask);mask-size:100% 100%;mask-repeat:no-repeat;opacity:.18;pointer-events:none}
 #bmd-customers-preview .cp-back {z-index:3}
-#bmd-customers-preview .cp-heading {position:absolute;left:50px;right:50px;top:0;bottom:0;z-index:1}
+#bmd-customers-preview .cp-heading {position:absolute;left:72px;right:0;top:0;bottom:0;z-index:1;justify-content:flex-start}
+@media(max-width:360px){#bmd-customers-preview .cp-back {width:44px;height:44px;margin-top:-22px}#bmd-customers-preview .cp-heading {left:68px}}
 #bmd-customers-preview .cp-title {min-width:0;overflow-wrap:normal;word-break:normal;text-wrap:balance}
+#bmd-customers-preview .cp-grid {min-height:0}
+#bmd-customers-preview .cp-customer {scroll-margin-top:72px;contain:layout style}
 @media(max-width:360px) {#bmd-customers-preview .cp-country {width:calc(100% - 56px);max-width:calc(100% - 56px);padding-inline:1px;border-left-width:6px}}
 html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adjust:100%}
 #bmd-customers-preview {display:block;padding:0;min-height:100vh}
@@ -288,10 +292,13 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   const bootstrap=/*BMD_NATIVE_STATE*/null;
   const state={language:'nl',theme:'bmd',page:0,selected:null,query:'',detailTab:0};
   let nativeBrand=bootstrap?.brand||'ScanTovenaar',listScroll=0;
-  state.detailLayout=3;
+  state.detailLayout=4;
   state.shippingTab=0;
+  state.listScroll=0;
   const pageSize=8;
   let lastTrigger=null;
+  let listObserver=null,observedGridKey=null,jumpingUntil=0;
+  const intersectingTiles=new Set();
   let localRevision=0;
   let renderedGridKey=null,renderedDetailKey=null,renderedAppearance=null,lastFittedGridKey=null,lastFittedWidth=0;
   const countryNames=new Map(),displayNames=new Map(),searchIndexes=new Map();
@@ -308,6 +315,43 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     return searchIndexes.get(state.language).filter(row=>terms.every(term=>row.text.includes(term))).map(row=>row.customer);
   }
   function pageCount(){return Math.max(1,Math.ceil(filteredCustomers().length/pageSize));}
+  function listScroller(){return /auto|scroll/.test(getComputedStyle(app).overflowY)?app:document.scrollingElement;}
+  function updateListNavigation(){
+    const matches=filteredCustomers(),t=copy[state.language];
+    state.page=Math.max(0,Math.min(Math.max(1,Math.ceil(matches.length/pageSize))-1,state.page));
+    const previous=root.querySelector('.cp-previous'),next=root.querySelector('.cp-next');
+    previous.disabled=state.page===0;next.disabled=state.page===Math.max(1,Math.ceil(matches.length/pageSize))-1;
+    previous.querySelector('span').textContent=t.previous;next.querySelector('span').textContent=t.next;
+    root.querySelector('.cp-position').textContent=matches.length?(state.page*pageSize+1)+'–'+Math.min(matches.length,(state.page+1)*pageSize)+' '+t.of+' '+matches.length:'';
+  }
+  function observeCustomerList(gridKey){
+    listObserver?.disconnect();intersectingTiles.clear();observedGridKey=gridKey;
+    const scroller=listScroller(),header=root.querySelector('.cp-appbar'),top=root.querySelector('.cp-paging').offsetHeight+(scroller===app?header.offsetHeight:0)+8;
+    listObserver=new IntersectionObserver(entries=>{
+      for(const entry of entries)if(entry.isIntersecting)intersectingTiles.add(entry.target);else intersectingTiles.delete(entry.target);
+      if(state.selected||grid.hidden||performance.now()<jumpingUntil)return;
+      const visible=[...intersectingTiles].filter(tile=>grid.contains(tile)).map(tile=>Number(tile.dataset.listIndex));
+      if(!visible.length)return;
+      let block=Math.floor(Math.min(...visible)/pageSize);
+      const last=grid.lastElementChild,bottom=scroller===app?app.getBoundingClientRect().bottom:innerHeight;
+      if(last&&intersectingTiles.has(last)&&last.getBoundingClientRect().bottom<=bottom+1)block=pageCount()-1;
+      state.listScroll=scroller.scrollTop;
+      if(block!==state.page){state.page=block;updateListNavigation();persist();}
+    },{root:scroller===app?app:null,rootMargin:'-'+top+'px 0px 0px 0px',threshold:0});
+    grid.querySelectorAll('.cp-customer').forEach((tile,index)=>{tile.dataset.listIndex=index;listObserver.observe(tile);});
+  }
+  function scrollToCustomerGroup(animate=true){
+    const target=grid.children[state.page*pageSize];if(!target)return;
+    const scroller=listScroller(),base=scroller===app?app.getBoundingClientRect().top:0,header=scroller===app?root.querySelector('.cp-appbar').offsetHeight:0;
+    const position=Math.max(0,scroller.scrollTop+target.getBoundingClientRect().top-base-root.querySelector('.cp-paging').offsetHeight-header-8);
+    jumpingUntil=performance.now()+700;state.listScroll=position;
+    scroller.scrollTo({top:position,behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
+  }
+  function restoreListPosition(){
+    if(state.selected)return;
+    jumpingUntil=performance.now()+700;
+    if(state.listScroll===null)scrollToCustomerGroup(false);else listScroller().scrollTop=state.listScroll;
+  }
   function shippingGroup(c){return shippingCopy[state.language][({'eu':0,'non-eu':1,'world':2})[c.shippingGroup]??3];}
   function shippingSummary(c){
     const t=deliveryCopy[state.language],lines=[...(c.shipping||[]),...(c.extraShipping||[])].filter(v=>typeof v==='string').flatMap(v=>v.split(/\r?\n/)).map(v=>v.replace(/^\s*[*•]\s*/,'').trim()).filter(Boolean);
@@ -328,7 +372,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function icons(){if(globalThis.lucide)globalThis.lucide.createIcons({attrs:{width:20,height:20}});}
   function fitNames(){
     const heading=root.querySelector('.cp-title');
-    if(heading.getClientRects().length){heading.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(heading).fontSize);while(size>16&&(heading.scrollWidth>heading.clientWidth+1||heading.scrollHeight>56)){size-=.5;heading.style.fontSize=size+'px';}}
+    if(heading.getClientRects().length){heading.style.removeProperty('font-size');const counter=root.querySelector('.cp-total'),limit=Math.min(56,root.querySelector('.cp-appbar').clientHeight-(counter.hidden?0:counter.offsetHeight+3));let size=parseFloat(getComputedStyle(heading).fontSize);while(size>16&&(heading.scrollWidth>heading.clientWidth+1||heading.scrollHeight>limit)){size-=.5;heading.style.fontSize=size+'px';}}
     fitDetailTabs();
     for(const badge of grid.querySelectorAll('.cp-country')){
       if(!badge.getClientRects().length)continue;
@@ -350,31 +394,51 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     }
   }
   function persist(){if(window.BmdPortalSession)window.BmdPortalSession.remember(JSON.stringify(state));}
-  function restore(saved){if(!saved||typeof saved!=='object'||localRevision&&(Number(saved.revision)||0)<localRevision)return;if(copy[saved.language])state.language=saved.language;if(themeIds.includes(saved.theme))state.theme=saved.theme;if(typeof saved.query==='string')state.query=saved.query.slice(0,120);if(Number.isInteger(saved.page))state.page=Math.max(0,Math.min(pageCount()-1,saved.page));state.selected=customers.some(c=>c.id===saved.selected)?saved.selected:null;const oldTab=Number.isInteger(saved.detailTab)&&saved.detailTab>=0&&saved.detailTab<4?saved.detailTab:0;if(saved.detailLayout===3){state.detailTab=oldTab<2?oldTab:0;state.shippingTab=Number.isInteger(saved.shippingTab)&&saved.shippingTab>=0&&saved.shippingTab<4?saved.shippingTab:0;}else{const tab=saved.detailLayout===2?oldTab:[0,0,1,2][oldTab];state.detailTab=tab===3?1:0;state.shippingTab=tab===2?2:tab===1?1:0;}}
+  function restore(saved){
+    if(!saved||typeof saved!=='object'||localRevision&&(Number(saved.revision)||0)<localRevision)return;
+    if(copy[saved.language])state.language=saved.language;
+    if(themeIds.includes(saved.theme))state.theme=saved.theme;
+    if(typeof saved.query==='string')state.query=saved.query.slice(0,120);
+    if(Number.isInteger(saved.page))state.page=Math.max(0,Math.min(pageCount()-1,saved.page));
+    state.listScroll=Number.isFinite(saved.listScroll)?Math.max(0,Math.min(1000000,saved.listScroll)):null;
+    state.selected=customers.some(c=>c.id===saved.selected)?saved.selected:null;
+    const oldTab=Number.isInteger(saved.detailTab)&&saved.detailTab>=0&&saved.detailTab<4?saved.detailTab:0;
+    if(saved.detailLayout===4){
+      state.detailTab=oldTab<2?oldTab:0;
+      state.shippingTab=Number.isInteger(saved.shippingTab)&&saved.shippingTab>=0&&saved.shippingTab<5?saved.shippingTab:0;
+    }else if(saved.detailLayout===3){
+      state.detailTab=oldTab<2?oldTab:0;
+      state.shippingTab=Number.isInteger(saved.shippingTab)&&saved.shippingTab>=0&&saved.shippingTab<4?saved.shippingTab+1:0;
+    }else{
+      const tab=saved.detailLayout===2?oldTab:[0,0,1,2][oldTab];
+      state.detailTab=tab===3?1:0;
+      state.shippingTab=tab===2?3:tab===1?2:0;
+    }
+  }
   function render(){
     app.style.setProperty('--cp-smoke-mask','url('+assets.smoke+')');
     for(const [group,palette] of Object.entries(assets.shippingGroups)){app.style.setProperty('--cp-'+group+'-bg',palette.background);app.style.setProperty('--cp-'+group+'-text',palette.foreground);app.style.setProperty('--cp-'+group+'-soft',palette.soft);}
     const matches=filteredCustomers(),totalPages=Math.max(1,Math.ceil(matches.length/pageSize));state.page=Math.max(0,Math.min(totalPages-1,state.page));
     const t=copy[state.language],q=searchCopy[state.language],input=root.querySelector('.cp-search-input');input.placeholder=q[0];input.setAttribute('aria-label',q[2]);if(input.value!==state.query)input.value=state.query;app.dataset.theme=state.theme;app.lang=state.language;app.setAttribute('aria-label',t.title);root.querySelector('.cp-title').textContent=t.title;root.querySelector('.cp-total').textContent=(state.query.trim()?matches.length+' '+t.of+' ':'')+customers.length+' '+t.count;
     const appearance=state.theme+':'+state.language,appearanceChanged=appearance!==renderedAppearance;
-    if(appearanceChanged){root.querySelector('.cp-heading-icon').innerHTML='<img src="'+assets.customerIcon+'" alt="" />';root.querySelector('.cp-detail-icon').innerHTML='<img src="'+assets.customerIcon+'" alt="" />';const brand=root.querySelector('.cp-brand img');brand.src=assets.brands[state.theme];brand.alt=state.theme==='translumina'?'Translumina':'Blue Medical';renderedAppearance=appearance;}
-    const visible=matches.slice(state.page*pageSize,(state.page+1)*pageSize),gridKey=JSON.stringify([state.language,visible.map(c=>c.id)]),gridChanged=gridKey!==renderedGridKey;
+    if(appearanceChanged){root.querySelector('.cp-heading-icon').innerHTML='<img src="'+assets.customerIcon+'" alt="" />';const brand=root.querySelector('.cp-brand img');brand.src=assets.brands[state.theme];brand.alt=state.theme==='translumina'?'Translumina':'Blue Medical';renderedAppearance=appearance;}
+    const visible=matches,gridKey=JSON.stringify([state.language,visible.map(c=>c.id)]),gridChanged=gridKey!==renderedGridKey;
     grid.setAttribute('aria-label',t.title);
     if(gridChanged){grid.innerHTML=visible.map(c=>{const colours=nationalColours[c.country],label=c.displayName||c.name,compact=label.length>18||label.split(/\s+/).some(word=>word.length>=11);return '<button type="button" class="cp-customer cursor-interaction" style="--nation-a:'+colours[0]+';--nation-b:'+colours[1]+';--nation-c:'+colours[2]+';--country-ink:'+countryInk(colours[0])+';--nation-flag:url('+assets.flags[c.country]+')" data-customer="'+c.id+'" aria-pressed="'+(c.id===state.selected)+'" aria-label="'+esc(c.name+', '+country(c.country)+', '+shippingCopy[state.language][4]+': '+shippingGroup(c))+'"'+(label!==c.name?' data-tooltip="'+esc(c.name)+'"':'')+'><span class="cp-country-header"><span class="cp-country">'+flag(c.country)+'<span class="cp-country-label">'+countryLabel(c.country)+'</span></span></span>'+countryMaps(c)+'<span class="cp-name" data-name-size="'+(compact?'compact':'normal')+'"><span class="cp-name-text">'+esc(label)+'</span></span><span class="cp-shipping-group" data-group="'+(c.shippingGroup||'unset')+'">'+esc(shippingGroup(c))+'</span></button>';}).join('');renderedGridKey=gridKey;}
     grid.querySelectorAll('[data-customer]').forEach(button=>{const pressed=String(button.dataset.customer===state.selected);if(button.getAttribute('aria-pressed')!==pressed)button.setAttribute('aria-pressed',pressed);});
-    const previous=root.querySelector('.cp-previous'),next=root.querySelector('.cp-next');previous.disabled=state.page===0;next.disabled=state.page===totalPages-1;previous.querySelector('span').textContent=t.previous;next.querySelector('span').textContent=t.next;
-    root.querySelector('.cp-position').textContent=matches.length?(state.page*pageSize+1)+'–'+Math.min(matches.length,(state.page+1)*pageSize)+' '+t.of+' '+matches.length:'';
+    updateListNavigation();
     const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-back')?.setAttribute('aria-label',detail?f[20]:t.previous);grid.hidden=!!detail||!matches.length;grid.classList.toggle('cp-search-results',!!state.query.trim());root.querySelector('.cp-paging').hidden=!!detail||!matches.length;root.querySelector('.cp-total').hidden=!!detail;
     root.querySelector('.cp-search').hidden=!!detail||!customers.length;
     const empty=root.querySelector('.cp-no-results');empty.hidden=!!detail||!!matches.length||!customers.length;empty.textContent=q[1];
     root.querySelector('.cp-detail').removeAttribute('aria-modal');root.querySelector('.cp-detail').setAttribute('role','region');
     const detailKey=detail?state.language+':'+detail.id:null;
     if(detail&&detailKey!==renderedDetailKey){const row=root.querySelector('.cp-shipping-summary');row.setAttribute('aria-label',deliveryCopy[state.language][0]);row.innerHTML=shippingSummary(detail);}
-    if(detail&&detailKey!==renderedDetailKey){root.querySelector('#cp-detail-title').textContent=detail.name;root.querySelector('.cp-detail-country').innerHTML=flag(detail.country)+'<span>'+esc(country(detail.country))+'</span>';root.querySelector('.cp-detail-group').dataset.group=detail.shippingGroup;root.querySelector('.cp-detail-group').textContent=shippingCopy[state.language][4]+' · '+shippingGroup(detail);let fields=root.querySelector('.cp-fields');if(!fields){fields=document.createElement('div');fields.className='cp-fields';root.querySelector('.cp-detail').append(fields);}fields.innerHTML=customerDetails(detail,f);renderedDetailKey=detailKey;}
+    if(detail&&detailKey!==renderedDetailKey){root.querySelector('#cp-detail-title').textContent=detail.name;root.querySelector('.cp-detail-country').innerHTML=flag(detail.country)+'<span>'+esc(country(detail.country))+'</span>';root.querySelector('.cp-detail-group').dataset.group=detail.shippingGroup;root.querySelector('.cp-detail-group').textContent=shippingGroup(detail);let fields=root.querySelector('.cp-fields');if(!fields){fields=document.createElement('div');fields.className='cp-fields';root.querySelector('.cp-detail').append(fields);}fields.innerHTML=customerDetails(detail,f);renderedDetailKey=detailKey;}
     renderImport();
     icons();
     updateDetailTab();
     if(appearanceChanged||!grid.hidden&&(lastFittedGridKey!==gridKey||lastFittedWidth!==app.clientWidth)){fitNames();if(!grid.hidden){lastFittedGridKey=gridKey;lastFittedWidth=app.clientWidth;}}
+    if(!grid.hidden&&observedGridKey!==gridKey)observeCustomerList(gridKey);
   }
   function shippingInfoLines(values){return (values||[]).filter(v=>typeof v==='string').flatMap(v=>v.split(/\r?\n/)).map(v=>v.trim()).filter(v=>v&&!/^(?:ex[\s-]*works|customer\s+arranges?\s+pick[\s-]*up|we\s+send\s+dimensions\s+as\s+soon\s+as\s+we\s+have\s+all\s+documents|extra\s+shipping\s+info)[.!:]?$/i.test(v.replace(/^\s*[*•]\s*/,'')));}
     const shippingWords={
@@ -443,17 +507,22 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function shippingTabLabel(title){return esc(title).replace(/Zolldokumente/g,'Zoll\u00addoku\u00admente').replace(/document(?:en|s|i|os)?|Dokumente|документи/gi,word=>word.slice(0,4)+'\u00ad'+word.slice(4));}
   function customerDetails(c,f){
     const empty=f[18];
-    const pair=(label,value)=>'<dt>'+esc(label)+'</dt><dd>'+esc(value||empty)+'</dd>';
+    const pair=(label,value,email=false)=>'<dt'+(email?' class="cp-email-label"':'')+'>'+esc(label)+'</dt><dd'+(email?' class="cp-email-value"':'')+'>'+(email?'<span class="cp-email-text">'+esc(value||empty)+'</span>':esc(value||empty))+'</dd>';
     const glyph=(key,extra='')=>'<span class="cp-detail-tab-icon '+extra+'" style="--cp-tab-icon:url('+assets.detailTabIcons[key]+')" aria-hidden="true"></span>';
     const a=c.address||{},base='cp-customer-'+c.id,order=orderCopy[state.language],titles=[f[2],order[0]],keys=['shipping','history'];
-    const personal='<section class="cp-customer-details" aria-labelledby="'+base+'-details"><h4 id="'+base+'-details">'+glyph('customer')+'<span>'+esc(f[0])+'</span></h4><dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email)+pair(f[9],c.vat)+'</dl></section>';
+    const personal='<div class="cp-customer-details"><dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email,true)+pair(f[9],c.vat)+'</dl></div>';
     const address='<dl>'+pair(f[10],a.street1)+(a.street2?pair(f[11],a.street2):'')+(a.street3?pair(f[12],a.street3):'')+pair(f[13],a.postalCode)+pair(f[14],a.city)+pair(f[15],country(c.country))+'</dl>';
-    const sections=shippingSections(c),subTitles=shippingTabCopy[state.language],subKeys=['address','customs','documents','info'],subContents=[address,documentList(sections.customs),boxDocumentList(sections.box),documentList(sections.extra,false,true)];
-    const shipping='<div class="cp-shipping-tabs" role="tablist" aria-label="'+esc(f[2])+'">'+subKeys.map((key,i)=>'<button type="button" class="cp-shipping-tab cursor-interaction" role="tab" id="'+base+'-shipping-tab-'+i+'" data-shipping-tab="'+i+'" aria-selected="'+(state.shippingTab===i)+'" aria-controls="'+base+'-shipping-panel-'+i+'">'+glyph(key)+'<span>'+shippingTabLabel(subTitles[i])+'</span></button>').join('')+'</div>'+subContents.map((html,i)=>'<section class="cp-shipping-panel" role="tabpanel" id="'+base+'-shipping-panel-'+i+'" aria-labelledby="'+base+'-shipping-tab-'+i+'"'+(state.shippingTab===i?'':' hidden')+'><h4>'+glyph(subKeys[i])+'<span>'+esc(subTitles[i])+'</span></h4>'+html+'</section>').join('');
+    const sections=shippingSections(c),subTitles=[f[0],...shippingTabCopy[state.language]],subKeys=['customer','address','customs','documents','info'],subContents=[personal,address,documentList(sections.customs),boxDocumentList(sections.box),documentList(sections.extra,false,true)];
+    const shipping='<div class="cp-shipping-tabs" role="tablist" aria-orientation="vertical" aria-label="'+esc(f[2])+'">'+subKeys.map((key,i)=>'<button type="button" class="cp-shipping-tab cursor-interaction" role="tab" id="'+base+'-shipping-tab-'+i+'" data-shipping-tab="'+i+'" aria-selected="'+(state.shippingTab===i)+'" aria-controls="'+base+'-shipping-panel-'+i+'">'+glyph(key)+'<span>'+shippingTabLabel(subTitles[i])+'</span></button>').join('')+'</div>'+subContents.map((html,i)=>'<section class="cp-shipping-panel" role="tabpanel" id="'+base+'-shipping-panel-'+i+'" aria-labelledby="'+base+'-shipping-tab-'+i+'"'+(state.shippingTab===i?'':' hidden')+'><h4>'+glyph(subKeys[i])+'<span>'+esc(subTitles[i])+'</span></h4>'+html+'</section>').join('');
     const contents=[shipping,'<h4>'+glyph('history')+'<span>'+esc(order[0])+'</span></h4><div class="cp-order-empty">'+glyph('history')+'<span>'+esc(order[1])+'</span></div>'];
-    return personal+'<div class="cp-detail-tabs" role="tablist" aria-label="'+esc(c.displayName||c.name)+'">'+keys.map((key,i)=>'<button type="button" class="cp-detail-tab cursor-interaction" role="tab" id="'+base+'-tab-'+i+'" data-detail-tab="'+i+'" aria-selected="'+(state.detailTab===i)+'" aria-controls="'+base+'-panel-'+i+'">'+glyph(key)+'<span class="cp-detail-tab-label">'+esc(titles[i])+'</span></button>').join('')+'</div><div class="cp-detail-panels">'+contents.map((html,i)=>'<section class="cp-detail-panel" role="tabpanel" id="'+base+'-panel-'+i+'" aria-labelledby="'+base+'-tab-'+i+'"'+(state.detailTab===i?'':' hidden')+'>'+html+'</section>').join('')+'</div>';
+    return '<div class="cp-detail-tabs" role="tablist" aria-label="'+esc(c.displayName||c.name)+'">'+keys.map((key,i)=>'<button type="button" class="cp-detail-tab cursor-interaction" role="tab" id="'+base+'-tab-'+i+'" data-detail-tab="'+i+'" aria-selected="'+(state.detailTab===i)+'" aria-controls="'+base+'-panel-'+i+'">'+glyph(key)+'<span class="cp-detail-tab-label">'+esc(titles[i])+'</span></button>').join('')+'</div><div class="cp-detail-panels">'+contents.map((html,i)=>'<section class="cp-detail-panel" role="tabpanel" id="'+base+'-panel-'+i+'" aria-labelledby="'+base+'-tab-'+i+'"'+(state.detailTab===i?'':' hidden')+'>'+html+'</section>').join('')+'</div>';
   }
   function fitDetailTabs(){
+    for(const email of root.querySelectorAll('.cp-email-text')){
+      if(!email.getClientRects().length)continue;
+      email.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(email).fontSize);
+      while(size>8&&email.scrollWidth>email.clientWidth+1){size=Math.max(8,size-.25);email.style.fontSize=size+'px';}
+    }
     for(const button of root.querySelectorAll('.cp-detail-tab,.cp-shipping-tab')){
       if(!button.getClientRects().length)continue;
       button.style.removeProperty('font-size');let size=parseFloat(getComputedStyle(button).fontSize);
@@ -468,19 +537,19 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   }
   function updateShippingTab(animate=false){root.querySelectorAll('.cp-shipping-tab').forEach(button=>button.setAttribute('aria-selected',String(Number(button.dataset.shippingTab)===state.shippingTab)));root.querySelectorAll('.cp-shipping-panel').forEach((panel,i)=>{panel.hidden=i!==state.shippingTab;if(animate&&!panel.hidden&&!matchMedia('(prefers-reduced-motion: reduce)').matches)panel.animate([{opacity:.5,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:180,easing:'ease-out'});});fitDetailTabs();}
   function selectDetailTab(i){if(!Number.isInteger(i)||i<0||i>1)return;state.detailTab=i;updateDetailTab(true);persist();}
-  function selectShippingTab(i){if(!Number.isInteger(i)||i<0||i>3)return;state.shippingTab=i;updateShippingTab(true);persist();}
+  function selectShippingTab(i){if(!Number.isInteger(i)||i<0||i>4)return;state.shippingTab=i;updateShippingTab(true);persist();}
   layer.addEventListener('click',event=>{const main=event.target.closest('[data-detail-tab]'),sub=event.target.closest('[data-shipping-tab]');if(main)selectDetailTab(Number(main.dataset.detailTab));if(sub)selectShippingTab(Number(sub.dataset.shippingTab));});
-  layer.addEventListener('keydown',event=>{const button=event.target.closest('[data-detail-tab],[data-shipping-tab]');if(!button)return;const sub=button.hasAttribute('data-shipping-tab'),count=sub?4:2,delta={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[event.key];if(delta===undefined&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();const i=event.key==='Home'?0:event.key==='End'?count-1:(Number(sub?button.dataset.shippingTab:button.dataset.detailTab)+delta+count)%count;(sub?selectShippingTab:selectDetailTab)(i);root.querySelector('['+(sub?'data-shipping-tab':'data-detail-tab')+'="'+i+'"]').focus({preventScroll:true});});
-  function page(amount){state.page=Math.max(0,Math.min(pageCount()-1,state.page+amount));render();window.scrollTo(0,0);persist();}
-  function close(){const id=state.selected;state.selected=null;render();const trigger=root.querySelector('[data-customer="'+id+'"]');if(trigger)trigger.focus({preventScroll:true});window.scrollTo(0,listScroll);persist();}
-  root.querySelector('.cp-search-input').addEventListener('input',e=>{state.query=e.target.value;state.page=0;state.selected=null;render();persist();});
+  layer.addEventListener('keydown',event=>{const button=event.target.closest('[data-detail-tab],[data-shipping-tab]');if(!button)return;const sub=button.hasAttribute('data-shipping-tab'),count=sub?5:2,delta={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[event.key];if(delta===undefined&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();const i=event.key==='Home'?0:event.key==='End'?count-1:(Number(sub?button.dataset.shippingTab:button.dataset.detailTab)+delta+count)%count;(sub?selectShippingTab:selectDetailTab)(i);root.querySelector('['+(sub?'data-shipping-tab':'data-detail-tab')+'="'+i+'"]').focus({preventScroll:true});});
+  function page(amount){state.page=Math.max(0,Math.min(pageCount()-1,state.page+amount));updateListNavigation();scrollToCustomerGroup();persist();}
+  function close(){const id=state.selected;state.selected=null;render();const trigger=root.querySelector('[data-customer="'+id+'"]');if(trigger)trigger.focus({preventScroll:true});restoreListPosition();persist();}
+  root.querySelector('.cp-search-input').addEventListener('input',e=>{state.query=e.target.value;state.page=0;state.listScroll=0;state.selected=null;render();persist();});
   root.querySelector('.cp-next').addEventListener('click',()=>page(1));root.querySelector('.cp-previous').addEventListener('click',()=>page(-1));
-  grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;listScroll=window.scrollY;state.selected=button.dataset.customer;state.detailTab=0;state.shippingTab=0;lastTrigger=button;render();const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-detail-tab').focus({preventScroll:true});window.scrollTo(0,0);persist();});
+  grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;state.listScroll=listScroller().scrollTop;state.selected=button.dataset.customer;state.detailTab=0;state.shippingTab=0;lastTrigger=button;render();listScroller().scrollTop=0;const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-detail-tab').focus({preventScroll:true});persist();});
   root.querySelector('.cp-back')?.addEventListener('click',()=>{if(state.selected){close();return;}const back=root.querySelector('.cp-back');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)back.animate([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:220});});
   layer.addEventListener('click',e=>{if(e.target===layer)close();});
   root.addEventListener('keydown',e=>{if(state.selected&&e.key==='Escape'){e.preventDefault();close();}});
   
-  document.fonts.ready.then(fitNames);
+  document.fonts.ready.then(()=>{fitNames();restoreListPosition();});
   let lastWidth=app.clientWidth;new ResizeObserver(()=>{if(app.clientWidth!==lastWidth){lastWidth=app.clientWidth;fitNames();}}).observe(app);
   function icons(){
     const paths={'search':'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>','chevron-left':'<path d="m15 18-6-6 6-6"/>','chevron-right':'<path d="m9 18 6-6-6-6"/>','sparkles':'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5Z"/>'};
@@ -500,6 +569,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   };
   function renderImport(){
     const t=privateCopy[state.language],detail=!!state.selected;
+    window.BmdPortalSession?.headerCount?.(detail?'':root.querySelector('.cp-total').textContent);
     let panel=root.querySelector('.cp-import');
     if(!panel){panel=document.createElement('section');panel.className='cp-import';root.querySelector('.cp-brand').before(panel);}
     panel.hidden=detail;
@@ -519,7 +589,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     }
   };
   restore(bootstrap);render();
-  document.fonts.ready.then(()=>{fitNames();window.BmdCustomerPortal.ready=true;});
+  document.fonts.ready.then(()=>{fitNames();restoreListPosition();window.BmdCustomerPortal.ready=true;});
 
 })();
 </script>

@@ -29,14 +29,20 @@ public class ScanWizardTest {
         long end=SystemClock.elapsedRealtime()+45000;AtomicBoolean yes=new AtomicBoolean();while(SystemClock.elapsedRealtime()<end){scenario.onActivity(a->{java.util.List<ScanTracker.Item> rows=((ScanTracker)DeviceSupport.get(a,"live")).visible(SystemClock.elapsedRealtime());yes.set(rows.size()==expected&&(kind==null||rows.stream().allMatch(row->row.kind.equals(kind))));});if(yes.get())return;SystemClock.sleep(200);}DeviceSupport.shot(null,"build3-format-failure");fail("Live format selection must recognize "+expected+" "+kind);
     }
 
-    @Test public void typeAndCountAreSharedAndSurviveBackAndRecreationInAllThemes()throws Exception{
+    @Test public void controlChoiceSurvivesRecreationInAllThemes()throws Exception{
         for(String theme:ThemeSkin.IDS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).putString("language","nl").commit();
             try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-                scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();View root=wizard(a);assertNotNull(DeviceSupport.tag(root,"wizard-step-type"));if(theme.equals("light")){for(String mode:new String[]{"box","stack"})for(String field:new String[]{"wizard-title-","wizard-hint-"}){android.widget.TextView text=(android.widget.TextView)DeviceSupport.tag(root,field+mode);assertNotNull(text);assertTrue("Light-theme choice text must stay readable",ThemeSkin.contrast(text.getCurrentTextColor(),0xffe4edf4)>=4.5);}}assertNull(DeviceSupport.tag(root,"box-expected-input"));assertFalse(DeviceSupport.tag(root,"wizard-next").isEnabled());DeviceSupport.tag(root,"wizard-type-stack").performClick();});DeviceSupport.shot(scenario,"build3-wizard-type-"+theme);
-                scenario.onActivity(a->{DeviceSupport.tag(wizard(a),"wizard-next").performClick();View root=wizard(a);assertNotNull(DeviceSupport.tag(root,"wizard-step-count"));((EditText)DeviceSupport.tag(root,"box-expected-input")).setText("95");});DeviceSupport.shot(scenario,"build3-wizard-count-"+theme);
-                scenario.recreate();scenario.onActivity(a->{View root=wizard(a);assertEquals("95",((EditText)DeviceSupport.tag(root,"box-expected-input")).getText().toString());DeviceSupport.tag(root,"wizard-back").performClick();root=wizard(a);assertTrue(DeviceSupport.tag(root,"wizard-type-stack").isSelected());DeviceSupport.tag(root,"wizard-type-stack").performClick();DeviceSupport.tag(wizard(a),"wizard-next").performClick();root=wizard(a);assertEquals("95",((EditText)DeviceSupport.tag(root,"box-expected-input")).getText().toString());assertTrue(DeviceSupport.hasText(root,a.s("wizard_stack")));assertNotNull(DeviceSupport.tag(root,"wizard-step-count"));});
+                scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();View root=wizard(a);assertNotNull(DeviceSupport.tag(root,"wizard-step-type"));assertFalse(DeviceSupport.tag(root,"wizard-next").isEnabled());DeviceSupport.tag(root,"wizard-type-stack").performClick();assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-stack").isSelected());assertTrue(DeviceSupport.hasText(wizard(a),a.s("picking_control")));});
+                scenario.recreate();scenario.onActivity(a->{assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-stack").isSelected());assertNotNull(DeviceSupport.tag(wizard(a),"wizard-step-type"));assertTrue(DeviceSupport.tag(wizard(a),"wizard-next").isEnabled());});
             }
         }
+    }
+    @Test public void pickingStartsWithAFreshPicklistNotManualCount()throws Exception{
+        Instrumentation inst=InstrumentationRegistry.getInstrumentation();Instrumentation.ActivityMonitor monitor=inst.addMonitor(PicklistActivity.class.getName(),null,false);Activity opened=null;
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();DeviceSupport.tag(wizard(a),"wizard-type-stack").performClick();DeviceSupport.tag(wizard(a),"wizard-next").performClick();});
+            opened=monitor.waitForActivityWithTimeout(10000);assertNotNull(opened);assertEquals("picking",opened.getIntent().getStringExtra("controlMode"));assertTrue(opened.getIntent().getBooleanExtra("newControl",false));
+        }finally{if(opened!=null){Activity child=opened;inst.runOnMainSync(child::finish);}inst.removeMonitor(monitor);}
     }
     @Test public void productChoiceArtworkIsTransparentAndKeepsItsWideAspect(){
         for(int resource:new int[]{R.drawable.wizard_full_box,R.drawable.wizard_stack}){

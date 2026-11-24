@@ -134,7 +134,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         env:
           BMD_SUITE: scanner-settings
-          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest,com.bmd.scanner.BoxCaptureFlowTest,com.bmd.scanner.PicklistFlowTest
+          BMD_ANDROID_CLASSES: com.bmd.scanner.PinchCameraZoomTest,com.bmd.scanner.ScannerSettingsTest,com.bmd.scanner.StackThemeScreensTest,com.bmd.scanner.BoxCaptureFlowTest,com.bmd.scanner.PicklistFlowTest,com.bmd.scanner.GenericReaderDeviceTest
         with:
           api-level: 35
           target: google_apis
@@ -215,4 +215,3 @@ jobs:
             build/reports/
           if-no-files-found: ignore
           retention-days: 7
-

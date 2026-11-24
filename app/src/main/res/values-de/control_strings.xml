@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Endkontrollscan</string>
+    <string name="ui_generic_scan" formatted="false">QR-Scanner</string>
+    <string name="ui_pallet_scanner" formatted="false">Paletten- und Kartonscan</string>
+    <string name="ui_document_scanner" formatted="false">Dokumente prüfen</string>
+    <string name="ui_picking_control" formatted="false">Kommissionierkontrolle</string>
+    <string name="ui_picking_control_hint" formatted="false">Pickliste lesen und Produkte und Mengen prüfen</string>
+    <string name="ui_final_control_hint" formatted="false">Pickliste lesen und vor oder nach dem Verpacken prüfen</string>
+    <string name="ui_control_picklist_first" formatted="false">Beide Kontrollen beginnen mit der Pickliste.</string>
+    <string name="ui_packing_question" formatted="false">Sind die Produkte bereits verpackt?</string>
+    <string name="ui_packed_box" formatted="false">Im Karton</string>
+    <string name="ui_packed_box_hint" formatted="false">Mit Markierungen und 5 Fotoschritten</string>
+    <string name="ui_before_packing" formatted="false">Vor dem Verpacken</string>
+    <string name="ui_before_packing_hint" formatted="false">Produkte ohne Markierungen scannen</string>
+    <string name="ui_generic_hint" formatted="false">Kamera auf einen QR- oder Strichcode richten</string>
+    <string name="ui_generic_result" formatted="false">Code erkannt</string>
+    <string name="ui_generic_results" formatted="false">Erkannte Codes</string>
+    <string name="ui_generic_open_link" formatted="false">Link öffnen</string>
+    <string name="ui_generic_copy" formatted="false">Kopieren</string>
+    <string name="ui_generic_copied" formatted="false">Kopiert</string>
+    <string name="ui_generic_empty" formatted="false">Kein lesbarer Code gefunden</string>
+    <string name="ui_generic_error" formatted="false">Scan fehlgeschlagen. Erneut versuchen.</string>
+</resources>

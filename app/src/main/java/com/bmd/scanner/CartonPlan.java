@@ -3,6 +3,9 @@ package com.bmd.scanner;
 /** Quantities are physical products, never code counts or a requirement to fill a carton. */
 final class CartonPlan {
     final int total,capacity,boxes;final int[] quantities;
+    private CartonPlan(int products){if(products<1||products>10000)throw new IllegalArgumentException("total");total=capacity=products;boxes=1;quantities=new int[]{products};}
+    /** A picking pass is one stack, not a physical carton with a larger capacity. */
+    static CartonPlan picking(int products){return new CartonPlan(products);}
     CartonPlan(int total,int capacity){
         if(total<1||total>10000||(capacity!=113&&capacity!=125))throw new IllegalArgumentException("capacity");
         this.total=total;this.capacity=capacity;boxes=(total+capacity-1)/capacity;quantities=new int[boxes];

@@ -20,6 +20,7 @@ final class ReferenceHome extends FrameLayout {
     private final int[] edges=HomeGeometry.EDGES;
     private float[] screenEdges;
     private float artworkScale;private float headerNameRight;
+    private float headerOffset=Float.NaN;private int headerMeasureWidth,headerMeasureHeight;
     private HomeGeometry geometry;
     private final View[] targets=new View[6];
     private final RectF[] boxes={new RectF(38,477,430,899),new RectF(439,477,831,899),new RectF(38,909,430,1331),new RectF(439,909,831,1331),new RectF(125,40,766,245),new RectF(190,1490,678,1648)};
@@ -36,14 +37,47 @@ final class ReferenceHome extends FrameLayout {
     private void fit(int width,int height){geometry=new HomeGeometry(width,height);artworkScale=geometry.scale;screenEdges=geometry.rows;destination.set(geometry.left,0,geometry.right,height);}
     private float screenY(float y){return geometry.y(y);}
     @Override protected void onLayout(boolean changed,int l,int t,int r,int b){fit(r-l,b-t);for(int i=0;i<targets.length;i++){RectF box=boxes[i];targets[i].layout(Math.round(destination.left+(box.left-LEFT)*artworkScale),Math.round(screenY(box.top)),Math.round(destination.left+(box.right-LEFT)*artworkScale),Math.round(screenY(box.bottom)));}}
-    @Override protected void onDraw(Canvas canvas){super.onDraw(canvas);fit(getWidth(),getHeight());backdrop.layout(0,0,getWidth(),getHeight());backdrop.draw(canvas);float left=destination.left,scale=artworkScale;if(!menu){RectF id=boxes[4];float y=screenY(id.top),height=screenY(id.bottom)-y;canvas.save();canvas.translate(left+id.left*scale,y-height*.18f);headerMist.setBounds(0,0,Math.round(700*scale),Math.round(height*1.5f));headerMist.draw(canvas);canvas.restore();canvas.save();canvas.translate(left+id.left*scale,y);int size=Math.round(height*.96f);scanner.layout(0,0,size,size);scanner.draw(canvas);canvas.restore();drawWordmark(canvas,left+320*scale,y,height,485*scale);ReferenceArt.ribbon(canvas,getWidth(),screenY(300)+4*getResources().getDisplayMetrics().density,ThemeSkin.active,true);}float[] logo=geometry.brand();canvas.save();canvas.translate(Math.round(logo[0]),Math.round(logo[1]));brand.layout(0,0,Math.round(logo[2])-Math.round(logo[0]),Math.round(logo[3])-Math.round(logo[1]));brand.draw(canvas);canvas.restore();}
+    @Override protected void onDraw(Canvas canvas){
+        super.onDraw(canvas);fit(getWidth(),getHeight());
+        backdrop.layout(0,0,getWidth(),getHeight());backdrop.draw(canvas);
+        if(!menu){
+            centreIdentity();canvas.save();canvas.translate(headerOffset,0);drawIdentity(canvas);canvas.restore();
+            ReferenceArt.ribbon(canvas,getWidth(),screenY(300)+4*getResources().getDisplayMetrics().density,ThemeSkin.active,true);
+        }
+        float[] logo=geometry.brand();canvas.save();canvas.translate(Math.round(logo[0]),Math.round(logo[1]));
+        brand.layout(0,0,Math.round(logo[2])-Math.round(logo[0]),Math.round(logo[3])-Math.round(logo[1]));brand.draw(canvas);canvas.restore();
+    }
+    private void drawIdentity(Canvas canvas){
+        RectF id=boxes[4];float scale=artworkScale,left=destination.left,y=screenY(id.top),height=screenY(id.bottom)-y;
+        canvas.save();canvas.translate(left+id.left*scale,y-height*.18f);
+        headerMist.setBounds(0,0,Math.round(700*scale),Math.round(height*1.5f));headerMist.draw(canvas);canvas.restore();
+        canvas.save();canvas.translate(left+id.left*scale,y);int size=Math.round(height*.96f);
+        scanner.layout(0,0,size,size);scanner.draw(canvas);canvas.restore();
+        drawWordmark(canvas,left+320*scale,y,height,485*scale);
+    }
+    /** Centre the visible artwork, including smoke and stars, once per viewport. */
+    private void centreIdentity(){
+        int width=getWidth(),height=getHeight();
+        if(!Float.isNaN(headerOffset)&&headerMeasureWidth==width&&headerMeasureHeight==height)return;
+        RectF id=boxes[4];int band=Math.min(height,Math.max(1,(int)Math.ceil(screenY(id.top)+(screenY(id.bottom)-screenY(id.top))*1.4f+2)));
+        Bitmap mask=Bitmap.createBitmap(width,band,Bitmap.Config.ARGB_8888);
+        try{
+            drawIdentity(new Canvas(mask));int[] pixels=new int[width*band];mask.getPixels(pixels,0,width,0,0,width,band);
+            int left=width,right=0;
+            for(int y=0;y<band;y++)for(int x=0;x<width;x++)if(Color.alpha(pixels[y*width+x])>12){left=Math.min(left,x);right=Math.max(right,x+1);}
+            headerOffset=right>left?width/2f-(left+right)/2f:0;
+            headerMeasureWidth=width;headerMeasureHeight=height;
+            targets[4].setTranslationX(headerOffset);
+        }finally{mask.recycle();}
+    }
 
     @Override protected void dispatchDraw(Canvas canvas){
         for(int i=0;i<4;i++){
             RectF sourceBox=boxes[i];RectF r=new RectF(destination.left+sourceBox.left*artworkScale,screenY(sourceBox.top),destination.left+sourceBox.right*artworkScale,screenY(sourceBox.bottom));
             int[][] colours=menu?new int[][]{{0xff00e7de,0xff00565d,0xff65fff2},{0xffffcf22,0xffd33a00,0xffffec73},{0xff17b4ff,0xff0721b8,0xff70eaff},{0xffc737ef,0xff480076,0xfff89dff}}:new int[][]{{0xff31bdff,0xff071bc0,0xff73edff},{0xff39f997,0xff006b2b,0xff8affb3},{0xffd34cff,0xff460096,0xfff1a2ff},{0xffffc02d,0xff8e230b,0xffffdb76}};
             android.graphics.drawable.Drawable face=UiArt.tile(colours[i][0],colours[i][1],colours[i][2],r.width()*.14f);face.setBounds(Math.round(r.left),Math.round(r.top),Math.round(r.right),Math.round(r.bottom));face.draw(canvas);
-            if(!menu||i==0){int size=Math.round(Math.min(r.width(),r.height())*.69f);float x=r.centerX()-size/2f,y=r.top+r.height()*.385f-size/2f;if(menu)ReferenceArt.qrIcon(canvas,getContext(),new RectF(x,y,x+size,y+size));else ReferenceArt.icon(canvas,getContext(),i,new RectF(x,y,x+size,y+size));}else{String[] icons={"qr","pallet","document","mail"};UiArt.Magic icon=new UiArt.Magic(getContext(),icons[i],new int[]{0xff00ddff,0xff49f794,0xffffb526,0xffd178ff}[i]).unboxed();int size=Math.round(Math.min(r.width(),r.height())*.47f);canvas.save();canvas.translate(r.centerX()-size/2f,r.top+r.height()*.14f);icon.layout(0,0,size,size);icon.draw(canvas);canvas.restore();}
+            int size=Math.round(Math.min(r.width(),r.height())*.69f);float x=r.centerX()-size/2f,y=r.top+r.height()*.385f-size/2f;RectF iconBounds=new RectF(x,y,x+size,y+size);if(menu)ReferenceArt.scanMenuIcon(canvas,getContext(),i,iconBounds);else ReferenceArt.icon(canvas,getContext(),i,iconBounds);
+
             Rect band=new Rect(Math.round(r.left+r.width()*.06f),Math.round(r.top+r.height()*.59f),Math.round(r.right-r.width()*.06f),Math.round(r.bottom-r.height()*.1f));drawLabel(canvas,band,labels[i],false);
         }
         super.dispatchDraw(canvas);

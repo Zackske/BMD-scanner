@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Leitura de controlo final</string>
+    <string name="ui_generic_scan" formatted="false">Scanner QR</string>
+    <string name="ui_pallet_scanner" formatted="false">Leitura de paletes e caixas</string>
+    <string name="ui_document_scanner" formatted="false">Scanner de controlo documental</string>
+    <string name="ui_picking_control" formatted="false">Controlo de picking</string>
+    <string name="ui_picking_control_hint" formatted="false">Ler a lista e verificar produtos e quantidades</string>
+    <string name="ui_final_control_hint" formatted="false">Ler a lista e verificar antes ou depois de embalar</string>
+    <string name="ui_control_picklist_first" formatted="false">Ambos os controlos começam pela lista de picking.</string>
+    <string name="ui_packing_question" formatted="false">Os produtos já estão embalados?</string>
+    <string name="ui_packed_box" formatted="false">Na caixa</string>
+    <string name="ui_packed_box_hint" formatted="false">Com marcadores e 5 etapas fotográficas</string>
+    <string name="ui_before_packing" formatted="false">Antes de embalar</string>
+    <string name="ui_before_packing_hint" formatted="false">Digitalizar produtos sem marcadores</string>
+    <string name="ui_generic_hint" formatted="false">Aponte para um código QR ou de barras</string>
+    <string name="ui_generic_result" formatted="false">Código detetado</string>
+    <string name="ui_generic_results" formatted="false">Códigos detetados</string>
+    <string name="ui_generic_open_link" formatted="false">Abrir ligação</string>
+    <string name="ui_generic_copy" formatted="false">Copiar</string>
+    <string name="ui_generic_copied" formatted="false">Copiado</string>
+    <string name="ui_generic_empty" formatted="false">Nenhum código legível encontrado</string>
+    <string name="ui_generic_error" formatted="false">Não foi possível ler. Tente novamente.</string>
+</resources>

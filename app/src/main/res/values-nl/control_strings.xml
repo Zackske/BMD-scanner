@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Eind controle scan</string>
+    <string name="ui_generic_scan" formatted="false">QR scanner</string>
+    <string name="ui_pallet_scanner" formatted="false">Pallet en doos scan</string>
+    <string name="ui_document_scanner" formatted="false">Documenten controle scanner</string>
+    <string name="ui_picking_control" formatted="false">Picking controle</string>
+    <string name="ui_picking_control_hint" formatted="false">Lees de picklist en controleer producten en aantallen</string>
+    <string name="ui_final_control_hint" formatted="false">Lees de picklist en controleer vóór of na het inpakken</string>
+    <string name="ui_control_picklist_first" formatted="false">Beide controles beginnen met het scannen van de picklist.</string>
+    <string name="ui_packing_question" formatted="false">Zijn de producten al ingepakt?</string>
+    <string name="ui_packed_box" formatted="false">In de doos</string>
+    <string name="ui_packed_box_hint" formatted="false">Met markeringen en 5 fotostappen</string>
+    <string name="ui_before_packing" formatted="false">Vóór het inpakken</string>
+    <string name="ui_before_packing_hint" formatted="false">Producten scannen zonder markeringen</string>
+    <string name="ui_generic_hint" formatted="false">Richt de camera op een QR-code of barcode</string>
+    <string name="ui_generic_result" formatted="false">Code herkend</string>
+    <string name="ui_generic_results" formatted="false">Herkende codes</string>
+    <string name="ui_generic_open_link" formatted="false">Link openen</string>
+    <string name="ui_generic_copy" formatted="false">Kopiëren</string>
+    <string name="ui_generic_copied" formatted="false">Gekopieerd</string>
+    <string name="ui_generic_empty" formatted="false">Geen leesbare code gevonden</string>
+    <string name="ui_generic_error" formatted="false">Scannen mislukt. Probeer opnieuw.</string>
+</resources>

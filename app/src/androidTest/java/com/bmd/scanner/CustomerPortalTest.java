@@ -37,7 +37,7 @@ public class CustomerPortalTest {
     private String fixture(int count)throws Exception{
         JSONArray rows=new JSONArray();
         for(int i=0;i<count;i++)rows.put(new JSONObject().put("id","fixture-"+i).put("name","Synthetic Customer "+i).put("displayName","Demo Client "+i)
-            .put("customerId",i<2?"TEST-SHARED":"TEST-"+i).put("country",i%2==0?"NL":"CH").put("shippingGroup",i%2==0?"eu":"non-eu"));
+            .put("customerId",i<2?"TEST-SHARED":"TEST-"+i).put("email","customer.register@example.invalid").put("country",i%2==0?"NL":"CH").put("shippingGroup",i%2==0?"eu":"non-eu"));
         return new JSONObject().put("schema",1).put("customers",rows).toString();
     }
     @Before public void seedPrivateSyntheticRegister()throws Exception{register().importText(fixture(84));}
@@ -71,6 +71,11 @@ public class CustomerPortalTest {
                         MenuHeader header=new MenuHeader(words,"portal",words.getString(resource),words.getString(R.string.ui_back),()->{});
                         int width=Math.round(widthDp*activity.getResources().getDisplayMetrics().density);
                         header.setPadding(32,16,32,0);header.measure(View.MeasureSpec.makeMeasureSpec(width,View.MeasureSpec.EXACTLY),View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED));header.layout(0,0,width,header.getMeasuredHeight());
+                        View back=header.findViewWithTag("menu-back"),icon=header.findViewWithTag("menu-header-icon-portal");
+                        int expectedGap=Math.round(24*activity.getResources().getDisplayMetrics().density);
+                        assertEquals("Every submenu keeps the Settings gap",expectedGap,icon.getLeft()-back.getRight());
+                        assertTrue("Title follows the icon",header.title.getLeft()>=icon.getRight());
+                        assertTrue("Title stays inside header",header.title.getRight()<=header.getWidth()-header.getPaddingRight());
                         android.text.Layout layout=header.title.getLayout();assertNotNull(layout);
                         assertEquals("Every title character is laid out in "+language,header.title.length(),layout.getLineEnd(layout.getLineCount()-1));
                         assertTrue("Title height must include all text lines in "+language,layout.getHeight()<=header.title.getHeight());
@@ -112,13 +117,15 @@ public class CustomerPortalTest {
                         js(scenario,"window.BmdCustomerPortal.back()");
                     }
                 }
-                pages++;if("true".equals(js(scenario,"document.querySelector('.cp-next').disabled")))break;
-                js(scenario,"document.querySelector('.cp-next').click();true");
+                pages++;break;
             }
-            assertEquals(84,ids.size());assertEquals(11,pages);assertEquals(2,shared);
+            assertEquals(84,ids.size());assertEquals(1,pages);assertEquals(2,shared);
+            js(scenario,"window.continuousFirstTile=document.querySelector('.cp-customer');document.querySelector('.cp-next').click();true");
+            assertEquals("true",js(scenario,"document.querySelectorAll('.cp-customer').length===84&&document.querySelector('.cp-customer')===window.continuousFirstTile"));
+            assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().page"));
             long imagesEnd=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<imagesEnd&&!"true".equals(js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)")))SystemClock.sleep(100);
             assertEquals("true",js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)"));
-            shot(scenario,"portal-last-page");
+            shot(scenario,"portal-continuous-list");
         }
     }
     @Test public void allSixThemesAndTenLanguagesFitTheRealPhoneViewport()throws Exception{
@@ -145,39 +152,41 @@ public class CustomerPortalTest {
         row.put("documents",new JSONArray().put("Documents on top of Box").put("3x Shipmentlist (Signature+Stamp)").put("3x Invoice (Signature+Stamp)").put("Original EUR.1 (Signature + Stamp)").put("No Documents in box!"));
         register().importText(data.toString());
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
-            ready(scenario);js(scenario,"document.querySelector('.cp-customer').click();document.querySelector('[data-shipping-tab=\"1\"]').click();true");
+            ready(scenario);js(scenario,"document.querySelector('.cp-customer').click();document.querySelector('[data-shipping-tab=\"2\"]').click();true");
             assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-shipping-panel:not([hidden]) li'),e=>e.textContent).join('|')==='CoO|EUR.1|CoC|Verzendlijst|Klantfactuur|NEFEZA-factuur in Excel-formaat|(H)AWB'"));
-            js(scenario,"document.querySelector('[data-shipping-tab=\"2\"]').click();true");
+            js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
             assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-pouch-item>span'),e=>e.textContent).join('|')==='3 × Factuur|3 × Verzendlijst|Originele EUR.1'"));
             assertEquals("true",js(scenario,"document.querySelectorAll('.cp-pouch-item small').length===3&&Array.from(document.querySelectorAll('.cp-pouch-item small'),e=>e.textContent==='Handtekening + stempel').every(Boolean)"));
             shot(scenario,"portal-document-pouches");
-            js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
+            js(scenario,"document.querySelector('[data-shipping-tab=\"4\"]').click();true");
             assertEquals("true",js(scenario,"document.querySelectorAll('.cp-requirement-item small').length===5&&Array.from(document.querySelectorAll('.cp-requirement-item small'),e=>parseFloat(getComputedStyle(e).fontSize)<parseFloat(getComputedStyle(e.parentElement.querySelector('span')).fontSize)).every(Boolean)"));
             shot(scenario,"portal-extra-info");
             js(scenario,"document.querySelector('[data-detail-tab=\"1\"]').click();true");
-            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length>0&&document.querySelector('.cp-order-empty').getClientRects().length>0"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length===0&&document.querySelector('.cp-order-empty').getClientRects().length>0"));
         }
     }
     @Test public void detailNamesBackAndRecreationPreserveTheSelectedCustomer()throws Exception{
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("translumina","en")){
-            ready(scenario);js(scenario,"document.querySelector('.cp-next').click();document.querySelector('.cp-customer').click();true");
+            ready(scenario);js(scenario,"document.querySelector('.cp-next').click();true");SystemClock.sleep(800);
+            js(scenario,"document.querySelector('[data-list-index=\"8\"]').click();true");
             String title=js(scenario,"document.querySelector('#cp-detail-title').textContent");
             assertEquals("true",js(scenario,"document.querySelector('.cp-grid').hidden"));
             assertEquals("true",js(scenario,"window.BmdCustomerPortal.snapshot().selected!==null"));
+            assertEquals("true",js(scenario,"(()=>{const email=document.querySelector('.cp-email-text');return email.textContent==='customer.register@example.invalid'&&getComputedStyle(email).whiteSpace==='nowrap'&&email.scrollWidth<=email.clientWidth+2;})()"));
             assertEquals("2",js(scenario,"document.querySelectorAll('.cp-detail-tab').length"));
-            assertEquals("4",js(scenario,"document.querySelectorAll('.cp-shipping-tab').length"));
-            js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
-            assertEquals("3",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
+            assertEquals("5",js(scenario,"document.querySelectorAll('.cp-shipping-tab').length"));
+            js(scenario,"document.querySelector('[data-shipping-tab=\"4\"]').click();true");
+            assertEquals("4",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
             SystemClock.sleep(200);scenario.recreate();ready(scenario);
             assertEquals(title,js(scenario,"document.querySelector('#cp-detail-title').textContent"));
             assertEquals("true",js(scenario,"document.querySelector('.cp-grid').hidden"));
-            assertEquals("3",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
+            assertEquals("4",js(scenario,"window.BmdCustomerPortal.snapshot().shippingTab"));
             assertEquals("1",js(scenario,"document.querySelectorAll('.cp-detail-panel:not([hidden])').length"));
             js(scenario,"document.querySelector('[data-detail-tab=\"1\"]').click();true");
-            assertEquals("true",js(scenario,"!document.querySelector('.cp-customer-details').hidden&&document.querySelector('.cp-customer-details').getClientRects().length>0"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length===0"));
             SystemClock.sleep(200);scenario.recreate();ready(scenario);
             assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().detailTab"));
-            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length>0&&!document.querySelector('.cp-order-empty').hidden"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-customer-details').getClientRects().length===0&&!document.querySelector('.cp-order-empty').hidden"));
             scenario.onActivity(a->{View back=DeviceSupport.tag(a.getWindow().getDecorView(),"customer-portal-back");assertNotNull(back);back.performClick();});
             long end=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<end&&"true".equals(js(scenario,"document.querySelector('.cp-grid').hidden")))SystemClock.sleep(100);
             assertEquals("false",js(scenario,"document.querySelector('.cp-grid').hidden"));

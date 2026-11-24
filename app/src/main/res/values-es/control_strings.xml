@@ -1,0 +1,23 @@
+<resources>
+    <string name="ui_bmd_control" formatted="false">Escaneo de control final</string>
+    <string name="ui_generic_scan" formatted="false">Escáner QR</string>
+    <string name="ui_pallet_scanner" formatted="false">Escaneo de palés y cajas</string>
+    <string name="ui_document_scanner" formatted="false">Escáner de control documental</string>
+    <string name="ui_picking_control" formatted="false">Control de preparación</string>
+    <string name="ui_picking_control_hint" formatted="false">Lee la lista y comprueba productos y cantidades</string>
+    <string name="ui_final_control_hint" formatted="false">Lee la lista y comprueba antes o después de embalar</string>
+    <string name="ui_control_picklist_first" formatted="false">Ambos controles comienzan con la lista de preparación.</string>
+    <string name="ui_packing_question" formatted="false">¿Los productos ya están embalados?</string>
+    <string name="ui_packed_box" formatted="false">Dentro de la caja</string>
+    <string name="ui_packed_box_hint" formatted="false">Con marcadores y 5 pasos fotográficos</string>
+    <string name="ui_before_packing" formatted="false">Antes de embalar</string>
+    <string name="ui_before_packing_hint" formatted="false">Escanea los productos sin marcadores</string>
+    <string name="ui_generic_hint" formatted="false">Apunta a un código QR o de barras</string>
+    <string name="ui_generic_result" formatted="false">Código detectado</string>
+    <string name="ui_generic_results" formatted="false">Códigos detectados</string>
+    <string name="ui_generic_open_link" formatted="false">Abrir enlace</string>
+    <string name="ui_generic_copy" formatted="false">Copiar</string>
+    <string name="ui_generic_copied" formatted="false">Copiado</string>
+    <string name="ui_generic_empty" formatted="false">No se encontró ningún código legible</string>
+    <string name="ui_generic_error" formatted="false">No se pudo escanear. Inténtalo de nuevo.</string>
+</resources>
