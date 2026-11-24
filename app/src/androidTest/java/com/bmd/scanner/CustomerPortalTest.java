@@ -145,6 +145,26 @@ public class CustomerPortalTest {
             }
         }
     }
+    @Test public void shippingTermsAndProviderStayInSeparateColumnsAcrossThemesAndLanguages()throws Exception{
+        JSONObject data=new JSONObject(fixture(4));JSONArray rows=data.getJSONArray("customers");
+        rows.getJSONObject(0).put("shipping",new JSONArray().put("EX-WORKS").put("Customer arranges Pick-UP - Forwarder"));
+        rows.getJSONObject(1).put("shipping",new JSONArray().put("EX-WORKS").put("Customer arranges Pick-UP - DHL"));
+        rows.getJSONObject(2).put("shipping",new JSONArray().put("Delivered Duty Paid").put("Use Blue Medical account"));
+        rows.getJSONObject(3).put("shipping",new JSONArray().put("EX-WORKS").put("FedEx").put("999000111"));
+        register().importText(data.toString());
+        for(String theme:ThemeSkin.IDS){
+            try(ActivityScenario<CustomerPortalActivity> scenario=launch(theme,"nl")){
+                ready(scenario);
+                for(String language:MainActivity.LANGS){
+                    js(scenario,"window.BmdCustomerPortal.applyAppearance('"+theme+"','"+language+"',"+JSONObject.quote(brand(language))+")");
+                    String result=js(scenario,"(()=>{for(let mode=0;mode<4;mode++){document.querySelector('[data-customer=\"fixture-'+mode+'\"]').click();const card=document.querySelector('.cp-shipping-summary'),term=card.querySelector('.cp-shipping-terms'),main=card.querySelector('.cp-shipping-route-main'),detail=card.querySelector('.cp-shipping-route-detail'),routes=card.querySelector('.cp-shipping-routes');if(!term||!main)return 'missing shipping fields '+mode;const t=term.getBoundingClientRect(),r=routes.getBoundingClientRect(),c=card.getBoundingClientRect();if(t.right>r.left+1||r.right>c.right+1||card.scrollWidth>card.clientWidth+1)return 'shipping columns overflow '+mode;if(main.scrollWidth>main.clientWidth+1||detail&&detail.scrollWidth>detail.clientWidth+1)return 'shipping text overflow '+mode;if(detail){const m=main.getBoundingClientRect(),d=detail.getBoundingClientRect();if(d.top<m.bottom-1||Math.abs(d.right-m.right)>1)return 'provider is not below and right aligned '+mode;}if(mode===0&&(!detail||!detail.textContent.trim()))return 'forwarder missing';if(mode===1&&(!detail||detail.textContent!=='DHL'||card.textContent.includes('UPS')))return 'pickup carrier changed';if(mode===2&&(term.textContent!=='Delivered Duty Paid'||card.textContent.includes('EX-WORKS')||card.textContent.includes('UPS')||detail))return 'DDP account has invented carrier';if(mode===3&&(!detail||!detail.textContent.includes('999000111')))return 'account number missing';window.BmdCustomerPortal.back();}return true;})()");
+                    assertEquals("Shipping row in "+theme+" / "+language,"true",result);
+                }
+                js(scenario,"window.BmdCustomerPortal.applyAppearance('"+theme+"','nl','ScanTovenaar');document.querySelector('[data-customer=\"fixture-0\"]').click();true");
+                shot(scenario,"portal-shipping-layout-"+theme);
+            }
+        }
+    }
     @Test public void shippingDocumentsKeepTheirOrderPouchesAndSignatureRequirements()throws Exception{
         JSONObject data=new JSONObject(fixture(1));JSONObject row=data.getJSONArray("customers").getJSONObject(0);
         row.put("shipping",new JSONArray().put("CoO (Certificate of Origin)").put("EUR.1").put("Shipmentlist").put("Costumer Invoice").put("Invoice NEFEZA in Excel format").put("HAWB (House Air Way Bill)").put("CoA (Certificate of Analysis)"));
@@ -153,6 +173,7 @@ public class CustomerPortalTest {
         register().importText(data.toString());
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
             ready(scenario);js(scenario,"document.querySelector('.cp-customer').click();document.querySelector('[data-shipping-tab=\"2\"]').click();true");
+            assertEquals(JSONObject.quote("Benodigde documenten"),js(scenario,"document.querySelector('[data-shipping-tab=\"2\"]').textContent.replace(/\\u00ad/g,'').trim()"));
             assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-shipping-panel:not([hidden]) li'),e=>e.textContent).join('|')==='CoO|EUR.1|CoC|Verzendlijst|Klantfactuur|NEFEZA-factuur in Excel-formaat|(H)AWB'"));
             js(scenario,"document.querySelector('[data-shipping-tab=\"3\"]').click();true");
             assertEquals("true",js(scenario,"Array.from(document.querySelectorAll('.cp-pouch-item>span'),e=>e.textContent).join('|')==='3 × Factuur|3 × Verzendlijst|Originele EUR.1'"));
