@@ -259,7 +259,7 @@ public class CustomerPortalTest {
             assertEquals("false",js(scenario,"document.querySelector('.cp-no-results').hidden"));
             assertEquals("true",js(scenario,"document.querySelector('.cp-paging').hidden"));
             search(scenario,"");
-            assertEquals("8",js(scenario,"document.querySelectorAll('.cp-customer').length"));
+            assertEquals("Clearing search restores the complete continuous customer list","84",js(scenario,"document.querySelectorAll('.cp-customer').length"));
             assertEquals("false",js(scenario,"document.querySelector('.cp-next').disabled"));
         }
     }
