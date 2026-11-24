@@ -55,7 +55,7 @@ final class MenuHeader extends ViewGroup {
     }
     MenuHeader compact(){compact=true;smoke.setVisibility(GONE);requestLayout();return this;}
     MenuHeader prominent(){prominent=true;requestLayout();return this;}
-    MenuHeader homeSpacing(){homeSpacing=true;prominent=true;wave.homeSpacing=true;requestLayout();return this;}
+    MenuHeader homeSpacing(){homeSpacing=true;prominent=true;wave.homeSpacing=true;setClipToPadding(false);requestLayout();return this;}
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     @Override protected void onMeasure(int widthSpec,int heightSpec){
         int width=MeasureSpec.getSize(widthSpec),available=Math.max(1,width-getPaddingLeft()-getPaddingRight());
