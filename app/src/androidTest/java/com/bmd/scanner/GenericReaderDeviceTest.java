@@ -38,9 +38,14 @@ public class GenericReaderDeviceTest {
     @Test public void resultPopupDoesNotOpenLinksUntilUserChooses()throws Exception{
         android.app.Instrumentation inst=InstrumentationRegistry.getInstrumentation();
         try(ActivityScenario<GenericScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),GenericScanActivity.class).putExtra("language","nl"))){
-            IntentFilter links=new IntentFilter(Intent.ACTION_VIEW);links.addDataScheme("http");links.addDataScheme("https");
+            IntentFilter links=new IntentFilter(Intent.ACTION_VIEW);links.addCategory(Intent.CATEGORY_BROWSABLE);links.addDataScheme("http");links.addDataScheme("https");
             android.app.Instrumentation.ActivityMonitor monitor=inst.addMonitor(links,null,true);
-            try{scenario.onActivity(a->{a.showResults(Collections.singletonList(new GenericCode("https://example.org/product","QR CODE")));Dialog dialog=(Dialog)DeviceSupport.get(a,"resultDialog");TextView value=(TextView)DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-result-value");assertEquals("https://example.org/product",value.getText().toString());assertTrue(value.isTextSelectable());assertEquals(0,monitor.getHits());DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-close").performClick();assertNull(DeviceSupport.get(a,"resultDialog"));assertFalse((Boolean)DeviceSupport.get(a,"paused"));});}finally{inst.removeMonitor(monitor);}
+            java.util.concurrent.atomic.AtomicReference<Dialog> shown=new java.util.concurrent.atomic.AtomicReference<>();
+            try{
+                scenario.onActivity(a->{a.showResults(Collections.singletonList(new GenericCode("https://example.org/product","QR CODE")));Dialog dialog=(Dialog)DeviceSupport.get(a,"resultDialog");shown.set(dialog);TextView value=(TextView)DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-result-value");assertEquals("https://example.org/product",value.getText().toString());assertTrue(value.isTextSelectable());assertEquals(0,monitor.getHits());DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-close").performClick();});
+                inst.waitForIdleSync();
+                scenario.onActivity(a->{assertFalse("The closed result is no longer visible",shown.get().isShowing());Dialog current=(Dialog)DeviceSupport.get(a,"resultDialog");assertNotSame("Dismiss callbacks must release the closed result",shown.get(),current);assertEquals("Scanning resumes, or pauses again for a fresh camera result",current!=null,(Boolean)DeviceSupport.get(a,"paused"));assertEquals(0,monitor.getHits());});
+            }finally{inst.removeMonitor(monitor);}
         }
     }
     @Test public void pickingJobPersistsWithoutPretendingTwoHundredProductsFitOneCarton()throws Exception{
