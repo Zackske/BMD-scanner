@@ -23,6 +23,9 @@ public class GenericReaderDeviceTest {
             parent.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"settings").performClick();});
             child=monitor.waitForActivityWithTimeout(15000);assertNotNull("QR tile must open the live reader directly",child);final android.app.Activity reader=child;
             inst.runOnMainSync(()->{android.view.View root=reader.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-preview"));assertNotNull(DeviceSupport.tag(root,"generic-toolbar"));assertNull(DeviceSupport.tag(root,"wizard-step-type"));assertEquals("both",DeviceSupport.get(reader,"mode"));});
+            java.util.concurrent.atomic.AtomicBoolean detected=new java.util.concurrent.atomic.AtomicBoolean();long end=android.os.SystemClock.elapsedRealtime()+45000;
+            while(android.os.SystemClock.elapsedRealtime()<end){inst.runOnMainSync(()->detected.set(DeviceSupport.get(reader,"camera")!=null&&!((Map<?,?>)DeviceSupport.get(reader,"history")).isEmpty()));if(detected.get())break;android.os.SystemClock.sleep(150);}
+            assertTrue("The directly opened camera must decode the real emulator image",detected.get());DeviceSupport.shot(null,"build48-generic-reader-live-result");
         }finally{if(child!=null){android.app.Activity reader=child;inst.runOnMainSync(reader::finish);}inst.removeMonitor(monitor);}
     }
     private Bitmap symbol(String text,BarcodeFormat format,int width,int height)throws Exception{BitMatrix bits=new MultiFormatWriter().encode(text,format,width,height);width=bits.getWidth();height=bits.getHeight();int[] rgb=new int[width*height];for(int y=0;y<height;y++)for(int x=0;x<width;x++)rgb[y*width+x]=bits.get(x,y)?Color.BLACK:Color.WHITE;return Bitmap.createBitmap(rgb,width,height,Bitmap.Config.ARGB_8888);}
