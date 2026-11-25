@@ -22,7 +22,7 @@ public class GenericReaderDeviceTest {
         try(ActivityScenario<MainActivity> parent=ActivityScenario.launch(MainActivity.class)){
             parent.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"settings").performClick();});
             child=monitor.waitForActivityWithTimeout(15000);assertNotNull("QR tile must open the live reader directly",child);final android.app.Activity reader=child;
-            inst.runOnMainSync(()->{android.view.View root=reader.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-preview"));assertNotNull(DeviceSupport.tag(root,"generic-toolbar"));assertNull(DeviceSupport.tag(root,"wizard-step-type"));assertEquals("both",DeviceSupport.get(reader,"mode"));});
+            inst.runOnMainSync(()->{android.view.View root=reader.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-preview"));assertNotNull(DeviceSupport.tag(root,"generic-toolbar"));assertNull(DeviceSupport.tag(root,"wizard-step-type"));assertNull("All formats are automatic; no format selector is shown",DeviceSupport.tag(root,"generic-mode"));assertNull(DeviceSupport.tag(root,"generic-format-qr"));assertNull(DeviceSupport.tag(root,"generic-format-bar"));});
             java.util.concurrent.atomic.AtomicBoolean detected=new java.util.concurrent.atomic.AtomicBoolean();long end=android.os.SystemClock.elapsedRealtime()+45000;
             while(android.os.SystemClock.elapsedRealtime()<end){inst.runOnMainSync(()->detected.set(DeviceSupport.get(reader,"camera")!=null&&!((Map<?,?>)DeviceSupport.get(reader,"history")).isEmpty()));if(detected.get())break;android.os.SystemClock.sleep(150);}
             assertTrue("The directly opened camera must decode the real emulator image",detected.get());DeviceSupport.shot(null,"build48-generic-reader-live-result");
@@ -30,10 +30,10 @@ public class GenericReaderDeviceTest {
     }
     private Bitmap symbol(String text,BarcodeFormat format,int width,int height)throws Exception{BitMatrix bits=new MultiFormatWriter().encode(text,format,width,height);width=bits.getWidth();height=bits.getHeight();int[] rgb=new int[width*height];for(int y=0;y<height;y++)for(int x=0;x<width;x++)rgb[y*width+x]=bits.get(x,y)?Color.BLACK:Color.WHITE;return Bitmap.createBitmap(rgb,width,height,Bitmap.Config.ARGB_8888);}
     @Test public void ordinaryCodesAndMedicalDataMatrixAreReadableWithoutAPicklist()throws Exception{
-        for(BarcodeFormat format:new BarcodeFormat[]{BarcodeFormat.QR_CODE,BarcodeFormat.DATA_MATRIX,BarcodeFormat.CODE_128,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417}){Bitmap bitmap=symbol("BMD-TEST-2610143",format,600,400);try{List<GenericCode> decoded=GenericCodeReader.read(bitmap,"both");assertEquals(format.name(),1,decoded.size());assertEquals("BMD-TEST-2610143",decoded.get(0).value);}finally{bitmap.recycle();}}
+        for(BarcodeFormat format:new BarcodeFormat[]{BarcodeFormat.QR_CODE,BarcodeFormat.DATA_MATRIX,BarcodeFormat.CODE_128,BarcodeFormat.AZTEC,BarcodeFormat.PDF_417}){Bitmap bitmap=symbol("BMD-TEST-2610143",format,600,400);try{List<GenericCode> decoded=GenericCodeReader.read(bitmap);assertEquals(format.name(),1,decoded.size());assertEquals("BMD-TEST-2610143",decoded.get(0).value);}finally{bitmap.recycle();}}
     }
-    @Test public void mixedSceneHonoursMatrixAndLinearMode()throws Exception{
-        Bitmap qr=symbol("https://example.org/product",BarcodeFormat.QR_CODE,400,400),bar=symbol("BMD-TEST-123",BarcodeFormat.CODE_128,600,200),scene=Bitmap.createBitmap(900,750,Bitmap.Config.ARGB_8888);try{Canvas c=new Canvas(scene);c.drawColor(Color.WHITE);c.drawBitmap(qr,50,30,null);c.drawBitmap(bar,150,500,null);assertEquals(2,GenericCodeReader.read(scene,"both").size());List<GenericCode> matrix=GenericCodeReader.read(scene,"qr"),linear=GenericCodeReader.read(scene,"bar");assertEquals(1,matrix.size());assertEquals("https://example.org/product",matrix.get(0).value);assertEquals(1,linear.size());assertEquals("BMD-TEST-123",linear.get(0).value);}finally{qr.recycle();bar.recycle();scene.recycle();}
+    @Test public void mixedSceneReadsQrAndBarcodeTogetherWithoutChoosingAMode()throws Exception{
+        Bitmap qr=symbol("https://example.org/product",BarcodeFormat.QR_CODE,400,400),bar=symbol("BMD-TEST-123",BarcodeFormat.CODE_128,600,200),scene=Bitmap.createBitmap(900,750,Bitmap.Config.ARGB_8888);try{Canvas c=new Canvas(scene);c.drawColor(Color.WHITE);c.drawBitmap(qr,50,30,null);c.drawBitmap(bar,150,500,null);List<GenericCode> decoded=GenericCodeReader.read(scene);assertEquals(2,decoded.size());Set<String> values=new HashSet<>();for(GenericCode code:decoded)values.add(code.value);assertEquals(new HashSet<>(Arrays.asList("https://example.org/product","BMD-TEST-123")),values);}finally{qr.recycle();bar.recycle();scene.recycle();}
     }
     @Test public void resultPopupDoesNotOpenLinksUntilUserChooses()throws Exception{
         android.app.Instrumentation inst=InstrumentationRegistry.getInstrumentation();
@@ -43,12 +43,71 @@ public class GenericReaderDeviceTest {
             java.util.concurrent.atomic.AtomicReference<Dialog> shown=new java.util.concurrent.atomic.AtomicReference<>();
             try{
                 scenario.onActivity(a->{a.showResults(Collections.singletonList(new GenericCode("https://example.org/product","QR CODE")));Dialog dialog=(Dialog)DeviceSupport.get(a,"resultDialog");shown.set(dialog);TextView value=(TextView)DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-result-value");assertEquals("https://example.org/product",value.getText().toString());assertTrue(value.isTextSelectable());assertEquals(0,monitor.getHits());DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-close").performClick();});
-                inst.waitForIdleSync();
+                android.os.SystemClock.sleep(350);inst.waitForIdleSync();
                 scenario.onActivity(a->{assertFalse("The closed result is no longer visible",shown.get().isShowing());Dialog current=(Dialog)DeviceSupport.get(a,"resultDialog");assertNotSame("Dismiss callbacks must release the closed result",shown.get(),current);assertEquals("Scanning resumes, or pauses again for a fresh camera result",current!=null,(Boolean)DeviceSupport.get(a,"paused"));assertEquals(0,monitor.getHits());});
             }finally{inst.removeMonitor(monitor);}
         }
     }
     @Test public void pickingJobPersistsWithoutPretendingTwoHundredProductsFitOneCarton()throws Exception{
         PicklistJob job=PicklistJob.create(DeviceSupport.context());job.controlMode="picking";job.captureMode="stack";job.rows.add(new PicklistData.Row("PRO2520","2610143","2028-04-18",200,false));job.confirmed=true;job.save();PicklistJob loaded=PicklistJob.load(DeviceSupport.context(),job.directory.getPath());assertTrue(loaded.isPicking());assertEquals("stack",loaded.captureMode);assertEquals(1,loaded.plan().boxes);assertArrayEquals(new int[]{200},loaded.plan().quantities);assertFalse(loaded.complete());assertEquals(2,new CartonPlan(200,113).boxes);
+    }
+    @Test public void linkPreviewWaitsForTapAndReleasesItsWebView()throws Exception{
+        java.util.concurrent.atomic.AtomicInteger requests=new java.util.concurrent.atomic.AtomicInteger();
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            scenario.onActivity(a->{
+                android.widget.FrameLayout host=new android.widget.FrameLayout(a);a.setContentView(host);
+                LinkPreviewView card=new LinkPreviewView(a,"https://example.org/product",key->key,(web,url)->{assertEquals("https://example.org/product",url);requests.incrementAndGet();web.getSettings().setBlockNetworkLoads(true);web.loadDataWithBaseURL("https://example.org/","<html><head><title>Local preview test</title></head><body>Local test content</body></html>","text/html","UTF-8",null);});
+                host.addView(card);assertEquals(0,requests.get());assertNull(DeviceSupport.tag(card,"generic-link-preview-web"));
+                DeviceSupport.tag(card,"generic-preview-load").performClick();assertEquals(1,requests.get());
+                android.webkit.WebView web=(android.webkit.WebView)DeviceSupport.tag(card,"generic-link-preview-web");assertNotNull(web);
+                assertFalse(web.getSettings().getJavaScriptEnabled());assertFalse(web.getSettings().getAllowFileAccess());assertFalse(web.getSettings().getAllowContentAccess());assertTrue(web.getSettings().getSafeBrowsingEnabled());assertEquals(android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW,web.getSettings().getMixedContentMode());
+                DeviceSupport.tag(card,"generic-preview-load").performClick();assertNull(DeviceSupport.tag(card,"generic-link-preview-web"));
+                DeviceSupport.tag(card,"generic-preview-load").performClick();assertEquals(2,requests.get());host.removeView(card);assertEquals(Boolean.TRUE,DeviceSupport.get(card,"disposed"));assertNull(DeviceSupport.get(card,"web"));
+            });
+        }
+    }
+    @Test public void browserButtonIsExplicitAndProductCodesHaveNoLinkActions()throws Exception{
+        android.app.Instrumentation inst=InstrumentationRegistry.getInstrumentation();IntentFilter links=new IntentFilter(Intent.ACTION_VIEW);links.addCategory(Intent.CATEGORY_BROWSABLE);links.addDataScheme("https");android.app.Instrumentation.ActivityMonitor monitor=inst.addMonitor(links,null,true);
+        try(ActivityScenario<GenericScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),GenericScanActivity.class).putExtra("language","nl"))){
+            scenario.onActivity(a->{
+                a.showResults(Collections.singletonList(new GenericCode("BMD-000123","QR CODE")));Dialog plain=(Dialog)DeviceSupport.get(a,"resultDialog");assertNull(DeviceSupport.tag(plain.getWindow().getDecorView(),"generic-open-link"));assertNull(DeviceSupport.tag(plain.getWindow().getDecorView(),"generic-link-preview"));
+                a.showResults(Collections.singletonList(new GenericCode("https://example.org/product","QR CODE")));Dialog result=(Dialog)DeviceSupport.get(a,"resultDialog");android.view.View root=result.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-link-preview"));assertNull(DeviceSupport.tag(root,"generic-link-preview-web"));assertEquals(0,monitor.getHits());
+                DeviceSupport.tag(root,"generic-open-link").performClick();assertEquals(1,monitor.getHits());DeviceSupport.tag(root,"generic-close").performClick();
+            });
+        }finally{inst.removeMonitor(monitor);}
+    }
+    @Test public void previewFailureCanRetryWithoutOpeningTheBrowser()throws Exception{
+        java.util.concurrent.atomic.AtomicInteger requests=new java.util.concurrent.atomic.AtomicInteger();
+        try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+            scenario.onActivity(a->{
+                android.widget.FrameLayout host=new android.widget.FrameLayout(a);a.setContentView(host);LinkPreviewView card=new LinkPreviewView(a,"https://example.org/",key->key,(web,url)->{if(requests.incrementAndGet()==1)throw new IllegalStateException("Local preview failure");web.getSettings().setBlockNetworkLoads(true);web.loadDataWithBaseURL("https://example.org/","<html><body>Retry succeeded</body></html>","text/html","UTF-8",null);});host.addView(card);
+                DeviceSupport.tag(card,"generic-preview-load").performClick();assertEquals(1,requests.get());assertNull(DeviceSupport.tag(card,"generic-link-preview-web"));assertEquals("generic_preview_retry",((TextView)DeviceSupport.tag(card,"generic-preview-load")).getText().toString());
+                DeviceSupport.tag(card,"generic-preview-load").performClick();assertEquals(2,requests.get());assertNotNull(DeviceSupport.tag(card,"generic-link-preview-web"));host.removeView(card);assertNull(DeviceSupport.get(card,"web"));
+            });
+        }
+    }
+    private static void assertTextFits(android.view.View view){
+        if(view.getVisibility()!=android.view.View.VISIBLE)return;
+        if(view instanceof TextView){TextView text=(TextView)view;android.text.Layout layout=text.getLayout();if(layout!=null)for(int line=0;line<layout.getLineCount();line++)assertTrue("Text fits: "+text.getText(),layout.getLineWidth(line)<=text.getWidth()-text.getCompoundPaddingLeft()-text.getCompoundPaddingRight()+2);}
+        if(view instanceof android.view.ViewGroup)for(int i=0;i<((android.view.ViewGroup)view).getChildCount();i++)assertTextFits(((android.view.ViewGroup)view).getChildAt(i));
+    }
+    @Test public void silverResultSheetFitsEveryThemeAndLanguage()throws Exception{
+        try(ActivityScenario<GenericScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),GenericScanActivity.class).putExtra("language","nl"))){
+            for(String theme:ThemeSkin.IDS)for(String language:MainActivity.LANGS){
+                scenario.onActivity(a->{ThemeSkin.active=ThemeSkin.forId(theme);android.content.res.Configuration cfg=new android.content.res.Configuration(a.getResources().getConfiguration());cfg.setLocale(Locale.forLanguageTag(language));DeviceSupport.set(a,"words",a.createConfigurationContext(cfg));DeviceSupport.set(a,"language",language);a.showCode(new GenericCode("https://example.org/product","QR CODE"));});
+                android.os.SystemClock.sleep(300);InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+                scenario.onActivity(a->{Dialog dialog=(Dialog)DeviceSupport.get(a,"resultDialog");assertTrue(dialog instanceof GenericResultSheet);android.view.View root=dialog.getWindow().getDecorView(),panel=DeviceSupport.tag(root,"generic-result-popup");assertTrue(panel.getWidth()>0);assertTextFits(panel);assertNotNull(DeviceSupport.tag(root,"generic-open-link"));assertNotNull(DeviceSupport.tag(root,"generic-copy"));assertNotNull(DeviceSupport.tag(root,"generic-share"));assertNull("No website request before a tap",DeviceSupport.tag(root,"generic-link-preview-web"));assertNull(DeviceSupport.tag(a.getWindow().getDecorView(),"generic-mode"));});
+                if(language.equals("nl"))DeviceSupport.shot(null,"build49-qr-silver-sheet-"+theme);
+            }
+        }finally{ThemeSkin.active=ThemeSkin.BMD;}
+    }
+    @Test public void resultSheetAndAutomaticReaderFitLandscape()throws Exception{
+        DeviceSupport.shell("touch /data/local/tmp/bmd-rotate-landscape");
+        try(ActivityScenario<GenericScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),GenericScanActivity.class).putExtra("language","de"))){
+            java.util.concurrent.atomic.AtomicBoolean landscape=new java.util.concurrent.atomic.AtomicBoolean();long end=android.os.SystemClock.elapsedRealtime()+15000;
+            while(android.os.SystemClock.elapsedRealtime()<end){scenario.onActivity(a->landscape.set(a.getResources().getConfiguration().orientation==android.content.res.Configuration.ORIENTATION_LANDSCAPE));if(landscape.get())break;android.os.SystemClock.sleep(200);}assertTrue("Camera follows the landscape sensor",landscape.get());
+            scenario.onActivity(a->a.showCode(new GenericCode("https://example.org/product","QR CODE")));android.os.SystemClock.sleep(350);InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+            scenario.onActivity(a->{Dialog dialog=(Dialog)DeviceSupport.get(a,"resultDialog");android.view.View panel=DeviceSupport.tag(dialog.getWindow().getDecorView(),"generic-result-popup");assertTextFits(panel);android.util.DisplayMetrics screen=a.getResources().getDisplayMetrics();assertTrue(panel.getWidth()<=Math.min(screen.widthPixels,screen.heightPixels));assertTrue(dialog.getWindow().getDecorView().getHeight()<=screen.heightPixels);assertNull(DeviceSupport.tag(a.getWindow().getDecorView(),"generic-mode"));});DeviceSupport.shot(null,"build49-qr-silver-sheet-landscape");
+        }finally{DeviceSupport.shell("touch /data/local/tmp/bmd-rotate-portrait");android.os.SystemClock.sleep(1600);}
     }
 }

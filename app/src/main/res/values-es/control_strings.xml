@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Copiado</string>
     <string name="ui_generic_empty" formatted="false">No se encontró ningún código legible</string>
     <string name="ui_generic_error" formatted="false">No se pudo escanear. Inténtalo de nuevo.</string>
+    <string name="ui_generic_preview" formatted="false">Vista previa del enlace</string>
+    <string name="ui_generic_preview_load" formatted="false">Cargar vista previa</string>
+    <string name="ui_generic_preview_loading" formatted="false">Cargando sitio web…</string>
+    <string name="ui_generic_preview_error" formatted="false">Vista previa no disponible. Abre el enlace en tu navegador.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Reintentar</string>
+    <string name="ui_generic_preview_hide" formatted="false">Ocultar vista previa</string>
 </resources>

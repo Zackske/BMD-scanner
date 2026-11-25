@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Copiado</string>
     <string name="ui_generic_empty" formatted="false">Nenhum código legível encontrado</string>
     <string name="ui_generic_error" formatted="false">Não foi possível ler. Tente novamente.</string>
+    <string name="ui_generic_preview" formatted="false">Pré-visualização da ligação</string>
+    <string name="ui_generic_preview_load" formatted="false">Carregar pré-visualização</string>
+    <string name="ui_generic_preview_loading" formatted="false">A carregar o site…</string>
+    <string name="ui_generic_preview_error" formatted="false">Pré-visualização indisponível. Abra a ligação no navegador.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Tentar novamente</string>
+    <string name="ui_generic_preview_hide" formatted="false">Ocultar pré-visualização</string>
 </resources>

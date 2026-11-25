@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Kopyalandı</string>
     <string name="ui_generic_empty" formatted="false">Okunabilir kod bulunamadı</string>
     <string name="ui_generic_error" formatted="false">Tarama başarısız. Tekrar deneyin.</string>
+    <string name="ui_generic_preview" formatted="false">Bağlantı önizlemesi</string>
+    <string name="ui_generic_preview_load" formatted="false">Önizlemeyi yükle</string>
+    <string name="ui_generic_preview_loading" formatted="false">Web sitesi yükleniyor…</string>
+    <string name="ui_generic_preview_error" formatted="false">Önizleme kullanılamıyor. Bağlantıyı tarayıcınızda açın.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Tekrar dene</string>
+    <string name="ui_generic_preview_hide" formatted="false">Önizlemeyi gizle</string>
 </resources>

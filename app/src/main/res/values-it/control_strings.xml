@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Copiato</string>
     <string name="ui_generic_empty" formatted="false">Nessun codice leggibile trovato</string>
     <string name="ui_generic_error" formatted="false">Scansione non riuscita. Riprova.</string>
+    <string name="ui_generic_preview" formatted="false">Anteprima del link</string>
+    <string name="ui_generic_preview_load" formatted="false">Carica anteprima</string>
+    <string name="ui_generic_preview_loading" formatted="false">Caricamento del sito…</string>
+    <string name="ui_generic_preview_error" formatted="false">Anteprima non disponibile. Apri il link nel browser.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Riprova</string>
+    <string name="ui_generic_preview_hide" formatted="false">Nascondi anteprima</string>
 </resources>

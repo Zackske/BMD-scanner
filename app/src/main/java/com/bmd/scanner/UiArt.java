@@ -148,6 +148,9 @@ final class UiArt {
                 case "reset":canvas.drawArc(9,9,55,55,-50,290,false,p);canvas.drawLine(48,8,53,23,p);canvas.drawLine(53,23,38,21,p);break;
                 case "delete":canvas.drawLine(12,16,52,16,p);canvas.drawRoundRect(18,17,46,55,3,3,p);canvas.drawLine(25,8,39,8,p);canvas.drawLine(27,26,27,46,p);canvas.drawLine(37,26,37,46,p);break;
                 case "document":canvas.drawRoundRect(15,6,49,58,4,4,p);canvas.drawLine(23,23,41,23,p);canvas.drawLine(23,34,41,34,p);canvas.drawLine(23,45,36,45,p);break;
+                case "external":canvas.drawLine(34,9,55,9,p);canvas.drawLine(55,9,55,30,p);canvas.drawLine(55,9,29,35,p);Path external=new Path();external.moveTo(24,12);external.lineTo(12,12);external.lineTo(12,53);external.lineTo(53,53);external.lineTo(53,40);canvas.drawPath(external,p);break;
+                case "copy":canvas.drawRoundRect(22,21,55,55,4,4,p);Path copy=new Path();copy.moveTo(42,13);copy.lineTo(42,8);copy.lineTo(9,8);copy.lineTo(9,42);copy.lineTo(14,42);canvas.drawPath(copy,p);break;
+                case "share":canvas.drawCircle(47,12,7,p);canvas.drawCircle(16,32,7,p);canvas.drawCircle(47,52,7,p);canvas.drawLine(22,28,41,16,p);canvas.drawLine(22,36,41,48,p);break;
                 case "csv":
                     Path page=new Path();page.moveTo(14,6);page.lineTo(39,6);page.lineTo(53,20);page.lineTo(53,58);page.lineTo(14,58);page.close();canvas.drawPath(page,p);
                     canvas.drawLine(38,7,38,21,p);canvas.drawLine(38,21,52,21,p);p.setStyle(Paint.Style.FILL);p.setTypeface(Typeface.DEFAULT_BOLD);p.setTextSize(15);canvas.drawText("CSV",18,44,p);break;

@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Kopiert</string>
     <string name="ui_generic_empty" formatted="false">Kein lesbarer Code gefunden</string>
     <string name="ui_generic_error" formatted="false">Scan fehlgeschlagen. Erneut versuchen.</string>
+    <string name="ui_generic_preview" formatted="false">Linkvorschau</string>
+    <string name="ui_generic_preview_load" formatted="false">Vorschau laden</string>
+    <string name="ui_generic_preview_loading" formatted="false">Website wird geladen…</string>
+    <string name="ui_generic_preview_error" formatted="false">Vorschau nicht verfügbar. Öffne den Link im Browser.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Erneut versuchen</string>
+    <string name="ui_generic_preview_hide" formatted="false">Vorschau schließen</string>
 </resources>

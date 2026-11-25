@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Copié</string>
     <string name="ui_generic_empty" formatted="false">Aucun code lisible trouvé</string>
     <string name="ui_generic_error" formatted="false">Échec de lecture. Réessayez.</string>
+    <string name="ui_generic_preview" formatted="false">Aperçu du lien</string>
+    <string name="ui_generic_preview_load" formatted="false">Charger l’aperçu</string>
+    <string name="ui_generic_preview_loading" formatted="false">Chargement du site…</string>
+    <string name="ui_generic_preview_error" formatted="false">Aperçu indisponible. Ouvrez le lien dans votre navigateur.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Réessayer</string>
+    <string name="ui_generic_preview_hide" formatted="false">Masquer l’aperçu</string>
 </resources>

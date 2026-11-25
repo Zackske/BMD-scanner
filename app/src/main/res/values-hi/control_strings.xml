@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">कॉपी हो गया</string>
     <string name="ui_generic_empty" formatted="false">कोई पढ़ने योग्य कोड नहीं मिला</string>
     <string name="ui_generic_error" formatted="false">स्कैन नहीं हो सका। फिर कोशिश करें।</string>
+    <string name="ui_generic_preview" formatted="false">लिंक का पूर्वावलोकन</string>
+    <string name="ui_generic_preview_load" formatted="false">पूर्वावलोकन लोड करें</string>
+    <string name="ui_generic_preview_loading" formatted="false">वेबसाइट लोड हो रही है…</string>
+    <string name="ui_generic_preview_error" formatted="false">पूर्वावलोकन उपलब्ध नहीं है। लिंक अपने ब्राउज़र में खोलें।</string>
+    <string name="ui_generic_preview_retry" formatted="false">फिर कोशिश करें</string>
+    <string name="ui_generic_preview_hide" formatted="false">पूर्वावलोकन छिपाएँ</string>
 </resources>

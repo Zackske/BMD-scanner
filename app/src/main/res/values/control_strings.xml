@@ -20,4 +20,10 @@
     <string name="ui_generic_copied" formatted="false">Gekopieerd</string>
     <string name="ui_generic_empty" formatted="false">Geen leesbare code gevonden</string>
     <string name="ui_generic_error" formatted="false">Scannen mislukt. Probeer opnieuw.</string>
+    <string name="ui_generic_preview" formatted="false">Linkvoorbeeld</string>
+    <string name="ui_generic_preview_load" formatted="false">Voorbeeld laden</string>
+    <string name="ui_generic_preview_loading" formatted="false">Website laden…</string>
+    <string name="ui_generic_preview_error" formatted="false">Voorbeeld niet beschikbaar. Open de link in je browser.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Opnieuw proberen</string>
+    <string name="ui_generic_preview_hide" formatted="false">Voorbeeld sluiten</string>
 </resources>

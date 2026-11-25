@@ -361,7 +361,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     const pickupPattern=/\bcustomer\s+arranges?\s+pick[\s-]*up\b/i,pickupLines=lines.filter(v=>pickupPattern.test(v));
     const ex=lines.some(v=>/\bex[\s-]*works\b/i.test(v)),ddp=lines.some(v=>/\bdelivered\s+duty\s+paid\b|\bddp\b/i.test(v)),pickup=pickupLines.length>0;
     const pickupVia=(pickupLines.map(v=>v.match(/\bpick[\s-]*up\b\s*(?:[-–:]\s*|via\s+)(.+)$/i)).find(Boolean)?.[1]||'').trim();
-    const provider=/^forwarder$/i.test(pickupVia)?t[7]:pickupVia.replace(/fed\s*ex/ig,'FedEx').replace(/\b(?:ups|dhl|tnt|dpd)\b/ig,v=>v.toUpperCase());
+    const provider=pickupVia.replace(/\bforwarder\b/ig,()=>t[7]).replace(/fed\s*ex/ig,'FedEx').replace(/\b(?:ups|dhl|tnt|dpd)\b/ig,v=>v.toUpperCase());
     const terms=ddp?'Delivered Duty Paid':ex?'EX-WORKS':'';
     const carrier=/\b(?:fed\s*ex|ups|dhl|tnt|dpd)\b/i,seen=new Set(),routes=[];
     for(let i=0;i<lines.length;i++){
