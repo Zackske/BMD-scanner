@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">Перегляд недоступний. Відкрийте посилання в браузері.</string>
     <string name="ui_generic_preview_retry" formatted="false">Спробувати ще раз</string>
     <string name="ui_generic_preview_hide" formatted="false">Сховати перегляд</string>
+    <string name="ui_work_in_progress" formatted="false">У розробці</string>
+    <string name="ui_web_links" formatted="false">Вебпосилання</string>
 </resources>

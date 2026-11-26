@@ -1,7 +1,7 @@
 <resources>
     <string name="ui_bmd_control" formatted="false">अंतिम जाँच स्कैन</string>
     <string name="ui_generic_scan" formatted="false">QR स्कैनर</string>
-    <string name="ui_pallet_scanner" formatted="false">पैलेट और बॉक्स स्कैन</string>
+    <string name="ui_pallet_scanner" formatted="false">पैलेट और डिब्बों का स्कैन</string>
     <string name="ui_document_scanner" formatted="false">दस्तावेज़ जाँच स्कैनर</string>
     <string name="ui_picking_control" formatted="false">पिकिंग जाँच</string>
     <string name="ui_picking_control_hint" formatted="false">पिकलिस्ट पढ़ें और उत्पाद व मात्रा जाँचें</string>
@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">पूर्वावलोकन उपलब्ध नहीं है। लिंक अपने ब्राउज़र में खोलें।</string>
     <string name="ui_generic_preview_retry" formatted="false">फिर कोशिश करें</string>
     <string name="ui_generic_preview_hide" formatted="false">पूर्वावलोकन छिपाएँ</string>
+    <string name="ui_work_in_progress" formatted="false">निर्माणाधीन</string>
+    <string name="ui_web_links" formatted="false">वेब लिंक</string>
 </resources>

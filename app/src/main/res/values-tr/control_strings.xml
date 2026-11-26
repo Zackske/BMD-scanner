@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">Önizleme kullanılamıyor. Bağlantıyı tarayıcınızda açın.</string>
     <string name="ui_generic_preview_retry" formatted="false">Tekrar dene</string>
     <string name="ui_generic_preview_hide" formatted="false">Önizlemeyi gizle</string>
+    <string name="ui_work_in_progress" formatted="false">Geliştirme aşamasında</string>
+    <string name="ui_web_links" formatted="false">Web bağlantıları</string>
 </resources>

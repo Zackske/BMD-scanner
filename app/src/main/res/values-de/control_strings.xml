@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">Vorschau nicht verfügbar. Öffne den Link im Browser.</string>
     <string name="ui_generic_preview_retry" formatted="false">Erneut versuchen</string>
     <string name="ui_generic_preview_hide" formatted="false">Vorschau schließen</string>
+    <string name="ui_work_in_progress" formatted="false">In Entwicklung</string>
+    <string name="ui_web_links" formatted="false">Weblinks</string>
 </resources>

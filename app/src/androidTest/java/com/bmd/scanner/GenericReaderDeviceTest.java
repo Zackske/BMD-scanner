@@ -17,16 +17,50 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class GenericReaderDeviceTest {
     @Before public void before()throws Exception{DeviceSupport.clear();DeviceSupport.permission();}
-    @Test public void qrTileStartsCameraWithoutAControlWizard()throws Exception{
-        android.app.Instrumentation inst=InstrumentationRegistry.getInstrumentation();android.app.Instrumentation.ActivityMonitor monitor=inst.addMonitor(GenericScanActivity.class.getName(),null,false);android.app.Activity child=null;
-        try(ActivityScenario<MainActivity> parent=ActivityScenario.launch(MainActivity.class)){
-            parent.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"settings").performClick();});
-            child=monitor.waitForActivityWithTimeout(15000);assertNotNull("QR tile must open the live reader directly",child);final android.app.Activity reader=child;
-            inst.runOnMainSync(()->{android.view.View root=reader.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-preview"));assertNotNull(DeviceSupport.tag(root,"generic-toolbar"));assertNull(DeviceSupport.tag(root,"wizard-step-type"));assertNull("All formats are automatic; no format selector is shown",DeviceSupport.tag(root,"generic-mode"));assertNull(DeviceSupport.tag(root,"generic-format-qr"));assertNull(DeviceSupport.tag(root,"generic-format-bar"));});
+    @Test public void finalControlKeepsAllThreeFiltersAndResumesAfterALinkPreview()throws Exception{
+        DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("codeMode","bar").commit();
+        java.util.concurrent.atomic.AtomicReference<android.view.View> preview=new java.util.concurrent.atomic.AtomicReference<>();
+        java.util.concurrent.atomic.AtomicReference<BoxSession> saved=new java.util.concurrent.atomic.AtomicReference<>();
+        java.util.concurrent.atomic.AtomicInteger epoch=new java.util.concurrent.atomic.AtomicInteger();
+        try(ActivityScenario<BoxScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),BoxScanActivity.class).putExtra("language","nl").putExtra("expected",3).putExtra("flowMode","stack"))){
+            scenario.onActivity(a->{
+                assertEquals("bar",DeviceSupport.get(a,"mode"));
+                a.session.tracker.importCode(new ScanTracker.Detection("BMD-2610143","Barcode",.1f,.1f,.3f,.2f),1000);
+                a.session.products.colour("2610143");saved.set(a.session);
+                DeviceSupport.tag(a.getWindow().getDecorView(),"box-camera-mode").performClick();
+                android.widget.PopupWindow options=(android.widget.PopupWindow)DeviceSupport.get(a,"formatPopup");
+                assertNotNull(DeviceSupport.tag(options.getContentView(),"box-format-qr"));
+                assertNotNull(DeviceSupport.tag(options.getContentView(),"box-format-bar"));
+                assertNotNull(DeviceSupport.tag(options.getContentView(),"box-format-both"));
+                DeviceSupport.tag(options.getContentView(),"box-format-qr").performClick();
+                assertSame(saved.get(),a.session);assertEquals(1,a.session.tracker.items().size());
+                preview.set((android.view.View)DeviceSupport.get(a,"preview"));epoch.set((Integer)DeviceSupport.get(a,"epoch"));
+                a.showCode(new GenericCode("https://example.org/product","QR"));
+                Dialog result=(Dialog)DeviceSupport.get(a,"codeResult");assertTrue(result instanceof GenericResultSheet);
+                android.view.View root=result.getWindow().getDecorView();
+                assertNotNull(DeviceSupport.tag(root,"generic-open-link"));
+                assertNull("A preview requires an explicit tap",DeviceSupport.tag(root,"generic-link-preview-web"));
+                assertEquals(1,a.session.tracker.items().size());
+            });
+            DeviceSupport.shot(scenario,"build410-control-link-preview");
+            scenario.onActivity(a->{Dialog result=(Dialog)DeviceSupport.get(a,"codeResult");DeviceSupport.tag(result.getWindow().getDecorView(),"generic-close").performClick();});
+            android.os.SystemClock.sleep(350);InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+            scenario.onActivity(a->{
+                assertNull(DeviceSupport.get(a,"codeResult"));assertEquals("qr",DeviceSupport.get(a,"mode"));
+                assertEquals("qr",a.getSharedPreferences("MainActivity",0).getString("codeMode",""));
+                assertSame("Closing a preview keeps the camera view",preview.get(),DeviceSupport.get(a,"preview"));
+                assertEquals("Closing a preview does not rebind the camera",epoch.get(),DeviceSupport.get(a,"epoch"));
+                assertEquals(Boolean.TRUE,DeviceSupport.get(a,"inCamera"));assertSame(saved.get(),a.session);
+                assertEquals(3,a.session.expected);assertEquals(1,a.session.tracker.items().size());assertTrue(a.session.products.colours.containsKey("2610143"));
+            });
+        }
+    }
+    @Test public void sharedReaderComponentStillDecodesTheEmulatorCamera()throws Exception{
+        try(ActivityScenario<GenericScanActivity> scenario=ActivityScenario.launch(new Intent(DeviceSupport.context(),GenericScanActivity.class).putExtra("language","nl"))){
             java.util.concurrent.atomic.AtomicBoolean detected=new java.util.concurrent.atomic.AtomicBoolean();long end=android.os.SystemClock.elapsedRealtime()+45000;
-            while(android.os.SystemClock.elapsedRealtime()<end){inst.runOnMainSync(()->detected.set(DeviceSupport.get(reader,"camera")!=null&&!((Map<?,?>)DeviceSupport.get(reader,"history")).isEmpty()));if(detected.get())break;android.os.SystemClock.sleep(150);}
-            assertTrue("The directly opened camera must decode the real emulator image",detected.get());DeviceSupport.shot(null,"build48-generic-reader-live-result");
-        }finally{if(child!=null){android.app.Activity reader=child;inst.runOnMainSync(reader::finish);}inst.removeMonitor(monitor);}
+            while(android.os.SystemClock.elapsedRealtime()<end){scenario.onActivity(reader->{android.view.View root=reader.getWindow().getDecorView();assertNotNull(DeviceSupport.tag(root,"generic-preview"));assertNull(DeviceSupport.tag(root,"generic-mode"));detected.set(DeviceSupport.get(reader,"camera")!=null&&!((Map<?,?>)DeviceSupport.get(reader,"history")).isEmpty());});if(detected.get())break;android.os.SystemClock.sleep(150);}
+            assertTrue(detected.get());DeviceSupport.shot(null,"build48-generic-reader-live-result");
+        }
     }
     private Bitmap symbol(String text,BarcodeFormat format,int width,int height)throws Exception{BitMatrix bits=new MultiFormatWriter().encode(text,format,width,height);width=bits.getWidth();height=bits.getHeight();int[] rgb=new int[width*height];for(int y=0;y<height;y++)for(int x=0;x<width;x++)rgb[y*width+x]=bits.get(x,y)?Color.BLACK:Color.WHITE;return Bitmap.createBitmap(rgb,width,height,Bitmap.Config.ARGB_8888);}
     @Test public void ordinaryCodesAndMedicalDataMatrixAreReadableWithoutAPicklist()throws Exception{

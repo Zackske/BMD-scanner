@@ -1,7 +1,7 @@
 <resources>
     <string name="ui_bmd_control" formatted="false">Leitura de controlo final</string>
     <string name="ui_generic_scan" formatted="false">Scanner QR</string>
-    <string name="ui_pallet_scanner" formatted="false">Leitura de paletes e caixas</string>
+    <string name="ui_pallet_scanner" formatted="false">Digitalização de paletes e caixas</string>
     <string name="ui_document_scanner" formatted="false">Scanner de controlo documental</string>
     <string name="ui_picking_control" formatted="false">Controlo de picking</string>
     <string name="ui_picking_control_hint" formatted="false">Ler a lista e verificar produtos e quantidades</string>
@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">Pré-visualização indisponível. Abra a ligação no navegador.</string>
     <string name="ui_generic_preview_retry" formatted="false">Tentar novamente</string>
     <string name="ui_generic_preview_hide" formatted="false">Ocultar pré-visualização</string>
+    <string name="ui_work_in_progress" formatted="false">Em desenvolvimento</string>
+    <string name="ui_web_links" formatted="false">Ligações web</string>
 </resources>

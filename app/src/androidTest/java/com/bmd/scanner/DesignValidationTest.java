@@ -30,14 +30,11 @@ public class DesignValidationTest {
             scenario.onActivity(MainActivity::cameraSettings);scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");Spinner format=(Spinner)DeviceSupport.tag(d.getWindow().getDecorView(),"scan-format-choice");assertNotNull(format);assertEquals(3,format.getCount());assertEquals("2D (QR / Data Matrix)",format.getItemAtPosition(0));assertEquals("Barcode",format.getItemAtPosition(1));assertEquals("2D + barcode",format.getItemAtPosition(2));});DeviceSupport.shot(scenario,"build3-scanner-settings");scenario.onActivity(a->((android.app.Dialog)DeviceSupport.get(a,"dialog")).dismiss());
         }
     }
-    @Test public void homeAndScanMenuHaveApprovedRoutesAndPlaceholders()throws Exception{
-        DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("language","nl").commit();
+    @Test public void homeOpensFinalControlDirectlyWithoutRetiredScannerTiles()throws Exception{
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(a->{View root=a.getWindow().getDecorView();assertEquals("Klantenportaal",DeviceSupport.tag(root,"photo").getContentDescription());assertEquals("Werkinstructies",DeviceSupport.tag(root,"list").getContentDescription());DeviceSupport.tag(root,"list").performClick();android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");assertTrue(d.isShowing());d.dismiss();a.chooseScan();View menu=DeviceSupport.tag(a.getWindow().getDecorView(),"scan-menu");assertNotNull(menu);assertEquals("Eind controle scan",DeviceSupport.tag(menu,"qr").getContentDescription());assertEquals("Pallet en doos scan",DeviceSupport.tag(menu,"photo").getContentDescription());assertEquals("Documenten controle scanner",DeviceSupport.tag(menu,"list").getContentDescription());assertEquals("QR scanner",DeviceSupport.tag(menu,"settings").getContentDescription());});scenario.recreate();scenario.onActivity(a->assertNotNull(DeviceSupport.tag(a.getWindow().getDecorView(),"scan-menu")));DeviceSupport.shot(scenario,"build3-scan-menu-nl");
-            for(String tag:new String[]{"photo","list"}){
-                scenario.onActivity(a->{DeviceSupport.tag(a.getWindow().getDecorView(),tag).performClick();android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");assertTrue("Unfinished scanner tools must show their placeholder",d.isShowing());assertTrue(DeviceSupport.hasText(d.getWindow().getDecorView(),a.s("in_development")));});
-                DeviceSupport.shot(scenario,"build3-work-in-process-"+tag);scenario.onActivity(a->((android.app.Dialog)DeviceSupport.get(a,"dialog")).dismiss());
-            }
+            scenario.onActivity(a->{View root=a.getWindow().getDecorView();View home=DeviceSupport.tag(root,"reference-home");assertEquals(a.s("bmd_control"),DeviceSupport.tag(home,"qr").getContentDescription());assertEquals(a.s("portal"),DeviceSupport.tag(home,"photo").getContentDescription());DeviceSupport.tag(home,"qr").performClick();assertNotNull(a.scanWizard);assertNull(DeviceSupport.tag(a.getWindow().getDecorView(),"scan-menu"));View choice=a.scanWizard.dialog().getWindow().getDecorView();assertNotNull(DeviceSupport.tag(choice,"wizard-type-box"));assertNotNull(DeviceSupport.tag(choice,"wizard-type-pallet"));assertNull(DeviceSupport.tag(choice,"wizard-type-stack"));});
+            scenario.recreate();scenario.onActivity(a->{assertNotNull(a.scanWizard);assertTrue(a.scanWizard.isShowing());});DeviceSupport.shot(scenario,"control-home-direct-choice");
         }
     }
+
 }

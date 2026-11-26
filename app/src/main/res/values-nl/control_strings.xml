@@ -1,7 +1,7 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Eind controle scan</string>
+    <string name="ui_bmd_control" formatted="false">Eindcontrole scan</string>
     <string name="ui_generic_scan" formatted="false">QR scanner</string>
-    <string name="ui_pallet_scanner" formatted="false">Pallet en doos scan</string>
+    <string name="ui_pallet_scanner" formatted="false">Pallet en dozen scan</string>
     <string name="ui_document_scanner" formatted="false">Documenten controle scanner</string>
     <string name="ui_picking_control" formatted="false">Picking controle</string>
     <string name="ui_picking_control_hint" formatted="false">Lees de picklist en controleer producten en aantallen</string>
@@ -26,4 +26,6 @@
     <string name="ui_generic_preview_error" formatted="false">Voorbeeld niet beschikbaar. Open de link in je browser.</string>
     <string name="ui_generic_preview_retry" formatted="false">Opnieuw proberen</string>
     <string name="ui_generic_preview_hide" formatted="false">Voorbeeld sluiten</string>
+    <string name="ui_work_in_progress" formatted="false">In ontwikkeling</string>
+    <string name="ui_web_links" formatted="false">Weblinks</string>
 </resources>

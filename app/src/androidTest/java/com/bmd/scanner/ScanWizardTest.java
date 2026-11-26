@@ -32,17 +32,16 @@ public class ScanWizardTest {
     @Test public void controlChoiceSurvivesRecreationInAllThemes()throws Exception{
         for(String theme:ThemeSkin.IDS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).putString("language","nl").commit();
             try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-                scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();View root=wizard(a);assertNotNull(DeviceSupport.tag(root,"wizard-step-type"));assertFalse(DeviceSupport.tag(root,"wizard-next").isEnabled());DeviceSupport.tag(root,"wizard-type-stack").performClick();assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-stack").isSelected());assertTrue(DeviceSupport.hasText(wizard(a),a.s("picking_control")));});
-                scenario.recreate();scenario.onActivity(a->{assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-stack").isSelected());assertNotNull(DeviceSupport.tag(wizard(a),"wizard-step-type"));assertTrue(DeviceSupport.tag(wizard(a),"wizard-next").isEnabled());});
+                scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();View root=wizard(a);assertNotNull(DeviceSupport.tag(root,"wizard-step-type"));assertFalse(DeviceSupport.tag(root,"wizard-next").isEnabled());DeviceSupport.tag(root,"wizard-type-box").performClick();assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-box").isSelected());assertTrue(DeviceSupport.hasText(wizard(a),a.s("wizard_box")));});
+                scenario.recreate();scenario.onActivity(a->{assertTrue(DeviceSupport.tag(wizard(a),"wizard-type-box").isSelected());assertNotNull(DeviceSupport.tag(wizard(a),"wizard-step-type"));assertTrue(DeviceSupport.tag(wizard(a),"wizard-next").isEnabled());});
             }
         }
     }
-    @Test public void pickingStartsWithAFreshPicklistNotManualCount()throws Exception{
-        Instrumentation inst=InstrumentationRegistry.getInstrumentation();Instrumentation.ActivityMonitor monitor=inst.addMonitor(PicklistActivity.class.getName(),null,false);Activity opened=null;
+    @Test public void palletAndBoxesRemainWorkInProgressWithoutCreatingAPicklist()throws Exception{
+        Instrumentation inst=InstrumentationRegistry.getInstrumentation();Instrumentation.ActivityMonitor monitor=inst.addMonitor(PicklistActivity.class.getName(),null,true);
         try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
-            scenario.onActivity(a->{a.chooseScan();DeviceSupport.tag(a.getWindow().getDecorView(),"qr").performClick();DeviceSupport.tag(wizard(a),"wizard-type-stack").performClick();DeviceSupport.tag(wizard(a),"wizard-next").performClick();});
-            opened=monitor.waitForActivityWithTimeout(10000);assertNotNull(opened);assertEquals("picking",opened.getIntent().getStringExtra("controlMode"));assertTrue(opened.getIntent().getBooleanExtra("newControl",false));
-        }finally{if(opened!=null){Activity child=opened;inst.runOnMainSync(child::finish);}inst.removeMonitor(monitor);}
+            scenario.onActivity(a->{a.chooseScan();View root=wizard(a);assertNull(DeviceSupport.tag(root,"wizard-type-stack"));assertNotNull(DeviceSupport.tag(root,"wizard-type-pallet"));DeviceSupport.tag(root,"wizard-type-pallet").performClick();android.app.Dialog pending=(android.app.Dialog)DeviceSupport.get(a.scanWizard,"palletPending");assertTrue(pending.isShowing());assertTrue(DeviceSupport.hasText(pending.getWindow().getDecorView(),a.s("in_development")));assertFalse(DeviceSupport.tag(wizard(a),"wizard-next").isEnabled());assertEquals(0,monitor.getHits());pending.dismiss();assertTrue(a.scanWizard.isShowing());});
+        }finally{inst.removeMonitor(monitor);}
     }
     @Test public void productChoiceArtworkIsTransparentAndKeepsItsWideAspect(){
         for(int resource:new int[]{R.drawable.wizard_full_box,R.drawable.wizard_stack}){
