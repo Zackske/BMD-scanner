@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MainActivity extends AppCompatActivity {
     static final int CYAN=0xff00e4f5,WHITE=Color.WHITE,NAVY=0xff001b32;
     static final String[] LANGS=LanguageCatalog.CODES;
-    static final String[] LANG_NAMES={"🇳🇱 Nederlands","🇬🇧 English","🇺🇦 Українська","🇹🇷 Türkçe","🇮🇹 Italiano","🇩🇪 Deutsch","🇫🇷 Français","🇪🇸 Español","🇵🇹 Português","🇮🇳 हिन्दी","🇵🇱 Polski","🇷🇴 Română","🇸🇦 العربية","🇻🇳 Tiếng Việt","🇨🇿 Čeština"};
+    static final String[] LANG_NAMES={"🇳🇱 Nederlands","🇬🇧 English","🇺🇦 Українська","🇹🇷 Türkçe","🇮🇹 Italiano","🇩🇪 Deutsch","🇫🇷 Français","🇪🇸 Español","🇵🇹 Português","🇬🇷 Ελληνικά","🇵🇱 Polski","🇷🇴 Română","🇮🇳 हिन्दी","🇸🇦 العربية","🇨🇳 中文（普通话）"};
     ScanStartWizard scanWizard;
     final ScanTracker tracker=new ScanTracker();
     final ProductCatalog products=new ProductCatalog();private boolean groupingReviewed=false;private final Set<Integer> captureVisibleIds=new HashSet<>();private TextView lotLegend;

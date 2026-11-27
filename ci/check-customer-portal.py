@@ -8,7 +8,7 @@ bundle=Path('app/src/main/assets/customer-portal')
 assert not (bundle/'customers.json').exists(), 'Private records must not be packaged'
 assets=json.loads((bundle/'art.json').read_text(encoding='utf-8'))
 maps=json.loads((bundle/'maps.json').read_text(encoding='utf-8'))
-languages={'nl','en','uk','tr','it','de','fr','es','pt','hi','pl','ro','ar','vi','cs'}
+languages={'nl','en','uk','tr','it','de','fr','es','pt','hi','pl','ro','ar','zh','el'}
 assert set(assets['countryNames'])==languages
 assert set(assets['scanners'])=={'bmd','translumina','lime','violet','light','dark'}
 for code in maps['countries']:

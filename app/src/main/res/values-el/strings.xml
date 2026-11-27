@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD Μάγος Σάρωσης</string>
+    <string name="ui_short_name" formatted="false">Μάγος Σάρωσης</string>
+    <string name="ui_scan" formatted="false">Σάρωση</string>
+    <string name="ui_photos" formatted="false">Μεταφόρτωση φωτογραφιών</string>
+    <string name="ui_results" formatted="false">Αποτελέσματα</string>
+    <string name="ui_settings" formatted="false">Ρυθμίσεις</string>
+    <string name="ui_language" formatted="false">Γλώσσα</string>
+    <string name="ui_choose_language" formatted="false">Επιλογή γλώσσας</string>
+    <string name="ui_scanner_settings" formatted="false">Ρυθμίσεις σαρωτή</string>
+    <string name="ui_scanner" formatted="false">Σαρωτής</string>
+    <string name="ui_scanner_hint" formatted="false">Ανάλυση, ευαισθησία και δόνηση</string>
+    <string name="ui_document_type" formatted="false">Τύπος εγγράφου</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word και PDF</string>
+    <string name="ui_about" formatted="false">Σχετικά με την εφαρμογή</string>
+    <string name="ui_back" formatted="false">Πίσω</string>
+    <string name="ui_close" formatted="false">Κλείσιμο</string>
+    <string name="ui_done" formatted="false">Τέλος</string>
+    <string name="ui_apply" formatted="false">Εφαρμογή</string>
+    <string name="ui_cancel" formatted="false">Ακύρωση</string>
+    <string name="ui_save" formatted="false">Αποθήκευση</string>
+    <string name="ui_save_changes" formatted="false">Αποθήκευση αλλαγών</string>
+    <string name="ui_live" formatted="false">ΖΩΝΤΑΝΗ ΑΝΙΧΝΕΥΣΗ</string>
+    <string name="ui_both" formatted="false">QR + γραμμωτοί κώδικες</string>
+    <string name="ui_qr_only" formatted="false">Μόνο QR</string>
+    <string name="ui_bar_only" formatted="false">Μόνο γραμμωτοί κώδικες</string>
+    <string name="ui_code_filter" formatted="false">Κώδικες προς σάρωση</string>
+    <string name="ui_count" formatted="false">Σαρώθηκαν %1$d κώδικες</string>
+    <string name="ui_split" formatted="false">%1$d κώδικες QR · %2$d γραμμωτοί κώδικες</string>
+    <string name="ui_same_hint" formatted="false">Το ίδιο περιεχόμενο μετρά ξεχωριστά ανά προϊόν</string>
+    <string name="ui_empty" formatted="false">Στρέψτε την κάμερα στους κώδικες</string>
+    <string name="ui_all_results" formatted="false">Προβολή όλων των αποτελεσμάτων</string>
+    <string name="ui_capture" formatted="false">Λήψη φωτογραφίας</string>
+    <string name="ui_captured" formatted="false">Η φωτογραφία λήφθηκε</string>
+    <string name="ui_local_save" formatted="false">Τοπική αποθήκευση</string>
+    <string name="ui_local_hint" formatted="false">Αποθήκευση φωτογραφίας και αποτελεσμάτων σάρωσης</string>
+    <string name="ui_share" formatted="false">Κοινοποίηση</string>
+    <string name="ui_share_hint" formatted="false">Email ή άλλες εφαρμογές</string>
+    <string name="ui_again" formatted="false">Νέα σάρωση</string>
+    <string name="ui_list" formatted="false">Σαρωμένοι κώδικες</string>
+    <string name="ui_edit" formatted="false">Διόρθωση κώδικα</string>
+    <string name="ui_delete" formatted="false">Αφαίρεση</string>
+    <string name="ui_reset" formatted="false">Επαναφορά σάρωσης</string>
+    <string name="ui_reset_hint" formatted="false">Ξεκίνησε νέα συνεδρία σάρωσης</string>
+    <string name="ui_resolution" formatted="false">Ανάλυση</string>
+    <string name="ui_actual" formatted="false">Πραγματική</string>
+    <string name="ui_highest" formatted="false">Υψηλότερη υποστηριζόμενη ανάλυση</string>
+    <string name="ui_fallback" formatted="false">Η κάμερα χρησιμοποιεί το πλησιέστερο υποστηριζόμενο μέγεθος, αν χρειαστεί</string>
+    <string name="ui_sensitivity" formatted="false">Ευαισθησία</string>
+    <string name="ui_stability" formatted="false">Σταθερότητα αναγνώρισης κωδίκων</string>
+    <string name="ui_low" formatted="false">Χαμηλή</string>
+    <string name="ui_normal" formatted="false">Κανονική</string>
+    <string name="ui_high" formatted="false">Υψηλή</string>
+    <string name="ui_vibrate" formatted="false">Δόνηση μετά τη σάρωση</string>
+    <string name="ui_vibrate_hint" formatted="false">Μία σύντομη δόνηση ανά σαρωμένο κώδικα</string>
+    <string name="ui_lamp" formatted="false">Φως</string>
+    <string name="ui_on" formatted="false">ΕΝΕΡΓΟ</string>
+    <string name="ui_off" formatted="false">ΑΝΕΝΕΡΓΟ</string>
+    <string name="ui_zoom" formatted="false">Ζουμ</string>
+    <string name="ui_document_settings" formatted="false">Ρυθμίσεις εγγράφου</string>
+    <string name="ui_choose_format" formatted="false">Επιλέξτε μορφή αρχείου</string>
+    <string name="ui_filename" formatted="false">Όνομα αρχείου</string>
+    <string name="ui_extension_hint" formatted="false">Η επέκταση προστίθεται αυτόματα</string>
+    <string name="ui_export" formatted="false">Δημιουργία εγγράφου</string>
+    <string name="ui_saved" formatted="false">Αποθηκεύτηκε</string>
+    <string name="ui_busy" formatted="false">Επεξεργασία…</string>
+    <string name="ui_error" formatted="false">Κάτι πήγε στραβά</string>
+    <string name="ui_permission" formatted="false">Απαιτείται άδεια κάμερας για σάρωση</string>
+    <string name="ui_no_camera" formatted="false">Δεν βρέθηκε διαθέσιμη κάμερα</string>
+    <string name="ui_no_lamp" formatted="false">Αυτή η κάμερα δεν διαθέτει φως</string>
+    <string name="ui_no_results" formatted="false">Δεν υπάρχουν ακόμη αποτελέσματα σάρωσης</string>
+    <string name="ui_nr" formatted="false">Αρ.</string>
+    <string name="ui_type" formatted="false">Τύπος</string>
+    <string name="ui_code" formatted="false">Κώδικας</string>
+    <string name="ui_barcode" formatted="false">Γραμμωτός κώδικας</string>
+    <string name="ui_photo_error" formatted="false">Δεν ήταν δυνατή η ανάγνωση ορισμένων φωτογραφιών</string>
+    <string name="ui_choose_folder" formatted="false">Επιλέξτε φάκελο για τη φωτογραφία και το έγγραφο</string>
+    <string name="ui_tracking_note" formatted="false">Κρατήστε τα προϊόντα στο πλάνο μέχρι τη λήψη της φωτογραφίας</string>
+    <string name="ui_confirm_reset" formatted="false">Να διαγραφεί η τρέχουσα συνεδρία σάρωσης;</string>
+    <string name="ui_delete_question" formatted="false">Να αφαιρεθεί αυτή η σάρωση;</string>
+    <string name="ui_flash" formatted="false">Φλας</string>
+    <string name="ui_camera" formatted="false">Κάμερα</string>
+    <string name="ui_gallery" formatted="false">Σάρωση από τη συλλογή</string>
+    <string name="ui_detected" formatted="false">Εντοπίστηκαν %1$d κώδικες</string>
+    <string name="ui_scan_button" formatted="false">Σάρωση</string>
+    <string name="ui_switch_camera" formatted="false">Αλλαγή κάμερας</string>
+    <string name="ui_camera_mode" formatted="false">Λειτουργία κάμερας</string>
+    <string name="ui_save_scan" formatted="false">Αποθήκευση σάρωσης</string>
+    <string name="ui_review_products" formatted="false">Έλεγχος προϊόντων</string>
+    <string name="ui_product_count" formatted="false">%1$d προϊόντα</string>
+    <string name="ui_product" formatted="false">Προϊόν</string>
+    <string name="ui_review" formatted="false">έλεγχος</string>
+    <string name="ui_unknown_lot" formatted="false">Άγνωστη παρτίδα</string>
+    <string name="ui_conflict" formatted="false">Αντικρουόμενα δεδομένα</string>
+    <string name="ui_group_hint" formatted="false">Οι ετικέτες παραμένουν ξεχωριστές. Ομαδοποιήστε μόνο κώδικες στο ίδιο φυσικό κουτί. Ελέγξτε ποσότητες και παρτίδες· οι χειροκίνητες παρτίδες παραμένουν επισημασμένες.</string>
+    <string name="ui_group_selected" formatted="false">Ομαδοποίηση επιλεγμένων κωδίκων</string>
+    <string name="ui_split_selected" formatted="false">Διαχωρισμός επιλεγμένων ομάδων</string>
+    <string name="ui_grouping_error" formatted="false">Μην ομαδοποιείτε διαφορετικές παρτίδες ή προϊόντα. Διαχωρίστε τους αντικρουόμενους κώδικες.</string>
+    <string name="ui_themes" formatted="false">Θέμα</string>
+    <string name="ui_colours_appearance" formatted="false">Χρώματα και εμφάνιση</string>
+    <string name="ui_choose_theme" formatted="false">Επιλογή θέματος</string>
+    <string name="ui_theme_dark" formatted="false">Σκούρο</string>
+    <string name="ui_theme_light" formatted="false">Φωτεινό</string>
+    <string name="ui_theme_lime" formatted="false">Πράσινο</string>
+    <string name="ui_theme_violet" formatted="false">Μωβ</string>
+    <string name="ui_theme_blue" formatted="false">Μπλε</string>
+    <string name="ui_theme_red" formatted="false">Κόκκινο</string>
+    <string name="ui_box_scan" formatted="false">Σάρωση και καταμέτρηση</string>
+    <string name="ui_live_scan" formatted="false">Ζωντανή σάρωση</string>
+    <string name="ui_count_question" formatted="false">Πόσα προϊόντα αναμένετε σε αυτό το κουτί;</string>
+    <string name="ui_expected_count" formatted="false">Αναμενόμενος αριθμός</string>
+    <string name="ui_count_hint" formatted="false">Εισαγάγετε τον πραγματικό αναμενόμενο αριθμό. Δεν συμπληρώνει σαρώσεις που λείπουν.</string>
+    <string name="ui_count_invalid" formatted="false">Εισαγάγετε ακέραιο αριθμό από 1 έως 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Φωτογραφίστε τη γενική εικόνα. 2. Φωτογραφίστε τέσσερις περιοχές με επικάλυψη 30%. 3. Ελέγξτε κάθε τοποθέτηση και τη λίστα προϊόντων.</string>
+    <string name="ui_marker_help" formatted="false">Εκτυπώστε A, B, C και D. Τοποθετήστε τα πάνω στα προϊόντα μέσα στο κουτί: A επάνω αριστερά, B επάνω δεξιά, C κάτω αριστερά, D κάτω δεξιά. Κρατήστε τους κώδικες ορατούς και τα πάντα ακίνητα. Οι λεπτομερείς φωτογραφίες χρειάζονται ορατές σημάνσεις ή σαφή επικάλυψη.</string>
+    <string name="ui_box_limits" formatted="false">Πειραματικό: κρυμμένοι ή εντελώς μη εντοπισμένοι κώδικες μπορεί να παραμείνουν αόρατοι. Ίδια προϊόντα και επαναλαμβανόμενα μοτίβα μπορεί να συνδεθούν λανθασμένα.</string>
+    <string name="ui_marker_sheet" formatted="false">Κοινοποίηση φύλλου σημάνσεων</string>
+    <string name="ui_make_overview" formatted="false">Λήψη γενικής φωτογραφίας</string>
+    <string name="ui_overview" formatted="false">Γενική εικόνα</string>
+    <string name="ui_detail_photo" formatted="false">Λεπτομερής φωτογραφία %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Πρόσθετη λεπτομερής φωτογραφία</string>
+    <string name="ui_top_left" formatted="false">Επάνω αριστερά</string>
+    <string name="ui_top_right" formatted="false">Επάνω δεξιά</string>
+    <string name="ui_bottom_left" formatted="false">Κάτω αριστερά</string>
+    <string name="ui_bottom_right" formatted="false">Κάτω δεξιά</string>
+    <string name="ui_overview_hint" formatted="false">Συμπεριλάβετε ολόκληρο το κουτί και τις σημάνσεις του.</string>
+    <string name="ui_detail_hint" formatted="false">Ακολουθήστε την περιοχή του χάρτη. Διατηρήστε επικάλυψη περίπου 30% και αποφύγετε αντανακλάσεις.</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d προϊόντα · προσωρινά</string>
+    <string name="ui_unreviewed" formatted="false">Απαιτείται έλεγχος</string>
+    <string name="ui_live_codes" formatted="false">%1$d κώδικες στο πλάνο</string>
+    <string name="ui_placement" formatted="false">Έλεγχος τοποθέτησης</string>
+    <string name="ui_alignment_failed" formatted="false">Δεν βρέθηκε αξιόπιστη τοποθέτηση. Φωτογραφίστε ξανά με μεγαλύτερη επικάλυψη και ορατές σημάνσεις. Η φωτογραφία δεν προστέθηκε.</string>
+    <string name="ui_alignment_check" formatted="false">Ελέγξτε ότι το μπλε περίγραμμα ταιριάζει ακριβώς με τη φωτογραφημένη περιοχή. Τα επαναλαμβανόμενα μοτίβα μπορεί να προκαλέσουν λανθασμένη τοποθέτηση.</string>
+    <string name="ui_confirm_placement" formatted="false">Σωστή τοποθέτηση · προσθήκη</string>
+    <string name="ui_photos_taken" formatted="false">Λήφθηκαν %1$d λεπτομερείς φωτογραφίες</string>
+    <string name="ui_no_auto_approval" formatted="false">Η συμφωνία των ποσοτήτων δεν εγκρίνει την αποστολή. Ελέγξτε κάθε προϊόν, τις παρτίδες και τις διπλές ανιχνεύσεις.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Ο αριθμός συμφωνεί · ελέγχθηκε χειροκίνητα</string>
+    <string name="ui_change_count" formatted="false">Αλλαγή αναμενόμενου αριθμού</string>
+    <string name="ui_new_box" formatted="false">Νέο κουτί</string>
+    <string name="ui_take_detail" formatted="false">Λήψη λεπτομερούς φωτογραφίας</string>
+    <string name="ui_capture_step" formatted="false">Βήμα %1$d</string>
+    <string name="ui_capture_photo" formatted="false">Λήψη φωτογραφίας</string>
+    <string name="ui_photo_step" formatted="false">Φωτογραφία %1$d από 5</string>
+    <string name="ui_marker_setup" formatted="false">Τοποθετήστε πρώτα τις 4 σημάνσεις</string>
+    <string name="ui_marker_ack" formatted="false">Κατάλαβα · φωτογραφία 1</string>
+    <string name="ui_marker_info" formatted="false">Οδηγίες σημάνσεων</string>
+    <string name="ui_bmd_control" formatted="false">Σάρωση και καταμέτρηση</string>
+    <string name="ui_generic_scan" formatted="false">Σαρωτής QR</string>
+    <string name="ui_pallet_scanner" formatted="false">Καταγραφή εγγράφων</string>
+    <string name="ui_document_scanner" formatted="false">Σαρωτής ελέγχου εγγράφων</string>
+    <string name="ui_picking_control" formatted="false">Έλεγχος συλλογής</string>
+    <string name="ui_picking_control_hint" formatted="false">Διαβάστε τη λίστα συλλογής και ελέγξτε προϊόντα και ποσότητες</string>
+    <string name="ui_final_control_hint" formatted="false">Διαβάστε τη λίστα συλλογής και ελέγξτε πριν ή μετά τη συσκευασία</string>
+    <string name="ui_control_picklist_first" formatted="false">Η σάρωση και καταμέτρηση ξεκινά με την ανάγνωση της λίστας συλλογής.</string>
+    <string name="ui_packing_question" formatted="false">Έχουν ήδη συσκευαστεί τα προϊόντα;</string>
+    <string name="ui_packed_box" formatted="false">Μέσα στο κουτί</string>
+    <string name="ui_packed_box_hint" formatted="false">Με σημάνσεις και 5 βήματα φωτογράφισης</string>
+    <string name="ui_before_packing" formatted="false">Πριν τη συσκευασία</string>
+    <string name="ui_before_packing_hint" formatted="false">Σάρωση προϊόντων χωρίς σημάνσεις</string>
+    <string name="ui_generic_hint" formatted="false">Στρέψτε την κάμερα σε QR ή γραμμωτό κώδικα</string>
+    <string name="ui_generic_result" formatted="false">Εντοπίστηκε κώδικας</string>
+    <string name="ui_generic_results" formatted="false">Εντοπισμένοι κώδικες</string>
+    <string name="ui_generic_open_link" formatted="false">Άνοιγμα συνδέσμου</string>
+    <string name="ui_generic_copy" formatted="false">Αντιγραφή</string>
+    <string name="ui_generic_copied" formatted="false">Αντιγράφηκε</string>
+    <string name="ui_generic_empty" formatted="false">Δεν βρέθηκε αναγνώσιμος κώδικας</string>
+    <string name="ui_generic_error" formatted="false">Η σάρωση απέτυχε. Δοκιμάστε ξανά.</string>
+    <string name="ui_generic_preview" formatted="false">Προεπισκόπηση συνδέσμου</string>
+    <string name="ui_generic_preview_load" formatted="false">Φόρτωση προεπισκόπησης</string>
+    <string name="ui_generic_preview_loading" formatted="false">Φόρτωση ιστοτόπου…</string>
+    <string name="ui_generic_preview_error" formatted="false">Η προεπισκόπηση δεν είναι διαθέσιμη. Ανοίξτε τον σύνδεσμο στο πρόγραμμα περιήγησης.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Δοκιμή ξανά</string>
+    <string name="ui_generic_preview_hide" formatted="false">Απόκρυψη προεπισκόπησης</string>
+    <string name="ui_work_in_progress" formatted="false">Υπό ανάπτυξη</string>
+    <string name="ui_web_links" formatted="false">Διαδικτυακοί σύνδεσμοι</string>
+    <string name="ui_portal" formatted="false">Πύλη πελατών</string>
+    <string name="ui_work_instructions" formatted="false">Οδηγίες εργασίας</string>
+    <string name="ui_email_check" formatted="false">Έλεγχος email</string>
+    <string name="ui_document_check" formatted="false">Έλεγχος εγγράφων</string>
+    <string name="ui_in_development" formatted="false">Αυτή η λειτουργία βρίσκεται υπό ανάπτυξη.</string>
+    <string name="ui_lots_title" formatted="false">Σαρωμένες παρτίδες</string>
+    <string name="ui_checklist" formatted="false">Προβολή λίστας ελέγχου</string>
+    <string name="ui_continue_save" formatted="false">Συνέχεια στην αποθήκευση</string>
+    <string name="ui_include_images" formatted="false">Συμπερίληψη εικόνων σάρωσης</string>
+    <string name="ui_guided_mode" formatted="false">Τι θέλετε να ελέγξετε;</string>
+    <string name="ui_complete_box" formatted="false">Πλήρες κουτί</string>
+    <string name="ui_inventory" formatted="false">Απόθεμα</string>
+    <string name="ui_step_progress" formatted="false">Φωτογραφία %1$d από 5 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">Έλεγχος παρτίδας</string>
+    <string name="ui_exclude" formatted="false">Εξαίρεση</string>
+    <string name="ui_undo" formatted="false">Αναίρεση</string>
+    <string name="ui_save_options" formatted="false">Αποθήκευση και κοινοποίηση</string>
+    <string name="ui_all_reviewed" formatted="false">Ελέγχθηκε χειροκίνητα</string>
+    <string name="ui_capture_first" formatted="false">Φωτογραφίστε πρώτα τη γενική εικόνα</string>
+    <string name="ui_photos_needed" formatted="false">Τραβήξτε τουλάχιστον %1$d ακόμη λεπτομερείς φωτογραφίες</string>
+    <string name="ui_manual_change" formatted="false">Άλλαξε χειροκίνητα</string>
+    <string name="ui_review_all" formatted="false">Έλεγχος όλων των προϊόντων αυτής της παρτίδας</string>
+    <string name="ui_qr_count_check" formatted="false">Έλεγχος QR/ποσότητας</string>
+    <string name="ui_box_pallet_check" formatted="false">Έλεγχος κουτιού/παλέτας</string>
+    <string name="ui_wizard_step_type" formatted="false">Βήμα 1 · Τύπος σάρωσης</string>
+    <string name="ui_wizard_step_count" formatted="false">Βήμα 2 · Ποσότητα</string>
+    <string name="ui_wizard_type" formatted="false">Τύπος</string>
+    <string name="ui_wizard_count" formatted="false">Ποσότητα</string>
+    <string name="ui_wizard_type_question" formatted="false">Τι θέλετε να σαρώσετε;</string>
+    <string name="ui_wizard_box" formatted="false">Σάρωση και καταμέτρηση</string>
+    <string name="ui_wizard_stack" formatted="false">Μεμονωμένη στοίβα</string>
+    <string name="ui_wizard_box_hint" formatted="false">Με σημάνσεις και λεπτομερείς φωτογραφίες</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Άμεση σάρωση, χωρίς σημάνσεις</string>
+    <string name="ui_wizard_next_count" formatted="false">Η σάρωση και καταμέτρηση ξεκινά με την ανάγνωση της λίστας συλλογής.</string>
+    <string name="ui_wizard_count_question" formatted="false">Πόσα προϊόντα αναμένετε;</string>
+    <string name="ui_wizard_products" formatted="false">Αριθμός προϊόντων</string>
+    <string name="ui_wizard_count_hint" formatted="false">Εισαγάγετε τον αναμενόμενο αριθμό προϊόντων.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Αυτός ο αριθμός χρησιμοποιείται για επαλήθευση.</string>
+    <string name="ui_wizard_next" formatted="false">Επόμενο</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Νέα σάρωση</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Η νέα λήψη αντικαθιστά την προηγούμενη σάρωση στοίβας.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Νέα σάρωση</string>
+    <string name="ui_pl_step" formatted="false">Βήμα %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">Λίστα συλλογής</string>
+    <string name="ui_pl_picklist_short" formatted="false">Λίστα συλλογής</string>
+    <string name="ui_pl_products" formatted="false">Προϊόντα</string>
+    <string name="ui_pl_capture" formatted="false">Σάρωση λίστας συλλογής</string>
+    <string name="ui_pl_frame" formatted="false">Χωρέστε ολόκληρη τη σελίδα στο πλάνο.</string>
+    <string name="ui_pl_photo" formatted="false">Λήψη φωτογραφίας</string>
+    <string name="ui_pl_pdf" formatted="false">Επιλογή PDF / φωτογραφίας</string>
+    <string name="ui_pl_pages" formatted="false">Λήφθηκαν %1$d σελίδες · προσθέστε κάθε σελίδα</string>
+    <string name="ui_pl_reading" formatted="false">Ανάγνωση εγγράφου…</string>
+    <string name="ui_pl_review" formatted="false">Έλεγχος λίστας συλλογής</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d γραμμές προϊόντων · %2$d τεμάχια</string>
+    <string name="ui_pl_pending" formatted="false">Αναγνωρισμένα δεδομένα · δεν επιβεβαιώθηκαν ακόμη</string>
+    <string name="ui_pl_source_warning" formatted="false">Η πηγή φαίνεται να είναι λίστα αποστολής ή τιμολόγιο. Βεβαιωθείτε ότι είναι το σωστό έγγραφο αναφοράς για αυτόν τον έλεγχο.</string>
+    <string name="ui_pl_uncertain" formatted="false">Ορισμένα δεδομένα δεν διαβάστηκαν. Προσθέστε τις σελίδες που λείπουν και συγκρίνετε κάθε γραμμή με την πηγή.</string>
+    <string name="ui_pl_source_total" formatted="false">Σύνολο πηγής: %1$d</string>
+    <string name="ui_pl_edit" formatted="false">Επεξεργασία γραμμής</string>
+    <string name="ui_pl_add_row" formatted="false">Προσθήκη γραμμής προϊόντος</string>
+    <string name="ui_pl_source" formatted="false">Προβολή πηγής</string>
+    <string name="ui_pl_add_page" formatted="false">Προσθήκη σελίδας</string>
+    <string name="ui_pl_ack" formatted="false">Έλεγξα κάθε γραμμή και σελίδα σε σύγκριση με την πηγή.</string>
+    <string name="ui_pl_confirm" formatted="false">Επιβεβαίωση και συνέχεια</string>
+    <string name="ui_pl_check_rows" formatted="false">Ελέγξτε κωδικό είδους, παρτίδα, λήξη, ποσότητα, σύνολο και όλες τις σελίδες.</string>
+    <string name="ui_pl_article" formatted="false">Είδος</string>
+    <string name="ui_pl_lot" formatted="false">Παρτίδα</string>
+    <string name="ui_pl_expiry" formatted="false">Λήξη (ΕΕΕΕ-ΜΜ-ΗΗ)</string>
+    <string name="ui_pl_quantity" formatted="false">Ποσότητα</string>
+    <string name="ui_pl_count" formatted="false">Ποσότητα προϊόντων</string>
+    <string name="ui_pl_auto" formatted="false">Συμπληρώθηκε αυτόματα από την επιβεβαιωμένη λίστα συλλογής</string>
+    <string name="ui_pl_order" formatted="false">Λίστα συλλογής · Παραγγελία %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d κουτιά</string>
+    <string name="ui_pl_box_one" formatted="false">1 κουτί</string>
+    <string name="ui_pl_average" formatted="false">Μέσος όρος %1$s ανά κουτί</string>
+    <string name="ui_pl_standard" formatted="false">Κανονικό</string>
+    <string name="ui_pl_large" formatted="false">Μεγάλο</string>
+    <string name="ui_pl_max" formatted="false">Μέγ. %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">Προτεινόμενη κατανομή</string>
+    <string name="ui_pl_plan_total" formatted="false">Κατανομή: %1$d / %2$d προϊόντα · πατήστε κουτί για επεξεργασία</string>
+    <string name="ui_pl_carton" formatted="false">Κουτί %1$d από %2$d</string>
+    <string name="ui_pl_free" formatted="false">%1$d κενές θέσεις</string>
+    <string name="ui_pl_free_one" formatted="false">1 κενή θέση</string>
+    <string name="ui_pl_not_scanned" formatted="false">Δεν σαρώθηκε ακόμη</string>
+    <string name="ui_pl_adjust" formatted="false">Επεξεργασία λίστας συλλογής</string>
+    <string name="ui_pl_continue" formatted="false">Συνέχεια στα προϊόντα</string>
+    <string name="ui_pl_control" formatted="false">Σάρωση και καταμέτρηση</string>
+    <string name="ui_pl_reviewed" formatted="false">Ελέγχθηκε χειροκίνητα</string>
+    <string name="ui_pl_matched" formatted="false">Όλα τα κουτιά και οι γραμμές της λίστας συλλογής συμφωνούν.</string>
+    <string name="ui_pl_not_complete" formatted="false">Ο έλεγχος δεν ολοκληρώθηκε ακόμη</string>
+    <string name="ui_pl_no_auto" formatted="false">Η συμφωνία του συνόλου δεν εγκρίνει αυτόματα την αποστολή.</string>
+    <string name="ui_pl_new" formatted="false">Νέα λίστα συλλογής</string>
+    <string name="ui_pl_error" formatted="false">Η ανάγνωση ή ο έλεγχος απέτυχε. Ελέγξτε την πηγή και δοκιμάστε ξανά.</string>
+    <string name="ui_pl_camera_denied" formatted="false">Η κάμερα δεν είναι διαθέσιμη. Μπορείτε επίσης να επιλέξετε PDF ή φωτογραφία.</string>
+    <string name="ui_pl_expected" formatted="false">Αναμένονται: %1$d προϊόντα</string>
+    <string name="ui_pl_fixed_count" formatted="false">Ο αριθμός καθορίζεται από τη λίστα συλλογής. Επεξεργαστείτε τις γραμμές της πριν σαρώσετε κουτιά.</string>
+    <string name="ui_pl_identity_missing" formatted="false">Άγνωστος κωδικός είδους ή ημερομηνία λήξης. Ελέγξτε τον κώδικα προϊόντος· η παρτίδα από μόνη της δεν αρκεί.</string>
+    <string name="ui_pl_mapping" formatted="false">Σύνδεση είδους με GTIN</string>
+    <string name="ui_pl_mapping_hint" formatted="false">Ο κώδικας περιέχει GTIN, όχι κωδικό είδους. Ελέγξτε τη συσκευασία και επιλέξτε το σωστό είδος.</string>
+    <string name="ui_pl_choose_article" formatted="false">Επιλογή είδους</string>
+    <string name="ui_pl_mismatch" formatted="false">Κωδικός είδους, παρτίδα, λήξη ή ποσότητες διαφέρουν από τη λίστα συλλογής. Ελέγξτε τις διαφορές.</string>
+</resources>

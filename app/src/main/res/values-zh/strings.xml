@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD 扫描魔法师</string>
+    <string name="ui_short_name" formatted="false">扫描魔法师</string>
+    <string name="ui_scan" formatted="false">扫描</string>
+    <string name="ui_photos" formatted="false">上传照片</string>
+    <string name="ui_results" formatted="false">结果</string>
+    <string name="ui_settings" formatted="false">设置</string>
+    <string name="ui_language" formatted="false">语言</string>
+    <string name="ui_choose_language" formatted="false">选择语言</string>
+    <string name="ui_scanner_settings" formatted="false">扫描器设置</string>
+    <string name="ui_scanner" formatted="false">扫描器</string>
+    <string name="ui_scanner_hint" formatted="false">分辨率、灵敏度和振动</string>
+    <string name="ui_document_type" formatted="false">文档类型</string>
+    <string name="ui_formats" formatted="false">CSV、Excel、Word 和 PDF</string>
+    <string name="ui_about" formatted="false">关于应用</string>
+    <string name="ui_back" formatted="false">返回</string>
+    <string name="ui_close" formatted="false">关闭</string>
+    <string name="ui_done" formatted="false">完成</string>
+    <string name="ui_apply" formatted="false">应用</string>
+    <string name="ui_cancel" formatted="false">取消</string>
+    <string name="ui_save" formatted="false">保存</string>
+    <string name="ui_save_changes" formatted="false">保存更改</string>
+    <string name="ui_live" formatted="false">实时检测</string>
+    <string name="ui_both" formatted="false">二维码 + 条形码</string>
+    <string name="ui_qr_only" formatted="false">仅二维码</string>
+    <string name="ui_bar_only" formatted="false">仅条形码</string>
+    <string name="ui_code_filter" formatted="false">扫描码类型</string>
+    <string name="ui_count" formatted="false">已扫描 %1$d 个码</string>
+    <string name="ui_split" formatted="false">%1$d 个二维码 · %2$d 个条形码</string>
+    <string name="ui_same_hint" formatted="false">相同内容按每件产品分别计数</string>
+    <string name="ui_empty" formatted="false">将相机对准码</string>
+    <string name="ui_all_results" formatted="false">查看全部结果</string>
+    <string name="ui_capture" formatted="false">拍照</string>
+    <string name="ui_captured" formatted="false">已拍照</string>
+    <string name="ui_local_save" formatted="false">保存到本机</string>
+    <string name="ui_local_hint" formatted="false">保存照片和扫描结果</string>
+    <string name="ui_share" formatted="false">分享</string>
+    <string name="ui_share_hint" formatted="false">通过电子邮件或其他应用分享</string>
+    <string name="ui_again" formatted="false">重新扫描</string>
+    <string name="ui_list" formatted="false">已扫描的码</string>
+    <string name="ui_edit" formatted="false">更正码</string>
+    <string name="ui_delete" formatted="false">移除</string>
+    <string name="ui_reset" formatted="false">重置扫描</string>
+    <string name="ui_reset_hint" formatted="false">已开始新的扫描会话</string>
+    <string name="ui_resolution" formatted="false">分辨率</string>
+    <string name="ui_actual" formatted="false">实际</string>
+    <string name="ui_highest" formatted="false">支持的最高分辨率</string>
+    <string name="ui_fallback" formatted="false">需要时，相机会使用最接近的受支持尺寸</string>
+    <string name="ui_sensitivity" formatted="false">灵敏度</string>
+    <string name="ui_stability" formatted="false">码识别稳定性</string>
+    <string name="ui_low" formatted="false">低</string>
+    <string name="ui_normal" formatted="false">正常</string>
+    <string name="ui_high" formatted="false">高</string>
+    <string name="ui_vibrate" formatted="false">扫描后振动</string>
+    <string name="ui_vibrate_hint" formatted="false">每扫描一个码短振动一次</string>
+    <string name="ui_lamp" formatted="false">照明灯</string>
+    <string name="ui_on" formatted="false">开</string>
+    <string name="ui_off" formatted="false">关</string>
+    <string name="ui_zoom" formatted="false">缩放</string>
+    <string name="ui_document_settings" formatted="false">文档设置</string>
+    <string name="ui_choose_format" formatted="false">选择文件格式</string>
+    <string name="ui_filename" formatted="false">文件名</string>
+    <string name="ui_extension_hint" formatted="false">自动添加扩展名</string>
+    <string name="ui_export" formatted="false">创建文档</string>
+    <string name="ui_saved" formatted="false">已保存</string>
+    <string name="ui_busy" formatted="false">正在处理…</string>
+    <string name="ui_error" formatted="false">出了点问题</string>
+    <string name="ui_permission" formatted="false">扫描需要相机权限</string>
+    <string name="ui_no_camera" formatted="false">未找到可用相机</string>
+    <string name="ui_no_lamp" formatted="false">此相机没有照明灯</string>
+    <string name="ui_no_results" formatted="false">暂无扫描结果</string>
+    <string name="ui_nr" formatted="false">序号</string>
+    <string name="ui_type" formatted="false">类型</string>
+    <string name="ui_code" formatted="false">码</string>
+    <string name="ui_barcode" formatted="false">条形码</string>
+    <string name="ui_photo_error" formatted="false">部分照片无法读取</string>
+    <string name="ui_choose_folder" formatted="false">选择用于保存照片和文档的文件夹</string>
+    <string name="ui_tracking_note" formatted="false">拍照前请一直将产品保持在画面内</string>
+    <string name="ui_confirm_reset" formatted="false">清空当前扫描会话？</string>
+    <string name="ui_delete_question" formatted="false">移除此扫描记录？</string>
+    <string name="ui_flash" formatted="false">闪光灯</string>
+    <string name="ui_camera" formatted="false">相机</string>
+    <string name="ui_gallery" formatted="false">从图库扫描</string>
+    <string name="ui_detected" formatted="false">已检测到 %1$d 个码</string>
+    <string name="ui_scan_button" formatted="false">扫描</string>
+    <string name="ui_switch_camera" formatted="false">切换相机</string>
+    <string name="ui_camera_mode" formatted="false">相机模式</string>
+    <string name="ui_save_scan" formatted="false">保存扫描</string>
+    <string name="ui_review_products" formatted="false">核查产品</string>
+    <string name="ui_product_count" formatted="false">%1$d 件产品</string>
+    <string name="ui_product" formatted="false">产品</string>
+    <string name="ui_review" formatted="false">核查</string>
+    <string name="ui_unknown_lot" formatted="false">未知批次</string>
+    <string name="ui_conflict" formatted="false">数据冲突</string>
+    <string name="ui_group_hint" formatted="false">标签保持独立。只合并同一实体包装盒上的码。请核查数量和批次；手动输入的批次仍会被标记。</string>
+    <string name="ui_group_selected" formatted="false">合并选中的码</string>
+    <string name="ui_split_selected" formatted="false">拆分选中的组</string>
+    <string name="ui_grouping_error" formatted="false">不要合并不同批次或产品。请拆分冲突的码。</string>
+    <string name="ui_themes" formatted="false">主题</string>
+    <string name="ui_colours_appearance" formatted="false">颜色与外观</string>
+    <string name="ui_choose_theme" formatted="false">选择主题</string>
+    <string name="ui_theme_dark" formatted="false">深色</string>
+    <string name="ui_theme_light" formatted="false">浅色</string>
+    <string name="ui_theme_lime" formatted="false">绿色</string>
+    <string name="ui_theme_violet" formatted="false">紫色</string>
+    <string name="ui_theme_blue" formatted="false">蓝色</string>
+    <string name="ui_theme_red" formatted="false">红色</string>
+    <string name="ui_box_scan" formatted="false">扫描并计数</string>
+    <string name="ui_live_scan" formatted="false">实时扫描</string>
+    <string name="ui_count_question" formatted="false">此箱中预计有多少件产品？</string>
+    <string name="ui_expected_count" formatted="false">预计数量</string>
+    <string name="ui_count_hint" formatted="false">请输入实际预计数量。此数值不会补填漏扫的产品。</string>
+    <string name="ui_count_invalid" formatted="false">请输入 1 到 10000 之间的整数。</string>
+    <string name="ui_box_instructions" formatted="false">1. 拍摄全景照片。2. 拍摄四个区域，保持 30% 重叠。3. 核查每次对齐和产品清单。</string>
+    <string name="ui_marker_help" formatted="false">打印 A、B、C 和 D。将其放在箱内产品上：A 左上、B 右上、C 左下、D 右下。保持产品码可见，且所有物品静止不动。细节照片中需有可见标记或清晰的重叠区域。</string>
+    <string name="ui_box_limits" formatted="false">实验功能：被遮挡或完全漏检的码可能仍无法显示。相同产品和重复图案可能被错误关联。</string>
+    <string name="ui_marker_sheet" formatted="false">分享标记页</string>
+    <string name="ui_make_overview" formatted="false">拍摄全景照片</string>
+    <string name="ui_overview" formatted="false">全景</string>
+    <string name="ui_detail_photo" formatted="false">细节照片 %1$d</string>
+    <string name="ui_extra_photo" formatted="false">额外细节照片</string>
+    <string name="ui_top_left" formatted="false">左上</string>
+    <string name="ui_top_right" formatted="false">右上</string>
+    <string name="ui_bottom_left" formatted="false">左下</string>
+    <string name="ui_bottom_right" formatted="false">右下</string>
+    <string name="ui_overview_hint" formatted="false">请拍入整个箱子及其标记。</string>
+    <string name="ui_detail_hint" formatted="false">按照示意区域拍摄。保持约 30% 重叠，并避免反光。</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d 件产品 · 暂定</string>
+    <string name="ui_unreviewed" formatted="false">需要核查</string>
+    <string name="ui_live_codes" formatted="false">画面中有 %1$d 个码</string>
+    <string name="ui_placement" formatted="false">核查对齐位置</string>
+    <string name="ui_alignment_failed" formatted="false">未找到可靠的对齐位置。请在保留可见标记的情况下增加重叠区域并重拍。此照片未添加。</string>
+    <string name="ui_alignment_check" formatted="false">请检查蓝色轮廓是否与所拍区域完全吻合。重复图案可能导致错误对齐。</string>
+    <string name="ui_confirm_placement" formatted="false">对齐正确 · 添加</string>
+    <string name="ui_photos_taken" formatted="false">已拍摄 %1$d 张细节照片</string>
+    <string name="ui_no_auto_approval" formatted="false">数量相符并不代表批准发货。请逐件核查产品、批次和重复检测。</string>
+    <string name="ui_count_equal_reviewed" formatted="false">数量相符 · 已人工核查</string>
+    <string name="ui_change_count" formatted="false">更改预计数量</string>
+    <string name="ui_new_box" formatted="false">新箱子</string>
+    <string name="ui_take_detail" formatted="false">拍摄细节照片</string>
+    <string name="ui_capture_step" formatted="false">步骤 %1$d</string>
+    <string name="ui_capture_photo" formatted="false">拍照</string>
+    <string name="ui_photo_step" formatted="false">第 %1$d 张，共 5 张</string>
+    <string name="ui_marker_setup" formatted="false">请先放置 4 个标记</string>
+    <string name="ui_marker_ack" formatted="false">明白 · 第 1 张照片</string>
+    <string name="ui_marker_info" formatted="false">标记说明</string>
+    <string name="ui_bmd_control" formatted="false">扫描并计数</string>
+    <string name="ui_generic_scan" formatted="false">二维码扫描器</string>
+    <string name="ui_pallet_scanner" formatted="false">拍摄文档</string>
+    <string name="ui_document_scanner" formatted="false">文档核查扫描器</string>
+    <string name="ui_picking_control" formatted="false">拣货核查</string>
+    <string name="ui_picking_control_hint" formatted="false">读取拣货单，核查全部产品和数量</string>
+    <string name="ui_final_control_hint" formatted="false">读取拣货单，在装箱前或装箱后核查</string>
+    <string name="ui_control_picklist_first" formatted="false">扫描并计数从读取拣货单开始。</string>
+    <string name="ui_packing_question" formatted="false">产品已经装箱了吗？</string>
+    <string name="ui_packed_box" formatted="false">已装箱</string>
+    <string name="ui_packed_box_hint" formatted="false">使用标记，分 5 步拍照</string>
+    <string name="ui_before_packing" formatted="false">装箱前</string>
+    <string name="ui_before_packing_hint" formatted="false">无需标记，直接扫描产品</string>
+    <string name="ui_generic_hint" formatted="false">将相机对准二维码或条形码</string>
+    <string name="ui_generic_result" formatted="false">检测到码</string>
+    <string name="ui_generic_results" formatted="false">检测到的码</string>
+    <string name="ui_generic_open_link" formatted="false">打开链接</string>
+    <string name="ui_generic_copy" formatted="false">复制</string>
+    <string name="ui_generic_copied" formatted="false">已复制</string>
+    <string name="ui_generic_empty" formatted="false">未找到可读取的码</string>
+    <string name="ui_generic_error" formatted="false">扫描失败，请重试。</string>
+    <string name="ui_generic_preview" formatted="false">链接预览</string>
+    <string name="ui_generic_preview_load" formatted="false">加载预览</string>
+    <string name="ui_generic_preview_loading" formatted="false">正在加载网站…</string>
+    <string name="ui_generic_preview_error" formatted="false">无法预览。请在浏览器中打开链接。</string>
+    <string name="ui_generic_preview_retry" formatted="false">重试</string>
+    <string name="ui_generic_preview_hide" formatted="false">隐藏预览</string>
+    <string name="ui_work_in_progress" formatted="false">开发中</string>
+    <string name="ui_web_links" formatted="false">网页链接</string>
+    <string name="ui_portal" formatted="false">客户门户</string>
+    <string name="ui_work_instructions" formatted="false">工作指导</string>
+    <string name="ui_email_check" formatted="false">电子邮件核查</string>
+    <string name="ui_document_check" formatted="false">文档核查</string>
+    <string name="ui_in_development" formatted="false">此功能正在开发中。</string>
+    <string name="ui_lots_title" formatted="false">已扫描的批次</string>
+    <string name="ui_checklist" formatted="false">查看核查清单</string>
+    <string name="ui_continue_save" formatted="false">继续保存</string>
+    <string name="ui_include_images" formatted="false">包含扫描图像</string>
+    <string name="ui_guided_mode" formatted="false">您要核查什么？</string>
+    <string name="ui_complete_box" formatted="false">整箱</string>
+    <string name="ui_inventory" formatted="false">库存</string>
+    <string name="ui_step_progress" formatted="false">第 %1$d 张，共 5 张 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">核查批次</string>
+    <string name="ui_exclude" formatted="false">排除</string>
+    <string name="ui_undo" formatted="false">撤销</string>
+    <string name="ui_save_options" formatted="false">保存并分享</string>
+    <string name="ui_all_reviewed" formatted="false">已人工核查</string>
+    <string name="ui_capture_first" formatted="false">请先拍摄全景照片</string>
+    <string name="ui_photos_needed" formatted="false">请再拍摄至少 %1$d 张细节照片</string>
+    <string name="ui_manual_change" formatted="false">已手动更改</string>
+    <string name="ui_review_all" formatted="false">核查此批次的全部产品</string>
+    <string name="ui_qr_count_check" formatted="false">二维码/数量核查</string>
+    <string name="ui_box_pallet_check" formatted="false">箱子/托盘核查</string>
+    <string name="ui_wizard_step_type" formatted="false">步骤 1 · 扫描类型</string>
+    <string name="ui_wizard_step_count" formatted="false">步骤 2 · 数量</string>
+    <string name="ui_wizard_type" formatted="false">类型</string>
+    <string name="ui_wizard_count" formatted="false">数量</string>
+    <string name="ui_wizard_type_question" formatted="false">您想扫描什么？</string>
+    <string name="ui_wizard_box" formatted="false">扫描并计数</string>
+    <string name="ui_wizard_stack" formatted="false">散放堆叠</string>
+    <string name="ui_wizard_box_hint" formatted="false">使用标记和细节照片</string>
+    <string name="ui_wizard_stack_hint" formatted="false">直接扫描，无需标记</string>
+    <string name="ui_wizard_next_count" formatted="false">扫描并计数从读取拣货单开始。</string>
+    <string name="ui_wizard_count_question" formatted="false">预计有多少件产品？</string>
+    <string name="ui_wizard_products" formatted="false">产品数量</string>
+    <string name="ui_wizard_count_hint" formatted="false">请输入预计产品数量。</string>
+    <string name="ui_wizard_count_usage" formatted="false">此数量用于核查。</string>
+    <string name="ui_wizard_next" formatted="false">下一步</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">重新扫描</string>
+    <string name="ui_wizard_retake_hint" formatted="false">新的拍摄将替换此前的堆叠扫描。</string>
+    <string name="ui_wizard_new_scan" formatted="false">新扫描</string>
+    <string name="ui_pl_step" formatted="false">步骤 %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">拣货单</string>
+    <string name="ui_pl_picklist_short" formatted="false">拣货单</string>
+    <string name="ui_pl_products" formatted="false">产品</string>
+    <string name="ui_pl_capture" formatted="false">扫描拣货单</string>
+    <string name="ui_pl_frame" formatted="false">将整页放入画面中。</string>
+    <string name="ui_pl_photo" formatted="false">拍照</string>
+    <string name="ui_pl_pdf" formatted="false">选择 PDF / 照片</string>
+    <string name="ui_pl_pages" formatted="false">已拍摄 %1$d 页 · 请添加所有页面</string>
+    <string name="ui_pl_reading" formatted="false">正在读取文档…</string>
+    <string name="ui_pl_review" formatted="false">核查拣货单</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d 行产品 · %2$d 件</string>
+    <string name="ui_pl_pending" formatted="false">已识别的数据 · 尚未确认</string>
+    <string name="ui_pl_source_warning" formatted="false">源文件似乎是发货清单或发票。请核实它是否为此次核查的正确参考文件。</string>
+    <string name="ui_pl_uncertain" formatted="false">部分数据无法读取。请添加缺失页面，并逐行与源文件核对。</string>
+    <string name="ui_pl_source_total" formatted="false">源文件总数：%1$d</string>
+    <string name="ui_pl_edit" formatted="false">编辑行</string>
+    <string name="ui_pl_add_row" formatted="false">添加产品行</string>
+    <string name="ui_pl_source" formatted="false">查看源文件</string>
+    <string name="ui_pl_add_page" formatted="false">添加页面</string>
+    <string name="ui_pl_ack" formatted="false">我已逐行、逐页与源文件核对。</string>
+    <string name="ui_pl_confirm" formatted="false">确认并继续</string>
+    <string name="ui_pl_check_rows" formatted="false">请核查货号、批次、有效期、数量、总数以及所有页面。</string>
+    <string name="ui_pl_article" formatted="false">货号</string>
+    <string name="ui_pl_lot" formatted="false">批次</string>
+    <string name="ui_pl_expiry" formatted="false">有效期（YYYY-MM-DD）</string>
+    <string name="ui_pl_quantity" formatted="false">数量</string>
+    <string name="ui_pl_count" formatted="false">产品数量</string>
+    <string name="ui_pl_auto" formatted="false">根据已确认的拣货单自动填写</string>
+    <string name="ui_pl_order" formatted="false">拣货单 · 订单 %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d 箱</string>
+    <string name="ui_pl_box_one" formatted="false">1 箱</string>
+    <string name="ui_pl_average" formatted="false">平均每箱 %1$s 件</string>
+    <string name="ui_pl_standard" formatted="false">标准</string>
+    <string name="ui_pl_large" formatted="false">大号</string>
+    <string name="ui_pl_max" formatted="false">最多 %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">建议分配方案</string>
+    <string name="ui_pl_plan_total" formatted="false">分配：%1$d / %2$d 件产品 · 点击箱子编辑</string>
+    <string name="ui_pl_carton" formatted="false">第 %1$d 箱，共 %2$d 箱</string>
+    <string name="ui_pl_free" formatted="false">剩余 %1$d 个位置</string>
+    <string name="ui_pl_free_one" formatted="false">剩余 1 个位置</string>
+    <string name="ui_pl_not_scanned" formatted="false">尚未扫描</string>
+    <string name="ui_pl_adjust" formatted="false">编辑拣货单</string>
+    <string name="ui_pl_continue" formatted="false">继续核查产品</string>
+    <string name="ui_pl_control" formatted="false">扫描并计数</string>
+    <string name="ui_pl_reviewed" formatted="false">已人工核查</string>
+    <string name="ui_pl_matched" formatted="false">所有箱子与拣货单各行均相符。</string>
+    <string name="ui_pl_not_complete" formatted="false">核查尚未完成</string>
+    <string name="ui_pl_no_auto" formatted="false">总数相符不会自动批准发货。</string>
+    <string name="ui_pl_new" formatted="false">新拣货单</string>
+    <string name="ui_pl_error" formatted="false">读取或核查失败。请检查源文件并重试。</string>
+    <string name="ui_pl_camera_denied" formatted="false">相机不可用。您也可以选择 PDF 或照片。</string>
+    <string name="ui_pl_expected" formatted="false">预计：%1$d 件产品</string>
+    <string name="ui_pl_fixed_count" formatted="false">数量由拣货单确定。扫描箱子前，请先编辑清单行。</string>
+    <string name="ui_pl_identity_missing" formatted="false">货号或有效期未知。请检查产品码；仅有批次不足以确认产品。</string>
+    <string name="ui_pl_mapping" formatted="false">将货号与 GTIN 关联</string>
+    <string name="ui_pl_mapping_hint" formatted="false">码中包含 GTIN，而非货号。请检查包装并选择正确货号。</string>
+    <string name="ui_pl_choose_article" formatted="false">选择货号</string>
+    <string name="ui_pl_mismatch" formatted="false">货号、批次、有效期或数量与拣货单不符。请核查差异。</string>
+</resources>
