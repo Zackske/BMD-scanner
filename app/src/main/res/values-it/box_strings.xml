@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Controllo finale</string>
+    <string name="ui_box_scan" formatted="false">Scansiona e conta</string>
     <string name="ui_live_scan" formatted="false">Scansione dal vivo</string>
     <string name="ui_count_question" formatted="false">Quanti prodotti prevedi in questa scatola?</string>
     <string name="ui_expected_count" formatted="false">Quantità prevista</string>

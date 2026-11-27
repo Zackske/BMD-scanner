@@ -7,6 +7,23 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class MetalRenderingTest {
+    @Test public void sharedArtworkKeepsGoldSparkleAndRingColourAcrossThemes(){
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{ThemeSkin previous=ThemeSkin.active;try{
+            int[] colours={0xff14aaff,0xffff3454,0xff18c46b,0xffb741ed,0xffffa51d,0xffa0b6c7};
+            for(int n=0;n<ThemeSkin.IDS.length;n++){
+                ThemeSkin.active=ThemeSkin.forId(ThemeSkin.IDS[n]);Bitmap image=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);
+                OrbitalArtwork.draw(new Canvas(image),DeviceSupport.context(),R.drawable.ref_home_qr,new RectF(0,0,256,256),colours[n]);
+                int gold=0,ring=0;float[] hsv=new float[3],expected=new float[3];Color.colorToHSV(colours[n],expected);
+                for(int y=0;y<256;y++)for(int x=0;x<256;x++){int pixel=image.getPixel(x,y);if(Color.alpha(pixel)<180)continue;Color.colorToHSV(pixel,hsv);
+                    if(x>190&&y<65&&hsv[0]>25&&hsv[0]<65&&hsv[1]>.35f&&hsv[2]>.5f)gold++;
+                    if(y>100&&(x<30||x>225||y>220)&&hsv[1]>.10f&&hsv[2]>.25f){float difference=Math.abs(hsv[0]-expected[0]);if(Math.min(difference,360-difference)<20)ring++;}
+                }
+                assertTrue("Gold sparkle must remain visible in "+ThemeSkin.IDS[n],gold>25);
+                assertTrue("Shared ring must follow its tile colour in "+ThemeSkin.IDS[n],ring>25);
+                assertEquals("Transparent corner must remain clean",0,Color.alpha(image.getPixel(0,0)));image.recycle();
+            }
+        }finally{ThemeSkin.active=previous;}});
+    }
     @Test public void metalCannotLeakBrushTransparencyIntoTheNextControlFrame(){
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{ThemeSkin previous=ThemeSkin.active;try{ThemeSkin.active=ThemeSkin.BMD;Paint paint=new Paint(3);Path path=new Path();path.addRect(0,0,40,40,Path.Direction.CW);Bitmap sample=Bitmap.createBitmap(40,40,Bitmap.Config.ARGB_8888);ScannerControls.metal(new Canvas(sample),path,paint,new RectF(0,0,40,40));assertEquals(255,paint.getAlpha());assertNull(paint.getShader());sample.recycle();
             Bitmap image;Canvas c;

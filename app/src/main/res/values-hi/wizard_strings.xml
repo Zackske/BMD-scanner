@@ -4,11 +4,11 @@
     <string name="ui_wizard_type" formatted="false">प्रकार</string>
     <string name="ui_wizard_count" formatted="false">संख्या</string>
     <string name="ui_wizard_type_question" formatted="false">आप क्या स्कैन करना चाहते हैं?</string>
-    <string name="ui_wizard_box" formatted="false">अंतिम जाँच</string>
+    <string name="ui_wizard_box" formatted="false">स्कैन करें और गिनें</string>
     <string name="ui_wizard_stack" formatted="false">अलग ढेर</string>
     <string name="ui_wizard_box_hint" formatted="false">मार्कर और विस्तृत फ़ोटो के साथ</string>
     <string name="ui_wizard_stack_hint" formatted="false">बिना मार्कर सीधे स्कैन करें</string>
-    <string name="ui_wizard_next_count" formatted="false">अंतिम जाँच पिकलिस्ट पढ़ने से शुरू होती है।</string>
+    <string name="ui_wizard_next_count" formatted="false">स्कैन करें और गिनें की शुरुआत पिकलिस्ट पढ़ने से होती है।</string>
     <string name="ui_wizard_count_question" formatted="false">कितने उत्पाद अपेक्षित हैं?</string>
     <string name="ui_wizard_products" formatted="false">उत्पादों की संख्या</string>
     <string name="ui_wizard_count_hint" formatted="false">उत्पादों की अपेक्षित संख्या दर्ज करें।</string>

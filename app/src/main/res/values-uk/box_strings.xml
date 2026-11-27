@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Кінцева перевірка</string>
+    <string name="ui_box_scan" formatted="false">Сканування й підрахунок</string>
     <string name="ui_live_scan" formatted="false">Сканування наживо</string>
     <string name="ui_count_question" formatted="false">Скільки виробів ви очікуєте в цій коробці?</string>
     <string name="ui_expected_count" formatted="false">Очікувана кількість</string>

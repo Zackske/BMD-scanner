@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Ще не скановано</string>
     <string name="ui_pl_adjust">Редагувати лист</string>
     <string name="ui_pl_continue">Далі до виробів</string>
-    <string name="ui_pl_control">Кінцева перевірка</string>
+    <string name="ui_pl_control">Сканування й підрахунок</string>
     <string name="ui_pl_reviewed">Перевірено вручну</string>
     <string name="ui_pl_matched">Усі коробки й рядки збігаються.</string>
     <string name="ui_pl_not_complete">Перевірка ще не завершена</string>

@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">अंतिम जाँच स्कैन</string>
+    <string name="ui_bmd_control" formatted="false">स्कैन करें और गिनें</string>
     <string name="ui_generic_scan" formatted="false">QR स्कैनर</string>
-    <string name="ui_pallet_scanner" formatted="false">पैलेट और डिब्बों का स्कैन</string>
+    <string name="ui_pallet_scanner" formatted="false">दस्तावेज़ कैप्चर</string>
     <string name="ui_document_scanner" formatted="false">दस्तावेज़ जाँच स्कैनर</string>
     <string name="ui_picking_control" formatted="false">पिकिंग जाँच</string>
     <string name="ui_picking_control_hint" formatted="false">पिकलिस्ट पढ़ें और उत्पाद व मात्रा जाँचें</string>
     <string name="ui_final_control_hint" formatted="false">पिकलिस्ट पढ़ें और पैकिंग से पहले या बाद में जाँचें</string>
-    <string name="ui_control_picklist_first" formatted="false">दोनों जाँच पिकलिस्ट स्कैन करने से शुरू होती हैं।</string>
+    <string name="ui_control_picklist_first" formatted="false">स्कैन करें और गिनें की शुरुआत पिकलिस्ट पढ़ने से होती है।</string>
     <string name="ui_packing_question" formatted="false">क्या उत्पाद पहले ही पैक हो चुके हैं?</string>
     <string name="ui_packed_box" formatted="false">बॉक्स में</string>
     <string name="ui_packed_box_hint" formatted="false">चिह्नों और 5 फ़ोटो चरणों के साथ</string>

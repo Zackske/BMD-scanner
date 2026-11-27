@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Not yet scanned</string>
     <string name="ui_pl_adjust">Edit picklist</string>
     <string name="ui_pl_continue">Continue to products</string>
-    <string name="ui_pl_control">Final check</string>
+    <string name="ui_pl_control">Scan &amp; Count</string>
     <string name="ui_pl_reviewed">Manually reviewed</string>
     <string name="ui_pl_matched">All cartons and picklist lines match.</string>
     <string name="ui_pl_not_complete">Check not yet complete</string>

@@ -4,11 +4,11 @@
     <string name="ui_wizard_type" formatted="false">Tipo</string>
     <string name="ui_wizard_count" formatted="false">Quantidade</string>
     <string name="ui_wizard_type_question" formatted="false">O que pretende digitalizar?</string>
-    <string name="ui_wizard_box" formatted="false">Controlo final</string>
+    <string name="ui_wizard_box" formatted="false">Digitalizar e contar</string>
     <string name="ui_wizard_stack" formatted="false">Pilha avulsa</string>
     <string name="ui_wizard_box_hint" formatted="false">Com marcadores e fotos de detalhe</string>
     <string name="ui_wizard_stack_hint" formatted="false">Leitura direta, sem marcadores</string>
-    <string name="ui_wizard_next_count" formatted="false">O controlo final começa pela lista.</string>
+    <string name="ui_wizard_next_count" formatted="false">Digitalizar e contar começa pela leitura da lista de preparação.</string>
     <string name="ui_wizard_count_question" formatted="false">Quantos produtos espera?</string>
     <string name="ui_wizard_products" formatted="false">Número de produtos</string>
     <string name="ui_wizard_count_hint" formatted="false">Introduza o número esperado de produtos.</string>

@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Henüz taranmadı</string>
     <string name="ui_pl_adjust">Listeyi düzenle</string>
     <string name="ui_pl_continue">Ürünlere devam et</string>
-    <string name="ui_pl_control">Son kontrol</string>
+    <string name="ui_pl_control">Tara ve say</string>
     <string name="ui_pl_reviewed">Elle kontrol edildi</string>
     <string name="ui_pl_matched">Tüm koliler ve liste satırları eşleşiyor.</string>
     <string name="ui_pl_not_complete">Kontrol henüz tamamlanmadı</string>

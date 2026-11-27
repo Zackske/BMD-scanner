@@ -4,11 +4,11 @@
     <string name="ui_wizard_type" formatted="false">Tipo</string>
     <string name="ui_wizard_count" formatted="false">Cantidad</string>
     <string name="ui_wizard_type_question" formatted="false">¿Qué quieres escanear?</string>
-    <string name="ui_wizard_box" formatted="false">Control final</string>
+    <string name="ui_wizard_box" formatted="false">Escanear y contar</string>
     <string name="ui_wizard_stack" formatted="false">Pila suelta</string>
     <string name="ui_wizard_box_hint" formatted="false">Con marcadores y fotos de detalle</string>
     <string name="ui_wizard_stack_hint" formatted="false">Escaneo directo, sin marcadores</string>
-    <string name="ui_wizard_next_count" formatted="false">El control final empieza por la lista.</string>
+    <string name="ui_wizard_next_count" formatted="false">Escanear y contar comienza con la lectura de la lista de preparación.</string>
     <string name="ui_wizard_count_question" formatted="false">¿Cuántos productos esperas?</string>
     <string name="ui_wizard_products" formatted="false">Número de productos</string>
     <string name="ui_wizard_count_hint" formatted="false">Introduce el número esperado de productos.</string>

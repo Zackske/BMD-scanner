@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Noch zu scannen</string>
     <string name="ui_pl_adjust">Liste bearbeiten</string>
     <string name="ui_pl_continue">Weiter zu Produkten</string>
-    <string name="ui_pl_control">Endkontrolle</string>
+    <string name="ui_pl_control">Scannen und zählen</string>
     <string name="ui_pl_reviewed">Manuell geprüft</string>
     <string name="ui_pl_matched">Alle Kartons und Positionen stimmen überein.</string>
     <string name="ui_pl_not_complete">Prüfung noch nicht vollständig</string>

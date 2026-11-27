@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Por digitalizar</string>
     <string name="ui_pl_adjust">Editar lista</string>
     <string name="ui_pl_continue">Continuar para produtos</string>
-    <string name="ui_pl_control">Controlo final</string>
+    <string name="ui_pl_control">Digitalizar e contar</string>
     <string name="ui_pl_reviewed">Conferido manualmente</string>
     <string name="ui_pl_matched">Todas as caixas e linhas correspondem.</string>
     <string name="ui_pl_not_complete">Controlo incompleto</string>

@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Endkontrollscan</string>
+    <string name="ui_bmd_control" formatted="false">Scannen und zählen</string>
     <string name="ui_generic_scan" formatted="false">QR-Scanner</string>
-    <string name="ui_pallet_scanner" formatted="false">Paletten- und Kartonscan</string>
+    <string name="ui_pallet_scanner" formatted="false">Dokumentenerfassung</string>
     <string name="ui_document_scanner" formatted="false">Dokumente prüfen</string>
     <string name="ui_picking_control" formatted="false">Kommissionierkontrolle</string>
     <string name="ui_picking_control_hint" formatted="false">Pickliste lesen und Produkte und Mengen prüfen</string>
     <string name="ui_final_control_hint" formatted="false">Pickliste lesen und vor oder nach dem Verpacken prüfen</string>
-    <string name="ui_control_picklist_first" formatted="false">Beide Kontrollen beginnen mit der Pickliste.</string>
+    <string name="ui_control_picklist_first" formatted="false">Scannen und zählen beginnt mit dem Einlesen der Kommissionierliste.</string>
     <string name="ui_packing_question" formatted="false">Sind die Produkte bereits verpackt?</string>
     <string name="ui_packed_box" formatted="false">Im Karton</string>
     <string name="ui_packed_box_hint" formatted="false">Mit Markierungen und 5 Fotoschritten</string>

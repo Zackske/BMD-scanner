@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Final check</string>
+    <string name="ui_box_scan" formatted="false">Scan &amp; Count</string>
     <string name="ui_live_scan" formatted="false">Live scanning</string>
     <string name="ui_count_question" formatted="false">How many products do you expect in this box?</string>
     <string name="ui_expected_count" formatted="false">Expected count</string>

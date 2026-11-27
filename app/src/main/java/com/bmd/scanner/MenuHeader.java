@@ -144,7 +144,7 @@ final class MenuHeader extends ViewGroup {
             case "book":resource=ReferenceArt.HOME[2];break;
             case "settings":resource=ReferenceArt.HOME[3];break;
             case "qr":resource=R.drawable.ref_home_qr;break;
-            case "box":resource=R.drawable.wizard_full_box;break;
+            case "box":resource=R.drawable.ref_scan_count_green;break;
             case "stack":resource=R.drawable.wizard_stack;break;
             default:
                 int tint=key.equals("language")?0xff00e1ff:key.equals("palette")?0xffd276ff:key.equals("info")?0xffffbc31:key.equals("pallet")?0xff49f794:key.equals("document")?0xffffb526:key.equals("mail")?0xffd178ff:ThemeSkin.active.accent;
@@ -154,27 +154,8 @@ final class MenuHeader extends ViewGroup {
         return new Artwork(context,resource);
     }
     private static final class Artwork extends View {
-        private static final HashMap<Integer,Rect> crops=new HashMap<>();
-        private final Bitmap image;private final Rect source;
-        private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
-        Artwork(Context context,int resource){
-            super(context);image=ReferenceArt.bitmap(context,resource);
-            synchronized(crops){
-                Rect crop=crops.get(resource);
-                if(crop==null){
-                    int width=image.getWidth(),height=image.getHeight(),left=width,top=height,right=0,bottom=0;
-                    int[] pixels=new int[width*height];image.getPixels(pixels,0,width,0,0,width,height);
-                    for(int y=0;y<height;y++)for(int x=0;x<width;x++)if(Color.alpha(pixels[y*width+x])>8){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}
-                    crop=right>left&&bottom>top?new Rect(left,top,right,bottom):new Rect(0,0,width,height);crops.put(resource,crop);
-                }
-                source=crop;
-            }
-            setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
-        }
-        @Override protected void onDraw(Canvas canvas){
-            float scale=Math.min(getWidth()/(float)source.width(),getHeight()/(float)source.height());
-            float width=source.width()*scale,height=source.height()*scale;
-            canvas.drawBitmap(image,source,new RectF((getWidth()-width)/2,(getHeight()-height)/2,(getWidth()+width)/2,(getHeight()+height)/2),paint);
-        }
+        private final int resource;private final RectF bounds=new RectF();
+        Artwork(Context context,int resource){super(context);this.resource=resource;setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
+        @Override protected void onDraw(Canvas canvas){bounds.set(0,0,getWidth(),getHeight());OrbitalArtwork.draw(canvas,getContext(),resource,bounds,OrbitalArtwork.surfaceInk(OrbitalArtwork.categoryInk(resource)));}
     }
 }

@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Scan de contrôle final</string>
+    <string name="ui_bmd_control" formatted="false">Scanner et compter</string>
     <string name="ui_generic_scan" formatted="false">Scanner QR</string>
-    <string name="ui_pallet_scanner" formatted="false">Scan palettes et cartons</string>
+    <string name="ui_pallet_scanner" formatted="false">Capture de documents</string>
     <string name="ui_document_scanner" formatted="false">Scanner contrôle documentaire</string>
     <string name="ui_picking_control" formatted="false">Contrôle de préparation</string>
     <string name="ui_picking_control_hint" formatted="false">Lire la liste et vérifier les produits et quantités</string>
     <string name="ui_final_control_hint" formatted="false">Lire la liste et vérifier avant ou après emballage</string>
-    <string name="ui_control_picklist_first" formatted="false">Les deux contrôles commencent par la liste de prélèvement.</string>
+    <string name="ui_control_picklist_first" formatted="false">Scanner et compter commence par la lecture de la liste de prélèvement.</string>
     <string name="ui_packing_question" formatted="false">Les produits sont-ils déjà emballés ?</string>
     <string name="ui_packed_box" formatted="false">Dans le carton</string>
     <string name="ui_packed_box_hint" formatted="false">Avec repères et 5 étapes photo</string>

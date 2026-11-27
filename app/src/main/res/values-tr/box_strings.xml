@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Son kontrol</string>
+    <string name="ui_box_scan" formatted="false">Tara ve say</string>
     <string name="ui_live_scan" formatted="false">Canlı tarama</string>
     <string name="ui_count_question" formatted="false">Bu kutuda kaç ürün bekliyorsunuz?</string>
     <string name="ui_expected_count" formatted="false">Beklenen adet</string>

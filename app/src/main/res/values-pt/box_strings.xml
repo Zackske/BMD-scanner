@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Controlo final</string>
+    <string name="ui_box_scan" formatted="false">Digitalizar e contar</string>
     <string name="ui_live_scan" formatted="false">Leitura em direto</string>
     <string name="ui_count_question" formatted="false">Quantos produtos espera nesta caixa?</string>
     <string name="ui_expected_count" formatted="false">Quantidade esperada</string>

@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">अभी स्कैन नहीं हुआ</string>
     <string name="ui_pl_adjust">पिकलिस्ट बदलें</string>
     <string name="ui_pl_continue">उत्पादों पर आगे बढ़ें</string>
-    <string name="ui_pl_control">अंतिम जाँच</string>
+    <string name="ui_pl_control">स्कैन करें और गिनें</string>
     <string name="ui_pl_reviewed">स्वयं जाँचा गया</string>
     <string name="ui_pl_matched">सभी डिब्बे और पिकलिस्ट पंक्तियाँ मेल खाते हैं।</string>
     <string name="ui_pl_not_complete">जाँच अभी पूरी नहीं हुई</string>

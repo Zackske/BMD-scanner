@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Da scansionare</string>
     <string name="ui_pl_adjust">Modifica lista</string>
     <string name="ui_pl_continue">Continua ai prodotti</string>
-    <string name="ui_pl_control">Controllo finale</string>
+    <string name="ui_pl_control">Scansiona e conta</string>
     <string name="ui_pl_reviewed">Verificato manualmente</string>
     <string name="ui_pl_matched">Tutte le scatole e righe corrispondono.</string>
     <string name="ui_pl_not_complete">Controllo non completo</string>

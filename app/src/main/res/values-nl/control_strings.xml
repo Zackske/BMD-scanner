@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Eindcontrole scan</string>
+    <string name="ui_bmd_control" formatted="false">Scannen en tellen</string>
     <string name="ui_generic_scan" formatted="false">QR scanner</string>
-    <string name="ui_pallet_scanner" formatted="false">Pallet en dozen scan</string>
+    <string name="ui_pallet_scanner" formatted="false">Documenten vastleggen</string>
     <string name="ui_document_scanner" formatted="false">Documenten controle scanner</string>
     <string name="ui_picking_control" formatted="false">Picking controle</string>
     <string name="ui_picking_control_hint" formatted="false">Lees de picklist en controleer producten en aantallen</string>
     <string name="ui_final_control_hint" formatted="false">Lees de picklist en controleer vóór of na het inpakken</string>
-    <string name="ui_control_picklist_first" formatted="false">Beide controles beginnen met het scannen van de picklist.</string>
+    <string name="ui_control_picklist_first" formatted="false">Scannen en tellen begint met het scannen van de picklist.</string>
     <string name="ui_packing_question" formatted="false">Zijn de producten al ingepakt?</string>
     <string name="ui_packed_box" formatted="false">In de doos</string>
     <string name="ui_packed_box_hint" formatted="false">Met markeringen en 5 fotostappen</string>

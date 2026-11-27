@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Pendiente de escanear</string>
     <string name="ui_pl_adjust">Editar lista</string>
     <string name="ui_pl_continue">Continuar a productos</string>
-    <string name="ui_pl_control">Control final</string>
+    <string name="ui_pl_control">Escanear y contar</string>
     <string name="ui_pl_reviewed">Revisado manualmente</string>
     <string name="ui_pl_matched">Todas las cajas y líneas coinciden.</string>
     <string name="ui_pl_not_complete">Control incompleto</string>

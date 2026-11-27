@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Escaneo de control final</string>
+    <string name="ui_bmd_control" formatted="false">Escanear y contar</string>
     <string name="ui_generic_scan" formatted="false">Escáner QR</string>
-    <string name="ui_pallet_scanner" formatted="false">Escaneo de palés y cajas</string>
+    <string name="ui_pallet_scanner" formatted="false">Captura de documentos</string>
     <string name="ui_document_scanner" formatted="false">Escáner de control documental</string>
     <string name="ui_picking_control" formatted="false">Control de preparación</string>
     <string name="ui_picking_control_hint" formatted="false">Lee la lista y comprueba productos y cantidades</string>
     <string name="ui_final_control_hint" formatted="false">Lee la lista y comprueba antes o después de embalar</string>
-    <string name="ui_control_picklist_first" formatted="false">Ambos controles comienzan con la lista de preparación.</string>
+    <string name="ui_control_picklist_first" formatted="false">Escanear y contar comienza con la lectura de la lista de preparación.</string>
     <string name="ui_packing_question" formatted="false">¿Los productos ya están embalados?</string>
     <string name="ui_packed_box" formatted="false">Dentro de la caja</string>
     <string name="ui_packed_box_hint" formatted="false">Con marcadores y 5 pasos fotográficos</string>

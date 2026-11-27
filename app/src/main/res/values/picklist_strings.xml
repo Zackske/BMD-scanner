@@ -43,7 +43,7 @@
     <string name="ui_pl_not_scanned">Nog te scannen</string>
     <string name="ui_pl_adjust">Picklist aanpassen</string>
     <string name="ui_pl_continue">Verder naar producten</string>
-    <string name="ui_pl_control">Eindcontrole</string>
+    <string name="ui_pl_control">Scannen en tellen</string>
     <string name="ui_pl_reviewed">Handmatig gecontroleerd</string>
     <string name="ui_pl_matched">Alle dozen en picklistregels komen overeen.</string>
     <string name="ui_pl_not_complete">Controle nog niet compleet</string>

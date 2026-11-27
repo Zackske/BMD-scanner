@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Son kontrol taraması</string>
+    <string name="ui_bmd_control" formatted="false">Tara ve say</string>
     <string name="ui_generic_scan" formatted="false">QR tarayıcı</string>
-    <string name="ui_pallet_scanner" formatted="false">Palet ve kutu taraması</string>
+    <string name="ui_pallet_scanner" formatted="false">Belge yakalama</string>
     <string name="ui_document_scanner" formatted="false">Belge kontrol tarayıcı</string>
     <string name="ui_picking_control" formatted="false">Toplama kontrolü</string>
     <string name="ui_picking_control_hint" formatted="false">Toplama listesini oku, ürünleri ve adetleri kontrol et</string>
     <string name="ui_final_control_hint" formatted="false">Listeyi oku, paketlemeden önce veya sonra kontrol et</string>
-    <string name="ui_control_picklist_first" formatted="false">Her iki kontrol de toplama listesini tarayarak başlar.</string>
+    <string name="ui_control_picklist_first" formatted="false">Tara ve say, toplama listesini okuyarak başlar.</string>
     <string name="ui_packing_question" formatted="false">Ürünler paketlendi mi?</string>
     <string name="ui_packed_box" formatted="false">Kutunun içinde</string>
     <string name="ui_packed_box_hint" formatted="false">İşaretçiler ve 5 fotoğraf adımıyla</string>

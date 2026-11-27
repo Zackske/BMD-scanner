@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">अंतिम जाँच</string>
+    <string name="ui_box_scan" formatted="false">स्कैन करें और गिनें</string>
     <string name="ui_live_scan" formatted="false">लाइव स्कैन</string>
     <string name="ui_count_question" formatted="false">इस बॉक्स में कितने उत्पाद होने चाहिए?</string>
     <string name="ui_expected_count" formatted="false">अपेक्षित संख्या</string>

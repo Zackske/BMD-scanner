@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ui_box_scan" formatted="false">Endkontrolle</string>
+    <string name="ui_box_scan" formatted="false">Scannen und zählen</string>
     <string name="ui_live_scan" formatted="false">Live scannen</string>
     <string name="ui_count_question" formatted="false">Wie viele Produkte erwartest du in diesem Karton?</string>
     <string name="ui_expected_count" formatted="false">Erwartete Anzahl</string>

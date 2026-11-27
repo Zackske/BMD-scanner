@@ -1,12 +1,12 @@
 <resources>
-    <string name="ui_bmd_control" formatted="false">Scansione di controllo finale</string>
+    <string name="ui_bmd_control" formatted="false">Scansiona e conta</string>
     <string name="ui_generic_scan" formatted="false">Scanner QR</string>
-    <string name="ui_pallet_scanner" formatted="false">Scansione pallet e scatole</string>
+    <string name="ui_pallet_scanner" formatted="false">Acquisizione documenti</string>
     <string name="ui_document_scanner" formatted="false">Scanner controllo documenti</string>
     <string name="ui_picking_control" formatted="false">Controllo picking</string>
     <string name="ui_picking_control_hint" formatted="false">Leggi la lista e verifica prodotti e quantità</string>
     <string name="ui_final_control_hint" formatted="false">Leggi la lista e controlla prima o dopo il confezionamento</string>
-    <string name="ui_control_picklist_first" formatted="false">Entrambi i controlli iniziano dalla lista di prelievo.</string>
+    <string name="ui_control_picklist_first" formatted="false">Scansiona e conta inizia con la lettura della lista di prelievo.</string>
     <string name="ui_packing_question" formatted="false">I prodotti sono già imballati?</string>
     <string name="ui_packed_box" formatted="false">Nella scatola</string>
     <string name="ui_packed_box_hint" formatted="false">Con marcatori e 5 passaggi fotografici</string>

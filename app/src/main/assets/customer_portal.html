@@ -222,6 +222,16 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
 #bmd-customers-preview .cp-import-error {color:var(--cp-text)}
 #bmd-customers-preview [hidden] {display:none!important}
 
+#bmd-customers-preview .cp-screen{--cp-orbit-shift:-80deg;--cp-orbit-saturation:1}
+#bmd-customers-preview .cp-screen[data-theme="translumina"]{--cp-orbit-shift:80deg}
+#bmd-customers-preview .cp-screen[data-theme="lime"]{--cp-orbit-shift:-185deg}
+#bmd-customers-preview .cp-screen[data-theme="violet"]{--cp-orbit-shift:0deg}
+#bmd-customers-preview .cp-screen[data-theme="dark"]{--cp-orbit-shift:0deg;--cp-orbit-saturation:0}
+#bmd-customers-preview .cp-detail-tab-icon.cp-orbital-icon{position:relative;background:none;mask:none;-webkit-mask:none;overflow:visible;isolation:isolate}
+#bmd-customers-preview .cp-orbital-glyph{position:absolute;left:17%;top:8%;width:66%;height:68%;background:linear-gradient(140deg,#fff,#bacbd6 45%,#607c90 68%,#eef8ff);mask:var(--cp-tab-icon) center/contain no-repeat;-webkit-mask:var(--cp-tab-icon) center/contain no-repeat}
+#bmd-customers-preview .cp-orbital-ring{position:absolute;inset:0;transform:translateY(15%) rotate(-18deg);background:url('https://bmd.invalid/assets/customer-portal/images/orbit_ring.webp') center/contain no-repeat;filter:hue-rotate(var(--cp-orbit-shift)) saturate(var(--cp-orbit-saturation));pointer-events:none}
+#bmd-customers-preview .cp-orbital-star{position:absolute;right:-3%;top:-5%;width:34%;height:34%;background:url('https://bmd.invalid/assets/customer-portal/images/orbit_star.webp') center/contain no-repeat;pointer-events:none}
+
 </style>
 <script>
 (() => {
@@ -514,7 +524,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function customerDetails(c,f){
     const empty=f[18];
     const pair=(label,value,email=false)=>'<dt'+(email?' class="cp-email-label"':'')+'>'+esc(label)+'</dt><dd'+(email?' class="cp-email-value"':'')+'>'+(email?'<span class="cp-email-text">'+esc(value||empty)+'</span>':esc(value||empty))+'</dd>';
-    const glyph=(key,extra='')=>'<span class="cp-detail-tab-icon '+extra+'" style="--cp-tab-icon:url('+assets.detailTabIcons[key]+')" aria-hidden="true"></span>';
+    const glyph=(key,extra='')=>'<span class="cp-detail-tab-icon cp-orbital-icon '+extra+'" style="--cp-tab-icon:url('+assets.detailTabIcons[key]+')" aria-hidden="true"><span class="cp-orbital-glyph"></span><span class="cp-orbital-ring"></span><span class="cp-orbital-star"></span></span>';
     const a=c.address||{},base='cp-customer-'+c.id,order=orderCopy[state.language],titles=[f[2],order[0]],keys=['shipping','history'];
     const personal='<div class="cp-customer-details"><dl>'+pair(f[6],c.customerId)+pair(f[7],c.contact)+pair(f[8],c.email,true)+pair(f[9],c.vat)+'</dl></div>';
     const address='<dl>'+pair(f[10],a.street1)+(a.street2?pair(f[11],a.street2):'')+(a.street3?pair(f[12],a.street3):'')+pair(f[13],a.postalCode)+pair(f[14],a.city)+pair(f[15],country(c.country))+'</dl>';
