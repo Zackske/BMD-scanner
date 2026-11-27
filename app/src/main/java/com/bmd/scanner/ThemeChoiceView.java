@@ -12,7 +12,7 @@ final class ThemeChoiceView extends FrameLayout {
     private final SelectionBadge marker;
     ThemeChoiceView(Context context,ThemeSkin skin,String name){
         super(context);setTag("theme-"+skin.id);setBackground(ThemeSkin.preview(skin.id,dp(18)));setFocusable(true);setClickable(true);
-        emblem=skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA?new CompactBrand(context,skin):new UiArt.Magic(context,skin==ThemeSkin.DARK?"moon":skin==ThemeSkin.LIGHT?"sun":skin==ThemeSkin.LIME?"leaf":"gem",skin==ThemeSkin.DARK?0xffb7cbdc:skin==ThemeSkin.LIGHT?0xffffb826:skin==ThemeSkin.LIME?0xffc4ff42:0xffc184ff).unboxed().fixedRing();
+        emblem=skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA?new CompactBrand(context,skin):new UiArt.Magic(context,skin==ThemeSkin.DARK?"moon":skin==ThemeSkin.LIGHT?"sun":skin==ThemeSkin.LIME?"leaf":"gem",skin==ThemeSkin.DARK?0xffb7cbdc:skin==ThemeSkin.LIGHT?0xffffb826:skin==ThemeSkin.LIME?0xffc4ff42:0xffc184ff).unboxed();
         emblem.setTag("theme-icon-"+skin.id);emblem.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);addView(emblem);
         label=new TextView(context);label.setText(name);label.setTextColor(skin.text);label.setTypeface(ReferenceArt.face(context,false,850));label.setGravity(Gravity.CENTER);label.setSingleLine();label.setAutoSizeTextTypeUniformWithConfiguration(11,16,1,android.util.TypedValue.COMPLEX_UNIT_SP);label.setTag("theme-name-"+skin.id);label.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);addView(label);
         marker=new SelectionBadge(context);marker.setTag("theme-check-"+skin.id);marker.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);addView(marker);setContentDescription(name);
@@ -29,9 +29,9 @@ final class ThemeChoiceView extends FrameLayout {
     @Override public void onInitializeAccessibilityNodeInfo(android.view.accessibility.AccessibilityNodeInfo info){super.onInitializeAccessibilityNodeInfo(info);info.setCheckable(true);info.setChecked(isSelected());}
 
     private static final class CompactBrand extends View {
-        private final ThemeSkin identity;private final Bitmap art;private final Rect source;private final Paint paint=new Paint(3);
-        CompactBrand(Context c,ThemeSkin skin){super(c);identity=skin;Bitmap original=ReferenceArt.bitmap(c,skin==ThemeSkin.TRANSLUMINA?R.drawable.translumina_logo:R.drawable.blue_medical_logo);art=Bitmap.createBitmap(original.getWidth(),original.getHeight(),Bitmap.Config.ARGB_8888);paint.setColorFilter(skin.brandFilter());new Canvas(art).drawBitmap(original,0,0,paint);paint.setColorFilter(null);int w=art.getWidth(),h=art.getHeight(),left=w,top=h,right=0,bottom=0;int[] pixels=new int[w*h];art.getPixels(pixels,0,w,0,0,w,h);for(int y=0;y<h;y++)for(int x=0;x<w;x++)if(Color.alpha(pixels[y*w+x])>2){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}source=right>left?new Rect(left,top,right,bottom):new Rect(0,0,w,h);}
-        @Override protected void onDraw(Canvas c){RectF frame=new RectF(0,0,getWidth(),getHeight());int ink=identity==ThemeSkin.TRANSLUMINA?0xffff3454:0xff14aaff;OrbitalArtwork.orbit(c,getContext(),frame,ink,false);float scale=Math.min(getWidth()*.73f/source.width(),getHeight()*.62f/source.height()),w=source.width()*scale,h=source.height()*scale;float y=getHeight()*.47f;c.drawBitmap(art,source,new RectF((getWidth()-w)/2,y-h/2,(getWidth()+w)/2,y+h/2),paint);OrbitalArtwork.orbit(c,getContext(),frame,ink,true);float size=Math.min(getWidth(),getHeight())*.20f;OrbitalArtwork.star(c,getContext(),new RectF(getWidth()*.85f-size/2,0,getWidth()*.85f+size/2,size));}
+        private final Bitmap art;private final Rect source;private final Paint paint=new Paint(3);
+        CompactBrand(Context c,ThemeSkin skin){super(c);Bitmap original=ReferenceArt.bitmap(c,skin==ThemeSkin.TRANSLUMINA?R.drawable.translumina_logo:R.drawable.blue_medical_logo);art=Bitmap.createBitmap(original.getWidth(),original.getHeight(),Bitmap.Config.ARGB_8888);paint.setColorFilter(skin.brandFilter());new Canvas(art).drawBitmap(original,0,0,paint);paint.setColorFilter(null);int w=art.getWidth(),h=art.getHeight(),left=w,top=h,right=0,bottom=0;int[] pixels=new int[w*h];art.getPixels(pixels,0,w,0,0,w,h);for(int y=0;y<h;y++)for(int x=0;x<w;x++)if(Color.alpha(pixels[y*w+x])>2){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x+1);bottom=Math.max(bottom,y+1);}source=right>left?new Rect(left,top,right,bottom):new Rect(0,0,w,h);}
+        @Override protected void onDraw(Canvas c){float scale=Math.min(getWidth()/(float)source.width(),getHeight()/(float)source.height()),w=source.width()*scale,h=source.height()*scale;c.drawBitmap(art,source,new RectF((getWidth()-w)/2,(getHeight()-h)/2,(getWidth()+w)/2,(getHeight()+h)/2),paint);}
     }
     private static final class SelectionBadge extends View {
         private final Paint p=new Paint(3);
@@ -43,3 +43,4 @@ final class ThemeChoiceView extends FrameLayout {
         }
     }
 }
+

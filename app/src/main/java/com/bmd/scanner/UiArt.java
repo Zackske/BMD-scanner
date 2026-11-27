@@ -80,10 +80,9 @@ final class UiArt {
     }
     /** Bevelled metal pictograms with the approved orbital light and small sparks. */
     static class Magic extends View {
-        final int tint;private final String kind;private boolean boxed=true,fixedRing;private final Paint p=new Paint(3);private final Icon fallback;
+        final int tint;private final String kind;private boolean boxed=true;private final Paint p=new Paint(3);private final Icon fallback;
         Magic(Context c,String name,int tint){super(c);kind=name;this.tint=ThemeSkin.active==ThemeSkin.LIGHT?mix(tint,ThemeSkin.LIGHT.text,.22f):tint;fallback=new Icon(c,name,ThemeSkin.active==ThemeSkin.LIGHT?0xff12365a:0xffe4f3ff);setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);}
         Magic unboxed(){boxed=false;return this;}
-        Magic fixedRing(){fixedRing=true;return this;}
         private void metal(Canvas c,Path path,int colour){
             c.save();c.translate(0,2.5f);p.setShader(null);p.setStyle(Paint.Style.FILL);p.setColor(mix(colour,0xff071526,.7f));c.drawPath(path,p);c.restore();
             p.setShader(new LinearGradient(15,10,75,88,new int[]{0xffffffff,mix(colour,Color.WHITE,.65f),mix(colour,0xff1a3045,.48f),0xfff6fcff},new float[]{0,.25f,.68f,1},Shader.TileMode.CLAMP));p.setStyle(Paint.Style.FILL);c.drawPath(path,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(.8f);p.setColor(0xbaffffff);c.drawPath(path,p);p.setStyle(Paint.Style.FILL);
@@ -109,12 +108,12 @@ final class UiArt {
             }
         }
         private RectF roundedRect(float l,float t,float r,float b){return new RectF(l,t,r,b);}
-        private void orbit(Canvas c,boolean front){OrbitalArtwork.orbit(c,getContext(),new RectF(0,0,100,100),fixedRing?tint:OrbitalArtwork.surfaceInk(tint),front);}
+        private void orbit(Canvas c,boolean front){p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);c.save();c.rotate(-18,50,53);RectF oval=new RectF(5,52,96,79);float start=front?7:184,sweep=front?167:164;for(int i=4;i>=1;i--){p.setStrokeWidth(i*2.2f);p.setColor((i==1?0xee000000:0x16000000)|(tint&0xffffff));c.drawArc(oval,start,sweep,false,p);}p.setStrokeWidth(.9f);p.setColor(0xffe7ffff);c.drawArc(oval,start,sweep,false,p);c.restore();p.setStyle(Paint.Style.FILL);}
         private void spark(Canvas c,float x,float y,float r,int colour){p.setColor(colour);Path q=new Path();q.moveTo(x,y-r);q.quadTo(x+r*.18f,y-r*.18f,x+r,y);q.quadTo(x+r*.18f,y+r*.18f,x,y+r);q.quadTo(x-r*.18f,y+r*.18f,x-r,y);q.quadTo(x-r*.18f,y-r*.18f,x,y-r);c.drawPath(q,p);}
         @Override protected void onDraw(Canvas c){float size=Math.min(getWidth(),getHeight());c.save();c.translate((getWidth()-size)/2,(getHeight()-size)/2);c.scale(size/100,size/100);ThemeSkin skin=ThemeSkin.active;
             if(boxed){p.setShader(new LinearGradient(0,0,100,100,new int[]{mix(tint,skin.top,.75f),skin.bottom},null,Shader.TileMode.CLAMP));c.drawRoundRect(1,1,99,99,23,23,p);p.setShader(null);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(1);p.setColor(tint);c.drawRoundRect(1,1,99,99,23,23,p);p.setStyle(Paint.Style.FILL);p.setShader(new LinearGradient(0,0,0,48,new int[]{0x75ffffff,0x00ffffff},null,Shader.TileMode.CLAMP));c.drawRoundRect(3,3,97,48,20,20,p);p.setShader(null);}
             boolean navigation="back".equals(kind);
-            if(!navigation)orbit(c,false);glyph(c);if(!navigation){orbit(c,true);OrbitalArtwork.star(c,getContext(),new RectF(76,8,94,26));}c.restore();
+            if(!navigation)orbit(c,false);glyph(c);if(!navigation){orbit(c,true);spark(c,85,18,8,boxed?tint:0xffffd434);spark(c,94,29,3,0xffe7fcff);}c.restore();
         }
     }
 

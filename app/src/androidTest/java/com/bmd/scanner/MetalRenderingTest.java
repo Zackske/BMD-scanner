@@ -12,7 +12,7 @@ public class MetalRenderingTest {
             int[] colours={0xff14aaff,0xffff3454,0xff18c46b,0xffb741ed,0xffffa51d,0xffa0b6c7};
             for(int n=0;n<ThemeSkin.IDS.length;n++){
                 ThemeSkin.active=ThemeSkin.forId(ThemeSkin.IDS[n]);Bitmap image=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);
-                OrbitalArtwork.draw(new Canvas(image),DeviceSupport.context(),R.drawable.ref_home_qr,new RectF(0,0,256,256),colours[n]);
+                OrbitalArtwork.draw(new Canvas(image),DeviceSupport.context(),R.drawable.ref_scan_final_check,new RectF(0,0,256,256),colours[n]);
                 int gold=0,ring=0;float[] hsv=new float[3],expected=new float[3];Color.colorToHSV(colours[n],expected);
                 for(int y=0;y<256;y++)for(int x=0;x<256;x++){int pixel=image.getPixel(x,y);if(Color.alpha(pixel)<180)continue;Color.colorToHSV(pixel,hsv);
                     if(x>190&&y<65&&hsv[0]>25&&hsv[0]<65&&hsv[1]>.35f&&hsv[2]>.5f)gold++;

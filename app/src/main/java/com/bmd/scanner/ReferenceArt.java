@@ -18,11 +18,14 @@ final class ReferenceArt {
         Typeface font=fonts.get("magic");if(font==null){font=Typeface.createFromAsset(context.getAssets(),"fonts/lobster.ttf");fonts.put("magic",font);}return font;
     }
     static Bitmap scanner(Context context){int resource=ThemeSkin.active==ThemeSkin.LIME?R.drawable.ref_scanner_lime:ThemeSkin.active==ThemeSkin.VIOLET?R.drawable.ref_scanner_violet:ThemeSkin.active==ThemeSkin.TRANSLUMINA?R.drawable.ref_scanner_red:ThemeSkin.active==ThemeSkin.DARK?R.drawable.ref_scanner_dark:ThemeSkin.active==ThemeSkin.LIGHT?R.drawable.ref_scanner_light:R.drawable.launcher_foreground;return bitmap(context,resource);}
-    static void icon(Canvas canvas,Context context,int index,RectF bounds){icon(canvas,context,index,bounds,OrbitalArtwork.surfaceInk(OrbitalArtwork.categoryInk(HOME[index])));}
-    static void icon(Canvas canvas,Context context,int index,RectF bounds,int colour){OrbitalArtwork.draw(canvas,context,HOME[index],bounds,colour);}
-    static void qrIcon(Canvas canvas,Context context,RectF bounds){OrbitalArtwork.draw(canvas,context,R.drawable.ref_home_qr,bounds,OrbitalArtwork.surfaceInk(0xff14aaff));}
-    static void scanMenuIcon(Canvas canvas,Context context,int index,RectF bounds){int[] resources={R.drawable.ref_scan_final_check,R.drawable.ref_scan_pallet_orange,R.drawable.ref_scan_document_blue,R.drawable.ref_scan_qr_purple};scanMenuIcon(canvas,context,index,bounds,OrbitalArtwork.surfaceInk(OrbitalArtwork.categoryInk(resources[index])));}
-    static void scanMenuIcon(Canvas canvas,Context context,int index,RectF bounds,int colour){int[] resources={R.drawable.ref_scan_final_check,R.drawable.ref_scan_pallet_orange,R.drawable.ref_scan_document_blue,R.drawable.ref_scan_qr_purple};OrbitalArtwork.draw(canvas,context,resources[index],bounds,colour);}
+    static void homeTileIcon(Canvas canvas,Context context,int index,boolean directControl,RectF bounds,int colour){
+        if(index==0&&!directControl){icon(canvas,context,index,bounds);return;}
+        int resource=directControl&&index==0?R.drawable.ref_scan_final_check:HOME[index];
+        OrbitalArtwork.draw(canvas,context,resource,bounds,OrbitalArtwork.surfaceInk(colour));
+    }
+    static void icon(Canvas canvas,Context context,int index,RectF bounds){Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);canvas.drawBitmap(bitmap(context,HOME[index]),null,bounds,paint);}
+    static void qrIcon(Canvas canvas,Context context,RectF bounds){Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);canvas.drawBitmap(bitmap(context,R.drawable.ref_home_qr),null,bounds,paint);}
+    static void scanMenuIcon(Canvas canvas,Context context,int index,RectF bounds){int[] resources={R.drawable.ref_scan_final_check,R.drawable.ref_scan_pallet_orange,R.drawable.ref_scan_document_blue,R.drawable.ref_scan_qr_purple};Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);canvas.drawBitmap(bitmap(context,resources[index]),null,bounds,paint);}
     static int curveInk(ThemeSkin skin){return skin==ThemeSkin.LIME?0xffd4ff72:skin==ThemeSkin.VIOLET?0xffdda4ff:skin==ThemeSkin.TRANSLUMINA?0xfffff1eb:skin==ThemeSkin.DARK?0xfff1f6fb:skin==ThemeSkin.LIGHT?0xff00c9e8:0xff00e9ff;}
     private static int glowInk(ThemeSkin skin){return skin==ThemeSkin.LIME?0xff91ff00:skin==ThemeSkin.VIOLET?0xffa22bff:skin==ThemeSkin.TRANSLUMINA?0xffff1636:skin==ThemeSkin.DARK?0xffa5b9c8:0xff00bfff;}
     static void ribbon(Canvas canvas,float width,float y,ThemeSkin skin,boolean header){
@@ -66,4 +69,5 @@ final class ReferenceArt {
         };
     }
 }
+
 
