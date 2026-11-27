@@ -38,8 +38,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @android.annotation.SuppressLint({"UnsafeOptInUsageError", "SetTextI18n"})
 public class MainActivity extends AppCompatActivity {
     static final int CYAN=0xff00e4f5,WHITE=Color.WHITE,NAVY=0xff001b32;
-    static final String[] LANGS={"nl","en","uk","tr","it","de","fr","es","pt","hi"};
-    static final String[] LANG_NAMES={"🇳🇱 Nederlands","🇬🇧 English","🇺🇦 Українська","🇹🇷 Türkçe","🇮🇹 Italiano","🇩🇪 Deutsch","🇫🇷 Français","🇪🇸 Español","🇵🇹 Português","🇮🇳 हिन्दी"};
+    static final String[] LANGS=LanguageCatalog.CODES;
+    static final String[] LANG_NAMES={"🇳🇱 Nederlands","🇬🇧 English","🇺🇦 Українська","🇹🇷 Türkçe","🇮🇹 Italiano","🇩🇪 Deutsch","🇫🇷 Français","🇪🇸 Español","🇵🇹 Português","🇮🇳 हिन्दी","🇵🇱 Polski","🇷🇴 Română","🇸🇦 العربية","🇻🇳 Tiếng Việt","🇨🇿 Čeština"};
     ScanStartWizard scanWizard;
     final ScanTracker tracker=new ScanTracker();
     final ProductCatalog products=new ProductCatalog();private boolean groupingReviewed=false;private final Set<Integer> captureVisibleIds=new HashSet<>();private TextView lotLegend;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){@Override public void handleOnBackPressed(){if(scanWizard!=null&&scanWizard.isShowing()){scanWizard.back();return;}if(dialog!=null&&dialog.isShowing())dialog.dismiss();else if(screen.equals("home"))finish();else showHome();}});
         showHome();if(state!=null){String previous=state.getString("screen","home");if(previous.equals("camera")){File savedPhoto=capturedPhoto;openCamera();capturedPhoto=savedPhoto;restoringCapture=savedPhoto!=null;if(captureRows.isEmpty())captureRows=tracker.items();}else if(previous.equals("settings"))showSettings();else if(previous.equals("results"))showResults();else if(previous.equals("scan-menu"))chooseScan();}if(state!=null&&state.getBundle("scan-start-wizard")!=null)showScanStart(state.getBundle("scan-start-wizard"));
     }
-    private void updateWords(){Configuration configuration=new Configuration(getResources().getConfiguration());configuration.setLocale(Locale.forLanguageTag(lang));words=createConfigurationContext(configuration);}
+    private void updateWords(){Configuration configuration=new Configuration(getResources().getConfiguration());configuration.setLocale(Locale.forLanguageTag(lang));words=createConfigurationContext(configuration);LocaleUi.apply(this,lang);}
     @android.annotation.SuppressLint("DiscouragedApi") String s(String key,Object...args){int id=getResources().getIdentifier("ui_"+key,"string",getPackageName());if(id==0)return key;return args.length==0?words.getString(id):words.getString(id,args);}
     String t(String key){return s(key.equals("title")?"brand":key);}
     private int dp(float v){return Math.round(v*getResources().getDisplayMetrics().density);}
@@ -116,20 +116,25 @@ public class MainActivity extends AppCompatActivity {
     }
     private LinearLayout sheet(String title){return sheet(title,title.equals(s("list"))||title.equals(s("review_products"))?"qr":title.equals(s("saved"))?"document":"scan");}
     private LinearLayout sheet(String title,String icon){if(dialog!=null)dialog.dismiss();boolean resume=scanning;scanning=false;LinearLayout panel=column();panel.setPadding(dp(20),dp(16),dp(20),dp(20));panel.setBackground(card(0xff073654,0xff00182e,CYAN));LinearLayout heading=row();if(icon!=null){View identity=MenuHeader.icon(this,icon);LinearLayout.LayoutParams ip=new LinearLayout.LayoutParams(dp(38),dp(38));ip.rightMargin=dp(8);heading.addView(identity,ip);}if(!title.isEmpty()){TextView sheetTitle=text(title,23,true);sheetTitle.setTypeface(ReferenceArt.face(this,false,900));sheetTitle.setMaxLines(2);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(sheetTitle,18,23,1,android.util.TypedValue.COMPLEX_UNIT_SP);sheetTitle.setTag("sheet-title");heading.addView(sheetTitle,new LinearLayout.LayoutParams(0,-2,1));}else heading.addView(new View(this),new LinearLayout.LayoutParams(0,1,1));heading.addView(iconButton("close",s("close"),()->dialog.dismiss()),new LinearLayout.LayoutParams(dp(44),dp(44)));panel.addView(heading);gap(panel,12);dialog=new android.app.Dialog(this);ScrollView scroll=new ScrollView(this){@Override protected void onMeasure(int width,int height){super.onMeasure(width,View.MeasureSpec.makeMeasureSpec((int)(getResources().getDisplayMetrics().heightPixels*.86f),View.MeasureSpec.AT_MOST));}};scroll.setFillViewport(false);scroll.addView(panel);dialog.setContentView(scroll);dialog.setOnDismissListener(d->{if(screen.equals("camera")&&cameraReady&&!capturing&&capturedPhoto==null&&resume)scanning=true;});dialog.show();Window w=dialog.getWindow();if(w!=null){w.setBackgroundDrawableResource(android.R.color.transparent);w.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);w.setDimAmount(.6f);w.setGravity(Gravity.BOTTOM);w.setLayout(-1,-2);scroll.requestLayout();}if(ValueAnimator.areAnimatorsEnabled()){panel.setTranslationY(dp(30));panel.setAlpha(0);panel.animate().translationY(0).alpha(1).setDuration(240).start();}handler.post(()->{if(!isDestroyed()&&panel.getWindowToken()!=null)ThemeSkin.footer(panel);});return panel;}
-    void languages(){final String original=lang;final boolean[] applied={false};LinearLayout panel=sheet(s("choose_language"),"language");RadioGroup group=new RadioGroup(this);group.setTag("language-options");int[] ids=new int[LANGS.length];for(int i=0;i<LANGS.length;i++){RadioButton item=new RadioButton(this);ids[i]=View.generateViewId();item.setId(ids[i]);item.setText(LANG_NAMES[i]);item.setTextColor(ThemeSkin.active.text);item.setTextSize(17);item.setMinHeight(dp(39));item.setButtonTintList(android.content.res.ColorStateList.valueOf(ThemeSkin.active.accent));group.addView(item);if(lang.equals(LANGS[i]))group.check(ids[i]);}panel.addView(group);gap(panel,10);TextView apply=(TextView)action(s("apply"),()->{applied[0]=true;getPreferences(0).edit().putString("language",lang).apply();dialog.dismiss();});apply.setTag("language-apply");panel.addView(apply);group.setOnCheckedChangeListener((g,id)->{for(int i=0;i<ids.length;i++)if(id==ids[i])lang=LANGS[i];updateWords();TextView heading=panel.findViewWithTag("sheet-title");if(heading!=null)heading.setText(s("choose_language"));apply.setText(s("apply"));apply.setContentDescription(s("apply"));TextView pageTitle=root.findViewWithTag("page-title");if(pageTitle!=null)pageTitle.setText(s("settings"));TextView themeSubtitle=root.findViewWithTag("selected-theme-name");if(themeSubtitle!=null)themeSubtitle.setText(themeName(ThemeSkin.active.id));TextView languageSubtitle=root.findViewWithTag("selected-language-name");if(languageSubtitle!=null)languageSubtitle.setText(LANG_NAMES[Arrays.asList(LANGS).indexOf(lang)]);});dialog.setOnDismissListener(d->{if(!applied[0]){lang=original;updateWords();}showSettings();});}
+    void languages(){
+        if(dialog!=null&&dialog.isShowing())dialog.dismiss();
+        final String original=lang;final boolean[] applied={false};
+        ChoicePicker picker=new ChoicePicker(this,"language",s("choose_language"),s("apply"),s("close"));dialog=picker;
+        ChoicePicker.Flags flags=new ChoicePicker.Flags(this,lang,index->{
+            lang=LANGS[index];updateWords();showSettings();picker.words(s("choose_language"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.surface.colours(LanguageCatalog.COLOURS[index],true);
+        });
+        picker.body(flags,426);picker.surface.colours(LanguageCatalog.COLOURS[LanguageCatalog.index(lang)],false);
+        picker.apply.setTag("language-apply");picker.apply.setOnClickListener(v->{applied[0]=true;getPreferences(0).edit().putString("language",lang).apply();picker.dismiss();});
+        picker.setOnDismissListener(d->{if(!applied[0]){lang=original;updateWords();}if(!isFinishing()&&!isDestroyed())showSettings();});picker.words(s("choose_language"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
+    }
     String themeName(String id){ThemeSkin skin=ThemeSkin.forId(id);return s(skin==ThemeSkin.BMD?"theme_blue":skin==ThemeSkin.TRANSLUMINA?"theme_red":skin==ThemeSkin.LIME?"theme_lime":skin==ThemeSkin.VIOLET?"theme_violet":skin==ThemeSkin.LIGHT?"theme_light":"theme_dark");}
     void themes(){
-        final String[] chosen={ThemeSkin.active.id};LinearLayout panel=sheet(s("choose_theme"),"palette");
-        GridLayout grid=new GridLayout(this);grid.setColumnCount(2);grid.setTag("theme-grid");
-        ThemeChoiceView[] choices=new ThemeChoiceView[ThemeSkin.IDS.length];
-        for(int n=0;n<ThemeSkin.IDS.length;n++){
-            final int index=n;ThemeSkin skin=ThemeSkin.forId(ThemeSkin.IDS[n]);String name=themeName(skin.id);
-            ThemeChoiceView tile=new ThemeChoiceView(this,skin,name);tile.choose(skin.id.equals(chosen[0]),false);choices[n]=tile;
-            click(tile,name,()->{chosen[0]=ThemeSkin.IDS[index];for(int i=0;i<choices.length;i++)choices[i].choose(ThemeSkin.IDS[i].equals(chosen[0]),true);});
-            GridLayout.LayoutParams lp=new GridLayout.LayoutParams();lp.width=0;lp.height=Math.max(dp(128),Math.min(dp(150),(int)((getResources().getDisplayMetrics().heightPixels*.86f-dp(278))/3)));lp.columnSpec=GridLayout.spec(n%2,1f);lp.rowSpec=GridLayout.spec(n/2);lp.setMargins(dp(4),dp(6),dp(4),dp(6));grid.addView(tile,lp);
-        }
-        panel.addView(grid,new LinearLayout.LayoutParams(-1,-2));gap(panel,12);
-        View apply=action(s("apply"),()->{getPreferences(0).edit().putString("colourTheme",chosen[0]).apply();dialog.dismiss();recreate();});apply.setTag("theme-apply");panel.addView(apply);
+        final String[] chosen={ThemeSkin.active.id};final boolean[] applied={false};
+        ChoicePicker picker=new ChoicePicker(this,"palette",s("choose_theme"),s("apply"),s("close"));dialog=picker;
+        String[] names=new String[ThemeSkin.IDS.length];for(int i=0;i<names.length;i++)names[i]=themeName(ThemeSkin.IDS[i]);
+        ChoicePicker.Wheel wheel=new ChoicePicker.Wheel(this,names,chosen[0],index->chosen[0]=ThemeSkin.IDS[index]);picker.body(wheel,420);
+        picker.apply.setTag("theme-apply");picker.apply.setOnClickListener(v->{applied[0]=true;getPreferences(0).edit().putString("colourTheme",chosen[0]).apply();picker.dismiss();});
+        picker.setOnDismissListener(d->{if(applied[0]&&!isFinishing()&&!isDestroyed())recreate();});picker.words(s("choose_theme"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
     }
 
     private void about(){LinearLayout panel=sheet(s("about"),"info");LinearLayout line=row();line.setGravity(Gravity.CENTER);TextView credit=text("Made by Jack with ",24,true),heart=text("♥",30,true);heart.setTextColor(0xffff405b);line.addView(credit);line.addView(heart);line.setPadding(0,dp(28),0,dp(48));panel.addView(line);if(ValueAnimator.areAnimatorsEnabled()){ObjectAnimator a=ObjectAnimator.ofPropertyValuesHolder(heart,PropertyValuesHolder.ofFloat(View.SCALE_X,1,1.15f,1),PropertyValuesHolder.ofFloat(View.SCALE_Y,1,1.15f,1));a.setDuration(650);a.setRepeatCount(2);a.start();}}
@@ -236,6 +241,6 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onSaveInstanceState(@NonNull Bundle state){if(scanWizard!=null&&scanWizard.isShowing())state.putBundle("scan-start-wizard",scanWizard.save());persist();state.putString("screen",screen);if(capturedPhoto!=null)state.putString("capturedPhoto",capturedPhoto.getPath());if(preparedDocument!=null)state.putString("preparedDocument",preparedDocument.getPath());state.putString("captureRows",json(captureRows));state.putIntegerArrayList("captureVisibleIds",new ArrayList<>(captureVisibleIds));state.putBoolean("exportPhoto",exportPhoto);super.onSaveInstanceState(state);}
     @Override protected void onPause(){super.onPause();scanning=false;if(feedback!=null)feedback.cancel();persist();if(camera!=null)camera.getCameraControl().enableTorch(false);torch=false;lampState(false);}
     @Override protected void onResume(){super.onResume();if(screen.equals("camera")&&cameraReady&&capturedPhoto==null&&(dialog==null||!dialog.isShowing()))scanning=true;}
-    @Override protected void onDestroy(){if(scanWizard!=null)scanWizard.dispose();stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();worker.shutdown();super.onDestroy();}
+    @Override protected void onDestroy(){if(scanWizard!=null)scanWizard.dispose();if(dialog!=null){dialog.setOnDismissListener(null);if(dialog instanceof ChoicePicker)((ChoicePicker)dialog).dispose();else dialog.dismiss();}stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();worker.shutdown();super.onDestroy();}
 }
 

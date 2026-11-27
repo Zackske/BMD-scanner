@@ -8,7 +8,7 @@ bundle=Path('app/src/main/assets/customer-portal')
 assert not (bundle/'customers.json').exists(), 'Private records must not be packaged'
 assets=json.loads((bundle/'art.json').read_text(encoding='utf-8'))
 maps=json.loads((bundle/'maps.json').read_text(encoding='utf-8'))
-languages={'nl','en','uk','tr','it','de','fr','es','pt','hi'}
+languages={'nl','en','uk','tr','it','de','fr','es','pt','hi','pl','ro','ar','vi','cs'}
 assert set(assets['countryNames'])==languages
 assert set(assets['scanners'])=={'bmd','translumina','lime','violet','light','dark'}
 for code in maps['countries']:
@@ -25,4 +25,4 @@ assert html.count('/*BMD_CUSTOMER_DATA*/[]')==1 and html.count('/*BMD_PORTAL_ASS
 assert 'importCustomers()' in html and 'privateCopy' in html
 source=Path('app/src/main/java/com/bmd/scanner/CustomerRegister.java').read_text(encoding='utf-8')
 assert 'getNoBackupFilesDir()' in source and 'AtomicFile' in source
-print('Public portal: no customer registry, offline assets, 10 languages, 6 themes and private atomic import verified.')
+print('Public portal: no customer registry, offline assets, 15 languages, 5 selectable themes and private atomic import verified.')

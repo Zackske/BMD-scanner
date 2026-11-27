@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD ساحر المسح</string>
+    <string name="ui_short_name" formatted="false">ساحر المسح</string>
+    <string name="ui_scan" formatted="false">مسح</string>
+    <string name="ui_photos" formatted="false">تحميل صور</string>
+    <string name="ui_results" formatted="false">النتائج</string>
+    <string name="ui_settings" formatted="false">الإعدادات</string>
+    <string name="ui_language" formatted="false">اللغة</string>
+    <string name="ui_choose_language" formatted="false">اختيار اللغة</string>
+    <string name="ui_scanner_settings" formatted="false">إعدادات الماسح</string>
+    <string name="ui_scanner" formatted="false">الماسح</string>
+    <string name="ui_scanner_hint" formatted="false">الدقة والحساسية والاهتزاز</string>
+    <string name="ui_document_type" formatted="false">نوع المستند</string>
+    <string name="ui_formats" formatted="false">CSV وExcel وWord وPDF</string>
+    <string name="ui_about" formatted="false">حول التطبيق</string>
+    <string name="ui_back" formatted="false">رجوع</string>
+    <string name="ui_close" formatted="false">إغلاق</string>
+    <string name="ui_done" formatted="false">تم</string>
+    <string name="ui_apply" formatted="false">تطبيق</string>
+    <string name="ui_cancel" formatted="false">إلغاء</string>
+    <string name="ui_save" formatted="false">حفظ</string>
+    <string name="ui_save_changes" formatted="false">حفظ التغييرات</string>
+    <string name="ui_live" formatted="false">اكتشاف مباشر</string>
+    <string name="ui_both" formatted="false">QR + رموز شريطية</string>
+    <string name="ui_qr_only" formatted="false">QR فقط</string>
+    <string name="ui_bar_only" formatted="false">رموز شريطية فقط</string>
+    <string name="ui_code_filter" formatted="false">الرموز المراد مسحها</string>
+    <string name="ui_count" formatted="false">تم مسح %1$d من الرموز</string>
+    <string name="ui_split" formatted="false">%1$d رموز QR · %2$d رموز شريطية</string>
+    <string name="ui_same_hint" formatted="false">يُحسب المحتوى المتطابق لكل منتج على حدة</string>
+    <string name="ui_empty" formatted="false">وجّه الكاميرا نحو الرموز</string>
+    <string name="ui_all_results" formatted="false">عرض كل النتائج</string>
+    <string name="ui_capture" formatted="false">التقاط صورة</string>
+    <string name="ui_captured" formatted="false">تم التقاط الصورة</string>
+    <string name="ui_local_save" formatted="false">حفظ محلي</string>
+    <string name="ui_local_hint" formatted="false">حفظ الصورة ونتائج المسح</string>
+    <string name="ui_share" formatted="false">مشاركة</string>
+    <string name="ui_share_hint" formatted="false">بريد إلكتروني أو تطبيقات أخرى</string>
+    <string name="ui_again" formatted="false">مسح مجددًا</string>
+    <string name="ui_list" formatted="false">الرموز الممسوحة</string>
+    <string name="ui_edit" formatted="false">تصحيح الرمز</string>
+    <string name="ui_delete" formatted="false">إزالة</string>
+    <string name="ui_reset" formatted="false">إعادة ضبط المسح</string>
+    <string name="ui_reset_hint" formatted="false">بدأت جلسة مسح جديدة</string>
+    <string name="ui_resolution" formatted="false">الدقة</string>
+    <string name="ui_actual" formatted="false">الفعلية</string>
+    <string name="ui_highest" formatted="false">أعلى دقة مدعومة</string>
+    <string name="ui_fallback" formatted="false">تستخدم الكاميرا أقرب حجم مدعوم عند الحاجة</string>
+    <string name="ui_sensitivity" formatted="false">الحساسية</string>
+    <string name="ui_stability" formatted="false">ثبات التعرف على الرموز</string>
+    <string name="ui_low" formatted="false">منخفضة</string>
+    <string name="ui_normal" formatted="false">عادية</string>
+    <string name="ui_high" formatted="false">مرتفعة</string>
+    <string name="ui_vibrate" formatted="false">اهتزاز بعد المسح</string>
+    <string name="ui_vibrate_hint" formatted="false">اهتزاز قصير واحد لكل رمز ممسوح</string>
+    <string name="ui_lamp" formatted="false">المصباح</string>
+    <string name="ui_on" formatted="false">تشغيل</string>
+    <string name="ui_off" formatted="false">إيقاف</string>
+    <string name="ui_zoom" formatted="false">التكبير</string>
+    <string name="ui_document_settings" formatted="false">إعدادات المستند</string>
+    <string name="ui_choose_format" formatted="false">اختيار تنسيق الملف</string>
+    <string name="ui_filename" formatted="false">اسم الملف</string>
+    <string name="ui_extension_hint" formatted="false">تُضاف اللاحقة تلقائيًا</string>
+    <string name="ui_export" formatted="false">إنشاء مستند</string>
+    <string name="ui_saved" formatted="false">تم الحفظ</string>
+    <string name="ui_busy" formatted="false">جارٍ المعالجة…</string>
+    <string name="ui_error" formatted="false">حدث خطأ</string>
+    <string name="ui_permission" formatted="false">يلزم إذن الكاميرا للمسح</string>
+    <string name="ui_no_camera" formatted="false">لم يتم العثور على كاميرا قابلة للاستخدام</string>
+    <string name="ui_no_lamp" formatted="false">هذه الكاميرا لا تحتوي على مصباح</string>
+    <string name="ui_no_results" formatted="false">لا توجد نتائج مسح بعد</string>
+    <string name="ui_nr" formatted="false">رقم</string>
+    <string name="ui_type" formatted="false">النوع</string>
+    <string name="ui_code" formatted="false">الرمز</string>
+    <string name="ui_barcode" formatted="false">رمز شريطي</string>
+    <string name="ui_photo_error" formatted="false">تعذرت قراءة بعض الصور</string>
+    <string name="ui_choose_folder" formatted="false">اختيار مجلد للصورة والمستند</string>
+    <string name="ui_tracking_note" formatted="false">أبقِ المنتجات في الإطار حتى تلتقط الصورة</string>
+    <string name="ui_confirm_reset" formatted="false">هل تريد مسح جلسة المسح الحالية؟</string>
+    <string name="ui_delete_question" formatted="false">هل تريد إزالة هذا المسح؟</string>
+    <string name="ui_flash" formatted="false">الفلاش</string>
+    <string name="ui_camera" formatted="false">الكاميرا</string>
+    <string name="ui_gallery" formatted="false">المسح من المعرض</string>
+    <string name="ui_detected" formatted="false">تم اكتشاف %1$d من الرموز</string>
+    <string name="ui_scan_button" formatted="false">مسح</string>
+    <string name="ui_switch_camera" formatted="false">تبديل الكاميرا</string>
+    <string name="ui_camera_mode" formatted="false">وضع الكاميرا</string>
+    <string name="ui_save_scan" formatted="false">حفظ المسح</string>
+    <string name="ui_review_products" formatted="false">مراجعة المنتجات</string>
+    <string name="ui_product_count" formatted="false">%1$d من المنتجات</string>
+    <string name="ui_product" formatted="false">المنتج</string>
+    <string name="ui_review" formatted="false">مراجعة</string>
+    <string name="ui_unknown_lot" formatted="false">دفعة غير معروفة</string>
+    <string name="ui_conflict" formatted="false">بيانات متعارضة</string>
+    <string name="ui_group_hint" formatted="false">تبقى الملصقات منفصلة. اجمع فقط الرموز الموجودة على العلبة الفعلية نفسها. راجع الأعداد والدفعات؛ وتظل الدفعات اليدوية معلّمة.</string>
+    <string name="ui_group_selected" formatted="false">تجميع الرموز المحددة</string>
+    <string name="ui_split_selected" formatted="false">فصل المجموعات المحددة</string>
+    <string name="ui_grouping_error" formatted="false">لا تجمع دفعات أو منتجات مختلفة. افصل الرموز المتعارضة.</string>
+    <string name="ui_themes" formatted="false">المظهر</string>
+    <string name="ui_colours_appearance" formatted="false">الألوان والمظهر</string>
+    <string name="ui_choose_theme" formatted="false">اختيار المظهر</string>
+    <string name="ui_theme_dark" formatted="false">داكن</string>
+    <string name="ui_theme_light" formatted="false">فاتح</string>
+    <string name="ui_theme_lime" formatted="false">أخضر</string>
+    <string name="ui_theme_violet" formatted="false">بنفسجي</string>
+    <string name="ui_theme_blue" formatted="false">أزرق</string>
+    <string name="ui_theme_red" formatted="false">أحمر</string>
+    <string name="ui_box_scan" formatted="false">المسح والعد</string>
+    <string name="ui_live_scan" formatted="false">مسح مباشر</string>
+    <string name="ui_count_question" formatted="false">كم عدد المنتجات المتوقع في هذا الصندوق؟</string>
+    <string name="ui_expected_count" formatted="false">العدد المتوقع</string>
+    <string name="ui_count_hint" formatted="false">أدخل العدد المتوقع الفعلي. لا يؤدي ذلك إلى ملء عمليات المسح المفقودة.</string>
+    <string name="ui_count_invalid" formatted="false">أدخل عددًا صحيحًا من 1 إلى 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. التقط صورة عامة. 2. التقط أربع مناطق بتداخل 30%. 3. راجع كل محاذاة وقائمة المنتجات.</string>
+    <string name="ui_marker_help" formatted="false">اطبع A وB وC وD. ضعها فوق المنتجات داخل الصندوق: A أعلى اليسار، B أعلى اليمين، C أسفل اليسار، D أسفل اليمين. أبقِ رموز المنتجات ظاهرة وكل شيء ثابتًا. تحتاج الصور التفصيلية إلى علامات ظاهرة أو تداخل واضح.</string>
+    <string name="ui_box_limits" formatted="false">تجريبي: قد تظل الرموز المخفية أو التي لم تُكتشف إطلاقًا غير مرئية. وقد تُربط المنتجات المتطابقة والأنماط المتكررة بشكل غير صحيح.</string>
+    <string name="ui_marker_sheet" formatted="false">مشاركة ورقة العلامات</string>
+    <string name="ui_make_overview" formatted="false">التقاط صورة عامة</string>
+    <string name="ui_overview" formatted="false">نظرة عامة</string>
+    <string name="ui_detail_photo" formatted="false">صورة تفصيلية %1$d</string>
+    <string name="ui_extra_photo" formatted="false">صورة تفصيلية إضافية</string>
+    <string name="ui_top_left" formatted="false">أعلى اليسار</string>
+    <string name="ui_top_right" formatted="false">أعلى اليمين</string>
+    <string name="ui_bottom_left" formatted="false">أسفل اليسار</string>
+    <string name="ui_bottom_right" formatted="false">أسفل اليمين</string>
+    <string name="ui_overview_hint" formatted="false">ضمّن الصندوق كاملًا وعلاماته.</string>
+    <string name="ui_detail_hint" formatted="false">اتبع المنطقة المحددة على الخريطة. حافظ على تداخل يقارب 30% وتجنب الانعكاسات.</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d منتجات · مبدئي</string>
+    <string name="ui_unreviewed" formatted="false">تتطلب مراجعة</string>
+    <string name="ui_live_codes" formatted="false">%1$d رموز في الإطار</string>
+    <string name="ui_placement" formatted="false">مراجعة المحاذاة</string>
+    <string name="ui_alignment_failed" formatted="false">لم يُعثر على محاذاة موثوقة. أعد التصوير بتداخل أكبر وعلامات ظاهرة. لم تُضف هذه الصورة.</string>
+    <string name="ui_alignment_check" formatted="false">تحقق من أن الإطار الأزرق يطابق المنطقة المصورة تمامًا. قد تؤدي الأنماط المتكررة إلى محاذاة خاطئة.</string>
+    <string name="ui_confirm_placement" formatted="false">المحاذاة صحيحة · إضافة</string>
+    <string name="ui_photos_taken" formatted="false">تم التقاط %1$d من الصور التفصيلية</string>
+    <string name="ui_no_auto_approval" formatted="false">تطابق الأعداد لا يعني الموافقة على الشحنة. راجع المنتجات الفردية والدفعات والاكتشافات المكررة.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">العدد متطابق · تمت مراجعته يدويًا</string>
+    <string name="ui_change_count" formatted="false">تغيير العدد المتوقع</string>
+    <string name="ui_new_box" formatted="false">صندوق جديد</string>
+    <string name="ui_take_detail" formatted="false">التقاط صورة تفصيلية</string>
+    <string name="ui_capture_step" formatted="false">الخطوة %1$d</string>
+    <string name="ui_capture_photo" formatted="false">التقاط صورة</string>
+    <string name="ui_photo_step" formatted="false">الصورة %1$d من 5</string>
+    <string name="ui_marker_setup" formatted="false">ضع العلامات الأربع أولًا</string>
+    <string name="ui_marker_ack" formatted="false">فهمت · الصورة 1</string>
+    <string name="ui_marker_info" formatted="false">تعليمات العلامات</string>
+    <string name="ui_bmd_control" formatted="false">المسح والعد</string>
+    <string name="ui_generic_scan" formatted="false">ماسح QR</string>
+    <string name="ui_pallet_scanner" formatted="false">التقاط المستندات</string>
+    <string name="ui_document_scanner" formatted="false">ماسح التحقق من المستندات</string>
+    <string name="ui_picking_control" formatted="false">فحص تجهيز الطلب</string>
+    <string name="ui_picking_control_hint" formatted="false">اقرأ قائمة التجهيز وتحقق من المنتجات والكميات</string>
+    <string name="ui_final_control_hint" formatted="false">اقرأ قائمة التجهيز وتحقق قبل التعبئة أو بعدها</string>
+    <string name="ui_control_picklist_first" formatted="false">تبدأ عملية المسح والعد بقراءة قائمة التجهيز.</string>
+    <string name="ui_packing_question" formatted="false">هل المنتجات معبأة بالفعل؟</string>
+    <string name="ui_packed_box" formatted="false">داخل الصندوق</string>
+    <string name="ui_packed_box_hint" formatted="false">مع علامات وخمس خطوات تصوير</string>
+    <string name="ui_before_packing" formatted="false">قبل التعبئة</string>
+    <string name="ui_before_packing_hint" formatted="false">مسح المنتجات دون علامات</string>
+    <string name="ui_generic_hint" formatted="false">وجّه الكاميرا نحو رمز QR أو رمز شريطي</string>
+    <string name="ui_generic_result" formatted="false">تم اكتشاف رمز</string>
+    <string name="ui_generic_results" formatted="false">الرموز المكتشفة</string>
+    <string name="ui_generic_open_link" formatted="false">فتح الرابط</string>
+    <string name="ui_generic_copy" formatted="false">نسخ</string>
+    <string name="ui_generic_copied" formatted="false">تم النسخ</string>
+    <string name="ui_generic_empty" formatted="false">لم يُعثر على رمز قابل للقراءة</string>
+    <string name="ui_generic_error" formatted="false">تعذر المسح. حاول مجددًا.</string>
+    <string name="ui_generic_preview" formatted="false">معاينة الرابط</string>
+    <string name="ui_generic_preview_load" formatted="false">تحميل المعاينة</string>
+    <string name="ui_generic_preview_loading" formatted="false">جارٍ تحميل الموقع…</string>
+    <string name="ui_generic_preview_error" formatted="false">المعاينة غير متاحة. افتح الرابط في المتصفح.</string>
+    <string name="ui_generic_preview_retry" formatted="false">حاول مجددًا</string>
+    <string name="ui_generic_preview_hide" formatted="false">إخفاء المعاينة</string>
+    <string name="ui_work_in_progress" formatted="false">قيد التطوير</string>
+    <string name="ui_web_links" formatted="false">روابط الويب</string>
+    <string name="ui_portal" formatted="false">بوابة العملاء</string>
+    <string name="ui_work_instructions" formatted="false">تعليمات العمل</string>
+    <string name="ui_email_check" formatted="false">التحقق من البريد الإلكتروني</string>
+    <string name="ui_document_check" formatted="false">التحقق من المستندات</string>
+    <string name="ui_in_development" formatted="false">هذه الميزة قيد التطوير.</string>
+    <string name="ui_lots_title" formatted="false">الدفعات الممسوحة</string>
+    <string name="ui_checklist" formatted="false">عرض قائمة التحقق</string>
+    <string name="ui_continue_save" formatted="false">المتابعة إلى الحفظ</string>
+    <string name="ui_include_images" formatted="false">تضمين صور المسح</string>
+    <string name="ui_guided_mode" formatted="false">ماذا تريد فحصه؟</string>
+    <string name="ui_complete_box" formatted="false">صندوق كامل</string>
+    <string name="ui_inventory" formatted="false">المخزون</string>
+    <string name="ui_step_progress" formatted="false">الصورة %1$d من 5 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">مراجعة الدفعة</string>
+    <string name="ui_exclude" formatted="false">استبعاد</string>
+    <string name="ui_undo" formatted="false">تراجع</string>
+    <string name="ui_save_options" formatted="false">حفظ ومشاركة</string>
+    <string name="ui_all_reviewed" formatted="false">تمت المراجعة يدويًا</string>
+    <string name="ui_capture_first" formatted="false">التقط الصورة العامة أولًا</string>
+    <string name="ui_photos_needed" formatted="false">التقط ما لا يقل عن %1$d من الصور التفصيلية الإضافية</string>
+    <string name="ui_manual_change" formatted="false">تم التعديل يدويًا</string>
+    <string name="ui_review_all" formatted="false">راجع كل المنتجات في هذه الدفعة</string>
+    <string name="ui_qr_count_check" formatted="false">التحقق من QR والعدد</string>
+    <string name="ui_box_pallet_check" formatted="false">التحقق من الصندوق والمنصة</string>
+    <string name="ui_wizard_step_type" formatted="false">الخطوة 1 · نوع المسح</string>
+    <string name="ui_wizard_step_count" formatted="false">الخطوة 2 · الكمية</string>
+    <string name="ui_wizard_type" formatted="false">النوع</string>
+    <string name="ui_wizard_count" formatted="false">الكمية</string>
+    <string name="ui_wizard_type_question" formatted="false">ماذا تريد مسحه؟</string>
+    <string name="ui_wizard_box" formatted="false">المسح والعد</string>
+    <string name="ui_wizard_stack" formatted="false">رصة منفصلة</string>
+    <string name="ui_wizard_box_hint" formatted="false">مع علامات وصور تفصيلية</string>
+    <string name="ui_wizard_stack_hint" formatted="false">مسح مباشر دون علامات</string>
+    <string name="ui_wizard_next_count" formatted="false">تبدأ عملية المسح والعد بقراءة قائمة التجهيز.</string>
+    <string name="ui_wizard_count_question" formatted="false">كم عدد المنتجات المتوقع؟</string>
+    <string name="ui_wizard_products" formatted="false">عدد المنتجات</string>
+    <string name="ui_wizard_count_hint" formatted="false">أدخل العدد المتوقع للمنتجات.</string>
+    <string name="ui_wizard_count_usage" formatted="false">يُستخدم هذا العدد للتحقق.</string>
+    <string name="ui_wizard_next" formatted="false">التالي</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">مسح مجددًا</string>
+    <string name="ui_wizard_retake_hint" formatted="false">تحل اللقطة الجديدة محل مسح الرصة السابق.</string>
+    <string name="ui_wizard_new_scan" formatted="false">مسح جديد</string>
+    <string name="ui_pl_step" formatted="false">الخطوة %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">قائمة التجهيز</string>
+    <string name="ui_pl_picklist_short" formatted="false">قائمة التجهيز</string>
+    <string name="ui_pl_products" formatted="false">المنتجات</string>
+    <string name="ui_pl_capture" formatted="false">مسح قائمة التجهيز</string>
+    <string name="ui_pl_frame" formatted="false">ضع الصفحة كاملة داخل الإطار.</string>
+    <string name="ui_pl_photo" formatted="false">التقاط صورة</string>
+    <string name="ui_pl_pdf" formatted="false">اختيار PDF أو صورة</string>
+    <string name="ui_pl_pages" formatted="false">تم التقاط %1$d صفحات · أضف جميع الصفحات</string>
+    <string name="ui_pl_reading" formatted="false">جارٍ قراءة المستند…</string>
+    <string name="ui_pl_review" formatted="false">مراجعة قائمة التجهيز</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d بنود منتجات · %2$d وحدات</string>
+    <string name="ui_pl_pending" formatted="false">بيانات معرّف عليها · لم تُؤكّد بعد</string>
+    <string name="ui_pl_source_warning" formatted="false">يبدو أن المصدر قائمة شحن أو فاتورة. تحقق من أنه المرجع الصحيح لهذا الفحص.</string>
+    <string name="ui_pl_uncertain" formatted="false">تعذرت قراءة بعض البيانات. أضف الصفحات المفقودة وقارن كل بند بالمصدر.</string>
+    <string name="ui_pl_source_total" formatted="false">إجمالي المصدر: %1$d</string>
+    <string name="ui_pl_edit" formatted="false">تعديل البند</string>
+    <string name="ui_pl_add_row" formatted="false">إضافة بند منتج</string>
+    <string name="ui_pl_source" formatted="false">عرض المصدر</string>
+    <string name="ui_pl_add_page" formatted="false">إضافة صفحة</string>
+    <string name="ui_pl_ack" formatted="false">راجعت كل بند وصفحة مقابل المصدر.</string>
+    <string name="ui_pl_confirm" formatted="false">تأكيد ومتابعة</string>
+    <string name="ui_pl_check_rows" formatted="false">تحقق من الصنف والدفعة وتاريخ الانتهاء والكمية والإجمالي وجميع الصفحات.</string>
+    <string name="ui_pl_article" formatted="false">الصنف</string>
+    <string name="ui_pl_lot" formatted="false">الدفعة</string>
+    <string name="ui_pl_expiry" formatted="false">تاريخ الانتهاء (YYYY-MM-DD)</string>
+    <string name="ui_pl_quantity" formatted="false">الكمية</string>
+    <string name="ui_pl_count" formatted="false">عدد المنتجات</string>
+    <string name="ui_pl_auto" formatted="false">تم الملء تلقائيًا من قائمة التجهيز المؤكدة</string>
+    <string name="ui_pl_order" formatted="false">قائمة التجهيز · الطلب %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d صناديق</string>
+    <string name="ui_pl_box_one" formatted="false">صندوق واحد</string>
+    <string name="ui_pl_average" formatted="false">المتوسط %1$s لكل صندوق</string>
+    <string name="ui_pl_standard" formatted="false">قياسي</string>
+    <string name="ui_pl_large" formatted="false">كبير</string>
+    <string name="ui_pl_max" formatted="false">بحد أقصى %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">التوزيع المقترح</string>
+    <string name="ui_pl_plan_total" formatted="false">التوزيع: %1$d / %2$d منتجات · اضغط على صندوق للتعديل</string>
+    <string name="ui_pl_carton" formatted="false">الصندوق %1$d من %2$d</string>
+    <string name="ui_pl_free" formatted="false">%1$d أماكن متاحة</string>
+    <string name="ui_pl_free_one" formatted="false">مكان واحد متاح</string>
+    <string name="ui_pl_not_scanned" formatted="false">لم يُمسح بعد</string>
+    <string name="ui_pl_adjust" formatted="false">تعديل قائمة التجهيز</string>
+    <string name="ui_pl_continue" formatted="false">المتابعة إلى المنتجات</string>
+    <string name="ui_pl_control" formatted="false">المسح والعد</string>
+    <string name="ui_pl_reviewed" formatted="false">تمت المراجعة يدويًا</string>
+    <string name="ui_pl_matched" formatted="false">جميع الصناديق وبنود قائمة التجهيز متطابقة.</string>
+    <string name="ui_pl_not_complete" formatted="false">الفحص لم يكتمل بعد</string>
+    <string name="ui_pl_no_auto" formatted="false">تطابق الإجمالي لا يجيز إرسال الشحنة تلقائيًا.</string>
+    <string name="ui_pl_new" formatted="false">قائمة تجهيز جديدة</string>
+    <string name="ui_pl_error" formatted="false">فشلت القراءة أو المراجعة. افحص المصدر وحاول مجددًا.</string>
+    <string name="ui_pl_camera_denied" formatted="false">الكاميرا غير متاحة. يمكنك أيضًا اختيار ملف PDF أو صورة.</string>
+    <string name="ui_pl_expected" formatted="false">المتوقع: %1$d منتجات</string>
+    <string name="ui_pl_fixed_count" formatted="false">تحدد قائمة التجهيز العدد. عدّل بنودها قبل مسح الصناديق.</string>
+    <string name="ui_pl_identity_missing" formatted="false">الصنف أو تاريخ الانتهاء غير معروف. تحقق من رمز المنتج؛ رقم الدفعة وحده لا يكفي.</string>
+    <string name="ui_pl_mapping" formatted="false">ربط الصنف برقم GTIN</string>
+    <string name="ui_pl_mapping_hint" formatted="false">يحتوي الرمز على GTIN وليس رقم الصنف. افحص العبوة واختر الصنف الصحيح.</string>
+    <string name="ui_pl_choose_article" formatted="false">اختيار الصنف</string>
+    <string name="ui_pl_mismatch" formatted="false">يختلف الصنف أو الدفعة أو تاريخ الانتهاء أو الكميات عن قائمة التجهيز. راجع الاختلافات.</string>
+</resources>

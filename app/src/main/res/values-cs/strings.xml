@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD SkenKouzelník</string>
+    <string name="ui_short_name" formatted="false">SkenKouzelník</string>
+    <string name="ui_scan" formatted="false">Skenovat</string>
+    <string name="ui_photos" formatted="false">Nahrát fotografie</string>
+    <string name="ui_results" formatted="false">Výsledky</string>
+    <string name="ui_settings" formatted="false">Nastavení</string>
+    <string name="ui_language" formatted="false">Jazyk</string>
+    <string name="ui_choose_language" formatted="false">Vybrat jazyk</string>
+    <string name="ui_scanner_settings" formatted="false">Nastavení skeneru</string>
+    <string name="ui_scanner" formatted="false">Skener</string>
+    <string name="ui_scanner_hint" formatted="false">Rozlišení, citlivost a vibrace</string>
+    <string name="ui_document_type" formatted="false">Typ dokumentu</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word a PDF</string>
+    <string name="ui_about" formatted="false">O aplikaci</string>
+    <string name="ui_back" formatted="false">Zpět</string>
+    <string name="ui_close" formatted="false">Zavřít</string>
+    <string name="ui_done" formatted="false">Hotovo</string>
+    <string name="ui_apply" formatted="false">Použít</string>
+    <string name="ui_cancel" formatted="false">Zrušit</string>
+    <string name="ui_save" formatted="false">Uložit</string>
+    <string name="ui_save_changes" formatted="false">Uložit změny</string>
+    <string name="ui_live" formatted="false">ŽIVÁ DETEKCE</string>
+    <string name="ui_both" formatted="false">QR + čárové kódy</string>
+    <string name="ui_qr_only" formatted="false">Pouze QR</string>
+    <string name="ui_bar_only" formatted="false">Pouze čárové kódy</string>
+    <string name="ui_code_filter" formatted="false">Skenované kódy</string>
+    <string name="ui_count" formatted="false">Naskenováno kódů: %1$d</string>
+    <string name="ui_split" formatted="false">%1$d QR kódů · %2$d čárových kódů</string>
+    <string name="ui_same_hint" formatted="false">Shodný obsah se počítá za každý výrobek zvlášť</string>
+    <string name="ui_empty" formatted="false">Namiřte fotoaparát na kódy</string>
+    <string name="ui_all_results" formatted="false">Zobrazit všechny výsledky</string>
+    <string name="ui_capture" formatted="false">Pořídit fotografii</string>
+    <string name="ui_captured" formatted="false">Fotografie pořízena</string>
+    <string name="ui_local_save" formatted="false">Uložit místně</string>
+    <string name="ui_local_hint" formatted="false">Uložit fotografii a výsledky skenování</string>
+    <string name="ui_share" formatted="false">Sdílet</string>
+    <string name="ui_share_hint" formatted="false">E-mail nebo jiné aplikace</string>
+    <string name="ui_again" formatted="false">Skenovat znovu</string>
+    <string name="ui_list" formatted="false">Naskenované kódy</string>
+    <string name="ui_edit" formatted="false">Opravit kód</string>
+    <string name="ui_delete" formatted="false">Odstranit</string>
+    <string name="ui_reset" formatted="false">Obnovit skenování</string>
+    <string name="ui_reset_hint" formatted="false">Byla zahájena nová relace skenování</string>
+    <string name="ui_resolution" formatted="false">Rozlišení</string>
+    <string name="ui_actual" formatted="false">Skutečné</string>
+    <string name="ui_highest" formatted="false">Nejvyšší podporované rozlišení</string>
+    <string name="ui_fallback" formatted="false">Fotoaparát v případě potřeby použije nejbližší podporovaný rozměr</string>
+    <string name="ui_sensitivity" formatted="false">Citlivost</string>
+    <string name="ui_stability" formatted="false">Stabilita rozpoznávání kódů</string>
+    <string name="ui_low" formatted="false">Nízká</string>
+    <string name="ui_normal" formatted="false">Normální</string>
+    <string name="ui_high" formatted="false">Vysoká</string>
+    <string name="ui_vibrate" formatted="false">Vibrace po naskenování</string>
+    <string name="ui_vibrate_hint" formatted="false">Jedna krátká vibrace za každý naskenovaný kód</string>
+    <string name="ui_lamp" formatted="false">Světlo</string>
+    <string name="ui_on" formatted="false">ZAP.</string>
+    <string name="ui_off" formatted="false">VYP.</string>
+    <string name="ui_zoom" formatted="false">Přiblížení</string>
+    <string name="ui_document_settings" formatted="false">Nastavení dokumentu</string>
+    <string name="ui_choose_format" formatted="false">Vybrat formát souboru</string>
+    <string name="ui_filename" formatted="false">Název souboru</string>
+    <string name="ui_extension_hint" formatted="false">Přípona se přidá automaticky</string>
+    <string name="ui_export" formatted="false">Vytvořit dokument</string>
+    <string name="ui_saved" formatted="false">Uloženo</string>
+    <string name="ui_busy" formatted="false">Zpracování…</string>
+    <string name="ui_error" formatted="false">Něco se nepovedlo</string>
+    <string name="ui_permission" formatted="false">Pro skenování je potřeba oprávnění k fotoaparátu</string>
+    <string name="ui_no_camera" formatted="false">Nebyl nalezen použitelný fotoaparát</string>
+    <string name="ui_no_lamp" formatted="false">Tento fotoaparát nemá světlo</string>
+    <string name="ui_no_results" formatted="false">Zatím žádné výsledky skenování</string>
+    <string name="ui_nr" formatted="false">Č.</string>
+    <string name="ui_type" formatted="false">Typ</string>
+    <string name="ui_code" formatted="false">Kód</string>
+    <string name="ui_barcode" formatted="false">Čárový kód</string>
+    <string name="ui_photo_error" formatted="false">Některé fotografie nelze přečíst</string>
+    <string name="ui_choose_folder" formatted="false">Vyberte složku pro fotografii a dokument</string>
+    <string name="ui_tracking_note" formatted="false">Udržujte výrobky v záběru až do pořízení fotografie</string>
+    <string name="ui_confirm_reset" formatted="false">Vymazat aktuální relaci skenování?</string>
+    <string name="ui_delete_question" formatted="false">Odstranit tento sken?</string>
+    <string name="ui_flash" formatted="false">Blesk</string>
+    <string name="ui_camera" formatted="false">Fotoaparát</string>
+    <string name="ui_gallery" formatted="false">Skenovat z galerie</string>
+    <string name="ui_detected" formatted="false">Zjištěno kódů: %1$d</string>
+    <string name="ui_scan_button" formatted="false">Skenovat</string>
+    <string name="ui_switch_camera" formatted="false">Přepnout fotoaparát</string>
+    <string name="ui_camera_mode" formatted="false">Režim fotoaparátu</string>
+    <string name="ui_save_scan" formatted="false">Uložit sken</string>
+    <string name="ui_review_products" formatted="false">Zkontrolovat výrobky</string>
+    <string name="ui_product_count" formatted="false">%1$d výrobků</string>
+    <string name="ui_product" formatted="false">Výrobek</string>
+    <string name="ui_review" formatted="false">zkontrolovat</string>
+    <string name="ui_unknown_lot" formatted="false">Neznámá šarže</string>
+    <string name="ui_conflict" formatted="false">Rozporné údaje</string>
+    <string name="ui_group_hint" formatted="false">Štítky zůstávají oddělené. Seskupujte jen kódy na stejném fyzickém obalu. Zkontrolujte počty a šarže; ručně zadané šarže zůstanou označené.</string>
+    <string name="ui_group_selected" formatted="false">Seskupit vybrané kódy</string>
+    <string name="ui_split_selected" formatted="false">Rozdělit vybrané skupiny</string>
+    <string name="ui_grouping_error" formatted="false">Neseskupujte různé šarže ani výrobky. Rozdělte rozporné kódy.</string>
+    <string name="ui_themes" formatted="false">Motiv</string>
+    <string name="ui_colours_appearance" formatted="false">Barvy a vzhled</string>
+    <string name="ui_choose_theme" formatted="false">Vybrat motiv</string>
+    <string name="ui_theme_dark" formatted="false">Tmavá</string>
+    <string name="ui_theme_light" formatted="false">Světlá</string>
+    <string name="ui_theme_lime" formatted="false">Zelená</string>
+    <string name="ui_theme_violet" formatted="false">Fialová</string>
+    <string name="ui_theme_blue" formatted="false">Modrá</string>
+    <string name="ui_theme_red" formatted="false">Červená</string>
+    <string name="ui_box_scan" formatted="false">Skenovat a počítat</string>
+    <string name="ui_live_scan" formatted="false">Živé skenování</string>
+    <string name="ui_count_question" formatted="false">Kolik výrobků očekáváte v tomto kartonu?</string>
+    <string name="ui_expected_count" formatted="false">Očekávaný počet</string>
+    <string name="ui_count_hint" formatted="false">Zadejte skutečný očekávaný počet. Tím se nikdy nedoplní chybějící skeny.</string>
+    <string name="ui_count_invalid" formatted="false">Zadejte celé číslo od 1 do 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Pořiďte přehledový snímek. 2. Zachyťte čtyři oblasti s 30% překryvem. 3. Zkontrolujte každé umístění a seznam výrobků.</string>
+    <string name="ui_marker_help" formatted="false">Vytiskněte A, B, C a D. Položte je na výrobky uvnitř kartonu: A vlevo nahoře, B vpravo nahoře, C vlevo dole, D vpravo dole. Kódy výrobků musí zůstat viditelné a nic se nesmí pohybovat. Detailní fotografie vyžadují viditelné značky nebo jasný překryv.</string>
+    <string name="ui_box_limits" formatted="false">Experimentální: skryté nebo zcela přehlédnuté kódy mohou zůstat neviditelné. Stejné výrobky a opakující se vzory mohou být nesprávně propojeny.</string>
+    <string name="ui_marker_sheet" formatted="false">Sdílet list značek</string>
+    <string name="ui_make_overview" formatted="false">Pořídit přehledový snímek</string>
+    <string name="ui_overview" formatted="false">Přehled</string>
+    <string name="ui_detail_photo" formatted="false">Detailní fotografie %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Další detailní fotografie</string>
+    <string name="ui_top_left" formatted="false">Vlevo nahoře</string>
+    <string name="ui_top_right" formatted="false">Vpravo nahoře</string>
+    <string name="ui_bottom_left" formatted="false">Vlevo dole</string>
+    <string name="ui_bottom_right" formatted="false">Vpravo dole</string>
+    <string name="ui_overview_hint" formatted="false">Zachyťte celý karton a jeho značky.</string>
+    <string name="ui_detail_hint" formatted="false">Postupujte podle oblasti na mapě. Udržujte přibližně 30% překryv a vyhněte se odleskům.</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d výrobků · předběžně</string>
+    <string name="ui_unreviewed" formatted="false">Vyžaduje kontrolu</string>
+    <string name="ui_live_codes" formatted="false">%1$d kódů v záběru</string>
+    <string name="ui_placement" formatted="false">Zkontrolovat umístění</string>
+    <string name="ui_alignment_failed" formatted="false">Nebylo nalezeno spolehlivé umístění. Pořiďte snímek znovu s větším překryvem a viditelnými značkami. Tato fotografie nebyla přidána.</string>
+    <string name="ui_alignment_check" formatted="false">Ověřte, že modrý obrys přesně odpovídá vyfotografované oblasti. Opakující se vzory mohou způsobit nesprávné umístění.</string>
+    <string name="ui_confirm_placement" formatted="false">Umístění správné · přidat</string>
+    <string name="ui_photos_taken" formatted="false">Pořízeno detailních fotografií: %1$d</string>
+    <string name="ui_no_auto_approval" formatted="false">Shodné počty neschvalují zásilku. Zkontrolujte jednotlivé výrobky, šarže a duplicitní detekce.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Počet odpovídá · ručně zkontrolováno</string>
+    <string name="ui_change_count" formatted="false">Změnit očekávaný počet</string>
+    <string name="ui_new_box" formatted="false">Nový karton</string>
+    <string name="ui_take_detail" formatted="false">Pořídit detailní fotografii</string>
+    <string name="ui_capture_step" formatted="false">Krok %1$d</string>
+    <string name="ui_capture_photo" formatted="false">Vyfotit</string>
+    <string name="ui_photo_step" formatted="false">Fotografie %1$d z 5</string>
+    <string name="ui_marker_setup" formatted="false">Nejprve umístěte 4 značky</string>
+    <string name="ui_marker_ack" formatted="false">Rozumím · fotografie 1</string>
+    <string name="ui_marker_info" formatted="false">Pokyny ke značkám</string>
+    <string name="ui_bmd_control" formatted="false">Skenovat a počítat</string>
+    <string name="ui_generic_scan" formatted="false">QR skener</string>
+    <string name="ui_pallet_scanner" formatted="false">Zachytit dokumenty</string>
+    <string name="ui_document_scanner" formatted="false">Skener kontroly dokumentů</string>
+    <string name="ui_picking_control" formatted="false">Kontrola vychystávání</string>
+    <string name="ui_picking_control_hint" formatted="false">Načtěte vychystávací seznam a zkontrolujte výrobky a množství</string>
+    <string name="ui_final_control_hint" formatted="false">Načtěte vychystávací seznam a zkontrolujte před zabalením nebo po něm</string>
+    <string name="ui_control_picklist_first" formatted="false">Skenování a počítání začíná načtením vychystávacího seznamu.</string>
+    <string name="ui_packing_question" formatted="false">Jsou výrobky již zabalené?</string>
+    <string name="ui_packed_box" formatted="false">V kartonu</string>
+    <string name="ui_packed_box_hint" formatted="false">Se značkami a 5 fotografiemi</string>
+    <string name="ui_before_packing" formatted="false">Před balením</string>
+    <string name="ui_before_packing_hint" formatted="false">Skenovat výrobky bez značek</string>
+    <string name="ui_generic_hint" formatted="false">Namiřte fotoaparát na QR nebo čárový kód</string>
+    <string name="ui_generic_result" formatted="false">Kód zjištěn</string>
+    <string name="ui_generic_results" formatted="false">Zjištěné kódy</string>
+    <string name="ui_generic_open_link" formatted="false">Otevřít odkaz</string>
+    <string name="ui_generic_copy" formatted="false">Kopírovat</string>
+    <string name="ui_generic_copied" formatted="false">Zkopírováno</string>
+    <string name="ui_generic_empty" formatted="false">Nebyl nalezen čitelný kód</string>
+    <string name="ui_generic_error" formatted="false">Skenování se nezdařilo. Zkuste to znovu.</string>
+    <string name="ui_generic_preview" formatted="false">Náhled odkazu</string>
+    <string name="ui_generic_preview_load" formatted="false">Načíst náhled</string>
+    <string name="ui_generic_preview_loading" formatted="false">Načítání webu…</string>
+    <string name="ui_generic_preview_error" formatted="false">Náhled není k dispozici. Otevřete odkaz v prohlížeči.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Zkusit znovu</string>
+    <string name="ui_generic_preview_hide" formatted="false">Skrýt náhled</string>
+    <string name="ui_work_in_progress" formatted="false">Ve vývoji</string>
+    <string name="ui_web_links" formatted="false">Webové odkazy</string>
+    <string name="ui_portal" formatted="false">Zákaznický portál</string>
+    <string name="ui_work_instructions" formatted="false">Pracovní pokyny</string>
+    <string name="ui_email_check" formatted="false">Kontrola e-mailů</string>
+    <string name="ui_document_check" formatted="false">Kontrola dokumentů</string>
+    <string name="ui_in_development" formatted="false">Tato funkce je ve vývoji.</string>
+    <string name="ui_lots_title" formatted="false">Naskenované šarže</string>
+    <string name="ui_checklist" formatted="false">Zobrazit kontrolní seznam</string>
+    <string name="ui_continue_save" formatted="false">Pokračovat k uložení</string>
+    <string name="ui_include_images" formatted="false">Zahrnout snímky skenování</string>
+    <string name="ui_guided_mode" formatted="false">Co chcete zkontrolovat?</string>
+    <string name="ui_complete_box" formatted="false">Celý karton</string>
+    <string name="ui_inventory" formatted="false">Zásoby</string>
+    <string name="ui_step_progress" formatted="false">Fotografie %1$d z 5 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">Zkontrolovat šarži</string>
+    <string name="ui_exclude" formatted="false">Vyloučit</string>
+    <string name="ui_undo" formatted="false">Vrátit zpět</string>
+    <string name="ui_save_options" formatted="false">Uložit a sdílet</string>
+    <string name="ui_all_reviewed" formatted="false">Ručně zkontrolováno</string>
+    <string name="ui_capture_first" formatted="false">Nejprve pořiďte přehledový snímek</string>
+    <string name="ui_photos_needed" formatted="false">Pořiďte ještě alespoň %1$d detailních fotografií</string>
+    <string name="ui_manual_change" formatted="false">Ručně změněno</string>
+    <string name="ui_review_all" formatted="false">Zkontrolovat všechny výrobky v této šarži</string>
+    <string name="ui_qr_count_check" formatted="false">Kontrola QR/počtu</string>
+    <string name="ui_box_pallet_check" formatted="false">Kontrola kartonu/palety</string>
+    <string name="ui_wizard_step_type" formatted="false">Krok 1 · Typ skenování</string>
+    <string name="ui_wizard_step_count" formatted="false">Krok 2 · Množství</string>
+    <string name="ui_wizard_type" formatted="false">Typ</string>
+    <string name="ui_wizard_count" formatted="false">Množství</string>
+    <string name="ui_wizard_type_question" formatted="false">Co chcete naskenovat?</string>
+    <string name="ui_wizard_box" formatted="false">Skenovat a počítat</string>
+    <string name="ui_wizard_stack" formatted="false">Volná hromádka</string>
+    <string name="ui_wizard_box_hint" formatted="false">Se značkami a detailními fotografiemi</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Skenovat přímo, bez značek</string>
+    <string name="ui_wizard_next_count" formatted="false">Skenování a počítání začíná načtením vychystávacího seznamu.</string>
+    <string name="ui_wizard_count_question" formatted="false">Kolik výrobků očekáváte?</string>
+    <string name="ui_wizard_products" formatted="false">Počet výrobků</string>
+    <string name="ui_wizard_count_hint" formatted="false">Zadejte očekávaný počet výrobků.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Tento počet se používá pro kontrolu.</string>
+    <string name="ui_wizard_next" formatted="false">Další</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Skenovat znovu</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Nový snímek nahradí předchozí sken hromádky.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Nové skenování</string>
+    <string name="ui_pl_step" formatted="false">Krok %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">Vychystávací seznam</string>
+    <string name="ui_pl_picklist_short" formatted="false">Vychystávací seznam</string>
+    <string name="ui_pl_products" formatted="false">Výrobky</string>
+    <string name="ui_pl_capture" formatted="false">Skenovat vychystávací seznam</string>
+    <string name="ui_pl_frame" formatted="false">Zachyťte celou stránku v záběru.</string>
+    <string name="ui_pl_photo" formatted="false">Pořídit fotografii</string>
+    <string name="ui_pl_pdf" formatted="false">Vybrat PDF / fotografii</string>
+    <string name="ui_pl_pages" formatted="false">Zachyceno stránek: %1$d · přidejte každou stránku</string>
+    <string name="ui_pl_reading" formatted="false">Čtení dokumentu…</string>
+    <string name="ui_pl_review" formatted="false">Zkontrolovat vychystávací seznam</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d položek výrobků · %2$d kusů</string>
+    <string name="ui_pl_pending" formatted="false">Rozpoznané údaje · dosud nepotvrzené</string>
+    <string name="ui_pl_source_warning" formatted="false">Zdroj zřejmě obsahuje přepravní seznam nebo fakturu. Ověřte, že jde o správný podklad pro tuto kontrolu.</string>
+    <string name="ui_pl_uncertain" formatted="false">Některé údaje nelze přečíst. Přidejte chybějící stránky a porovnejte každou položku se zdrojem.</string>
+    <string name="ui_pl_source_total" formatted="false">Celkem ve zdroji: %1$d</string>
+    <string name="ui_pl_edit" formatted="false">Upravit položku</string>
+    <string name="ui_pl_add_row" formatted="false">Přidat položku výrobku</string>
+    <string name="ui_pl_source" formatted="false">Zobrazit zdroj</string>
+    <string name="ui_pl_add_page" formatted="false">Přidat stránku</string>
+    <string name="ui_pl_ack" formatted="false">Zkontroloval(a) jsem každou položku a stránku podle zdroje.</string>
+    <string name="ui_pl_confirm" formatted="false">Potvrdit a pokračovat</string>
+    <string name="ui_pl_check_rows" formatted="false">Zkontrolujte artikl, šarži, expiraci, množství, součet a všechny stránky.</string>
+    <string name="ui_pl_article" formatted="false">Artikl</string>
+    <string name="ui_pl_lot" formatted="false">Šarže</string>
+    <string name="ui_pl_expiry" formatted="false">Expirace (RRRR-MM-DD)</string>
+    <string name="ui_pl_quantity" formatted="false">Množství</string>
+    <string name="ui_pl_count" formatted="false">Počet výrobků</string>
+    <string name="ui_pl_auto" formatted="false">Vyplněno automaticky z potvrzeného vychystávacího seznamu</string>
+    <string name="ui_pl_order" formatted="false">Vychystávací seznam · Objednávka %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d kartonů</string>
+    <string name="ui_pl_box_one" formatted="false">1 karton</string>
+    <string name="ui_pl_average" formatted="false">Průměrně %1$s na karton</string>
+    <string name="ui_pl_standard" formatted="false">Standardní</string>
+    <string name="ui_pl_large" formatted="false">Velký</string>
+    <string name="ui_pl_max" formatted="false">Max. %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">Navržené rozdělení</string>
+    <string name="ui_pl_plan_total" formatted="false">Rozdělení: %1$d / %2$d výrobků · klepnutím na karton upravíte</string>
+    <string name="ui_pl_carton" formatted="false">Karton %1$d z %2$d</string>
+    <string name="ui_pl_free" formatted="false">%1$d volných míst</string>
+    <string name="ui_pl_free_one" formatted="false">1 volné místo</string>
+    <string name="ui_pl_not_scanned" formatted="false">Dosud nenaskenováno</string>
+    <string name="ui_pl_adjust" formatted="false">Upravit vychystávací seznam</string>
+    <string name="ui_pl_continue" formatted="false">Pokračovat k výrobkům</string>
+    <string name="ui_pl_control" formatted="false">Skenovat a počítat</string>
+    <string name="ui_pl_reviewed" formatted="false">Ručně zkontrolováno</string>
+    <string name="ui_pl_matched" formatted="false">Všechny kartony a položky vychystávacího seznamu odpovídají.</string>
+    <string name="ui_pl_not_complete" formatted="false">Kontrola ještě není dokončena</string>
+    <string name="ui_pl_no_auto" formatted="false">Shodný součet automaticky neuvolňuje zásilku k odeslání.</string>
+    <string name="ui_pl_new" formatted="false">Nový vychystávací seznam</string>
+    <string name="ui_pl_error" formatted="false">Čtení nebo kontrola se nezdařily. Zkontrolujte zdroj a zkuste to znovu.</string>
+    <string name="ui_pl_camera_denied" formatted="false">Fotoaparát není k dispozici. Můžete také vybrat PDF nebo fotografii.</string>
+    <string name="ui_pl_expected" formatted="false">Očekáváno: %1$d výrobků</string>
+    <string name="ui_pl_fixed_count" formatted="false">Počet určuje vychystávací seznam. Před skenováním kartonů upravte jeho položky.</string>
+    <string name="ui_pl_identity_missing" formatted="false">Artikl nebo expirace nejsou známy. Zkontrolujte kód výrobku; samotná šarže nestačí.</string>
+    <string name="ui_pl_mapping" formatted="false">Propojit artikl s GTIN</string>
+    <string name="ui_pl_mapping_hint" formatted="false">Kód obsahuje GTIN, nikoli číslo artiklu. Zkontrolujte obal a vyberte správný artikl.</string>
+    <string name="ui_pl_choose_article" formatted="false">Vybrat artikl</string>
+    <string name="ui_pl_mismatch" formatted="false">Artikl, šarže, expirace nebo množství se liší od vychystávacího seznamu. Zkontrolujte rozdíly.</string>
+</resources>

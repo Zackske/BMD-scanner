@@ -54,7 +54,7 @@ public class CustomerPortalActivity extends AppCompatActivity {
         if(!Arrays.asList(MainActivity.LANGS).contains(language))language="nl";
         if(saved!=null)rememberedState=saved.getString("customer-portal-state","{}");
         Configuration config=new Configuration(getResources().getConfiguration());
-        config.setLocale(Locale.forLanguageTag(language));Context words=createConfigurationContext(config);
+        config.setLocale(Locale.forLanguageTag(language));Context words=createConfigurationContext(config);LocaleUi.apply(this,language);
         brand=words.getString(R.string.ui_short_name);
         try{register=new CustomerRegister(this,new JSONObject(readAsset("customer-portal/maps.json")).getJSONObject("countries"));}
         catch(Exception failure){throw new IllegalStateException("Missing offline country artwork",failure);}

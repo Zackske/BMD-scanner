@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD SkanMagik</string>
+    <string name="ui_short_name" formatted="false">SkanMagik</string>
+    <string name="ui_scan" formatted="false">Skanuj</string>
+    <string name="ui_photos" formatted="false">Dodaj zdjęcia</string>
+    <string name="ui_results" formatted="false">Wyniki</string>
+    <string name="ui_settings" formatted="false">Ustawienia</string>
+    <string name="ui_language" formatted="false">Język</string>
+    <string name="ui_choose_language" formatted="false">Wybierz język</string>
+    <string name="ui_scanner_settings" formatted="false">Ustawienia skanera</string>
+    <string name="ui_scanner" formatted="false">Skaner</string>
+    <string name="ui_scanner_hint" formatted="false">Rozdzielczość, czułość i wibracje</string>
+    <string name="ui_document_type" formatted="false">Typ dokumentu</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word i PDF</string>
+    <string name="ui_about" formatted="false">O aplikacji</string>
+    <string name="ui_back" formatted="false">Wstecz</string>
+    <string name="ui_close" formatted="false">Zamknij</string>
+    <string name="ui_done" formatted="false">Gotowe</string>
+    <string name="ui_apply" formatted="false">Zastosuj</string>
+    <string name="ui_cancel" formatted="false">Anuluj</string>
+    <string name="ui_save" formatted="false">Zapisz</string>
+    <string name="ui_save_changes" formatted="false">Zapisz zmiany</string>
+    <string name="ui_live" formatted="false">WYKRYWANIE NA ŻYWO</string>
+    <string name="ui_both" formatted="false">QR + kody kreskowe</string>
+    <string name="ui_qr_only" formatted="false">Tylko QR</string>
+    <string name="ui_bar_only" formatted="false">Tylko kody kreskowe</string>
+    <string name="ui_code_filter" formatted="false">Skanowane kody</string>
+    <string name="ui_count" formatted="false">Zeskanowane kody: %1$d</string>
+    <string name="ui_split" formatted="false">%1$d kodów QR · %2$d kodów kreskowych</string>
+    <string name="ui_same_hint" formatted="false">Identyczna treść jest liczona osobno dla każdego produktu</string>
+    <string name="ui_empty" formatted="false">Skieruj aparat na kody</string>
+    <string name="ui_all_results" formatted="false">Pokaż wszystkie wyniki</string>
+    <string name="ui_capture" formatted="false">Zrób zdjęcie</string>
+    <string name="ui_captured" formatted="false">Zdjęcie zrobione</string>
+    <string name="ui_local_save" formatted="false">Zapisz lokalnie</string>
+    <string name="ui_local_hint" formatted="false">Zapisz zdjęcie i wyniki skanowania</string>
+    <string name="ui_share" formatted="false">Udostępnij</string>
+    <string name="ui_share_hint" formatted="false">E-mail lub inne aplikacje</string>
+    <string name="ui_again" formatted="false">Skanuj ponownie</string>
+    <string name="ui_list" formatted="false">Zeskanowane kody</string>
+    <string name="ui_edit" formatted="false">Popraw kod</string>
+    <string name="ui_delete" formatted="false">Usuń</string>
+    <string name="ui_reset" formatted="false">Zresetuj skanowanie</string>
+    <string name="ui_reset_hint" formatted="false">Rozpoczęto nową sesję skanowania</string>
+    <string name="ui_resolution" formatted="false">Rozdzielczość</string>
+    <string name="ui_actual" formatted="false">Rzeczywista</string>
+    <string name="ui_highest" formatted="false">Najwyższa obsługiwana rozdzielczość</string>
+    <string name="ui_fallback" formatted="false">W razie potrzeby aparat używa najbliższego obsługiwanego rozmiaru</string>
+    <string name="ui_sensitivity" formatted="false">Czułość</string>
+    <string name="ui_stability" formatted="false">Stabilność rozpoznawania kodów</string>
+    <string name="ui_low" formatted="false">Niska</string>
+    <string name="ui_normal" formatted="false">Normalna</string>
+    <string name="ui_high" formatted="false">Wysoka</string>
+    <string name="ui_vibrate" formatted="false">Wibracja po skanie</string>
+    <string name="ui_vibrate_hint" formatted="false">Jedna krótka wibracja na zeskanowany kod</string>
+    <string name="ui_lamp" formatted="false">Lampa</string>
+    <string name="ui_on" formatted="false">WŁ.</string>
+    <string name="ui_off" formatted="false">WYŁ.</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Ustawienia dokumentu</string>
+    <string name="ui_choose_format" formatted="false">Wybierz format pliku</string>
+    <string name="ui_filename" formatted="false">Nazwa pliku</string>
+    <string name="ui_extension_hint" formatted="false">Rozszerzenie jest dodawane automatycznie</string>
+    <string name="ui_export" formatted="false">Utwórz dokument</string>
+    <string name="ui_saved" formatted="false">Zapisano</string>
+    <string name="ui_busy" formatted="false">Przetwarzanie…</string>
+    <string name="ui_error" formatted="false">Coś poszło nie tak</string>
+    <string name="ui_permission" formatted="false">Skanowanie wymaga dostępu do aparatu</string>
+    <string name="ui_no_camera" formatted="false">Nie znaleziono dostępnego aparatu</string>
+    <string name="ui_no_lamp" formatted="false">Ten aparat nie ma lampy</string>
+    <string name="ui_no_results" formatted="false">Brak wyników skanowania</string>
+    <string name="ui_nr" formatted="false">Nr</string>
+    <string name="ui_type" formatted="false">Typ</string>
+    <string name="ui_code" formatted="false">Kod</string>
+    <string name="ui_barcode" formatted="false">Kod kreskowy</string>
+    <string name="ui_photo_error" formatted="false">Nie udało się odczytać części zdjęć</string>
+    <string name="ui_choose_folder" formatted="false">Wybierz folder na zdjęcie i dokument</string>
+    <string name="ui_tracking_note" formatted="false">Trzymaj produkty w kadrze do zrobienia zdjęcia</string>
+    <string name="ui_confirm_reset" formatted="false">Wyczyścić bieżącą sesję skanowania?</string>
+    <string name="ui_delete_question" formatted="false">Usunąć ten skan?</string>
+    <string name="ui_flash" formatted="false">Lampa</string>
+    <string name="ui_camera" formatted="false">Aparat</string>
+    <string name="ui_gallery" formatted="false">Skanuj z galerii</string>
+    <string name="ui_detected" formatted="false">Wykryte kody: %1$d</string>
+    <string name="ui_scan_button" formatted="false">Skanuj</string>
+    <string name="ui_switch_camera" formatted="false">Zmień aparat</string>
+    <string name="ui_camera_mode" formatted="false">Tryb aparatu</string>
+    <string name="ui_save_scan" formatted="false">Zapisz skan</string>
+    <string name="ui_review_products" formatted="false">Sprawdź produkty</string>
+    <string name="ui_product_count" formatted="false">%1$d produktów</string>
+    <string name="ui_product" formatted="false">Produkt</string>
+    <string name="ui_review" formatted="false">sprawdź</string>
+    <string name="ui_unknown_lot" formatted="false">Nieznana partia</string>
+    <string name="ui_conflict" formatted="false">Sprzeczne dane</string>
+    <string name="ui_group_hint" formatted="false">Etykiety pozostają oddzielne. Łącz tylko kody z tego samego fizycznego opakowania. Sprawdź ilości i partie; ręcznie wpisane partie pozostają oznaczone.</string>
+    <string name="ui_group_selected" formatted="false">Połącz zaznaczone kody</string>
+    <string name="ui_split_selected" formatted="false">Rozdziel zaznaczone grupy</string>
+    <string name="ui_grouping_error" formatted="false">Nie łącz różnych partii ani produktów. Rozdziel sprzeczne kody.</string>
+    <string name="ui_themes" formatted="false">Motyw</string>
+    <string name="ui_colours_appearance" formatted="false">Kolory i wygląd</string>
+    <string name="ui_choose_theme" formatted="false">Wybierz motyw</string>
+    <string name="ui_theme_dark" formatted="false">Ciemny</string>
+    <string name="ui_theme_light" formatted="false">Jasny</string>
+    <string name="ui_theme_lime" formatted="false">Zielony</string>
+    <string name="ui_theme_violet" formatted="false">Fioletowy</string>
+    <string name="ui_theme_blue" formatted="false">Niebieski</string>
+    <string name="ui_theme_red" formatted="false">Czerwony</string>
+    <string name="ui_box_scan" formatted="false">Skanuj i licz</string>
+    <string name="ui_live_scan" formatted="false">Skanowanie na żywo</string>
+    <string name="ui_count_question" formatted="false">Ilu produktów oczekujesz w tym kartonie?</string>
+    <string name="ui_expected_count" formatted="false">Oczekiwana liczba</string>
+    <string name="ui_count_hint" formatted="false">Wpisz rzeczywistą oczekiwaną liczbę. Nie uzupełnia to brakujących skanów.</string>
+    <string name="ui_count_invalid" formatted="false">Wpisz liczbę całkowitą od 1 do 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Zrób zdjęcie całości. 2. Zrób zdjęcia czterech obszarów z 30% nakładaniem. 3. Sprawdź każde dopasowanie i listę produktów.</string>
+    <string name="ui_marker_help" formatted="false">Wydrukuj A, B, C i D. Umieść je na produktach wewnątrz kartonu: A u góry po lewej, B u góry po prawej, C na dole po lewej, D na dole po prawej. Nie zasłaniaj kodów i niczego nie przesuwaj. Zdjęcia szczegółowe wymagają widocznych znaczników lub wyraźnego nakładania.</string>
+    <string name="ui_box_limits" formatted="false">Funkcja eksperymentalna: zasłonięte lub całkowicie pominięte kody mogą pozostać niewidoczne. Identyczne produkty i powtarzalne wzory mogą zostać błędnie połączone.</string>
+    <string name="ui_marker_sheet" formatted="false">Udostępnij arkusz znaczników</string>
+    <string name="ui_make_overview" formatted="false">Zrób zdjęcie całości</string>
+    <string name="ui_overview" formatted="false">Widok ogólny</string>
+    <string name="ui_detail_photo" formatted="false">Zdjęcie szczegółowe %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Dodatkowe zdjęcie szczegółowe</string>
+    <string name="ui_top_left" formatted="false">Góra po lewej</string>
+    <string name="ui_top_right" formatted="false">Góra po prawej</string>
+    <string name="ui_bottom_left" formatted="false">Dół po lewej</string>
+    <string name="ui_bottom_right" formatted="false">Dół po prawej</string>
+    <string name="ui_overview_hint" formatted="false">Pokaż cały karton i znaczniki.</string>
+    <string name="ui_detail_hint" formatted="false">Podążaj za obszarem na mapie. Zachowaj około 30% nakładania i unikaj odblasków.</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d produktów · wstępnie</string>
+    <string name="ui_unreviewed" formatted="false">Wymaga sprawdzenia</string>
+    <string name="ui_live_codes" formatted="false">%1$d kodów w kadrze</string>
+    <string name="ui_placement" formatted="false">Sprawdź dopasowanie</string>
+    <string name="ui_alignment_failed" formatted="false">Nie znaleziono wiarygodnego dopasowania. Powtórz zdjęcie z większym nakładaniem i widocznymi znacznikami. Zdjęcie nie zostało dodane.</string>
+    <string name="ui_alignment_check" formatted="false">Sprawdź, czy niebieski obrys dokładnie odpowiada sfotografowanemu obszarowi. Powtarzalne wzory mogą powodować błędne dopasowanie.</string>
+    <string name="ui_confirm_placement" formatted="false">Dopasowanie poprawne · dodaj</string>
+    <string name="ui_photos_taken" formatted="false">%1$d zdjęć szczegółowych</string>
+    <string name="ui_no_auto_approval" formatted="false">Zgodność liczby nie zatwierdza wysyłki. Sprawdź każdy produkt, partie i powtórne wykrycia.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Liczba zgodna · sprawdzono ręcznie</string>
+    <string name="ui_change_count" formatted="false">Zmień oczekiwaną liczbę</string>
+    <string name="ui_new_box" formatted="false">Nowy karton</string>
+    <string name="ui_take_detail" formatted="false">Zrób zdjęcie szczegółowe</string>
+    <string name="ui_capture_step" formatted="false">Krok %1$d</string>
+    <string name="ui_capture_photo" formatted="false">Zrób zdjęcie</string>
+    <string name="ui_photo_step" formatted="false">Zdjęcie %1$d z 5</string>
+    <string name="ui_marker_setup" formatted="false">Najpierw umieść 4 znaczniki</string>
+    <string name="ui_marker_ack" formatted="false">Rozumiem · zdjęcie 1</string>
+    <string name="ui_marker_info" formatted="false">Instrukcja znaczników</string>
+    <string name="ui_bmd_control" formatted="false">Skanuj i licz</string>
+    <string name="ui_generic_scan" formatted="false">Skaner QR</string>
+    <string name="ui_pallet_scanner" formatted="false">Rejestruj dokumenty</string>
+    <string name="ui_document_scanner" formatted="false">Skaner kontroli dokumentów</string>
+    <string name="ui_picking_control" formatted="false">Kontrola kompletacji</string>
+    <string name="ui_picking_control_hint" formatted="false">Odczytaj listę kompletacyjną, sprawdź produkty i ilości</string>
+    <string name="ui_final_control_hint" formatted="false">Odczytaj listę kompletacyjną i sprawdź przed lub po pakowaniu</string>
+    <string name="ui_control_picklist_first" formatted="false">Skanowanie i liczenie zaczyna się od odczytu listy kompletacyjnej.</string>
+    <string name="ui_packing_question" formatted="false">Czy produkty są już zapakowane?</string>
+    <string name="ui_packed_box" formatted="false">W kartonie</string>
+    <string name="ui_packed_box_hint" formatted="false">Ze znacznikami i 5 zdjęciami</string>
+    <string name="ui_before_packing" formatted="false">Przed pakowaniem</string>
+    <string name="ui_before_packing_hint" formatted="false">Skanuj produkty bez znaczników</string>
+    <string name="ui_generic_hint" formatted="false">Skieruj aparat na kod QR lub kreskowy</string>
+    <string name="ui_generic_result" formatted="false">Wykryto kod</string>
+    <string name="ui_generic_results" formatted="false">Wykryte kody</string>
+    <string name="ui_generic_open_link" formatted="false">Otwórz link</string>
+    <string name="ui_generic_copy" formatted="false">Kopiuj</string>
+    <string name="ui_generic_copied" formatted="false">Skopiowano</string>
+    <string name="ui_generic_empty" formatted="false">Nie znaleziono czytelnego kodu</string>
+    <string name="ui_generic_error" formatted="false">Nie udało się zeskanować. Spróbuj ponownie.</string>
+    <string name="ui_generic_preview" formatted="false">Podgląd linku</string>
+    <string name="ui_generic_preview_load" formatted="false">Wczytaj podgląd</string>
+    <string name="ui_generic_preview_loading" formatted="false">Wczytywanie strony…</string>
+    <string name="ui_generic_preview_error" formatted="false">Podgląd niedostępny. Otwórz link w przeglądarce.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Spróbuj ponownie</string>
+    <string name="ui_generic_preview_hide" formatted="false">Ukryj podgląd</string>
+    <string name="ui_work_in_progress" formatted="false">W przygotowaniu</string>
+    <string name="ui_web_links" formatted="false">Linki internetowe</string>
+    <string name="ui_portal" formatted="false">Portal klientów</string>
+    <string name="ui_work_instructions" formatted="false">Instrukcje pracy</string>
+    <string name="ui_email_check" formatted="false">Kontrola e-maili</string>
+    <string name="ui_document_check" formatted="false">Kontrola dokumentów</string>
+    <string name="ui_in_development" formatted="false">Ta funkcja jest w przygotowaniu.</string>
+    <string name="ui_lots_title" formatted="false">Zeskanowane partie</string>
+    <string name="ui_checklist" formatted="false">Pokaż listę kontrolną</string>
+    <string name="ui_continue_save" formatted="false">Przejdź do zapisu</string>
+    <string name="ui_include_images" formatted="false">Dołącz zdjęcia skanów</string>
+    <string name="ui_guided_mode" formatted="false">Co chcesz sprawdzić?</string>
+    <string name="ui_complete_box" formatted="false">Pełny karton</string>
+    <string name="ui_inventory" formatted="false">Zapasy</string>
+    <string name="ui_step_progress" formatted="false">Zdjęcie %1$d z 5 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">Sprawdź partię</string>
+    <string name="ui_exclude" formatted="false">Wyklucz</string>
+    <string name="ui_undo" formatted="false">Cofnij</string>
+    <string name="ui_save_options" formatted="false">Zapisz i udostępnij</string>
+    <string name="ui_all_reviewed" formatted="false">Sprawdzono ręcznie</string>
+    <string name="ui_capture_first" formatted="false">Najpierw zrób zdjęcie całości</string>
+    <string name="ui_photos_needed" formatted="false">Zrób co najmniej %1$d dodatkowych zdjęć szczegółowych</string>
+    <string name="ui_manual_change" formatted="false">Zmieniono ręcznie</string>
+    <string name="ui_review_all" formatted="false">Sprawdź wszystkie produkty z tej partii</string>
+    <string name="ui_qr_count_check" formatted="false">Kontrola QR/liczby</string>
+    <string name="ui_box_pallet_check" formatted="false">Kontrola kartonu/palety</string>
+    <string name="ui_wizard_step_type" formatted="false">Krok 1 · Typ skanowania</string>
+    <string name="ui_wizard_step_count" formatted="false">Krok 2 · Ilość</string>
+    <string name="ui_wizard_type" formatted="false">Typ</string>
+    <string name="ui_wizard_count" formatted="false">Ilość</string>
+    <string name="ui_wizard_type_question" formatted="false">Co chcesz zeskanować?</string>
+    <string name="ui_wizard_box" formatted="false">Skanuj i licz</string>
+    <string name="ui_wizard_stack" formatted="false">Luźny stos</string>
+    <string name="ui_wizard_box_hint" formatted="false">Ze znacznikami i zdjęciami szczegółowymi</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Skanuj bezpośrednio, bez znaczników</string>
+    <string name="ui_wizard_next_count" formatted="false">Skanowanie i liczenie zaczyna się od odczytu listy kompletacyjnej.</string>
+    <string name="ui_wizard_count_question" formatted="false">Ilu produktów oczekujesz?</string>
+    <string name="ui_wizard_products" formatted="false">Liczba produktów</string>
+    <string name="ui_wizard_count_hint" formatted="false">Wpisz oczekiwaną liczbę produktów.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Ta liczba służy do kontroli.</string>
+    <string name="ui_wizard_next" formatted="false">Dalej</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Skanuj ponownie</string>
+    <string name="ui_wizard_retake_hint" formatted="false">Nowe zdjęcie zastępuje poprzedni skan stosu.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Nowy skan</string>
+    <string name="ui_pl_step" formatted="false">Krok %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">Lista kompletacyjna</string>
+    <string name="ui_pl_picklist_short" formatted="false">Lista kompletacyjna</string>
+    <string name="ui_pl_products" formatted="false">Produkty</string>
+    <string name="ui_pl_capture" formatted="false">Skanuj listę kompletacyjną</string>
+    <string name="ui_pl_frame" formatted="false">Umieść całą stronę w kadrze.</string>
+    <string name="ui_pl_photo" formatted="false">Zrób zdjęcie</string>
+    <string name="ui_pl_pdf" formatted="false">Wybierz PDF / zdjęcie</string>
+    <string name="ui_pl_pages" formatted="false">Liczba stron: %1$d · dodaj wszystkie strony</string>
+    <string name="ui_pl_reading" formatted="false">Odczytywanie dokumentu…</string>
+    <string name="ui_pl_review" formatted="false">Sprawdź listę kompletacyjną</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d pozycji · %2$d sztuk</string>
+    <string name="ui_pl_pending" formatted="false">Rozpoznane dane · jeszcze niepotwierdzone</string>
+    <string name="ui_pl_source_warning" formatted="false">Źródło wygląda na listę wysyłkową lub fakturę. Sprawdź, czy to właściwy dokument odniesienia dla tej kontroli.</string>
+    <string name="ui_pl_uncertain" formatted="false">Nie udało się odczytać części danych. Dodaj brakujące strony i porównaj każdą pozycję ze źródłem.</string>
+    <string name="ui_pl_source_total" formatted="false">Suma w źródle: %1$d</string>
+    <string name="ui_pl_edit" formatted="false">Edytuj pozycję</string>
+    <string name="ui_pl_add_row" formatted="false">Dodaj pozycję produktu</string>
+    <string name="ui_pl_source" formatted="false">Pokaż źródło</string>
+    <string name="ui_pl_add_page" formatted="false">Dodaj stronę</string>
+    <string name="ui_pl_ack" formatted="false">Sprawdziłem każdą pozycję i stronę ze źródłem.</string>
+    <string name="ui_pl_confirm" formatted="false">Potwierdź i kontynuuj</string>
+    <string name="ui_pl_check_rows" formatted="false">Sprawdź artykuł, partię, termin ważności, ilość, sumę i wszystkie strony.</string>
+    <string name="ui_pl_article" formatted="false">Artykuł</string>
+    <string name="ui_pl_lot" formatted="false">Partia</string>
+    <string name="ui_pl_expiry" formatted="false">Termin ważności (RRRR-MM-DD)</string>
+    <string name="ui_pl_quantity" formatted="false">Ilość</string>
+    <string name="ui_pl_count" formatted="false">Liczba produktów</string>
+    <string name="ui_pl_auto" formatted="false">Wypełniono automatycznie z potwierdzonej listy kompletacyjnej</string>
+    <string name="ui_pl_order" formatted="false">Lista kompletacyjna · zamówienie %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d kartonów</string>
+    <string name="ui_pl_box_one" formatted="false">1 karton</string>
+    <string name="ui_pl_average" formatted="false">Średnio %1$s na karton</string>
+    <string name="ui_pl_standard" formatted="false">Standardowy</string>
+    <string name="ui_pl_large" formatted="false">Duży</string>
+    <string name="ui_pl_max" formatted="false">Maks. %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">Proponowany podział</string>
+    <string name="ui_pl_plan_total" formatted="false">Podział: %1$d / %2$d produktów · dotknij kartonu, aby edytować</string>
+    <string name="ui_pl_carton" formatted="false">Karton %1$d z %2$d</string>
+    <string name="ui_pl_free" formatted="false">%1$d wolnych miejsc</string>
+    <string name="ui_pl_free_one" formatted="false">1 wolne miejsce</string>
+    <string name="ui_pl_not_scanned" formatted="false">Jeszcze nie zeskanowano</string>
+    <string name="ui_pl_adjust" formatted="false">Edytuj listę kompletacyjną</string>
+    <string name="ui_pl_continue" formatted="false">Przejdź do produktów</string>
+    <string name="ui_pl_control" formatted="false">Skanuj i licz</string>
+    <string name="ui_pl_reviewed" formatted="false">Sprawdzono ręcznie</string>
+    <string name="ui_pl_matched" formatted="false">Wszystkie kartony i pozycje listy są zgodne.</string>
+    <string name="ui_pl_not_complete" formatted="false">Kontrola nie jest jeszcze zakończona</string>
+    <string name="ui_pl_no_auto" formatted="false">Zgodność sumy nie zwalnia automatycznie wysyłki.</string>
+    <string name="ui_pl_new" formatted="false">Nowa lista kompletacyjna</string>
+    <string name="ui_pl_error" formatted="false">Odczyt lub kontrola nie powiodły się. Sprawdź źródło i spróbuj ponownie.</string>
+    <string name="ui_pl_camera_denied" formatted="false">Aparat niedostępny. Możesz też wybrać PDF lub zdjęcie.</string>
+    <string name="ui_pl_expected" formatted="false">Oczekiwano: %1$d produktów</string>
+    <string name="ui_pl_fixed_count" formatted="false">Liczbę wyznacza lista kompletacyjna. Edytuj jej pozycje przed skanowaniem kartonów.</string>
+    <string name="ui_pl_identity_missing" formatted="false">Nieznany artykuł lub termin ważności. Sprawdź kod produktu; sama partia nie wystarcza.</string>
+    <string name="ui_pl_mapping" formatted="false">Powiąż artykuł z GTIN</string>
+    <string name="ui_pl_mapping_hint" formatted="false">Kod zawiera GTIN, a nie numer artykułu. Sprawdź opakowanie i wybierz właściwy artykuł.</string>
+    <string name="ui_pl_choose_article" formatted="false">Wybierz artykuł</string>
+    <string name="ui_pl_mismatch" formatted="false">Artykuł, partia, termin ważności lub ilości różnią się od listy kompletacyjnej. Sprawdź rozbieżności.</string>
+</resources>

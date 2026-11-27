@@ -14,7 +14,7 @@ final class ReferenceArt {
     static synchronized Typeface face(Context context,boolean italic,int weight){String key=italic+":"+weight;Typeface font=fonts.get(key);if(font==null){font=new Typeface.Builder(context.getAssets(),italic?"fonts/nunito_italic.ttf":"fonts/nunito_regular.ttf").setFontVariationSettings("'wght' "+weight).setWeight(weight).setItalic(italic).build();fonts.put(key,font);}return font;}
     static synchronized Typeface magicFace(Context context,String text){
         // Devanagari uses the system shaping/font fallback; Latin and Cyrillic use the bundled script.
-        if(text.codePoints().anyMatch(c->c>=0x900&&c<=0x97f))return face(context,true,850);
+        if(text.codePoints().anyMatch(c->(c>=0x600&&c<=0x6ff)||(c>=0x900&&c<=0x97f)))return face(context,true,850);
         Typeface font=fonts.get("magic");if(font==null){font=Typeface.createFromAsset(context.getAssets(),"fonts/lobster.ttf");fonts.put("magic",font);}return font;
     }
     static Bitmap scanner(Context context){int resource=ThemeSkin.active==ThemeSkin.LIME?R.drawable.ref_scanner_lime:ThemeSkin.active==ThemeSkin.VIOLET?R.drawable.ref_scanner_violet:ThemeSkin.active==ThemeSkin.TRANSLUMINA?R.drawable.ref_scanner_red:ThemeSkin.active==ThemeSkin.DARK?R.drawable.ref_scanner_dark:ThemeSkin.active==ThemeSkin.LIGHT?R.drawable.ref_scanner_light:R.drawable.launcher_foreground;return bitmap(context,resource);}

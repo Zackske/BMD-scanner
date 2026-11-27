@@ -1,5 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="ui_themes">Temalar</string>
+    <string name="ui_themes">Tema</string>
     <string name="ui_colours_appearance">Renkler ve görünüm</string>
     <string name="ui_choose_theme">Tema seçin</string>
     <string name="ui_theme_dark">Koyu</string>

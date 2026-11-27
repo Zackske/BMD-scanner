@@ -1,0 +1,279 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name" formatted="false">BMD Scan</string>
+    <string name="ui_brand" formatted="false">BMD ScanMagician</string>
+    <string name="ui_short_name" formatted="false">ScanMagician</string>
+    <string name="ui_scan" formatted="false">Scanare</string>
+    <string name="ui_photos" formatted="false">Încarcă fotografii</string>
+    <string name="ui_results" formatted="false">Rezultate</string>
+    <string name="ui_settings" formatted="false">Setări</string>
+    <string name="ui_language" formatted="false">Limbă</string>
+    <string name="ui_choose_language" formatted="false">Alege limba</string>
+    <string name="ui_scanner_settings" formatted="false">Setări scaner</string>
+    <string name="ui_scanner" formatted="false">Scaner</string>
+    <string name="ui_scanner_hint" formatted="false">Rezoluție, sensibilitate și vibrații</string>
+    <string name="ui_document_type" formatted="false">Tip document</string>
+    <string name="ui_formats" formatted="false">CSV, Excel, Word și PDF</string>
+    <string name="ui_about" formatted="false">Despre aplicație</string>
+    <string name="ui_back" formatted="false">Înapoi</string>
+    <string name="ui_close" formatted="false">Închide</string>
+    <string name="ui_done" formatted="false">Gata</string>
+    <string name="ui_apply" formatted="false">Aplică</string>
+    <string name="ui_cancel" formatted="false">Anulează</string>
+    <string name="ui_save" formatted="false">Salvează</string>
+    <string name="ui_save_changes" formatted="false">Salvează modificările</string>
+    <string name="ui_live" formatted="false">DETECTARE ÎN TIMP REAL</string>
+    <string name="ui_both" formatted="false">QR + coduri de bare</string>
+    <string name="ui_qr_only" formatted="false">Doar QR</string>
+    <string name="ui_bar_only" formatted="false">Doar coduri de bare</string>
+    <string name="ui_code_filter" formatted="false">Coduri de scanat</string>
+    <string name="ui_count" formatted="false">%1$d coduri scanate</string>
+    <string name="ui_split" formatted="false">%1$d coduri QR · %2$d coduri de bare</string>
+    <string name="ui_same_hint" formatted="false">Conținutul identic se numără separat pentru fiecare produs</string>
+    <string name="ui_empty" formatted="false">Îndreaptă camera spre coduri</string>
+    <string name="ui_all_results" formatted="false">Vezi toate rezultatele</string>
+    <string name="ui_capture" formatted="false">Fotografiază</string>
+    <string name="ui_captured" formatted="false">Fotografie realizată</string>
+    <string name="ui_local_save" formatted="false">Salvează local</string>
+    <string name="ui_local_hint" formatted="false">Salvează fotografia și rezultatele scanării</string>
+    <string name="ui_share" formatted="false">Distribuie</string>
+    <string name="ui_share_hint" formatted="false">E-mail sau alte aplicații</string>
+    <string name="ui_again" formatted="false">Scanează din nou</string>
+    <string name="ui_list" formatted="false">Coduri scanate</string>
+    <string name="ui_edit" formatted="false">Corectează codul</string>
+    <string name="ui_delete" formatted="false">Elimină</string>
+    <string name="ui_reset" formatted="false">Resetează scanarea</string>
+    <string name="ui_reset_hint" formatted="false">S-a început o nouă sesiune de scanare</string>
+    <string name="ui_resolution" formatted="false">Rezoluție</string>
+    <string name="ui_actual" formatted="false">Efectivă</string>
+    <string name="ui_highest" formatted="false">Cea mai mare rezoluție acceptată</string>
+    <string name="ui_fallback" formatted="false">Dacă este necesar, camera folosește cea mai apropiată dimensiune acceptată</string>
+    <string name="ui_sensitivity" formatted="false">Sensibilitate</string>
+    <string name="ui_stability" formatted="false">Stabilitatea recunoașterii codurilor</string>
+    <string name="ui_low" formatted="false">Redusă</string>
+    <string name="ui_normal" formatted="false">Normală</string>
+    <string name="ui_high" formatted="false">Ridicată</string>
+    <string name="ui_vibrate" formatted="false">Vibrație după scanare</string>
+    <string name="ui_vibrate_hint" formatted="false">O vibrație scurtă pentru fiecare cod scanat</string>
+    <string name="ui_lamp" formatted="false">Lumină</string>
+    <string name="ui_on" formatted="false">PORNIT</string>
+    <string name="ui_off" formatted="false">OPRIT</string>
+    <string name="ui_zoom" formatted="false">Zoom</string>
+    <string name="ui_document_settings" formatted="false">Setări document</string>
+    <string name="ui_choose_format" formatted="false">Alege formatul fișierului</string>
+    <string name="ui_filename" formatted="false">Nume fișier</string>
+    <string name="ui_extension_hint" formatted="false">Extensia se adaugă automat</string>
+    <string name="ui_export" formatted="false">Creează document</string>
+    <string name="ui_saved" formatted="false">Salvat</string>
+    <string name="ui_busy" formatted="false">Se procesează…</string>
+    <string name="ui_error" formatted="false">A apărut o eroare</string>
+    <string name="ui_permission" formatted="false">Scanarea necesită permisiunea pentru cameră</string>
+    <string name="ui_no_camera" formatted="false">Nu s-a găsit o cameră utilizabilă</string>
+    <string name="ui_no_lamp" formatted="false">Această cameră nu are lumină</string>
+    <string name="ui_no_results" formatted="false">Încă nu există rezultate</string>
+    <string name="ui_nr" formatted="false">Nr.</string>
+    <string name="ui_type" formatted="false">Tip</string>
+    <string name="ui_code" formatted="false">Cod</string>
+    <string name="ui_barcode" formatted="false">Cod de bare</string>
+    <string name="ui_photo_error" formatted="false">Unele fotografii nu au putut fi citite</string>
+    <string name="ui_choose_folder" formatted="false">Alege un dosar pentru fotografie și document</string>
+    <string name="ui_tracking_note" formatted="false">Menține produsele în cadru până faci fotografia</string>
+    <string name="ui_confirm_reset" formatted="false">Ștergi sesiunea curentă de scanare?</string>
+    <string name="ui_delete_question" formatted="false">Elimini această scanare?</string>
+    <string name="ui_flash" formatted="false">Bliț</string>
+    <string name="ui_camera" formatted="false">Cameră</string>
+    <string name="ui_gallery" formatted="false">Scanează din galerie</string>
+    <string name="ui_detected" formatted="false">%1$d coduri detectate</string>
+    <string name="ui_scan_button" formatted="false">Scanează</string>
+    <string name="ui_switch_camera" formatted="false">Schimbă camera</string>
+    <string name="ui_camera_mode" formatted="false">Mod cameră</string>
+    <string name="ui_save_scan" formatted="false">Salvează scanarea</string>
+    <string name="ui_review_products" formatted="false">Verifică produsele</string>
+    <string name="ui_product_count" formatted="false">%1$d produse</string>
+    <string name="ui_product" formatted="false">Produs</string>
+    <string name="ui_review" formatted="false">verifică</string>
+    <string name="ui_unknown_lot" formatted="false">Lot necunoscut</string>
+    <string name="ui_conflict" formatted="false">Date contradictorii</string>
+    <string name="ui_group_hint" formatted="false">Etichetele rămân separate. Grupează doar codurile de pe aceeași cutie fizică. Verifică numerele și loturile; loturile introduse manual rămân marcate.</string>
+    <string name="ui_group_selected" formatted="false">Grupează codurile selectate</string>
+    <string name="ui_split_selected" formatted="false">Separă grupurile selectate</string>
+    <string name="ui_grouping_error" formatted="false">Nu grupa loturi sau produse diferite. Separă codurile contradictorii.</string>
+    <string name="ui_themes" formatted="false">Temă</string>
+    <string name="ui_colours_appearance" formatted="false">Culori și aspect</string>
+    <string name="ui_choose_theme" formatted="false">Alege tema</string>
+    <string name="ui_theme_dark" formatted="false">Întunecat</string>
+    <string name="ui_theme_light" formatted="false">Luminos</string>
+    <string name="ui_theme_lime" formatted="false">Verde</string>
+    <string name="ui_theme_violet" formatted="false">Violet</string>
+    <string name="ui_theme_blue" formatted="false">Albastru</string>
+    <string name="ui_theme_red" formatted="false">Roșu</string>
+    <string name="ui_box_scan" formatted="false">Scanează și numără</string>
+    <string name="ui_live_scan" formatted="false">Scanare în timp real</string>
+    <string name="ui_count_question" formatted="false">Câte produse aștepți în această cutie?</string>
+    <string name="ui_expected_count" formatted="false">Număr așteptat</string>
+    <string name="ui_count_hint" formatted="false">Introdu numărul real așteptat. Acesta nu completează scanările lipsă.</string>
+    <string name="ui_count_invalid" formatted="false">Introdu un număr întreg între 1 și 10000.</string>
+    <string name="ui_box_instructions" formatted="false">1. Fotografiază ansamblul. 2. Fotografiază patru zone cu suprapunere de 30%. 3. Verifică fiecare poziționare și lista produselor.</string>
+    <string name="ui_marker_help" formatted="false">Tipărește A, B, C și D. Așază-le pe produse în interiorul cutiei: A sus stânga, B sus dreapta, C jos stânga, D jos dreapta. Lasă codurile vizibile și nu mișca nimic. Fotografiile de detaliu necesită marcaje vizibile sau suprapunere clară.</string>
+    <string name="ui_box_limits" formatted="false">Experimental: codurile ascunse sau complet omise pot rămâne invizibile. Produsele identice și modelele repetitive pot fi asociate incorect.</string>
+    <string name="ui_marker_sheet" formatted="false">Distribuie foaia cu marcaje</string>
+    <string name="ui_make_overview" formatted="false">Fotografiază ansamblul</string>
+    <string name="ui_overview" formatted="false">Ansamblu</string>
+    <string name="ui_detail_photo" formatted="false">Fotografie de detaliu %1$d</string>
+    <string name="ui_extra_photo" formatted="false">Fotografie de detaliu suplimentară</string>
+    <string name="ui_top_left" formatted="false">Sus stânga</string>
+    <string name="ui_top_right" formatted="false">Sus dreapta</string>
+    <string name="ui_bottom_left" formatted="false">Jos stânga</string>
+    <string name="ui_bottom_right" formatted="false">Jos dreapta</string>
+    <string name="ui_overview_hint" formatted="false">Include întreaga cutie și marcajele ei.</string>
+    <string name="ui_detail_hint" formatted="false">Urmează zona de pe hartă. Păstrează o suprapunere de aproximativ 30% și evită reflexiile.</string>
+    <string name="ui_box_progress" formatted="false">%1$d / %2$d produse · provizoriu</string>
+    <string name="ui_unreviewed" formatted="false">Necesită verificare</string>
+    <string name="ui_live_codes" formatted="false">%1$d coduri în cadru</string>
+    <string name="ui_placement" formatted="false">Verifică poziționarea</string>
+    <string name="ui_alignment_failed" formatted="false">Nu s-a găsit o poziționare fiabilă. Repetă cu mai multă suprapunere și marcaje vizibile. Fotografia nu a fost adăugată.</string>
+    <string name="ui_alignment_check" formatted="false">Verifică dacă conturul albastru corespunde exact zonei fotografiate. Modelele repetitive pot produce o poziționare incorectă.</string>
+    <string name="ui_confirm_placement" formatted="false">Poziționare corectă · adaugă</string>
+    <string name="ui_photos_taken" formatted="false">%1$d fotografii de detaliu realizate</string>
+    <string name="ui_no_auto_approval" formatted="false">Numerele egale nu aprobă expedierea. Verifică fiecare produs, loturile și detectările duplicate.</string>
+    <string name="ui_count_equal_reviewed" formatted="false">Numărul corespunde · verificat manual</string>
+    <string name="ui_change_count" formatted="false">Schimbă numărul așteptat</string>
+    <string name="ui_new_box" formatted="false">Cutie nouă</string>
+    <string name="ui_take_detail" formatted="false">Fotografiază detaliul</string>
+    <string name="ui_capture_step" formatted="false">Pasul %1$d</string>
+    <string name="ui_capture_photo" formatted="false">Fotografiază</string>
+    <string name="ui_photo_step" formatted="false">Fotografia %1$d din 5</string>
+    <string name="ui_marker_setup" formatted="false">Așază mai întâi cele 4 marcaje</string>
+    <string name="ui_marker_ack" formatted="false">Am înțeles · fotografia 1</string>
+    <string name="ui_marker_info" formatted="false">Instrucțiuni pentru marcaje</string>
+    <string name="ui_bmd_control" formatted="false">Scanează și numără</string>
+    <string name="ui_generic_scan" formatted="false">Scaner QR</string>
+    <string name="ui_pallet_scanner" formatted="false">Captură documente</string>
+    <string name="ui_document_scanner" formatted="false">Scaner verificare documente</string>
+    <string name="ui_picking_control" formatted="false">Verificare pregătire comandă</string>
+    <string name="ui_picking_control_hint" formatted="false">Citește lista de pregătire și verifică produsele și cantitățile</string>
+    <string name="ui_final_control_hint" formatted="false">Citește lista de pregătire și verifică înainte sau după ambalare</string>
+    <string name="ui_control_picklist_first" formatted="false">Scanarea și numărarea încep prin citirea listei de pregătire.</string>
+    <string name="ui_packing_question" formatted="false">Produsele sunt deja ambalate?</string>
+    <string name="ui_packed_box" formatted="false">În cutie</string>
+    <string name="ui_packed_box_hint" formatted="false">Cu marcaje și 5 etape foto</string>
+    <string name="ui_before_packing" formatted="false">Înainte de ambalare</string>
+    <string name="ui_before_packing_hint" formatted="false">Scanează produsele fără marcaje</string>
+    <string name="ui_generic_hint" formatted="false">Îndreaptă camera spre un cod QR sau de bare</string>
+    <string name="ui_generic_result" formatted="false">Cod detectat</string>
+    <string name="ui_generic_results" formatted="false">Coduri detectate</string>
+    <string name="ui_generic_open_link" formatted="false">Deschide linkul</string>
+    <string name="ui_generic_copy" formatted="false">Copiază</string>
+    <string name="ui_generic_copied" formatted="false">Copiat</string>
+    <string name="ui_generic_empty" formatted="false">Nu s-a găsit niciun cod lizibil</string>
+    <string name="ui_generic_error" formatted="false">Scanarea a eșuat. Încearcă din nou.</string>
+    <string name="ui_generic_preview" formatted="false">Previzualizare link</string>
+    <string name="ui_generic_preview_load" formatted="false">Încarcă previzualizarea</string>
+    <string name="ui_generic_preview_loading" formatted="false">Se încarcă site-ul…</string>
+    <string name="ui_generic_preview_error" formatted="false">Previzualizare indisponibilă. Deschide linkul în browser.</string>
+    <string name="ui_generic_preview_retry" formatted="false">Încearcă din nou</string>
+    <string name="ui_generic_preview_hide" formatted="false">Ascunde previzualizarea</string>
+    <string name="ui_work_in_progress" formatted="false">În dezvoltare</string>
+    <string name="ui_web_links" formatted="false">Linkuri web</string>
+    <string name="ui_portal" formatted="false">Portal clienți</string>
+    <string name="ui_work_instructions" formatted="false">Instrucțiuni de lucru</string>
+    <string name="ui_email_check" formatted="false">Verificare e-mail</string>
+    <string name="ui_document_check" formatted="false">Verificare documente</string>
+    <string name="ui_in_development" formatted="false">Această funcție este în dezvoltare.</string>
+    <string name="ui_lots_title" formatted="false">Loturi scanate</string>
+    <string name="ui_checklist" formatted="false">Vezi lista de verificare</string>
+    <string name="ui_continue_save" formatted="false">Continuă la salvare</string>
+    <string name="ui_include_images" formatted="false">Include imaginile scanării</string>
+    <string name="ui_guided_mode" formatted="false">Ce dorești să verifici?</string>
+    <string name="ui_complete_box" formatted="false">Cutie completă</string>
+    <string name="ui_inventory" formatted="false">Stoc</string>
+    <string name="ui_step_progress" formatted="false">Fotografia %1$d din 5 · %2$s</string>
+    <string name="ui_review_lot" formatted="false">Verifică lotul</string>
+    <string name="ui_exclude" formatted="false">Exclude</string>
+    <string name="ui_undo" formatted="false">Anulează acțiunea</string>
+    <string name="ui_save_options" formatted="false">Salvează și distribuie</string>
+    <string name="ui_all_reviewed" formatted="false">Verificat manual</string>
+    <string name="ui_capture_first" formatted="false">Fotografiază mai întâi ansamblul</string>
+    <string name="ui_photos_needed" formatted="false">Mai fă cel puțin %1$d fotografii de detaliu</string>
+    <string name="ui_manual_change" formatted="false">Modificat manual</string>
+    <string name="ui_review_all" formatted="false">Verifică toate produsele din acest lot</string>
+    <string name="ui_qr_count_check" formatted="false">Verificare QR/număr</string>
+    <string name="ui_box_pallet_check" formatted="false">Verificare cutie/palet</string>
+    <string name="ui_wizard_step_type" formatted="false">Pasul 1 · Tip scanare</string>
+    <string name="ui_wizard_step_count" formatted="false">Pasul 2 · Cantitate</string>
+    <string name="ui_wizard_type" formatted="false">Tip</string>
+    <string name="ui_wizard_count" formatted="false">Cantitate</string>
+    <string name="ui_wizard_type_question" formatted="false">Ce dorești să scanezi?</string>
+    <string name="ui_wizard_box" formatted="false">Scanează și numără</string>
+    <string name="ui_wizard_stack" formatted="false">Stivă separată</string>
+    <string name="ui_wizard_box_hint" formatted="false">Cu marcaje și fotografii de detaliu</string>
+    <string name="ui_wizard_stack_hint" formatted="false">Scanează direct, fără marcaje</string>
+    <string name="ui_wizard_next_count" formatted="false">Scanarea și numărarea încep prin citirea listei de pregătire.</string>
+    <string name="ui_wizard_count_question" formatted="false">Câte produse aștepți?</string>
+    <string name="ui_wizard_products" formatted="false">Număr de produse</string>
+    <string name="ui_wizard_count_hint" formatted="false">Introdu numărul așteptat de produse.</string>
+    <string name="ui_wizard_count_usage" formatted="false">Acest număr este folosit pentru verificare.</string>
+    <string name="ui_wizard_next" formatted="false">Înainte</string>
+    <string name="ui_wizard_rescan_stack" formatted="false">Scanează din nou</string>
+    <string name="ui_wizard_retake_hint" formatted="false">O nouă captură înlocuiește scanarea anterioară a stivei.</string>
+    <string name="ui_wizard_new_scan" formatted="false">Scanare nouă</string>
+    <string name="ui_pl_step" formatted="false">Pasul %1$d · %2$s</string>
+    <string name="ui_pl_picklist" formatted="false">Listă de pregătire</string>
+    <string name="ui_pl_picklist_short" formatted="false">Listă de pregătire</string>
+    <string name="ui_pl_products" formatted="false">Produse</string>
+    <string name="ui_pl_capture" formatted="false">Scanează lista de pregătire</string>
+    <string name="ui_pl_frame" formatted="false">Încadrează întreaga pagină.</string>
+    <string name="ui_pl_photo" formatted="false">Fotografiază</string>
+    <string name="ui_pl_pdf" formatted="false">Alege PDF / fotografie</string>
+    <string name="ui_pl_pages" formatted="false">%1$d pagini capturate · adaugă fiecare pagină</string>
+    <string name="ui_pl_reading" formatted="false">Se citește documentul…</string>
+    <string name="ui_pl_review" formatted="false">Verifică lista de pregătire</string>
+    <string name="ui_pl_rows_total" formatted="false">%1$d linii de produse · %2$d bucăți</string>
+    <string name="ui_pl_pending" formatted="false">Date recunoscute · încă neconfirmate</string>
+    <string name="ui_pl_source_warning" formatted="false">Sursa pare a fi o listă de expediție sau o factură. Verifică dacă este referința corectă pentru această verificare.</string>
+    <string name="ui_pl_uncertain" formatted="false">Unele date nu au putut fi citite. Adaugă paginile lipsă și compară fiecare linie cu sursa.</string>
+    <string name="ui_pl_source_total" formatted="false">Total sursă: %1$d</string>
+    <string name="ui_pl_edit" formatted="false">Editează linia</string>
+    <string name="ui_pl_add_row" formatted="false">Adaugă o linie de produs</string>
+    <string name="ui_pl_source" formatted="false">Vezi sursa</string>
+    <string name="ui_pl_add_page" formatted="false">Adaugă pagină</string>
+    <string name="ui_pl_ack" formatted="false">Am verificat fiecare linie și pagină în raport cu sursa.</string>
+    <string name="ui_pl_confirm" formatted="false">Confirmă și continuă</string>
+    <string name="ui_pl_check_rows" formatted="false">Verifică articolul, lotul, expirarea, cantitatea, totalul și toate paginile.</string>
+    <string name="ui_pl_article" formatted="false">Articol</string>
+    <string name="ui_pl_lot" formatted="false">Lot</string>
+    <string name="ui_pl_expiry" formatted="false">Expirare (AAAA-LL-ZZ)</string>
+    <string name="ui_pl_quantity" formatted="false">Cantitate</string>
+    <string name="ui_pl_count" formatted="false">Cantitate de produse</string>
+    <string name="ui_pl_auto" formatted="false">Completat automat din lista de pregătire confirmată</string>
+    <string name="ui_pl_order" formatted="false">Listă de pregătire · Comanda %1$s</string>
+    <string name="ui_pl_boxes" formatted="false">%1$d cutii</string>
+    <string name="ui_pl_box_one" formatted="false">1 cutie</string>
+    <string name="ui_pl_average" formatted="false">În medie %1$s per cutie</string>
+    <string name="ui_pl_standard" formatted="false">Standard</string>
+    <string name="ui_pl_large" formatted="false">Mare</string>
+    <string name="ui_pl_max" formatted="false">Max. %1$d</string>
+    <string name="ui_pl_proposal" formatted="false">Distribuție sugerată</string>
+    <string name="ui_pl_plan_total" formatted="false">Distribuție: %1$d / %2$d produse · atinge o cutie pentru editare</string>
+    <string name="ui_pl_carton" formatted="false">Cutia %1$d din %2$d</string>
+    <string name="ui_pl_free" formatted="false">%1$d locuri libere</string>
+    <string name="ui_pl_free_one" formatted="false">1 loc liber</string>
+    <string name="ui_pl_not_scanned" formatted="false">Încă nescanat</string>
+    <string name="ui_pl_adjust" formatted="false">Editează lista de pregătire</string>
+    <string name="ui_pl_continue" formatted="false">Continuă la produse</string>
+    <string name="ui_pl_control" formatted="false">Scanează și numără</string>
+    <string name="ui_pl_reviewed" formatted="false">Verificat manual</string>
+    <string name="ui_pl_matched" formatted="false">Toate cutiile și liniile listei de pregătire corespund.</string>
+    <string name="ui_pl_not_complete" formatted="false">Verificarea nu este încă finalizată</string>
+    <string name="ui_pl_no_auto" formatted="false">Un total egal nu autorizează automat expedierea.</string>
+    <string name="ui_pl_new" formatted="false">Listă de pregătire nouă</string>
+    <string name="ui_pl_error" formatted="false">Citirea sau verificarea a eșuat. Verifică sursa și încearcă din nou.</string>
+    <string name="ui_pl_camera_denied" formatted="false">Camera nu este disponibilă. Poți alege și un PDF sau o fotografie.</string>
+    <string name="ui_pl_expected" formatted="false">Așteptat: %1$d produse</string>
+    <string name="ui_pl_fixed_count" formatted="false">Lista de pregătire stabilește numărul. Editează liniile înainte de scanarea cutiilor.</string>
+    <string name="ui_pl_identity_missing" formatted="false">Articol sau expirare necunoscută. Verifică codul produsului; lotul singur nu este suficient.</string>
+    <string name="ui_pl_mapping" formatted="false">Asociază articolul cu GTIN</string>
+    <string name="ui_pl_mapping_hint" formatted="false">Codul conține un GTIN, nu un număr de articol. Verifică ambalajul și selectează articolul corect.</string>
+    <string name="ui_pl_choose_article" formatted="false">Alege articolul</string>
+    <string name="ui_pl_mismatch" formatted="false">Articolul, lotul, expirarea sau cantitățile diferă de lista de pregătire. Verifică diferențele.</string>
+</resources>

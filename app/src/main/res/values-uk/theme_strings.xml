@@ -1,5 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="ui_themes">Теми</string>
+    <string name="ui_themes">Тема</string>
     <string name="ui_colours_appearance">Кольори та вигляд</string>
     <string name="ui_choose_theme">Виберіть тему</string>
     <string name="ui_theme_dark">Темна</string>

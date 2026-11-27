@@ -1,5 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="ui_themes">Themes</string>
+    <string name="ui_themes">Theme</string>
     <string name="ui_colours_appearance">Colours and appearance</string>
     <string name="ui_choose_theme">Choose theme</string>
     <string name="ui_theme_dark">Dark</string>

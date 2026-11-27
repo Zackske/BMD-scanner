@@ -11,8 +11,8 @@ import androidx.core.view.WindowCompat;
 
 /** Shared application chrome. Physical camera images and lot identities never pass through it. */
 final class ThemeSkin {
-    static final String[] IDS={"bmd","translumina","lime","violet","light","dark"};
-    static final String[] NAMES={"Blue","Red","Green","Purple","Light","Dark"};
+    static final String[] IDS={"bmd","translumina","lime","violet","dark"};
+    static final String[] NAMES={"Blue","Red","Green","Purple","Dark"};
     static final ThemeSkin BMD=new ThemeSkin("bmd",0xff00152d,0xff083d62,0xff063853,0xff00182c,0xffffffff,0xffc7dae9,0xff00dce9,0xff60a8c5);
     static final ThemeSkin TRANSLUMINA=new ThemeSkin("translumina",0xff300008,0xff9b1328,0xff740f24,0xff38000b,0xffffffff,0xffefdce1,0xffff4a62,0xffd0a4af);
     static final ThemeSkin DARK=new ThemeSkin("dark",0xff101214,0xff2b3034,0xff30363b,0xff181c20,0xfff7f9fb,0xffd0d8de,0xffb6c8d2,0xff8c9da8);
@@ -22,8 +22,8 @@ final class ThemeSkin {
     static ThemeSkin active=BMD;
     final String id;final int background,halo,top,bottom,text,secondary,accent,edge;
     ThemeSkin(String id,int bg,int halo,int top,int bottom,int text,int secondary,int accent,int edge){this.id=id;background=bg;this.halo=halo;this.top=top;this.bottom=bottom;this.text=text;this.secondary=secondary;this.accent=accent;this.edge=edge;}
-    static ThemeSkin forId(String id){if("translumina".equals(id))return TRANSLUMINA;if("dark".equals(id))return DARK;if("light".equals(id))return LIGHT;if("lime".equals(id))return LIME;if("violet".equals(id))return VIOLET;return BMD;}
-    static ThemeSkin load(Context context){return forId(context.getSharedPreferences("MainActivity",0).getString("colourTheme","bmd"));}
+    static ThemeSkin forId(String id){if("translumina".equals(id))return TRANSLUMINA;if("dark".equals(id))return DARK;if("light".equals(id))return BMD;if("lime".equals(id))return LIME;if("violet".equals(id))return VIOLET;return BMD;}
+    static ThemeSkin load(Context context){android.content.SharedPreferences prefs=context.getSharedPreferences("MainActivity",0);String id=prefs.getString("colourTheme","bmd");if("light".equals(id)){id="bmd";prefs.edit().putString("colourTheme",id).apply();}return forId(id);}
     static void prepare(Activity activity){active=load(activity);activity.setTheme(active==LIGHT?R.style.AppThemeLight:active==TRANSLUMINA?R.style.AppThemeTranslumina:active==DARK?R.style.AppThemeDark:active==LIME?R.style.AppThemeLime:active==VIOLET?R.style.AppThemeViolet:R.style.AppTheme);}
     static void window(Activity activity){active=load(activity);WindowCompat.getInsetsController(activity.getWindow(),activity.getWindow().getDecorView()).setAppearanceLightStatusBars(active==LIGHT);WindowCompat.getInsetsController(activity.getWindow(),activity.getWindow().getDecorView()).setAppearanceLightNavigationBars(active==LIGHT&&android.os.Build.VERSION.SDK_INT>=27);activity.getWindow().setStatusBarColor(active.background);activity.getWindow().setNavigationBarColor(active==LIGHT&&android.os.Build.VERSION.SDK_INT<27?0xff142331:active.background);}
     static boolean structural(int c){return c==0xff00dcff||c==0xff00e4f5||c==0xff00d9ee||c==0xff00dff2||c==0xff00d7ea||c==0xff477a98||c==0xff216381||c==0xff426378||c==0xff256784||c==0xff167899||c==0xff25516d||c==0xff477a98;}
