@@ -121,11 +121,16 @@ public class MainActivity extends AppCompatActivity {
         final String original=lang;final boolean[] applied={false};
         ChoicePicker picker=new ChoicePicker(this,"language",s("choose_language"),s("apply"),s("close"));dialog=picker;
         ChoicePicker.Flags flags=new ChoicePicker.Flags(this,lang,index->{
-            lang=LANGS[index];updateWords();showSettings();picker.words(s("choose_language"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.surface.colours(LanguageCatalog.COLOURS[index],true);
+            lang=LANGS[index];updateWords();refreshSettingsBehind(picker);picker.words(s("choose_language"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.surface.colours(LanguageCatalog.COLOURS[index],true);
         });
         picker.body(flags,426);picker.surface.colours(LanguageCatalog.COLOURS[LanguageCatalog.index(lang)],false);
         picker.apply.setTag("language-apply");picker.apply.setOnClickListener(v->{applied[0]=true;getPreferences(0).edit().putString("language",lang).apply();picker.dismiss();});
         picker.setOnDismissListener(d->{if(!applied[0]){lang=original;updateWords();}if(!isFinishing()&&!isDestroyed())showSettings();});picker.words(s("choose_language"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
+    }
+    private void refreshSettingsBehind(ChoicePicker picker){
+        // Rebuilding Settings stops any camera and closes page dialogs. Keep the
+        // live language picker attached while only its underlying page refreshes.
+        dialog=null;try{showSettings();}finally{dialog=picker;}
     }
     String themeName(String id){ThemeSkin skin=ThemeSkin.forId(id);return s(skin==ThemeSkin.BMD?"theme_blue":skin==ThemeSkin.TRANSLUMINA?"theme_red":skin==ThemeSkin.LIME?"theme_lime":skin==ThemeSkin.VIOLET?"theme_violet":skin==ThemeSkin.LIGHT?"theme_light":"theme_dark");}
     void themes(){
@@ -243,4 +248,3 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onResume(){super.onResume();if(screen.equals("camera")&&cameraReady&&capturedPhoto==null&&(dialog==null||!dialog.isShowing()))scanning=true;}
     @Override protected void onDestroy(){if(scanWizard!=null)scanWizard.dispose();if(dialog!=null){dialog.setOnDismissListener(null);if(dialog instanceof ChoicePicker)((ChoicePicker)dialog).dispose();else dialog.dismiss();}stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();worker.shutdown();super.onDestroy();}
 }
-
