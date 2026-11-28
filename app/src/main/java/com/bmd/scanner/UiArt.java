@@ -8,6 +8,7 @@ import android.view.View;
 /** Small vector artwork: sharp at every screen density, with no network assets. */
 final class UiArt {
     static final int CYAN=0xff00dcff;
+    static final long TURN_MS=650L;
     static Drawable card(int top,int bottom,int edge,float radius){
         ThemeSkin skin=ThemeSkin.active;if(skin!=ThemeSkin.BMD){top=skin.top;bottom=skin.bottom;edge=ThemeSkin.edge(edge);}
         return paletteCard(top,bottom,edge,ThemeSkin.active.bottom,radius);

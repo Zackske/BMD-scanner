@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private View iconButton(String icon,String label,Runnable action){if(icon.equals("back")){BackButton back=new BackButton(this,label);click(back,label,action);return back;}FrameLayout v=new FrameLayout(this);UiArt.Icon art=new UiArt.Icon(this,icon);v.addView(art,new FrameLayout.LayoutParams(dp(26),dp(26),Gravity.CENTER));click(v,label,()->{if(icon.equals("settings"))spin(art);action.run();});return v;}
     private View action(String label,Runnable action){if(label.equals(s("back"))){BackButton back=new BackButton(this,label);click(back,label,action);return back;}TextView v=text(label,17,true);v.setPadding(dp(12),dp(12),dp(12),dp(12));v.setGravity(Gravity.CENTER);v.setBackground(card(0xff00cde7,0xff007aa0,CYAN));click(v,label,action);return v;}
     private void pulse(View v){if(!ValueAnimator.areAnimatorsEnabled())return;v.animate().cancel();v.setScaleX(.9f);v.setScaleY(.9f);v.animate().scaleX(1).scaleY(1).setDuration(260).start();}
-    private void spin(View v){if(ValueAnimator.areAnimatorsEnabled())v.animate().rotationBy(360).setDuration(450).start();}
+    private void spin(View v){if(ValueAnimator.areAnimatorsEnabled())v.animate().rotationBy(360).setDuration(UiArt.TURN_MS).start();}
     private void toast(String message){Toast.makeText(this,message,Toast.LENGTH_LONG).show();}
     private void failure(Exception error){if(isDestroyed())return;toast(s("error")+": "+String.valueOf(error.getMessage()));}
 
