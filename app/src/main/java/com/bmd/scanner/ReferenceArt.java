@@ -48,7 +48,13 @@ final class ReferenceArt {
         ribbon(canvas,width,height*.947f,skin,false);
     }
     static Drawable tile(int requestedTop,int requestedBottom,int requestedEdge,float radius){
-        final ThemeSkin skin=ThemeSkin.active;final boolean coloured=skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA;
+        return tile(requestedTop,requestedBottom,requestedEdge,radius,false);
+    }
+    static Drawable homeTile(int top,int bottom,int edge,float radius){
+        return tile(top,bottom,edge,radius,true);
+    }
+    private static Drawable tile(int requestedTop,int requestedBottom,int requestedEdge,float radius,boolean keepTileColours){
+        final ThemeSkin skin=ThemeSkin.active;final boolean coloured=keepTileColours||skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA;
         final int top=coloured?requestedTop:skin==ThemeSkin.DARK?0xff41464d:skin==ThemeSkin.LIME?0xff426d19:skin==ThemeSkin.VIOLET?0xff653589:skin==ThemeSkin.LIGHT?0xffffffff:skin.top;
         final int bottom=coloured?requestedBottom:skin==ThemeSkin.DARK?0xff181d23:skin==ThemeSkin.LIME?0xff102c0a:skin==ThemeSkin.VIOLET?0xff260d3c:skin==ThemeSkin.LIGHT?UiArt.mix(requestedEdge,0xffe9f1f9,.88f):skin.bottom;
         final int edge=coloured?requestedEdge:skin==ThemeSkin.DARK?0xffc7d0d8:skin==ThemeSkin.LIME?0xffc7ff50:skin==ThemeSkin.VIOLET?0xffd39aff:skin==ThemeSkin.LIGHT?UiArt.mix(requestedEdge,Color.WHITE,.45f):skin.accent;

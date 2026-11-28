@@ -22,8 +22,8 @@ final class OrbitalArtwork {
         throw new IllegalArgumentException("Orbital artwork is reserved for the six approved tiles");
     }
     static int surfaceInk(int requested){
-        ThemeSkin skin=ThemeSkin.active;
-        return skin==ThemeSkin.LIME?0xff9bdf35:skin==ThemeSkin.VIOLET?0xffaa65e8:skin==ThemeSkin.DARK?0xffb3c2cd:skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA||skin==ThemeSkin.LIGHT?requested:skin.accent;
+        // The orbit belongs to its tile, independently of the surrounding theme.
+        return requested;
     }
     private static synchronized Rect crop(Context context,int resource){
         Rect found=crops.get(resource);if(found!=null)return found;

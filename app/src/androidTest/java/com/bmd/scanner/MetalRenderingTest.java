@@ -9,20 +9,23 @@ import static org.junit.Assert.*;
 public class MetalRenderingTest {
     @Test public void sharedArtworkKeepsGoldSparkleAndRingColourAcrossThemes(){
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{ThemeSkin previous=ThemeSkin.active;try{
-            int[] colours={0xff14aaff,0xffff3454,0xff18c46b,0xffb741ed,0xffffa51d,0xffffd75c,0xffff8fc5,0xffa0b6c7};
-            assertEquals("Every theme has a rendering colour",ThemeSkin.IDS.length,colours.length);
-            for(int n=0;n<ThemeSkin.IDS.length;n++){
-                ThemeSkin.active=ThemeSkin.forId(ThemeSkin.IDS[n]);Bitmap image=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);
-                OrbitalArtwork.draw(new Canvas(image),DeviceSupport.context(),R.drawable.ref_scan_final_check,new RectF(0,0,256,256),colours[n]);
-                int gold=0,ring=0;float[] hsv=new float[3],expected=new float[3];Color.colorToHSV(colours[n],expected);
+            int[][] colours={{0xff31bdff,0xff071bc0,0xff73edff},{0xff39f997,0xff006b2b,0xff8affb3},{0xffd34cff,0xff460096,0xfff1a2ff},{0xffffc02d,0xff8e230b,0xffffdb76}};
+            Bitmap[] originalIcons=new Bitmap[4],originalFaces=new Bitmap[4];
+            try{for(String theme:ThemeSkin.IDS)for(int tile=0;tile<4;tile++){
+                ThemeSkin.active=ThemeSkin.forId(theme);Bitmap image=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);
+                ReferenceArt.homeTileIcon(new Canvas(image),DeviceSupport.context(),tile,true,new RectF(0,0,256,256),colours[tile][0]);
+                int gold=0,ring=0;float[] hsv=new float[3],expected=new float[3];Color.colorToHSV(colours[tile][0],expected);
                 for(int y=0;y<256;y++)for(int x=0;x<256;x++){int pixel=image.getPixel(x,y);if(Color.alpha(pixel)<180)continue;Color.colorToHSV(pixel,hsv);
                     if(x>190&&y<65&&hsv[0]>25&&hsv[0]<65&&hsv[1]>.35f&&hsv[2]>.5f)gold++;
                     if(y>100&&(x<30||x>225||y>220)&&hsv[1]>.10f&&hsv[2]>.25f){float difference=Math.abs(hsv[0]-expected[0]);if(Math.min(difference,360-difference)<20)ring++;}
                 }
-                assertTrue("Gold sparkle must remain visible in "+ThemeSkin.IDS[n],gold>25);
-                assertTrue("Shared ring must follow its tile colour in "+ThemeSkin.IDS[n],ring>25);
-                assertEquals("Transparent corner must remain clean",0,Color.alpha(image.getPixel(0,0)));image.recycle();
-            }
+                assertTrue("Gold sparkle must remain visible in "+theme+" tile "+tile,gold>25);
+                assertTrue("Shared ring must follow its tile colour in "+theme+" tile "+tile,ring>25);
+                assertEquals("Transparent corner must remain clean",0,Color.alpha(image.getPixel(0,0)));
+                Bitmap face=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);android.graphics.drawable.Drawable art=ReferenceArt.homeTile(colours[tile][0],colours[tile][1],colours[tile][2],36);art.setBounds(0,0,256,256);art.draw(new Canvas(face));
+                if(originalIcons[tile]==null){originalIcons[tile]=image;originalFaces[tile]=face;}
+                else{try{assertTrue("Approved icon, ring and star stay identical in "+theme+" tile "+tile,image.sameAs(originalIcons[tile]));assertTrue("Home tile colours stay identical in "+theme+" tile "+tile,face.sameAs(originalFaces[tile]));}finally{image.recycle();face.recycle();}}
+            }}finally{for(Bitmap image:originalIcons)if(image!=null)image.recycle();for(Bitmap image:originalFaces)if(image!=null)image.recycle();}
         }finally{ThemeSkin.active=previous;}});
     }
     @Test public void metalCannotLeakBrushTransparencyIntoTheNextControlFrame(){

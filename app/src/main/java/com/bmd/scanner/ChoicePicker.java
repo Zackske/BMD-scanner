@@ -107,13 +107,13 @@ final class ChoicePicker extends Dialog {
         private final Flag[] choices=new Flag[15];private final ImageView centre;private final TextView name;private int selected,displayed=-1;private ValueAnimator flip;
         Flags(Context c,String language,IntConsumer changed){super(c);setTag("language-options");for(int i=0;i<15;i++){final int index=i;Flag button=new Flag(c,i);button.setTag("language-"+LanguageCatalog.CODES[i]);button.setOnClickListener(v->{select(index,true);changed.accept(index);});choices[i]=button;addView(button);}centre=new ImageView(c);centre.setTag("language-selected-flag");centre.setScaleType(ImageView.ScaleType.FIT_CENTER);centre.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);addView(centre);name=label(c,"",22);name.setTag("language-selected-name");name.setGravity(Gravity.CENTER);name.setSingleLine();name.setAutoSizeTextTypeUniformWithConfiguration(17,22,1,android.util.TypedValue.COMPLEX_UNIT_SP);name.setAccessibilityLiveRegion(ACCESSIBILITY_LIVE_REGION_POLITE);addView(name);select(LanguageCatalog.index(language),false);}
         void select(int n,boolean animate){selected=n;for(int i=0;i<15;i++){choices[i].setSelected(i==n);choices[i].invalidate();}name.setText(LanguageCatalog.NAMES[n]);name.setTextDirection(LanguageCatalog.rtl(LanguageCatalog.CODES[n])?TEXT_DIRECTION_RTL:TEXT_DIRECTION_LTR);showFlag(n,animate);}
-        private void stopFlip(){if(flip!=null){flip.removeAllListeners();flip.removeAllUpdateListeners();flip.cancel();flip=null;}centre.setRotationY(0);centre.setAlpha(1f);centre.setImageAlpha(255);}
+        private void stopFlip(){if(flip!=null){flip.removeAllListeners();flip.removeAllUpdateListeners();flip.cancel();flip=null;}centre.setRotationY(0);centre.setScaleX(1);centre.setScaleY(1);centre.setAlpha(1f);centre.setImageAlpha(255);}
         private void showFlag(int n,boolean animate){
-            stopFlip();centre.setCameraDistance(dp(650));
+            stopFlip();centre.setCameraDistance(dp(1400));
             if(!animate||!ValueAnimator.areAnimatorsEnabled()||displayed<0||displayed==n){centre.setImageResource(LanguageCatalog.FLAGS[n]);displayed=n;return;}
             flip=ValueAnimator.ofFloat(0,1);flip.setDuration(UiArt.TURN_MS);flip.setInterpolator(new AccelerateDecelerateInterpolator());
-            flip.addUpdateListener(a->{float f=(float)a.getAnimatedValue();if(f>=.5f&&displayed!=n){centre.setImageResource(LanguageCatalog.FLAGS[n]);displayed=n;}centre.setRotationY(f<.5f?f*180:(f-1)*180);});
-            flip.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator animation){centre.setImageResource(LanguageCatalog.FLAGS[selected]);displayed=selected;centre.setRotationY(0);flip=null;}});flip.start();
+            flip.addUpdateListener(a->{float f=(float)a.getAnimatedValue();if(f>=.5f&&displayed!=n){centre.setImageResource(LanguageCatalog.FLAGS[n]);displayed=n;}float scale=1-.12f*(float)Math.sin(Math.PI*f);centre.setScaleX(scale);centre.setScaleY(scale);centre.setRotationY(f<.5f?f*180:(f-1)*180);});
+            flip.addListener(new AnimatorListenerAdapter(){@Override public void onAnimationEnd(Animator animation){centre.setImageResource(LanguageCatalog.FLAGS[selected]);displayed=selected;centre.setRotationY(0);centre.setScaleX(1);centre.setScaleY(1);flip=null;}});flip.start();
         }
         private int flagHeight(int height){float room=Math.min(height,dp(409))-dp(251);return Math.min(dp(132),Math.max(dp(44),Math.round(room)));}
         private float contentHeight(){return Math.min(getHeight(),dp(409));}

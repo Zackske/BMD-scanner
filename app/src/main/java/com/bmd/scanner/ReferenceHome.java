@@ -76,7 +76,7 @@ final class ReferenceHome extends FrameLayout {
         for(int i=0;i<4;i++){
             RectF sourceBox=boxes[i];RectF r=new RectF(destination.left+sourceBox.left*artworkScale,screenY(sourceBox.top),destination.left+sourceBox.right*artworkScale,screenY(sourceBox.bottom));
             int[][] colours=menu?new int[][]{{0xff00e7de,0xff00565d,0xff65fff2},{0xffffcf22,0xffd33a00,0xffffec73},{0xff17b4ff,0xff0721b8,0xff70eaff},{0xffc737ef,0xff480076,0xfff89dff}}:new int[][]{{0xff31bdff,0xff071bc0,0xff73edff},{0xff39f997,0xff006b2b,0xff8affb3},{0xffd34cff,0xff460096,0xfff1a2ff},{0xffffc02d,0xff8e230b,0xffffdb76}};
-            android.graphics.drawable.Drawable face=UiArt.tile(colours[i][0],colours[i][1],colours[i][2],r.width()*.14f);face.setBounds(Math.round(r.left),Math.round(r.top),Math.round(r.right),Math.round(r.bottom));face.draw(canvas);
+            android.graphics.drawable.Drawable face=menu?UiArt.tile(colours[i][0],colours[i][1],colours[i][2],r.width()*.14f):ReferenceArt.homeTile(colours[i][0],colours[i][1],colours[i][2],r.width()*.14f);face.setBounds(Math.round(r.left),Math.round(r.top),Math.round(r.right),Math.round(r.bottom));face.draw(canvas);
             int size=Math.round(Math.min(r.width(),r.height())*.69f);float x=r.centerX()-size/2f,y=r.top+r.height()*.385f-size/2f;RectF iconBounds=new RectF(x,y,x+size,y+size);if(menu)ReferenceArt.scanMenuIcon(canvas,getContext(),i,iconBounds);else ReferenceArt.homeTileIcon(canvas,getContext(),i,directControl,iconBounds,colours[i][0]);
 
             Rect band=new Rect(Math.round(r.left+r.width()*.06f),Math.round(r.top+r.height()*.59f),Math.round(r.right-r.width()*.06f),Math.round(r.bottom-r.height()*.1f));drawLabel(canvas,band,labels[i],false);

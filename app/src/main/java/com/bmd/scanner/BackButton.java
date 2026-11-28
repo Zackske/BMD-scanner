@@ -35,7 +35,7 @@ final class BackButton extends FrameLayout {
         super.onDraw(canvas);ThemeSkin skin=ThemeSkin.active;
         int ink=camera?Color.WHITE:skin.text;
         int accent=camera?ScannerControls.accent():skin.accent;
-        float size=Math.max(0,Math.min(22*density,Math.min(getWidth(),getHeight())-16*density));
+        float size=Math.max(0,Math.min(28*density,Math.min(getWidth(),getHeight())-16*density));
         if(size==0)return;
         float x=getWidth()/2f,y=getHeight()/2f;
         paint.setStyle(Paint.Style.FILL);paint.setColor(accent);

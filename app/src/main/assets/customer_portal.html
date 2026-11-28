@@ -27,9 +27,9 @@
 #bmd-customers-preview .cp-appbar {position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:69px;padding-inline:58px 0}
 #bmd-customers-preview .cp-back,#bmd-customers-preview .cp-back-face {display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;padding:0;border:0;border-radius:10px;background:transparent;color:color-mix(in srgb,var(--cp-accent) 40%,var(--cp-text));box-shadow:none}
 #bmd-customers-preview .cp-back {position:absolute;left:0;top:50%;margin-top:-24px;transition:transform .16s ease}
-#bmd-customers-preview .cp-back svg,#bmd-customers-preview .cp-back-face svg {width:22px;height:22px;stroke-width:1.6}
+#bmd-customers-preview .cp-back svg,#bmd-customers-preview .cp-back-face svg {width:28px;height:28px;stroke-width:1.6}
 #bmd-customers-preview .cp-back>i,#bmd-customers-preview .cp-back-face>i {display:none}
-#bmd-customers-preview .cp-back-fallback {font:400 22px/1 system-ui,sans-serif}
+#bmd-customers-preview .cp-back-fallback {font:400 28px/1 system-ui,sans-serif}
 #bmd-customers-preview .cp-back:has(svg)>.cp-back-fallback,#bmd-customers-preview .cp-back-face:has(svg)>.cp-back-fallback {display:none}
 #bmd-customers-preview .cp-back:active {transform:scale(.93)}
 #bmd-customers-preview .cp-back:focus-visible {outline:3px solid var(--cp-accent);outline-offset:4px}
@@ -222,6 +222,11 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
 #bmd-customers-preview .cp-screen[data-theme="orange"] {--cp-bg:#2b1003;--cp-halo:#a84910;--cp-text:#ffffff;--cp-secondary:#e9d5c2;--cp-accent:#ffa44c;--cp-top:#713412;--cp-bottom:#351602;--cp-gradient:linear-gradient(100deg,#ffe9cd,#ffbf81,#ff8d43);--cp-ink:#2b1003;--cp-veil:#2b1003db}
 #bmd-customers-preview .cp-screen[data-theme="gold"] {--cp-bg:#201803;--cp-halo:#8c690d;--cp-text:#ffffff;--cp-secondary:#f0e6be;--cp-accent:#ffd75c;--cp-top:#665014;--cp-bottom:#2e2307;--cp-gradient:linear-gradient(100deg,#fff4be,#ffe07e,#efb63c);--cp-ink:#201803;--cp-veil:#201803db}
 #bmd-customers-preview .cp-screen[data-theme="pink"] {--cp-bg:#2c091c;--cp-halo:#982657;--cp-text:#ffffff;--cp-secondary:#f0d5e4;--cp-accent:#ff8fc5;--cp-top:#682047;--cp-bottom:#350f27;--cp-gradient:linear-gradient(100deg,#ffe0ef,#ffa6d1,#ec6dae);--cp-ink:#2c091c;--cp-veil:#2c091cdb}
+#bmd-customers-preview .cp-screen {--cp-list-gap:13px;overflow:clip}
+#bmd-customers-preview .cp-grid {gap:var(--cp-list-gap)}
+#bmd-customers-preview .cp-search + .cp-grid {margin-top:var(--cp-list-gap)}
+#bmd-customers-preview .cp-search {position:sticky;top:var(--cp-search-sticky-top,8px);z-index:12}
+@media(max-width:360px) {#bmd-customers-preview .cp-screen {--cp-list-gap:10px}}
 </style>
 <script>
 (() => {
@@ -320,13 +325,18 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   }
   function pageCount(){return Math.max(1,Math.ceil(filteredCustomers().length/pageSize));}
   function listScroller(){return /auto|scroll/.test(getComputedStyle(app).overflowY)?app:document.scrollingElement;}
+  function listOverlayTop(scroller=listScroller()){
+    const search=root.querySelector('.cp-search'),base=scroller===app?app.getBoundingClientRect().top:0;
+    if(search&&!search.hidden&&search.getClientRects().length)return Math.max(0,search.getBoundingClientRect().bottom-base)+(parseFloat(getComputedStyle(grid).rowGap)||8);
+    return (scroller===app?root.querySelector('.cp-appbar').offsetHeight:0)+8;
+  }
   function updateListNavigation(){
     const matches=filteredCustomers();
     state.page=Math.max(0,Math.min(Math.max(1,Math.ceil(matches.length/pageSize))-1,state.page));
   }
   function observeCustomerList(gridKey){
     listObserver?.disconnect();intersectingTiles.clear();observedGridKey=gridKey;
-    const scroller=listScroller(),header=root.querySelector('.cp-appbar'),top=(scroller===app?header.offsetHeight:0)+8;
+    const scroller=listScroller(),top=listOverlayTop(scroller);
     listObserver=new IntersectionObserver(entries=>{
       for(const entry of entries)if(entry.isIntersecting)intersectingTiles.add(entry.target);else intersectingTiles.delete(entry.target);
       if(state.selected||grid.hidden||performance.now()<jumpingUntil)return;
@@ -342,8 +352,8 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   }
   function scrollToCustomerGroup(animate=true){
     const target=grid.children[state.page*pageSize];if(!target)return;
-    const scroller=listScroller(),base=scroller===app?app.getBoundingClientRect().top:0,header=scroller===app?root.querySelector('.cp-appbar').offsetHeight:0;
-    const position=Math.max(0,scroller.scrollTop+target.getBoundingClientRect().top-base-header-8);
+    const scroller=listScroller(),base=scroller===app?app.getBoundingClientRect().top:0;
+    const position=Math.max(0,scroller.scrollTop+target.getBoundingClientRect().top-base-listOverlayTop(scroller));
     jumpingUntil=performance.now()+700;state.listScroll=position;
     scroller.scrollTo({top:position,behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
   }

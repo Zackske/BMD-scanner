@@ -121,9 +121,11 @@ public class CustomerPortalTest {
             }
             assertEquals(84,ids.size());assertEquals(1,pages);assertEquals(2,shared);
             assertEquals("Paging buttons are removed","0",js(scenario,"document.querySelectorAll('.cp-paging,.cp-previous,.cp-next').length"));
+            assertEquals("The first row and all tile gaps have equal spacing","true",js(scenario,"(()=>{const s=document.querySelector('.cp-search').getBoundingClientRect(),g=document.querySelector('.cp-grid'),a=g.children[0].getBoundingClientRect(),b=g.children[1].getBoundingClientRect(),c=g.children[2].getBoundingClientRect(),gap=parseFloat(getComputedStyle(g).rowGap);window.bmdSearchTop=s.top;return Math.abs(a.top-s.bottom-gap)<.5&&Math.abs(b.left-a.right-gap)<.5&&Math.abs(c.top-a.bottom-gap)<.5;})()"));
             js(scenario,"window.continuousFirstTile=document.querySelector('.cp-customer');document.querySelector('.cp-customer:last-child').scrollIntoView({block:'end',behavior:'instant'});true");SystemClock.sleep(300);
             assertEquals("true",js(scenario,"document.querySelectorAll('.cp-customer').length===84&&document.querySelector('.cp-customer')===window.continuousFirstTile"));
             assertEquals("The final customer remains reachable by continuous scrolling","true",js(scenario,"(()=>{const r=document.querySelector('.cp-customer:last-child').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight+1;})()"));
+            assertEquals("Search stays in place above the scrolling tiles","true",js(scenario,"(()=>{const s=document.querySelector('.cp-search'),r=s.getBoundingClientRect();return Math.abs(r.top-window.bmdSearchTop)<.5&&document.elementFromPoint(r.left+r.width/2,r.top+r.height/2).closest('.cp-search')===s;})()"));
             long imagesEnd=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<imagesEnd&&!"true".equals(js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)")))SystemClock.sleep(100);
             assertEquals("true",js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)"));
             shot(scenario,"portal-continuous-list");
