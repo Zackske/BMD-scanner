@@ -30,7 +30,12 @@ classes="${BMD_ANDROID_CLASSES:-com.bmd.scanner.DesignValidationTest,com.bmd.sca
 timeout 28m gradle --no-daemon --stacktrace -Dorg.gradle.jvmargs="-Xmx1024m -Dfile.encoding=UTF-8" :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="$classes" || status=$?
 kill "$sensor_pid" 2>/dev/null || true
 kill "$log_pid" 2>/dev/null || true
-timeout 60s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
+pull_status=0
+timeout 180s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || pull_status=$?
+if [ "$pull_status" -ne 0 ]; then
+  echo "Android screenshot collection failed: $pull_status"
+  if [ "$status" -eq 0 ]; then status=$pull_status; fi
+fi
 grep -E "BMD-real|BMD-bulk|BMD-box" "device-screenshots/$suite/logcat.txt" | tail -n 80 || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +

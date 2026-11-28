@@ -145,7 +145,9 @@ public class CustomerPortalTest {
             }
         }
     }
-    @Test public void shippingTermsAndProviderStayInSeparateColumnsAcrossThemesAndLanguages()throws Exception{
+    // All 8 themes x 15 languages x 6 shipping cases run here; each WebView reply
+    // still has its own 8-second limit. Allow the complete matrix to finish.
+    @Test(timeout=600000) public void shippingTermsAndProviderStayInSeparateColumnsAcrossThemesAndLanguages()throws Exception{
         JSONObject data=new JSONObject(fixture(6));JSONArray rows=data.getJSONArray("customers");
         rows.getJSONObject(0).put("shipping",new JSONArray().put("EX-WORKS").put("Customer arranges Pick-UP - Forwarder"));
         rows.getJSONObject(1).put("shipping",new JSONArray().put("EX-WORKS").put("Customer arranges Pick-UP - DHL"));
