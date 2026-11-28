@@ -44,6 +44,11 @@ public class ThemeIntegrationTest {
             if(skin==ThemeSkin.ORANGE||skin==ThemeSkin.GOLD||skin==ThemeSkin.PINK){float[] actual=new float[3],expected=new float[3];android.graphics.Color.colorToHSV(ReferenceArt.curveInk(skin),actual);android.graphics.Color.colorToHSV(skin.accent,expected);float delta=Math.abs(actual[0]-expected[0]);assertTrue("Curve follows "+skin.id,Math.min(delta,360-delta)<12);}
         }finally{page.recycle();tile.recycle();}
     }
+    private static void visibleFlag(View view){
+        ImageView flag=(ImageView)view;assertEquals("Flag image is fully opaque after resetting a flip",255,flag.getImageAlpha());
+        android.graphics.Bitmap pixels=android.graphics.Bitmap.createBitmap(128,96,android.graphics.Bitmap.Config.ARGB_8888);
+        try{android.graphics.Canvas canvas=new android.graphics.Canvas(pixels);canvas.scale(128f/flag.getWidth(),96f/flag.getHeight());flag.draw(canvas);int opaque=0;for(int y=0;y<96;y++)for(int x=0;x<128;x++)if(android.graphics.Color.alpha(pixels.getPixel(x,y))>240)opaque++;assertTrue("The large selected flag must actually render visible pixels",opaque>128*96/2);}finally{pixels.recycle();}
+    }
     @Before public void before()throws Exception{DeviceSupport.clear();DeviceSupport.permission();}
     @Test public void allSkinsKeepMenuStructureOriginalTransparentBrandAndPersist()throws Exception{
         for(String theme:ThemeSkin.IDS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).putString("language","nl").commit();
@@ -125,6 +130,7 @@ public class ThemeIntegrationTest {
                 assertEquals("Flag aspect ratio remains four by three",4/3f,selected.getWidth()/(float)selected.getHeight(),.02f);
                 assertTrue("Large flag clears the name",screenBounds(selected).bottom<screenBounds(name).top);
                 assertTrue("Name clears all flag choices",screenBounds(name).bottom<screenBounds(first).top);
+                visibleFlag(selected);
                 ChoicePicker.Flags compact=new ChoicePicker.Flags(a,"nl",index->{});int size=Math.round(300*density),exact=View.MeasureSpec.makeMeasureSpec(size,View.MeasureSpec.EXACTLY);compact.measure(exact,exact);compact.layout(0,0,size,size);
                 View smallFlag=DeviceSupport.tag(compact,"language-selected-flag"),smallName=DeviceSupport.tag(compact,"language-selected-name");
                 assertTrue("Compact hero remains inside the picker",smallFlag.getTop()>=0);
@@ -136,7 +142,7 @@ public class ThemeIntegrationTest {
             scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");DeviceSupport.tag(d.getWindow().getDecorView(),"language-zh").performClick();});DeviceSupport.shot(scenario,"build412-language-mandarin");
             scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");DeviceSupport.tag(d.getWindow().getDecorView(),"language-ro").performClick();});DeviceSupport.shot(scenario,"build412-language-romanian");
             scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");DeviceSupport.tag(d.getWindow().getDecorView(),"language-pl").performClick();});DeviceSupport.shot(scenario,"build412-language-polish");
-            SystemClock.sleep(UiArt.TURN_MS+50);scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView(),flags=DeviceSupport.tag(root,"language-options");assertEquals(0f,DeviceSupport.tag(root,"language-selected-flag").getRotationY(),.01f);assertNull(DeviceSupport.get(flags,"flip"));assertEquals(LanguageCatalog.index("pl"),((Integer)DeviceSupport.get(flags,"displayed")).intValue());});
+            SystemClock.sleep(UiArt.TURN_MS+50);scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView(),flags=DeviceSupport.tag(root,"language-options");assertEquals(0f,DeviceSupport.tag(root,"language-selected-flag").getRotationY(),.01f);assertNull(DeviceSupport.get(flags,"flip"));assertEquals(LanguageCatalog.index("pl"),((Integer)DeviceSupport.get(flags,"displayed")).intValue());visibleFlag(DeviceSupport.tag(root,"language-selected-flag"));});
             scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");DeviceSupport.tag(d.getWindow().getDecorView(),"language-apply").performClick();});SystemClock.sleep(300);scenario.recreate();scenario.onActivity(a->{assertEquals("pl",a.getPreferences(0).getString("language",""));assertEquals("Ustawienia",a.s("settings"));});
         }
     }
