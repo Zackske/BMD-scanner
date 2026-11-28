@@ -101,12 +101,12 @@
     <string name="ui_themes" formatted="false">Motyw</string>
     <string name="ui_colours_appearance" formatted="false">Kolory i wygląd</string>
     <string name="ui_choose_theme" formatted="false">Wybierz motyw</string>
-    <string name="ui_theme_dark" formatted="false">Ciemny</string>
+    <string name="ui_theme_dark" formatted="false">Północ</string>
     <string name="ui_theme_light" formatted="false">Jasny</string>
-    <string name="ui_theme_lime" formatted="false">Zielony</string>
-    <string name="ui_theme_violet" formatted="false">Fioletowy</string>
-    <string name="ui_theme_blue" formatted="false">Niebieski</string>
-    <string name="ui_theme_red" formatted="false">Czerwony</string>
+    <string name="ui_theme_lime" formatted="false">Natura</string>
+    <string name="ui_theme_violet" formatted="false">Magia</string>
+    <string name="ui_theme_blue" formatted="false">Ocean</string>
+    <string name="ui_theme_red" formatted="false">Żar</string>
     <string name="ui_box_scan" formatted="false">Skanuj i licz</string>
     <string name="ui_live_scan" formatted="false">Skanowanie na żywo</string>
     <string name="ui_count_question" formatted="false">Ilu produktów oczekujesz w tym kartonie?</string>
@@ -276,4 +276,8 @@
     <string name="ui_pl_mapping_hint" formatted="false">Kod zawiera GTIN, a nie numer artykułu. Sprawdź opakowanie i wybierz właściwy artykuł.</string>
     <string name="ui_pl_choose_article" formatted="false">Wybierz artykuł</string>
     <string name="ui_pl_mismatch" formatted="false">Artykuł, partia, termin ważności lub ilości różnią się od listy kompletacyjnej. Sprawdź rozbieżności.</string>
+
+    <string name="ui_theme_orange" formatted="false">Blask</string>
+    <string name="ui_theme_gold" formatted="false">Złota korona</string>
+    <string name="ui_theme_pink" formatted="false">Różane serce</string>
 </resources>

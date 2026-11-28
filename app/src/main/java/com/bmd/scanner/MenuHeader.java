@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.util.TypedValue;
 import java.util.HashMap;
 
-/** One menu identity: the original tile artwork, a translated title and a Glass arrow. */
+/** One menu identity: the original tile artwork, a translated title and a compact chevron. */
 final class MenuHeader extends ViewGroup {
     private final BackButton back;
     private final View icon;
@@ -95,7 +95,7 @@ final class MenuHeader extends ViewGroup {
         title.layout(x,y,x+title.getMeasuredWidth(),y+title.getMeasuredHeight());
         int subtitleTop=y+title.getMeasuredHeight()+dp(3);
         subtitle.layout(x,subtitleTop,x+subtitle.getMeasuredWidth(),subtitleTop+subtitle.getMeasuredHeight());
-        if(getLayoutDirection()==View.LAYOUT_DIRECTION_RTL){for(View v:new View[]{back,icon,title,subtitle}){int a=v.getLeft(),z=v.getRight();v.layout(getWidth()-z,v.getTop(),getWidth()-a,v.getBottom());}back.setScaleX(-1);title.setTextDirection(View.TEXT_DIRECTION_RTL);}else back.setScaleX(1);
+        if(getLayoutDirection()==View.LAYOUT_DIRECTION_RTL){for(View v:new View[]{back,icon,title,subtitle}){int a=v.getLeft(),z=v.getRight();v.layout(getWidth()-z,v.getTop(),getWidth()-a,v.getBottom());}title.setTextDirection(View.TEXT_DIRECTION_RTL);}else title.setTextDirection(View.TEXT_DIRECTION_LTR);
         if(homeSpacing)wave.layout(0,0,getWidth(),getHeight());
         else wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
     }

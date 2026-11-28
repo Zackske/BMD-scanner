@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">Group selected codes</string>
     <string name="ui_split_selected" formatted="false">Split selected groups</string>
     <string name="ui_grouping_error" formatted="false">Do not group different lots or products. Split conflicting codes.</string>
+
+    <string name="ui_theme_orange" formatted="false">Sunshine</string>
+    <string name="ui_theme_gold" formatted="false">Royal Gold</string>
+    <string name="ui_theme_pink" formatted="false">Roseheart</string>
 </resources>

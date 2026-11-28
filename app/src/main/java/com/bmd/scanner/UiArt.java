@@ -160,7 +160,7 @@ final class UiArt {
                 case "csv":
                     Path page=new Path();page.moveTo(14,6);page.lineTo(39,6);page.lineTo(53,20);page.lineTo(53,58);page.lineTo(14,58);page.close();canvas.drawPath(page,p);
                     canvas.drawLine(38,7,38,21,p);canvas.drawLine(38,21,52,21,p);p.setStyle(Paint.Style.FILL);p.setTypeface(Typeface.DEFAULT_BOLD);p.setTextSize(15);canvas.drawText("CSV",18,44,p);break;
-                case "back":canvas.drawLine(49,32,14,32,p);canvas.drawLine(14,32,29,17,p);canvas.drawLine(14,32,29,47,p);break;
+                case "back":p.setShader(null);p.setStrokeWidth(4.27f);Path back=new Path();boolean rtl=getLayoutDirection()==LAYOUT_DIRECTION_RTL;back.moveTo(rtl?24:40,16);back.lineTo(rtl?40:24,32);back.lineTo(rtl?24:40,48);canvas.drawPath(back,p);break;
                 case "camera":canvas.drawRoundRect(7,18,57,53,6,6,p);canvas.drawCircle(32,35,11,p);canvas.drawLine(21,18,24,10,p);canvas.drawLine(24,10,40,10,p);canvas.drawLine(40,10,43,18,p);break;
                 case "play":Path play=new Path();play.moveTo(20,10);play.lineTo(52,32);play.lineTo(20,54);play.close();p.setStyle(Paint.Style.FILL);canvas.drawPath(play,p);break;
                 case "minus":canvas.drawLine(15,32,49,32,p);break;

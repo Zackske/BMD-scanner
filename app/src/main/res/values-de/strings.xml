@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">Ausgewählte Codes gruppieren</string>
     <string name="ui_split_selected" formatted="false">Ausgewählte Gruppen trennen</string>
     <string name="ui_grouping_error" formatted="false">Keine verschiedenen Lose oder Produkte gruppieren. Widersprüchliche Codes trennen.</string>
+
+    <string name="ui_theme_orange" formatted="false">Sonnenglanz</string>
+    <string name="ui_theme_gold" formatted="false">Königsgold</string>
+    <string name="ui_theme_pink" formatted="false">Rosenherz</string>
 </resources>

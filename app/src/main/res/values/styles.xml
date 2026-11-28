@@ -12,5 +12,8 @@
     <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">#EDF3F8</item><item name="android:navigationBarColor">#EDF3F8</item><item name="android:windowLightStatusBar">true</item><item name="colorAccent">#007C9F</item><item name="android:fontFamily">sans</item><item name="android:windowActionModeOverlay">true</item>
     </style>
-<style name="AppThemeLime" parent="AppTheme"><item name="colorAccent">#C3FF39</item></style><style name="AppThemeViolet" parent="AppTheme"><item name="colorAccent">#C58BFF</item></style></resources>
+<style name="AppThemeLime" parent="AppTheme"><item name="colorAccent">#C3FF39</item></style><style name="AppThemeViolet" parent="AppTheme"><item name="colorAccent">#C58BFF</item></style><style name="AppThemeOrange" parent="AppTheme"><item name="colorAccent">#FFA44C</item></style>
+<style name="AppThemeGold" parent="AppTheme"><item name="colorAccent">#FFD75C</item></style>
+<style name="AppThemePink" parent="AppTheme"><item name="colorAccent">#FF8FC5</item></style>
+</resources>
 

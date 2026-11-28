@@ -101,12 +101,12 @@
     <string name="ui_themes" formatted="false">主题</string>
     <string name="ui_colours_appearance" formatted="false">颜色与外观</string>
     <string name="ui_choose_theme" formatted="false">选择主题</string>
-    <string name="ui_theme_dark" formatted="false">深色</string>
+    <string name="ui_theme_dark" formatted="false">午夜</string>
     <string name="ui_theme_light" formatted="false">浅色</string>
-    <string name="ui_theme_lime" formatted="false">绿色</string>
-    <string name="ui_theme_violet" formatted="false">紫色</string>
-    <string name="ui_theme_blue" formatted="false">蓝色</string>
-    <string name="ui_theme_red" formatted="false">红色</string>
+    <string name="ui_theme_lime" formatted="false">自然</string>
+    <string name="ui_theme_violet" formatted="false">魔法</string>
+    <string name="ui_theme_blue" formatted="false">海洋</string>
+    <string name="ui_theme_red" formatted="false">余烬</string>
     <string name="ui_box_scan" formatted="false">扫描并计数</string>
     <string name="ui_live_scan" formatted="false">实时扫描</string>
     <string name="ui_count_question" formatted="false">此箱中预计有多少件产品？</string>
@@ -276,4 +276,8 @@
     <string name="ui_pl_mapping_hint" formatted="false">码中包含 GTIN，而非货号。请检查包装并选择正确货号。</string>
     <string name="ui_pl_choose_article" formatted="false">选择货号</string>
     <string name="ui_pl_mismatch" formatted="false">货号、批次、有效期或数量与拣货单不符。请核查差异。</string>
+
+    <string name="ui_theme_orange" formatted="false">朝阳</string>
+    <string name="ui_theme_gold" formatted="false">王冠</string>
+    <string name="ui_theme_pink" formatted="false">玫瑰心</string>
 </resources>

@@ -3,10 +3,10 @@
     <string name="ui_themes">Tema</string>
     <string name="ui_colours_appearance">Renkler ve görünüm</string>
     <string name="ui_choose_theme">Tema seçin</string>
-    <string name="ui_theme_dark">Koyu</string>
+    <string name="ui_theme_dark">Gece yarısı</string>
     <string name="ui_theme_light">Açık</string>
-    <string name="ui_theme_lime">Yeşil</string>
-    <string name="ui_theme_violet">Mor</string>
-    <string name="ui_theme_blue" formatted="false">Mavi</string>
-    <string name="ui_theme_red" formatted="false">Kırmızı</string>
+    <string name="ui_theme_lime">Doğa</string>
+    <string name="ui_theme_violet">Büyü</string>
+    <string name="ui_theme_blue" formatted="false">Okyanus</string>
+    <string name="ui_theme_red" formatted="false">Kor</string>
 </resources>

@@ -27,10 +27,10 @@ adb emu sensor set acceleration 0:9.8:0
 sensor_pid=$!
 status=0
 classes="${BMD_ANDROID_CLASSES:-com.bmd.scanner.DesignValidationTest,com.bmd.scanner.CameraControlsTest,com.bmd.scanner.NativeBulkTest,com.bmd.scanner.GuidedBoxTest,com.bmd.scanner.ThemeIntegrationTest,com.bmd.scanner.ScanWizardTest,com.bmd.scanner.MetalRenderingTest}"
-timeout 22m gradle --no-daemon --stacktrace -Dorg.gradle.jvmargs="-Xmx1024m -Dfile.encoding=UTF-8" :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="$classes" || status=$?
+timeout 28m gradle --no-daemon --stacktrace -Dorg.gradle.jvmargs="-Xmx1024m -Dfile.encoding=UTF-8" :app:connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class="$classes" || status=$?
 kill "$sensor_pid" 2>/dev/null || true
 kill "$log_pid" 2>/dev/null || true
-timeout 20s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
+timeout 60s adb pull /data/local/tmp/bmd-screenshots/. device-screenshots/ || true
 grep -E "BMD-real|BMD-bulk|BMD-box" "device-screenshots/$suite/logcat.txt" | tail -n 80 || true
 if [ "$status" -ne 0 ]; then
   find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} +

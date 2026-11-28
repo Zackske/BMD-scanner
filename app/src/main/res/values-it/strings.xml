@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">Raggruppa codici selezionati</string>
     <string name="ui_split_selected" formatted="false">Separa gruppi selezionati</string>
     <string name="ui_grouping_error" formatted="false">Non raggruppare lotti o prodotti diversi. Separa i codici in conflitto.</string>
+
+    <string name="ui_theme_orange" formatted="false">Sole</string>
+    <string name="ui_theme_gold" formatted="false">Oro reale</string>
+    <string name="ui_theme_pink" formatted="false">Cuore rosa</string>
 </resources>

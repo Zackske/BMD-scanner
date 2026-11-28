@@ -101,12 +101,12 @@
     <string name="ui_themes" formatted="false">Temă</string>
     <string name="ui_colours_appearance" formatted="false">Culori și aspect</string>
     <string name="ui_choose_theme" formatted="false">Alege tema</string>
-    <string name="ui_theme_dark" formatted="false">Întunecat</string>
+    <string name="ui_theme_dark" formatted="false">Miezul nopții</string>
     <string name="ui_theme_light" formatted="false">Luminos</string>
-    <string name="ui_theme_lime" formatted="false">Verde</string>
-    <string name="ui_theme_violet" formatted="false">Violet</string>
-    <string name="ui_theme_blue" formatted="false">Albastru</string>
-    <string name="ui_theme_red" formatted="false">Roșu</string>
+    <string name="ui_theme_lime" formatted="false">Natură</string>
+    <string name="ui_theme_violet" formatted="false">Magie</string>
+    <string name="ui_theme_blue" formatted="false">Ocean</string>
+    <string name="ui_theme_red" formatted="false">Jar</string>
     <string name="ui_box_scan" formatted="false">Scanează și numără</string>
     <string name="ui_live_scan" formatted="false">Scanare în timp real</string>
     <string name="ui_count_question" formatted="false">Câte produse aștepți în această cutie?</string>
@@ -276,4 +276,8 @@
     <string name="ui_pl_mapping_hint" formatted="false">Codul conține un GTIN, nu un număr de articol. Verifică ambalajul și selectează articolul corect.</string>
     <string name="ui_pl_choose_article" formatted="false">Alege articolul</string>
     <string name="ui_pl_mismatch" formatted="false">Articolul, lotul, expirarea sau cantitățile diferă de lista de pregătire. Verifică diferențele.</string>
+
+    <string name="ui_theme_orange" formatted="false">Soare</string>
+    <string name="ui_theme_gold" formatted="false">Aur regal</string>
+    <string name="ui_theme_pink" formatted="false">Inimă roz</string>
 </resources>

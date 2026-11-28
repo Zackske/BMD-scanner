@@ -4,14 +4,12 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Shader;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 
-/** Shared Glass arrow. Navigation remains owned by each screen. */
+/** Shared compact, unframed chevron. Navigation remains owned by each screen. */
 final class BackButton extends FrameLayout {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final boolean camera;
@@ -30,29 +28,24 @@ final class BackButton extends FrameLayout {
         float scale=pressed?.92f:1;
         if(ValueAnimator.areAnimatorsEnabled())animate().scaleX(scale).scaleY(scale).setDuration(pressed?90:180).start();
         else{setScaleX(scale);setScaleY(scale);}
+        invalidate();
     }
 
     @Override protected void onDraw(Canvas canvas){
         super.onDraw(canvas);ThemeSkin skin=ThemeSkin.active;
-        int top=camera?ScannerControls.cameraTop():skin.top;
         int ink=camera?Color.WHITE:skin.text;
         int accent=camera?ScannerControls.accent():skin.accent;
-        float size=Math.max(0,Math.min(48*density,Math.min(getWidth(),getHeight()))-2*density);
+        float size=Math.max(0,Math.min(22*density,Math.min(getWidth(),getHeight())-16*density));
         if(size==0)return;
-        float x=getWidth()/2f,y=getHeight()/2f,r=size/2,radius=size*15/48;
-        android.graphics.RectF surface=new android.graphics.RectF(x-r,y-r,x+r,y+r);
-        paint.setStyle(Paint.Style.FILL);paint.setAlpha(isEnabled()?255:125);
-        paint.setShader(new LinearGradient(x-r,y-r,x+r,y+r,
-                new int[]{UiArt.mix(top,ink,.20f),camera?ScannerControls.cameraBottom():skin.bottom},new float[]{0,1},Shader.TileMode.CLAMP));
-        canvas.drawRoundRect(surface,radius,radius,paint);paint.setShader(null);
-        paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(density);
-        paint.setColor(UiArt.mix(ink,accent,.75f));canvas.drawRoundRect(surface,radius,radius,paint);
-        if(isFocused()){paint.setStrokeWidth(2*density);paint.setColor(accent);surface.inset(2*density,2*density);canvas.drawRoundRect(surface,radius,radius,paint);}
-        paint.setColor(accent);paint.setStrokeWidth(size*2.15f/48);
+        float x=getWidth()/2f,y=getHeight()/2f;
+        paint.setStyle(Paint.Style.FILL);paint.setColor(accent);
+        if(isPressed()){paint.setAlpha(26);canvas.drawRoundRect(x-15*density,y-15*density,x+15*density,y+15*density,10*density,10*density,paint);}
+        if(isFocused()){paint.setStyle(Paint.Style.STROKE);paint.setAlpha(210);paint.setStrokeWidth(1.5f*density);canvas.drawRoundRect(x-15*density,y-15*density,x+15*density,y+15*density,10*density,10*density,paint);}
+        paint.setStyle(Paint.Style.STROKE);paint.setColor(UiArt.mix(accent,ink,.60f));paint.setAlpha(isEnabled()?255:125);paint.setStrokeWidth(size*1.6f/24);
         paint.setStrokeCap(Paint.Cap.ROUND);paint.setStrokeJoin(Paint.Join.ROUND);
-        Path arrow=new Path();arrow.moveTo(x-size*.02f,y-size*.17f);
-        arrow.lineTo(x-size*.19f,y);arrow.lineTo(x-size*.02f,y+size*.17f);
-        arrow.moveTo(x-size*.19f,y);arrow.lineTo(x+size*.20f,y);
+        float direction=getLayoutDirection()==LAYOUT_DIRECTION_RTL?-1:1;
+        Path arrow=new Path();arrow.moveTo(x+direction*size*.125f,y-size*.25f);
+        arrow.lineTo(x-direction*size*.125f,y);arrow.lineTo(x+direction*size*.125f,y+size*.25f);
         canvas.drawPath(arrow,paint);paint.setAlpha(255);
     }
 

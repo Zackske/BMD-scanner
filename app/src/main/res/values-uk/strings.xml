@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">Згрупувати вибрані коди</string>
     <string name="ui_split_selected" formatted="false">Розділити вибрані групи</string>
     <string name="ui_grouping_error" formatted="false">Не групуйте різні лоти або вироби. Розділіть суперечливі коди.</string>
+
+    <string name="ui_theme_orange" formatted="false">Сяйво</string>
+    <string name="ui_theme_gold" formatted="false">Корона</string>
+    <string name="ui_theme_pink" formatted="false">Серце</string>
 </resources>

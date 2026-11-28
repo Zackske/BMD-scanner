@@ -3,10 +3,10 @@
     <string name="ui_themes">Thema</string>
     <string name="ui_colours_appearance">Kleuren en uitstraling</string>
     <string name="ui_choose_theme">Thema kiezen</string>
-    <string name="ui_theme_dark">Donker</string>
+    <string name="ui_theme_dark">Middernacht</string>
     <string name="ui_theme_light">Licht</string>
-    <string name="ui_theme_lime">Groen</string>
-    <string name="ui_theme_violet">Paars</string>
-    <string name="ui_theme_blue" formatted="false">Blauw</string>
-    <string name="ui_theme_red" formatted="false">Rood</string>
+    <string name="ui_theme_lime">Natuur</string>
+    <string name="ui_theme_violet">Magie</string>
+    <string name="ui_theme_blue" formatted="false">Oceaan</string>
+    <string name="ui_theme_red" formatted="false">Vuurgloed</string>
 </resources>

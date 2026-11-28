@@ -3,10 +3,10 @@
     <string name="ui_themes">Theme</string>
     <string name="ui_colours_appearance">Colours and appearance</string>
     <string name="ui_choose_theme">Choose theme</string>
-    <string name="ui_theme_dark">Dark</string>
+    <string name="ui_theme_dark">Midnight</string>
     <string name="ui_theme_light">Light</string>
-    <string name="ui_theme_lime">Green</string>
-    <string name="ui_theme_violet">Purple</string>
-    <string name="ui_theme_blue" formatted="false">Blue</string>
-    <string name="ui_theme_red" formatted="false">Red</string>
+    <string name="ui_theme_lime">Nature</string>
+    <string name="ui_theme_violet">Magic</string>
+    <string name="ui_theme_blue" formatted="false">Ocean</string>
+    <string name="ui_theme_red" formatted="false">Ember</string>
 </resources>

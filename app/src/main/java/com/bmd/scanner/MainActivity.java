@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
     private void settingsTile(LinearLayout content,String icon,String title,String detail,String tag,Runnable action){LinearLayout tile=row();int accent=icon.equals("palette")?0xffd276ff:icon.equals("info")?0xffffbc31:0xff00e1ff;int top=icon.equals("palette")?0xffd34cff:icon.equals("info")?0xffffc02d:0xff31bdff,bottom=icon.equals("palette")?0xff460096:icon.equals("info")?0xff8e230b:0xff071bc0;tile.setBackground(ThemeSkin.active==ThemeSkin.TRANSLUMINA?UiArt.tile(top,bottom,accent,dp(20)):UiArt.raised(0xff0a4267,0xff00213b,accent,dp(20)));tile.setPadding(dp(14),dp(13),dp(14),dp(13));tile.setMinimumHeight(dp(102));tile.addView(new UiArt.Magic(this,icon,accent),new LinearLayout.LayoutParams(dp(66),dp(66)));LinearLayout labels=column();labels.setPadding(dp(14),0,dp(6),0);labels.addView(text(title,21,true));gap(labels,6);TextView subtitle=text(detail,14,false);if(tag.equals("themes"))subtitle.setTag("selected-theme-name");if(tag.equals("language"))subtitle.setTag("selected-language-name");if(tag.equals("themes")||tag.equals("language"))selectionChip(subtitle,tag.equals("themes"));labels.addView(subtitle,new LinearLayout.LayoutParams(-2,-2));tile.addView(labels,new LinearLayout.LayoutParams(0,-2,1));tile.addView(text("›",28,false));click(tile,title,action);tile.setTag(tag);content.addView(tile,new LinearLayout.LayoutParams(-1,-2));gap(content,12);}
     private void selectionChip(TextView label,boolean theme){
         ThemeSkin skin=ThemeSkin.active;
-        int ink=theme?(skin==ThemeSkin.BMD?0xff75baff:skin==ThemeSkin.TRANSLUMINA?0xffff5252:skin==ThemeSkin.LIME?0xffc3ff39:skin==ThemeSkin.VIOLET?0xffd09cff:skin==ThemeSkin.LIGHT?Color.WHITE:0xffc1c9d1):Color.WHITE;
-        GradientDrawable border=new GradientDrawable();border.setColor(0xb0000000);border.setCornerRadius(dp(9));border.setStroke(dp(1),0xcc000000);label.setBackground(border);label.setTextColor(ink);label.setPadding(dp(9),dp(4),dp(9),dp(4));
+        int ink=theme?(skin==ThemeSkin.BMD?0xff75baff:skin==ThemeSkin.TRANSLUMINA?0xffff5252:skin==ThemeSkin.LIME?0xffc3ff39:skin==ThemeSkin.VIOLET?0xffd09cff:skin==ThemeSkin.LIGHT?Color.WHITE:skin==ThemeSkin.DARK?0xffc1c9d1:skin.accent):Color.WHITE;
+        GradientDrawable border=new GradientDrawable();border.setColor(0xb0000000);border.setCornerRadius(dp(9));border.setStroke(dp(1),0xcc000000);label.setBackground(border);label.setTextColor(ink);label.setPadding(dp(9),dp(4),dp(9),dp(4));label.setSingleLine();label.setHorizontallyScrolling(false);androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(label,11,14,1,android.util.TypedValue.COMPLEX_UNIT_SP);
     }
     void showSettings(){
         base("settings",s("settings"));MenuHeader header=(MenuHeader)root.getChildAt(0);root.removeView(header);root.setPadding(0,0,0,0);
@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
         // live language picker attached while only its underlying page refreshes.
         dialog=null;try{showSettings();}finally{dialog=picker;}
     }
-    String themeName(String id){ThemeSkin skin=ThemeSkin.forId(id);return s(skin==ThemeSkin.BMD?"theme_blue":skin==ThemeSkin.TRANSLUMINA?"theme_red":skin==ThemeSkin.LIME?"theme_lime":skin==ThemeSkin.VIOLET?"theme_violet":skin==ThemeSkin.LIGHT?"theme_light":"theme_dark");}
+    String themeName(String id){return s(ThemeSkin.labelKey(id));}
     void themes(){
         final String[] chosen={ThemeSkin.active.id};final boolean[] applied={false};
         ChoicePicker picker=new ChoicePicker(this,"palette",s("choose_theme"),s("apply"),s("close"));dialog=picker;
         String[] names=new String[ThemeSkin.IDS.length];for(int i=0;i<names.length;i++)names[i]=themeName(ThemeSkin.IDS[i]);
-        ChoicePicker.Wheel wheel=new ChoicePicker.Wheel(this,names,chosen[0],index->{chosen[0]=ThemeSkin.IDS[index];themePreview=ThemeSkin.forId(chosen[0]);refreshSettingsBehind(picker);picker.theme(themePreview,true);});picker.body(wheel,420);
+        ChoicePicker.Wheel wheel=new ChoicePicker.Wheel(this,names,chosen[0],index->{chosen[0]=ThemeSkin.IDS[index];themePreview=ThemeSkin.forId(chosen[0]);refreshSettingsBehind(picker);picker.theme(themePreview,true);});picker.body(wheel,480);
         picker.apply.setTag("theme-apply");picker.apply.setOnClickListener(v->{applied[0]=true;getPreferences(0).edit().putString("colourTheme",chosen[0]).apply();picker.dismiss();});
         picker.setOnDismissListener(d->{themePreview=null;ThemeSkin.active=ThemeSkin.load(this);if(!isFinishing()&&!isDestroyed()){if(applied[0])recreate();else showSettings();}});picker.words(s("choose_theme"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
     }

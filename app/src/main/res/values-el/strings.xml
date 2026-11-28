@@ -101,12 +101,12 @@
     <string name="ui_themes" formatted="false">Θέμα</string>
     <string name="ui_colours_appearance" formatted="false">Χρώματα και εμφάνιση</string>
     <string name="ui_choose_theme" formatted="false">Επιλογή θέματος</string>
-    <string name="ui_theme_dark" formatted="false">Σκούρο</string>
+    <string name="ui_theme_dark" formatted="false">Μεσάνυχτα</string>
     <string name="ui_theme_light" formatted="false">Φωτεινό</string>
-    <string name="ui_theme_lime" formatted="false">Πράσινο</string>
-    <string name="ui_theme_violet" formatted="false">Μωβ</string>
-    <string name="ui_theme_blue" formatted="false">Μπλε</string>
-    <string name="ui_theme_red" formatted="false">Κόκκινο</string>
+    <string name="ui_theme_lime" formatted="false">Φύση</string>
+    <string name="ui_theme_violet" formatted="false">Μαγεία</string>
+    <string name="ui_theme_blue" formatted="false">Ωκεανός</string>
+    <string name="ui_theme_red" formatted="false">Φλόγα</string>
     <string name="ui_box_scan" formatted="false">Σάρωση και καταμέτρηση</string>
     <string name="ui_live_scan" formatted="false">Ζωντανή σάρωση</string>
     <string name="ui_count_question" formatted="false">Πόσα προϊόντα αναμένετε σε αυτό το κουτί;</string>
@@ -276,4 +276,8 @@
     <string name="ui_pl_mapping_hint" formatted="false">Ο κώδικας περιέχει GTIN, όχι κωδικό είδους. Ελέγξτε τη συσκευασία και επιλέξτε το σωστό είδος.</string>
     <string name="ui_pl_choose_article" formatted="false">Επιλογή είδους</string>
     <string name="ui_pl_mismatch" formatted="false">Κωδικός είδους, παρτίδα, λήξη ή ποσότητες διαφέρουν από τη λίστα συλλογής. Ελέγξτε τις διαφορές.</string>
+
+    <string name="ui_theme_orange" formatted="false">Ηλιαχτίδα</string>
+    <string name="ui_theme_gold" formatted="false">Βασιλικό</string>
+    <string name="ui_theme_pink" formatted="false">Καρδιά</string>
 </resources>

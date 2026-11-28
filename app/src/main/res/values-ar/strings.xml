@@ -101,12 +101,12 @@
     <string name="ui_themes" formatted="false">المظهر</string>
     <string name="ui_colours_appearance" formatted="false">الألوان والمظهر</string>
     <string name="ui_choose_theme" formatted="false">اختيار المظهر</string>
-    <string name="ui_theme_dark" formatted="false">داكن</string>
+    <string name="ui_theme_dark" formatted="false">منتصف الليل</string>
     <string name="ui_theme_light" formatted="false">فاتح</string>
-    <string name="ui_theme_lime" formatted="false">أخضر</string>
-    <string name="ui_theme_violet" formatted="false">بنفسجي</string>
-    <string name="ui_theme_blue" formatted="false">أزرق</string>
-    <string name="ui_theme_red" formatted="false">أحمر</string>
+    <string name="ui_theme_lime" formatted="false">الطبيعة</string>
+    <string name="ui_theme_violet" formatted="false">سحر</string>
+    <string name="ui_theme_blue" formatted="false">المحيط</string>
+    <string name="ui_theme_red" formatted="false">الجمر</string>
     <string name="ui_box_scan" formatted="false">المسح والعد</string>
     <string name="ui_live_scan" formatted="false">مسح مباشر</string>
     <string name="ui_count_question" formatted="false">كم عدد المنتجات المتوقع في هذا الصندوق؟</string>
@@ -276,4 +276,8 @@
     <string name="ui_pl_mapping_hint" formatted="false">يحتوي الرمز على GTIN وليس رقم الصنف. افحص العبوة واختر الصنف الصحيح.</string>
     <string name="ui_pl_choose_article" formatted="false">اختيار الصنف</string>
     <string name="ui_pl_mismatch" formatted="false">يختلف الصنف أو الدفعة أو تاريخ الانتهاء أو الكميات عن قائمة التجهيز. راجع الاختلافات.</string>
+
+    <string name="ui_theme_orange" formatted="false">شروق</string>
+    <string name="ui_theme_gold" formatted="false">التاج</string>
+    <string name="ui_theme_pink" formatted="false">حب</string>
 </resources>

@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">Regrouper les codes sélectionnés</string>
     <string name="ui_split_selected" formatted="false">Séparer les groupes sélectionnés</string>
     <string name="ui_grouping_error" formatted="false">Ne regroupez pas des lots ou produits différents. Séparez les codes contradictoires.</string>
+
+    <string name="ui_theme_orange" formatted="false">Soleil</string>
+    <string name="ui_theme_gold" formatted="false">Or royal</string>
+    <string name="ui_theme_pink" formatted="false">Cœur rose</string>
 </resources>

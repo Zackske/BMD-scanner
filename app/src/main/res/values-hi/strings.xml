@@ -97,4 +97,8 @@
     <string name="ui_group_selected" formatted="false">चुने कोड जोड़ें</string>
     <string name="ui_split_selected" formatted="false">चुने समूह अलग करें</string>
     <string name="ui_grouping_error" formatted="false">अलग लॉट या उत्पाद न जोड़ें। विरोधी कोड अलग करें।</string>
+
+    <string name="ui_theme_orange" formatted="false">सूर्यकिरण</string>
+    <string name="ui_theme_gold" formatted="false">राजमुकुट</string>
+    <string name="ui_theme_pink" formatted="false">प्रेम</string>
 </resources>
