@@ -58,6 +58,7 @@ final class MenuHeader extends ViewGroup {
     MenuHeader homeSpacing(){homeSpacing=true;prominent=true;wave.homeSpacing=true;setClipToPadding(false);requestLayout();return this;}
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     @Override protected void onMeasure(int widthSpec,int heightSpec){
+        title.setTextDirection(getLayoutDirection()==View.LAYOUT_DIRECTION_RTL?View.TEXT_DIRECTION_RTL:View.TEXT_DIRECTION_LTR);
         int width=MeasureSpec.getSize(widthSpec),available=Math.max(1,width-getPaddingLeft()-getPaddingRight());
         float visualScale=homeSpacing?width/(float)dp(360):1;
         float maxSize=(homeSpacing?36:prominent?34:26)*visualScale,maxArt=(homeSpacing?76:prominent?52:38)*visualScale;
@@ -95,7 +96,7 @@ final class MenuHeader extends ViewGroup {
         title.layout(x,y,x+title.getMeasuredWidth(),y+title.getMeasuredHeight());
         int subtitleTop=y+title.getMeasuredHeight()+dp(3);
         subtitle.layout(x,subtitleTop,x+subtitle.getMeasuredWidth(),subtitleTop+subtitle.getMeasuredHeight());
-        if(getLayoutDirection()==View.LAYOUT_DIRECTION_RTL){for(View v:new View[]{back,icon,title,subtitle}){int a=v.getLeft(),z=v.getRight();v.layout(getWidth()-z,v.getTop(),getWidth()-a,v.getBottom());}title.setTextDirection(View.TEXT_DIRECTION_RTL);}else title.setTextDirection(View.TEXT_DIRECTION_LTR);
+        if(getLayoutDirection()==View.LAYOUT_DIRECTION_RTL){for(View v:new View[]{back,icon,title,subtitle}){int a=v.getLeft(),z=v.getRight();v.layout(getWidth()-z,v.getTop(),getWidth()-a,v.getBottom());}}
         if(homeSpacing)wave.layout(0,0,getWidth(),getHeight());
         else wave.layout(left,top+rowHeight,left+available,top+rowHeight+dp(14));
     }
