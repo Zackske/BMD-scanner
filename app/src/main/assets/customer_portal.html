@@ -5,7 +5,6 @@
     <div class="cp-appbar"><span class="cp-heading-smoke" aria-hidden="true"></span><header class="cp-heading"><span class="cp-heading-icon"><i data-lucide="users-round" aria-hidden="true"></i></span><div class="cp-heading-text"><h2 class="cp-title">Klantenportaal</h2><p class="cp-total" aria-live="polite">84 klanten</p></div></header></div>
     <div class="cp-wave" aria-hidden="true"></div>
     <div class="cp-search" role="search"><i data-lucide="search" aria-hidden="true"></i><input class="cp-search-input" type="search" placeholder="Zoek klanten…" aria-label="Zoek klanten" maxlength="120" autocomplete="off" spellcheck="false" /></div>
-    <div class="cp-paging"><button type="button" class="cp-nav cp-previous cursor-interaction"><i data-lucide="arrow-left" aria-hidden="true"></i><span>Vorige</span></button><span class="cp-position" aria-live="polite"></span><button type="button" class="cp-nav cp-next cursor-interaction"><span>Volgende</span><i data-lucide="chevron-right" aria-hidden="true"></i></button></div>
     <div class="cp-grid" aria-label="Klanten"></div>
     <p class="cp-no-results" role="status" hidden></p>
     <div class="cp-modal-layer" hidden><section class="cp-detail" role="dialog" aria-modal="true" aria-labelledby="cp-detail-title"><h3 id="cp-detail-title"></h3><p class="cp-detail-country"></p><p class="cp-detail-group"></p><section class="cp-shipping-summary"></section></section></div>
@@ -71,11 +70,6 @@
 #bmd-customers-preview .cp-name[data-name-size="compact"] {font-size:20px}
 #bmd-customers-preview .cp-country {display:flex;align-items:center;justify-content:center;gap:6px;width:100%;color:#e4fff1;font-size:12px;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
 #bmd-customers-preview .cp-flag {display:block;flex-shrink:0;width:22px;height:16px;object-fit:contain;filter:drop-shadow(0 1px 1px #002d3040)}
-#bmd-customers-preview .cp-paging {position:sticky;top:0;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 14px;padding:8px 0;background:var(--cp-bg)}
-#bmd-customers-preview .cp-nav {display:flex;align-items:center;justify-content:center;gap:4px;min-height:44px;padding:8px 11px;border:1px solid var(--cp-accent);border-radius:17px;background:linear-gradient(135deg,var(--cp-top),var(--cp-bottom));color:var(--cp-text);font:800 13px/1.2 'Nunito',sans-serif}
-#bmd-customers-preview .cp-nav svg {width:17px;height:17px;flex-shrink:0}
-#bmd-customers-preview .cp-nav:disabled {opacity:.36}
-#bmd-customers-preview .cp-position {text-align:center;font-size:12px;font-weight:700;color:var(--cp-secondary)}
 #bmd-customers-preview .cp-brand {display:flex;align-items:center;justify-content:center;padding:24px 0 6px;min-height:79px}
 #bmd-customers-preview .cp-brand img {max-width:66%;width:255px;max-height:58px;height:auto;object-fit:contain}
 #bmd-customers-preview .cp-bottom {margin-top:5px;margin-bottom:17px;transform:rotate(1deg)}
@@ -327,16 +321,12 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function pageCount(){return Math.max(1,Math.ceil(filteredCustomers().length/pageSize));}
   function listScroller(){return /auto|scroll/.test(getComputedStyle(app).overflowY)?app:document.scrollingElement;}
   function updateListNavigation(){
-    const matches=filteredCustomers(),t=copy[state.language];
+    const matches=filteredCustomers();
     state.page=Math.max(0,Math.min(Math.max(1,Math.ceil(matches.length/pageSize))-1,state.page));
-    const previous=root.querySelector('.cp-previous'),next=root.querySelector('.cp-next');
-    previous.disabled=state.page===0;next.disabled=state.page===Math.max(1,Math.ceil(matches.length/pageSize))-1;
-    previous.querySelector('span').textContent=t.previous;next.querySelector('span').textContent=t.next;
-    root.querySelector('.cp-position').textContent=matches.length?(state.page*pageSize+1)+'–'+Math.min(matches.length,(state.page+1)*pageSize)+' '+t.of+' '+matches.length:'';
   }
   function observeCustomerList(gridKey){
     listObserver?.disconnect();intersectingTiles.clear();observedGridKey=gridKey;
-    const scroller=listScroller(),header=root.querySelector('.cp-appbar'),top=root.querySelector('.cp-paging').offsetHeight+(scroller===app?header.offsetHeight:0)+8;
+    const scroller=listScroller(),header=root.querySelector('.cp-appbar'),top=(scroller===app?header.offsetHeight:0)+8;
     listObserver=new IntersectionObserver(entries=>{
       for(const entry of entries)if(entry.isIntersecting)intersectingTiles.add(entry.target);else intersectingTiles.delete(entry.target);
       if(state.selected||grid.hidden||performance.now()<jumpingUntil)return;
@@ -353,7 +343,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function scrollToCustomerGroup(animate=true){
     const target=grid.children[state.page*pageSize];if(!target)return;
     const scroller=listScroller(),base=scroller===app?app.getBoundingClientRect().top:0,header=scroller===app?root.querySelector('.cp-appbar').offsetHeight:0;
-    const position=Math.max(0,scroller.scrollTop+target.getBoundingClientRect().top-base-root.querySelector('.cp-paging').offsetHeight-header-8);
+    const position=Math.max(0,scroller.scrollTop+target.getBoundingClientRect().top-base-header-8);
     jumpingUntil=performance.now()+700;state.listScroll=position;
     scroller.scrollTo({top:position,behavior:animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});
   }
@@ -440,7 +430,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     if(gridChanged){grid.innerHTML=visible.map(c=>{const colours=nationalColours[c.country],label=c.displayName||c.name,compact=label.length>18||label.split(/\s+/).some(word=>word.length>=11);return '<button type="button" class="cp-customer cursor-interaction" style="--nation-a:'+colours[0]+';--nation-b:'+colours[1]+';--nation-c:'+colours[2]+';--country-ink:'+countryInk(colours[0])+';--nation-flag:url('+assets.flags[c.country]+')" data-customer="'+c.id+'" aria-pressed="'+(c.id===state.selected)+'" aria-label="'+esc(c.name+', '+country(c.country)+', '+shippingCopy[state.language][4]+': '+shippingGroup(c))+'"'+(label!==c.name?' data-tooltip="'+esc(c.name)+'"':'')+'><span class="cp-country-header"><span class="cp-country">'+flag(c.country)+'<span class="cp-country-label">'+countryLabel(c.country)+'</span></span></span>'+countryMaps(c)+'<span class="cp-name" data-name-size="'+(compact?'compact':'normal')+'"><span class="cp-name-text">'+esc(label)+'</span></span><span class="cp-shipping-group" data-group="'+(c.shippingGroup||'unset')+'">'+esc(shippingGroup(c))+'</span></button>';}).join('');renderedGridKey=gridKey;}
     grid.querySelectorAll('[data-customer]').forEach(button=>{const pressed=String(button.dataset.customer===state.selected);if(button.getAttribute('aria-pressed')!==pressed)button.setAttribute('aria-pressed',pressed);});
     updateListNavigation();
-    const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-back')?.setAttribute('aria-label',detail?f[20]:t.previous);grid.hidden=!!detail||!matches.length;grid.classList.toggle('cp-search-results',!!state.query.trim());root.querySelector('.cp-paging').hidden=!!detail||!matches.length;root.querySelector('.cp-total').hidden=!!detail;
+    const detail=customers.find(c=>c.id===state.selected),f=fieldCopy[state.language];layer.hidden=!detail;root.querySelector('.cp-back')?.setAttribute('aria-label',detail?f[20]:t.previous);grid.hidden=!!detail||!matches.length;grid.classList.toggle('cp-search-results',!!state.query.trim());root.querySelector('.cp-total').hidden=!!detail;
     root.querySelector('.cp-search').hidden=!!detail||!customers.length;
     const empty=root.querySelector('.cp-no-results');empty.hidden=!!detail||!!matches.length||!customers.length;empty.textContent=q[1];
     root.querySelector('.cp-detail').removeAttribute('aria-modal');root.querySelector('.cp-detail').setAttribute('role','region');
@@ -553,10 +543,8 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
   function selectShippingTab(i){if(!Number.isInteger(i)||i<0||i>4)return;state.shippingTab=i;updateShippingTab(true);persist();}
   layer.addEventListener('click',event=>{const main=event.target.closest('[data-detail-tab]'),sub=event.target.closest('[data-shipping-tab]');if(main)selectDetailTab(Number(main.dataset.detailTab));if(sub)selectShippingTab(Number(sub.dataset.shippingTab));});
   layer.addEventListener('keydown',event=>{const button=event.target.closest('[data-detail-tab],[data-shipping-tab]');if(!button)return;const sub=button.hasAttribute('data-shipping-tab'),count=sub?5:2,delta={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[event.key];if(delta===undefined&&event.key!=='Home'&&event.key!=='End')return;event.preventDefault();const i=event.key==='Home'?0:event.key==='End'?count-1:(Number(sub?button.dataset.shippingTab:button.dataset.detailTab)+delta+count)%count;(sub?selectShippingTab:selectDetailTab)(i);root.querySelector('['+(sub?'data-shipping-tab':'data-detail-tab')+'="'+i+'"]').focus({preventScroll:true});});
-  function page(amount){state.page=Math.max(0,Math.min(pageCount()-1,state.page+amount));updateListNavigation();scrollToCustomerGroup();persist();}
   function close(){const id=state.selected;state.selected=null;render();const trigger=root.querySelector('[data-customer="'+id+'"]');if(trigger)trigger.focus({preventScroll:true});restoreListPosition();persist();}
   root.querySelector('.cp-search-input').addEventListener('input',e=>{state.query=e.target.value;state.page=0;state.listScroll=0;state.selected=null;render();persist();});
-  root.querySelector('.cp-next').addEventListener('click',()=>page(1));root.querySelector('.cp-previous').addEventListener('click',()=>page(-1));
   grid.addEventListener('click',e=>{const button=e.target.closest('[data-customer]');if(!button)return;state.listScroll=listScroller().scrollTop;state.selected=button.dataset.customer;state.detailTab=0;state.shippingTab=0;lastTrigger=button;render();listScroller().scrollTop=0;const detail=root.querySelector('.cp-detail');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)detail.animate([{opacity:0,transform:'translateY(18px) scale(.96)'},{opacity:1,transform:'translateY(0) scale(1)'}],{duration:240,easing:'cubic-bezier(.2,.8,.2,1)'});root.querySelector('.cp-detail-tab').focus({preventScroll:true});persist();});
   root.querySelector('.cp-back')?.addEventListener('click',()=>{if(state.selected){close();return;}const back=root.querySelector('.cp-back');if(!matchMedia('(prefers-reduced-motion: reduce)').matches)back.animate([{transform:'scale(1)'},{transform:'scale(.93)'},{transform:'scale(1)'}],{duration:220});});
   layer.addEventListener('click',e=>{if(e.target===layer)close();});
@@ -588,7 +576,7 @@ html,body {margin:0;min-height:100%;background:transparent;-webkit-text-size-adj
     panel.hidden=detail;
     panel.innerHTML=(!customers.length?'<h2>'+esc(t[0])+'</h2><p>'+esc(t[1])+'</p>':'')+'<button type="button" class="cp-import-button">'+esc(t[customers.length?3:2])+'</button><p class="cp-import-error" role="alert" hidden></p>';
     panel.querySelector('button').onclick=()=>window.BmdPortalSession?.importCustomers();
-    if(!customers.length){grid.hidden=true;root.querySelector('.cp-paging').hidden=true;root.querySelector('.cp-position').textContent='';}
+    if(!customers.length)grid.hidden=true;
   }
   window.BmdCustomerPortal={
     ready:false,

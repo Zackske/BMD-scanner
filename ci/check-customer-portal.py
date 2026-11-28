@@ -20,6 +20,7 @@ for section in ['flags','scanners','brands','wordmarks','media']:
         assert parsed.netloc=='bmd.invalid' and parsed.path.startswith('/assets/customer-portal/images/')
         assert Path('app/src/main'+parsed.path).stat().st_size>50
 assert 'window.openai' not in html and 'globalThis.Tweak' not in html and '@import' not in html
+assert 'class="cp-paging"' not in html and "querySelector('.cp-next')" not in html and "querySelector('.cp-previous')" not in html, 'Customer list scrolls continuously without previous/next controls'
 assert html.count('/*BMD_NATIVE_STATE*/null')==1
 assert html.count('/*BMD_CUSTOMER_DATA*/[]')==1 and html.count('/*BMD_PORTAL_ASSETS*/{}')==1
 assert 'importCustomers()' in html and 'privateCopy' in html

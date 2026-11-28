@@ -120,9 +120,10 @@ public class CustomerPortalTest {
                 pages++;break;
             }
             assertEquals(84,ids.size());assertEquals(1,pages);assertEquals(2,shared);
-            js(scenario,"window.continuousFirstTile=document.querySelector('.cp-customer');document.querySelector('.cp-next').click();true");
+            assertEquals("Paging buttons are removed","0",js(scenario,"document.querySelectorAll('.cp-paging,.cp-previous,.cp-next').length"));
+            js(scenario,"window.continuousFirstTile=document.querySelector('.cp-customer');document.querySelector('.cp-customer:last-child').scrollIntoView({block:'end',behavior:'instant'});true");SystemClock.sleep(300);
             assertEquals("true",js(scenario,"document.querySelectorAll('.cp-customer').length===84&&document.querySelector('.cp-customer')===window.continuousFirstTile"));
-            assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().page"));
+            assertEquals("The final customer remains reachable by continuous scrolling","true",js(scenario,"(()=>{const r=document.querySelector('.cp-customer:last-child').getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight+1;})()"));
             long imagesEnd=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<imagesEnd&&!"true".equals(js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)")))SystemClock.sleep(100);
             assertEquals("true",js(scenario,"Array.from(document.images).every(i=>i.complete&&i.naturalWidth>0)"));
             shot(scenario,"portal-continuous-list");
@@ -132,6 +133,7 @@ public class CustomerPortalTest {
         for(String theme:ThemeSkin.IDS){
             try(ActivityScenario<CustomerPortalActivity> scenario=launch(theme,"nl")){
                 ready(scenario);
+                assertEquals("No paging controls in any theme","0",js(scenario,"document.querySelectorAll('.cp-paging,.cp-previous,.cp-next').length"));
                 for(String language:MainActivity.LANGS){
                     assertEquals("true",js(scenario,"window.BmdCustomerPortal.applyAppearance('"+theme+"','"+language+"',"+JSONObject.quote(brand(language))+")"));
                     assertEquals(JSONObject.quote(theme),js(scenario,"document.querySelector('.cp-screen').dataset.theme"));
@@ -192,8 +194,9 @@ public class CustomerPortalTest {
     }
     @Test public void detailNamesBackAndRecreationPreserveTheSelectedCustomer()throws Exception{
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("translumina","en")){
-            ready(scenario);js(scenario,"document.querySelector('.cp-next').click();true");SystemClock.sleep(800);
+            ready(scenario);js(scenario,"document.querySelector('[data-list-index=\"8\"]').scrollIntoView({block:'start',behavior:'instant'});true");SystemClock.sleep(800);
             js(scenario,"document.querySelector('[data-list-index=\"8\"]').click();true");
+            String savedScroll=js(scenario,"window.BmdCustomerPortal.snapshot().listScroll");assertTrue(Double.parseDouble(savedScroll)>0);
             String title=js(scenario,"document.querySelector('#cp-detail-title').textContent");
             assertEquals("true",js(scenario,"document.querySelector('.cp-grid').hidden"));
             assertEquals("true",js(scenario,"window.BmdCustomerPortal.snapshot().selected!==null"));
@@ -215,7 +218,9 @@ public class CustomerPortalTest {
             scenario.onActivity(a->{View back=DeviceSupport.tag(a.getWindow().getDecorView(),"customer-portal-back");assertNotNull(back);back.performClick();});
             long end=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<end&&"true".equals(js(scenario,"document.querySelector('.cp-grid').hidden")))SystemClock.sleep(100);
             assertEquals("false",js(scenario,"document.querySelector('.cp-grid').hidden"));
-            assertEquals("1",js(scenario,"window.BmdCustomerPortal.snapshot().page"));
+            String restored="(()=>{const app=document.querySelector('.cp-screen'),scroller=/auto|scroll/.test(getComputedStyle(app).overflowY)?app:document.scrollingElement;return Math.abs(scroller.scrollTop-"+savedScroll+")<=2;})()";
+            long restoreEnd=SystemClock.elapsedRealtime()+5000;while(SystemClock.elapsedRealtime()<restoreEnd&&!"true".equals(js(scenario,restored)))SystemClock.sleep(100);
+            assertEquals("Returning from a customer restores the actual list scroll position","true",js(scenario,restored));
             shot(scenario,"portal-return-to-list");
         }
     }
@@ -224,7 +229,7 @@ public class CustomerPortalTest {
         try(ActivityScenario<CustomerPortalActivity> scenario=launch("bmd","nl")){
             ready(scenario);
             assertEquals("0",js(scenario,"document.querySelectorAll('.cp-customer').length"));
-            assertEquals("true",js(scenario,"document.querySelector('.cp-paging').hidden"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-paging')===null"));
             for(String language:MainActivity.LANGS){
                 js(scenario,"window.BmdCustomerPortal.applyAppearance('bmd','"+language+"',"+JSONObject.quote(brand(language))+")");
                 assertEquals("true",js(scenario,"document.querySelector('.cp-import-button').textContent.length>5"));
@@ -282,10 +287,10 @@ public class CustomerPortalTest {
             search(scenario,"__no_customer_matches__");
             assertEquals("0",js(scenario,"document.querySelectorAll('.cp-customer').length"));
             assertEquals("false",js(scenario,"document.querySelector('.cp-no-results').hidden"));
-            assertEquals("true",js(scenario,"document.querySelector('.cp-paging').hidden"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-paging')===null"));
             search(scenario,"");
             assertEquals("Clearing search restores the complete continuous customer list","84",js(scenario,"document.querySelectorAll('.cp-customer').length"));
-            assertEquals("false",js(scenario,"document.querySelector('.cp-next').disabled"));
+            assertEquals("true",js(scenario,"document.querySelector('.cp-next')===null"));
         }
     }
     @Test public void homeTileOpensThePortalInsteadOfWorkInProgress()throws Exception{
