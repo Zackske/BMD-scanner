@@ -35,11 +35,21 @@ public class ThemeIntegrationTest {
             }}finally{image.recycle();}
         }
     }
+    private static void readableArtwork(){
+        ThemeSkin skin=ThemeSkin.active;android.graphics.Bitmap page=android.graphics.Bitmap.createBitmap(360,720,android.graphics.Bitmap.Config.ARGB_8888),tile=android.graphics.Bitmap.createBitmap(200,180,android.graphics.Bitmap.Config.ARGB_8888);
+        try{
+            ReferenceArt.background(new android.graphics.Canvas(page),360,720);
+            for(int[] xy:new int[][]{{10,30},{180,360},{350,650}})assertTrue(skin.id+" page artwork keeps text readable",ThemeSkin.contrast(skin.text,page.getPixel(xy[0],xy[1]))>=4.5);
+            android.graphics.drawable.Drawable face=ReferenceArt.tile(0xff25aaff,0xff051bbf,0xff00dfff,20);face.setBounds(0,0,200,180);face.draw(new android.graphics.Canvas(tile));assertTrue(skin.id+" tile artwork keeps labels readable",ThemeSkin.contrast(skin.text,tile.getPixel(100,110))>=4.5);
+            if(skin==ThemeSkin.ORANGE||skin==ThemeSkin.GOLD||skin==ThemeSkin.PINK){float[] actual=new float[3],expected=new float[3];android.graphics.Color.colorToHSV(ReferenceArt.curveInk(skin),actual);android.graphics.Color.colorToHSV(skin.accent,expected);float delta=Math.abs(actual[0]-expected[0]);assertTrue("Curve follows "+skin.id,Math.min(delta,360-delta)<12);}
+        }finally{page.recycle();tile.recycle();}
+    }
     @Before public void before()throws Exception{DeviceSupport.clear();DeviceSupport.permission();}
     @Test public void allSkinsKeepMenuStructureOriginalTransparentBrandAndPersist()throws Exception{
         for(String theme:ThemeSkin.IDS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).putString("language","nl").commit();
             try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
                 scenario.onActivity(ThemeIntegrationTest::compactBack);
+                scenario.onActivity(a->readableArtwork());
                 final android.graphics.Rect[] homeBrand={null};
                 scenario.onActivity(a->{assertEquals(theme,ThemeSkin.active.id);assertEquals(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,a.getRequestedOrientation());a.showHome();android.graphics.Bitmap scanner=(android.graphics.Bitmap)DeviceSupport.get(new UiArt.ScannerMark(a),"art");assertTrue("Scanner artwork has real alpha",scanner.hasAlpha());for(int resource:ReferenceArt.HOME){android.graphics.Bitmap icon=ReferenceArt.bitmap(a,resource);assertTrue("Detailed icon ships at high resolution",icon.getWidth()>=512);assertEquals("Icon has no opaque background",0,android.graphics.Color.alpha(icon.getPixel(0,0)));}assertEquals(0,android.graphics.Color.alpha(scanner.getPixel(0,0)));assertNotNull(DeviceSupport.tag(a.getWindow().getDecorView(),"reference-home"));});DeviceSupport.shot(scenario,"build3-theme-home-"+theme);scenario.onActivity(a->homeBrand[0]=screenBounds(DeviceSupport.tag(a.getWindow().getDecorView(),"home-brand")));
                 scenario.onActivity(a->{a.chooseScan();assertNotNull(a.scanWizard);});DeviceSupport.shot(scenario,"build3-theme-scan-menu-"+theme);scenario.onActivity(a->{a.scanWizard.dispose();a.scanWizard=null;});

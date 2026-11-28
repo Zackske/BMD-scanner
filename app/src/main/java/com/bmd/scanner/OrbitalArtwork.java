@@ -23,7 +23,7 @@ final class OrbitalArtwork {
     }
     static int surfaceInk(int requested){
         ThemeSkin skin=ThemeSkin.active;
-        return skin==ThemeSkin.LIME?0xff9bdf35:skin==ThemeSkin.VIOLET?0xffaa65e8:skin==ThemeSkin.DARK?0xffb3c2cd:requested;
+        return skin==ThemeSkin.LIME?0xff9bdf35:skin==ThemeSkin.VIOLET?0xffaa65e8:skin==ThemeSkin.DARK?0xffb3c2cd:skin==ThemeSkin.BMD||skin==ThemeSkin.TRANSLUMINA||skin==ThemeSkin.LIGHT?requested:skin.accent;
     }
     private static synchronized Rect crop(Context context,int resource){
         Rect found=crops.get(resource);if(found!=null)return found;

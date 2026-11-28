@@ -9,7 +9,8 @@ import static org.junit.Assert.*;
 public class MetalRenderingTest {
     @Test public void sharedArtworkKeepsGoldSparkleAndRingColourAcrossThemes(){
         InstrumentationRegistry.getInstrumentation().runOnMainSync(()->{ThemeSkin previous=ThemeSkin.active;try{
-            int[] colours={0xff14aaff,0xffff3454,0xff18c46b,0xffb741ed,0xffffa51d,0xffa0b6c7};
+            int[] colours={0xff14aaff,0xffff3454,0xff18c46b,0xffb741ed,0xffffa51d,0xffffd75c,0xffff8fc5,0xffa0b6c7};
+            assertEquals("Every theme has a rendering colour",ThemeSkin.IDS.length,colours.length);
             for(int n=0;n<ThemeSkin.IDS.length;n++){
                 ThemeSkin.active=ThemeSkin.forId(ThemeSkin.IDS[n]);Bitmap image=Bitmap.createBitmap(256,256,Bitmap.Config.ARGB_8888);
                 OrbitalArtwork.draw(new Canvas(image),DeviceSupport.context(),R.drawable.ref_scan_final_check,new RectF(0,0,256,256),colours[n]);
