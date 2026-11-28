@@ -10,7 +10,10 @@ final class UiArt {
     static final int CYAN=0xff00dcff;
     static Drawable card(int top,int bottom,int edge,float radius){
         ThemeSkin skin=ThemeSkin.active;if(skin!=ThemeSkin.BMD){top=skin.top;bottom=skin.bottom;edge=ThemeSkin.edge(edge);}
-        GradientDrawable base=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{top,bottom,ThemeSkin.active.bottom});
+        return paletteCard(top,bottom,edge,ThemeSkin.active.bottom,radius);
+    }
+    static Drawable paletteCard(int top,int bottom,int edge,int last,float radius){
+        GradientDrawable base=new GradientDrawable(GradientDrawable.Orientation.TL_BR,new int[]{top,bottom,last});
         base.setCornerRadius(radius);base.setStroke(2,edge);
         GradientDrawable sheen=new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,new int[]{0x38ffffff,0x00ffffff,0x00102030});
         sheen.setCornerRadius(radius);

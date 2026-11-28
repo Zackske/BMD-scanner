@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private final AtomicBoolean processing=new AtomicBoolean();
     private final Handler handler=new Handler(Looper.getMainLooper());
     private Context words;private String lang="nl",screen="home",codeMode="both",actualResolution="";
+    private ThemeSkin themePreview;
     private LinearLayout root,inlineResults;private TextView countText,splitText,modeText,lampLabel,statusText;
     private ScannerLayout scannerSkin;private boolean frontCamera=false,resumeScannerAfterPicker=false;private PreviewView preview;private ImageView frozenPreview;private Bitmap frozenBitmap;private boolean restoringCapture=false;private ScanOverlay overlay;private VerticalZoom zoomView;private View shutter,flashButton,resetButton;
     private ProcessCameraProvider provider;private androidx.camera.core.Camera camera;private ImageCapture capture;private ImageAnalysis analysisUseCase;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout row(){LinearLayout l=new LinearLayout(this);l.setGravity(Gravity.CENTER_VERTICAL);return l;}
     private Drawable card(int top,int bottom,int edge){return UiArt.card(top,bottom,edge,dp(18));}
     private void gap(LinearLayout l,int height){l.addView(new View(this),new LinearLayout.LayoutParams(1,dp(height)));}
-    private void base(String page,String title){ThemeSkin.window(this);stopCamera();screen=page;FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(ThemeSkin.active.background);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));root=column();root.setPadding(dp(16),dp(8),dp(16),dp(14));shell.addView(root,new FrameLayout.LayoutParams(-1,-1));ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;});setContentView(shell);ViewCompat.requestApplyInsets(shell);
+    private void base(String page,String title){if(themePreview==null)ThemeSkin.window(this);else ThemeSkin.window(this,themePreview);stopCamera();screen=page;FrameLayout shell=new FrameLayout(this);shell.setBackgroundColor(ThemeSkin.active.background);shell.addView(new UiArt.Backdrop(this),new FrameLayout.LayoutParams(-1,-1));root=column();root.setPadding(dp(16),dp(8),dp(16),dp(14));shell.addView(root,new FrameLayout.LayoutParams(-1,-1));ViewCompat.setOnApplyWindowInsetsListener(shell,(view,insets)->{androidx.core.graphics.Insets safe=insets.getInsets(WindowInsetsCompat.Type.systemBars()|WindowInsetsCompat.Type.displayCutout());view.setPadding(safe.left,safe.top,safe.right,safe.bottom);return WindowInsetsCompat.CONSUMED;});setContentView(shell);ViewCompat.requestApplyInsets(shell);
         if(!title.isEmpty()){
             String icon=page.equals("settings")?"settings":page.equals("results")?"list":"scan";
             root.addView(new MenuHeader(this,icon,title,s("back"),homeAction(this::showHome)),new LinearLayout.LayoutParams(-1,-2));
@@ -137,9 +138,9 @@ public class MainActivity extends AppCompatActivity {
         final String[] chosen={ThemeSkin.active.id};final boolean[] applied={false};
         ChoicePicker picker=new ChoicePicker(this,"palette",s("choose_theme"),s("apply"),s("close"));dialog=picker;
         String[] names=new String[ThemeSkin.IDS.length];for(int i=0;i<names.length;i++)names[i]=themeName(ThemeSkin.IDS[i]);
-        ChoicePicker.Wheel wheel=new ChoicePicker.Wheel(this,names,chosen[0],index->chosen[0]=ThemeSkin.IDS[index]);picker.body(wheel,420);
+        ChoicePicker.Wheel wheel=new ChoicePicker.Wheel(this,names,chosen[0],index->{chosen[0]=ThemeSkin.IDS[index];themePreview=ThemeSkin.forId(chosen[0]);refreshSettingsBehind(picker);picker.theme(themePreview,true);});picker.body(wheel,420);
         picker.apply.setTag("theme-apply");picker.apply.setOnClickListener(v->{applied[0]=true;getPreferences(0).edit().putString("colourTheme",chosen[0]).apply();picker.dismiss();});
-        picker.setOnDismissListener(d->{if(applied[0]&&!isFinishing()&&!isDestroyed())recreate();});picker.words(s("choose_theme"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
+        picker.setOnDismissListener(d->{themePreview=null;ThemeSkin.active=ThemeSkin.load(this);if(!isFinishing()&&!isDestroyed()){if(applied[0])recreate();else showSettings();}});picker.words(s("choose_theme"),s("apply"),s("close"),LanguageCatalog.rtl(lang));picker.show();
     }
 
     private void about(){LinearLayout panel=sheet(s("about"),"info");LinearLayout line=row();line.setGravity(Gravity.CENTER);TextView credit=text("Made by Jack with ",24,true),heart=text("♥",30,true);heart.setTextColor(0xffff405b);line.addView(credit);line.addView(heart);line.setPadding(0,dp(28),0,dp(48));panel.addView(line);if(ValueAnimator.areAnimatorsEnabled()){ObjectAnimator a=ObjectAnimator.ofPropertyValuesHolder(heart,PropertyValuesHolder.ofFloat(View.SCALE_X,1,1.15f,1),PropertyValuesHolder.ofFloat(View.SCALE_Y,1,1.15f,1));a.setDuration(650);a.setRepeatCount(2);a.start();}}
@@ -246,5 +247,6 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onSaveInstanceState(@NonNull Bundle state){if(scanWizard!=null&&scanWizard.isShowing())state.putBundle("scan-start-wizard",scanWizard.save());persist();state.putString("screen",screen);if(capturedPhoto!=null)state.putString("capturedPhoto",capturedPhoto.getPath());if(preparedDocument!=null)state.putString("preparedDocument",preparedDocument.getPath());state.putString("captureRows",json(captureRows));state.putIntegerArrayList("captureVisibleIds",new ArrayList<>(captureVisibleIds));state.putBoolean("exportPhoto",exportPhoto);super.onSaveInstanceState(state);}
     @Override protected void onPause(){super.onPause();scanning=false;if(feedback!=null)feedback.cancel();persist();if(camera!=null)camera.getCameraControl().enableTorch(false);torch=false;lampState(false);}
     @Override protected void onResume(){super.onResume();if(screen.equals("camera")&&cameraReady&&capturedPhoto==null&&(dialog==null||!dialog.isShowing()))scanning=true;}
-    @Override protected void onDestroy(){if(scanWizard!=null)scanWizard.dispose();if(dialog!=null){dialog.setOnDismissListener(null);if(dialog instanceof ChoicePicker)((ChoicePicker)dialog).dispose();else dialog.dismiss();}stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();worker.shutdown();super.onDestroy();}
+    @Override protected void onDestroy(){if(themePreview!=null){themePreview=null;ThemeSkin.active=ThemeSkin.load(this);}if(scanWizard!=null)scanWizard.dispose();if(dialog!=null){dialog.setOnDismissListener(null);if(dialog instanceof ChoicePicker)((ChoicePicker)dialog).dispose();else dialog.dismiss();}stopCamera();handler.removeCallbacksAndMessages(null);if(feedback!=null)feedback.cancel();worker.shutdown();super.onDestroy();}
 }
+

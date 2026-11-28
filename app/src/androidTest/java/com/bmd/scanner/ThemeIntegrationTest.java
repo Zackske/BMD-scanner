@@ -45,6 +45,25 @@ public class ThemeIntegrationTest {
             scenario.onActivity(a->{assertEquals("lime",ThemeSkin.active.id);assertEquals("lime",a.getPreferences(0).getString("colourTheme",""));a.showSettings();assertEquals("Groen",((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"selected-theme-name")).getText().toString());});
         }
     }
+    @Test public void selectingThemePreviewsPageSurfaceButtonAndOrbitBeforeApplyAndXReverts()throws Exception{
+        for(String language:new String[]{"nl","ar"}){
+            DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme","bmd").putString("language",language).commit();
+            try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
+                scenario.onActivity(a->{a.showSettings();a.themes();});SystemClock.sleep(400);
+                java.util.Set<Integer> surfaces=new java.util.HashSet<>(),buttons=new java.util.HashSet<>();
+                for(String theme:ThemeSkin.IDS){
+                    scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView();DeviceSupport.tag(root,"theme-"+theme).performClick();assertSame("The same picker stays open",d,DeviceSupport.get(a,"dialog"));assertTrue(d.isShowing());assertEquals("Page previews immediately",theme,ThemeSkin.active.id);assertEquals("Preview is not saved","bmd",a.getPreferences(0).getString("colourTheme",""));assertEquals(language,a.getPreferences(0).getString("language",""));assertEquals(a.themeName(theme),((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"selected-theme-name")).getText().toString());});
+                    SystemClock.sleep(650);InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+                    scenario.onActivity(a->{ChoicePicker d=(ChoicePicker)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView();surfaces.add(faceInk(d.panel));buttons.add(faceInk(d.apply));assertEquals("Selected name follows the new accent",ThemeSkin.forId(theme).accent,((TextView)DeviceSupport.tag(root,"theme-name-"+theme)).getCurrentTextColor());selectedBadge(root,theme);});
+                    DeviceSupport.shot(scenario,"build4121-live-theme-"+language+"-"+theme);
+                }
+                assertEquals("All five surfaces visibly change",5,surfaces.size());assertEquals("All five Apply buttons visibly change",5,buttons.size());
+                scenario.onActivity(a->{android.app.Dialog d=(android.app.Dialog)DeviceSupport.get(a,"dialog");View root=d.getWindow().getDecorView();DeviceSupport.tag(root,"theme-translumina").performClick();DeviceSupport.tag(root,"theme-violet").performClick();DeviceSupport.tag(root,"picker-close").performClick();});SystemClock.sleep(400);InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+                scenario.onActivity(a->{assertEquals("X restores the prior palette","bmd",ThemeSkin.active.id);assertEquals("bmd",a.getPreferences(0).getString("colourTheme",""));assertEquals(a.themeName("bmd"),((TextView)DeviceSupport.tag(a.getWindow().getDecorView(),"selected-theme-name")).getText().toString());});
+                scenario.recreate();scenario.onActivity(a->{assertEquals("bmd",ThemeSkin.active.id);assertEquals(language,a.getPreferences(0).getString("language",""));});
+            }
+        }
+    }
     @Test public void choosingAnyLanguageImmediatelyTranslatesHeadingAndApplyBeforeSaving()throws Exception{
         for(String theme:ThemeSkin.IDS){DeviceSupport.context().getSharedPreferences("MainActivity",0).edit().putString("colourTheme",theme).putString("language","nl").commit();
             try(ActivityScenario<MainActivity> scenario=ActivityScenario.launch(MainActivity.class)){
@@ -76,3 +95,4 @@ public class ThemeIntegrationTest {
         }
     }
 }
+

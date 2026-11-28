@@ -17,6 +17,9 @@ final class ChoicePicker extends Dialog {
     final TextView title,apply;
     final ImageButton close;
     final Surface surface;
+    private final Close closeArtwork=new Close();
+    private ValueAnimator paletteAnimation;
+    private int buttonTop=ThemeSkin.active==ThemeSkin.BMD?ThemeSkin.active.accent:ThemeSkin.active.top;
     private boolean closing,finished;
     ChoicePicker(Activity activity,String icon,String caption,String applyText,String closeText){
         super(activity);setOwnerActivity(activity);panel=new LinearLayout(activity);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(dp(16),dp(18),dp(16),dp(18));panel.setClipChildren(false);panel.setClipToPadding(false);
@@ -25,7 +28,7 @@ final class ChoicePicker extends Dialog {
         View mark=MenuHeader.icon(activity,icon);heading.addView(mark,new LinearLayout.LayoutParams(dp(34),dp(34)));
         title=label(activity,caption,21);title.setTag("sheet-title");title.setMaxLines(2);title.setAutoSizeTextTypeUniformWithConfiguration(16,21,1,android.util.TypedValue.COMPLEX_UNIT_SP);
         LinearLayout.LayoutParams tp=new LinearLayout.LayoutParams(0,dp(44),1);tp.setMargins(dp(9),0,dp(5),0);heading.addView(title,tp);
-        close=new ImageButton(activity);close.setTag("picker-close");close.setImageDrawable(new Close());close.setBackgroundColor(Color.TRANSPARENT);close.setContentDescription(closeText);close.setOnClickListener(v->dismiss());heading.addView(close,new LinearLayout.LayoutParams(dp(44),dp(44)));panel.addView(heading);
+        close=new ImageButton(activity);close.setTag("picker-close");close.setImageDrawable(closeArtwork);close.setBackgroundColor(Color.TRANSPARENT);close.setContentDescription(closeText);close.setOnClickListener(v->dismiss());heading.addView(close,new LinearLayout.LayoutParams(dp(44),dp(44)));panel.addView(heading);
         apply=label(activity,applyText,17);apply.setGravity(Gravity.CENTER);apply.setBackground(UiArt.card(ThemeSkin.active.accent,ThemeSkin.active.bottom,ThemeSkin.active.accent,dp(18)));apply.setClickable(true);apply.setFocusable(true);
         setContentView(panel);setCanceledOnTouchOutside(true);
     }
@@ -34,27 +37,45 @@ final class ChoicePicker extends Dialog {
         LinearLayout.LayoutParams bp=new LinearLayout.LayoutParams(-1,Math.min(dp(preferredHeight),maximum));bp.setMargins(0,dp(8),0,dp(12));panel.addView(body,bp);panel.addView(apply,new LinearLayout.LayoutParams(-1,dp(48)));
     }
     void words(String caption,String action,String closeText,boolean rtl){title.setText(caption);apply.setText(action);apply.setContentDescription(action);close.setContentDescription(closeText);panel.setLayoutDirection(rtl?View.LAYOUT_DIRECTION_RTL:View.LAYOUT_DIRECTION_LTR);}
+    void theme(ThemeSkin next,boolean animate){
+        if(paletteAnimation!=null)paletteAnimation.cancel();
+        final int fromBase=surface.baseColour,fromEdge=surface.edgeColour,fromText=title.getCurrentTextColor(),fromTop=buttonTop,targetTop=next==ThemeSkin.BMD?next.accent:next.top;
+        final int[] before=surface.colours.clone(),after={next.halo,next.top,next.bottom};
+        final Wheel wheel=(Wheel)panel.findViewWithTag("theme-wheel");
+        java.util.function.DoubleConsumer frame=value->{
+            float f=(float)value;int accent=UiArt.mix(fromEdge,next.accent,f),base=UiArt.mix(fromBase,next.bottom,f),ink=UiArt.mix(fromText,next.text,f);
+            int[] colours=new int[3];for(int i=0;i<3;i++)colours[i]=UiArt.mix(before[i],after[i],f);
+            surface.palette(base,accent,colours);title.setTextColor(ink);closeArtwork.colour(ink);apply.setTextColor(ink);
+            buttonTop=UiArt.mix(fromTop,targetTop,f);apply.setBackground(UiArt.paletteCard(buttonTop,base,accent,base,dp(18)));if(wheel!=null)wheel.palette(accent,ink);
+        };
+        if(!animate||!ValueAnimator.areAnimatorsEnabled()){frame.accept(1);return;}
+        paletteAnimation=ValueAnimator.ofFloat(0,1);paletteAnimation.setDuration(420);paletteAnimation.setInterpolator(new DecelerateInterpolator());paletteAnimation.addUpdateListener(a->frame.accept((float)a.getAnimatedValue()));paletteAnimation.start();
+    }
     @Override public void show(){super.show();Window window=getWindow();if(window!=null){window.setBackgroundDrawableResource(android.R.color.transparent);window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);window.setDimAmount(.6f);window.setGravity(Gravity.CENTER);window.setLayout(getContext().getResources().getDisplayMetrics().widthPixels-dp(16),-2);}if(ValueAnimator.areAnimatorsEnabled()){panel.setAlpha(0);panel.setScaleX(.97f);panel.setScaleY(.97f);panel.setTranslationY(dp(14));panel.animate().alpha(1).scaleX(1).scaleY(1).translationY(0).setDuration(300).setInterpolator(new OvershootInterpolator(.6f)).start();}}
     @Override public void dismiss(){if(finished||!isShowing()){super.dismiss();return;}if(closing)return;closing=true;if(!ValueAnimator.areAnimatorsEnabled()){finishDismiss();return;}panel.animate().cancel();panel.animate().alpha(0).translationY(dp(10)).scaleX(.985f).scaleY(.985f).setDuration(180).setInterpolator(new AccelerateInterpolator()).withEndAction(this::finishDismiss).start();}
-    private void finishDismiss(){finished=true;super.dismiss();}
-    void dispose(){panel.animate().cancel();if(surface.animation!=null)surface.animation.cancel();finished=true;super.dismiss();}
+    private void stopPalette(){if(paletteAnimation!=null)paletteAnimation.cancel();if(surface.animation!=null)surface.animation.cancel();}
+    private void finishDismiss(){stopPalette();finished=true;super.dismiss();}
+    void dispose(){panel.animate().cancel();stopPalette();finished=true;super.dismiss();}
     private int dp(float value){return Math.round(value*getContext().getResources().getDisplayMetrics().density);}
     static TextView label(Context c,String value,int size){TextView t=new TextView(c);t.setText(value);t.setTextColor(ThemeSkin.active.text);t.setTypeface(ReferenceArt.face(c,false,850));t.setTextSize(size);t.setGravity(Gravity.CENTER_VERTICAL);t.setIncludeFontPadding(false);return t;}
     private static final class Close extends Drawable {
         private final Paint paint=new Paint(3);
-        @Override public void draw(Canvas c){Rect b=getBounds();paint.setColor(ThemeSkin.active.text);paint.setStrokeWidth(Math.max(2,b.width()*.055f));paint.setStrokeCap(Paint.Cap.ROUND);c.drawLine(b.left+b.width()*.3f,b.top+b.height()*.3f,b.left+b.width()*.7f,b.top+b.height()*.7f,paint);c.drawLine(b.left+b.width()*.7f,b.top+b.height()*.3f,b.left+b.width()*.3f,b.top+b.height()*.7f,paint);}
+        private int ink=ThemeSkin.active.text;
+        void colour(int next){ink=next;invalidateSelf();}
+        @Override public void draw(Canvas c){Rect b=getBounds();paint.setColor(ink);paint.setStrokeWidth(Math.max(2,b.width()*.055f));paint.setStrokeCap(Paint.Cap.ROUND);c.drawLine(b.left+b.width()*.3f,b.top+b.height()*.3f,b.left+b.width()*.7f,b.top+b.height()*.7f,paint);c.drawLine(b.left+b.width()*.7f,b.top+b.height()*.3f,b.left+b.width()*.3f,b.top+b.height()*.7f,paint);}
         @Override public void setAlpha(int a){paint.setAlpha(a);}@Override public void setColorFilter(ColorFilter filter){paint.setColorFilter(filter);}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
     }
     static final class Surface extends Drawable {
-        private final Paint p=new Paint(3);private final ThemeSkin skin;private int[] colours;private ValueAnimator animation;
-        Surface(ThemeSkin skin){this.skin=skin;colours=new int[]{skin.halo,skin.top,skin.bottom};}
+        private final Paint p=new Paint(3);private int baseColour,edgeColour;private int[] colours;private ValueAnimator animation;
+        Surface(ThemeSkin skin){baseColour=skin.bottom;edgeColour=skin.accent;colours=new int[]{skin.halo,skin.top,skin.bottom};}
+        void palette(int base,int edge,int[] next){baseColour=base;edgeColour=edge;colours=next;invalidateSelf();}
         void colours(int[] next,boolean animate){if(animation!=null)animation.cancel();int[] before=colours.clone();if(!animate||!ValueAnimator.areAnimatorsEnabled()){colours=next.clone();invalidateSelf();return;}animation=ValueAnimator.ofFloat(0,1);animation.setDuration(420);animation.addUpdateListener(a->{float f=(float)a.getAnimatedValue();for(int i=0;i<3;i++)colours[i]=UiArt.mix(before[i],next[i],f);invalidateSelf();});animation.start();}
-        @Override public void draw(Canvas c){Rect b=getBounds();float radius=23*c.getDensity()/160f;if(radius<20)radius=23;Path clip=new Path();clip.addRoundRect(new RectF(b),radius,radius,Path.Direction.CW);c.save();c.clipPath(clip);c.drawColor(skin.bottom);float[] x={.03f,.98f,.05f},y={.08f,.46f,1f},strength={.46f,.32f,.4f};for(int i=0;i<3;i++){int colour=(colours[i]&0x00ffffff)|(Math.round(255*strength[i])<<24);p.setShader(new RadialGradient(b.left+b.width()*x[i],b.top+b.height()*y[i],Math.max(b.width(),b.height())*.78f,colour,Color.TRANSPARENT,Shader.TileMode.CLAMP));c.drawRect(b,p);}p.setShader(null);c.restore();p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2);p.setColor(skin.accent);c.drawRoundRect(new RectF(b.left+1,b.top+1,b.right-1,b.bottom-1),radius,radius,p);p.setStyle(Paint.Style.FILL);}
+        @Override public void draw(Canvas c){Rect b=getBounds();float radius=23*c.getDensity()/160f;if(radius<20)radius=23;Path clip=new Path();clip.addRoundRect(new RectF(b),radius,radius,Path.Direction.CW);c.save();c.clipPath(clip);c.drawColor(baseColour);float[] x={.03f,.98f,.05f},y={.08f,.46f,1f},strength={.46f,.32f,.4f};for(int i=0;i<3;i++){int colour=(colours[i]&0x00ffffff)|(Math.round(255*strength[i])<<24);p.setShader(new RadialGradient(b.left+b.width()*x[i],b.top+b.height()*y[i],Math.max(b.width(),b.height())*.78f,colour,Color.TRANSPARENT,Shader.TileMode.CLAMP));c.drawRect(b,p);}p.setShader(null);c.restore();p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2);p.setColor(edgeColour);c.drawRoundRect(new RectF(b.left+1,b.top+1,b.right-1,b.bottom-1),radius,radius,p);p.setStyle(Paint.Style.FILL);}
         @Override public void setAlpha(int a){}@Override public void setColorFilter(ColorFilter f){}@Override public int getOpacity(){return PixelFormat.TRANSLUCENT;}
     }
     abstract static class Layout extends FrameLayout {
-        final Paint paint=new Paint(3);final int accent;float angle;ValueAnimator trail;
-        Layout(Context c){super(c);accent=ThemeSkin.active.accent;setWillNotDraw(false);setClipChildren(false);setClipToPadding(false);setLayoutDirection(View.LAYOUT_DIRECTION_LTR);}
+        final Paint paint=new Paint(3);int accent,ink;float angle;ValueAnimator trail;
+        Layout(Context c){super(c);accent=ThemeSkin.active.accent;ink=ThemeSkin.active.text;setWillNotDraw(false);setClipChildren(false);setClipToPadding(false);setLayoutDirection(View.LAYOUT_DIRECTION_LTR);}
         int dp(float n){return Math.round(n*getResources().getDisplayMetrics().density);}
         void turn(float target,boolean animate){if(trail!=null)trail.cancel();if(!animate||!ValueAnimator.areAnimatorsEnabled()){angle=target;invalidate();return;}trail=ValueAnimator.ofFloat(angle,target);trail.setDuration(420);trail.setInterpolator(new DecelerateInterpolator());trail.addUpdateListener(a->{angle=(float)a.getAnimatedValue();invalidate();});trail.start();}
         void orbit(Canvas c,float cx,float cy,float radius){paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(dp(1));paint.setColor((accent&0xffffff)|0x33000000);c.drawCircle(cx,cy,radius,paint);c.save();c.rotate(angle,cx,cy);paint.setShader(new SweepGradient(cx,cy,new int[]{Color.TRANSPARENT,accent,Color.WHITE,Color.TRANSPARENT},new float[]{0,.28f,.34f,.36f}));paint.setStrokeWidth(dp(1.5f));c.drawCircle(cx,cy,radius,paint);paint.setShader(null);paint.setStyle(Paint.Style.FILL);c.restore();}
@@ -70,7 +91,8 @@ final class ChoicePicker extends Dialog {
         Wheel(Context c,String[] names,String selectedId,IntConsumer changed){super(c);setTag("theme-wheel");for(int i=0;i<5;i++){final int index=i;FrameLayout button=new FrameLayout(c);button.setTag("theme-"+ThemeSkin.IDS[i]);button.setClickable(true);button.setFocusable(true);button.setContentDescription(names[i]);ImageView image=new ImageView(c);image.setImageResource(art[i]);image.setScaleType(ImageView.ScaleType.FIT_CENTER);image.setTag("theme-icon-"+ThemeSkin.IDS[i]);image.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);FrameLayout.LayoutParams ip=new FrameLayout.LayoutParams(-1,dp(84),Gravity.TOP|Gravity.CENTER_HORIZONTAL);button.addView(image,ip);TextView label=label(c,names[i],14);label.setGravity(Gravity.CENTER);label.setSingleLine();label.setAutoSizeTextTypeUniformWithConfiguration(11,14,1,android.util.TypedValue.COMPLEX_UNIT_SP);label.setTag("theme-name-"+ThemeSkin.IDS[i]);FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-1,dp(24),Gravity.BOTTOM);button.addView(label,lp);button.setOnClickListener(v->{select(index,true);changed.accept(index);});choices[i]=button;addView(button);if(ThemeSkin.IDS[i].equals(selectedId))selected=i;}
             centre=new ImageView(c);centre.setTag("theme-selected-icon");centre.setScaleType(ImageView.ScaleType.FIT_CENTER);centre.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);addView(centre);select(selected,false);
         }
-        void select(int n,boolean animate){selected=n;for(int i=0;i<choices.length;i++){choices[i].setSelected(i==n);choices[i].setActivated(i==n);View image=choices[i].getChildAt(0);image.setScaleX(i==n?1.08f:1);image.setScaleY(i==n?1.08f:1);TextView label=(TextView)choices[i].getChildAt(1);label.setTextColor(i==n?accent:ThemeSkin.active.text);label.setAlpha(i==n?1:.8f);}centre.setImageResource(art[n]);centre.setContentDescription(ThemeSkin.IDS[n]);pop(centre,animate);turn(n*72,animate);}
+        void select(int n,boolean animate){selected=n;for(int i=0;i<choices.length;i++){choices[i].setSelected(i==n);choices[i].setActivated(i==n);View image=choices[i].getChildAt(0);image.setScaleX(i==n?1.08f:1);image.setScaleY(i==n?1.08f:1);TextView label=(TextView)choices[i].getChildAt(1);label.setTextColor(i==n?accent:ink);label.setAlpha(i==n?1:.8f);}centre.setImageResource(art[n]);centre.setContentDescription(ThemeSkin.IDS[n]);pop(centre,animate);turn(n*72,animate);}
+        void palette(int nextAccent,int nextInk){accent=nextAccent;ink=nextInk;for(int i=0;i<choices.length;i++)((TextView)choices[i].getChildAt(1)).setTextColor(i==selected?accent:ink);invalidate();}
         @Override protected void onMeasure(int ws,int hs){int w=MeasureSpec.getSize(ws),h=MeasureSpec.getSize(hs);setMeasuredDimension(w,h);float scale=Math.min(1,Math.min(w/(float)dp(310),h/(float)dp(420)));for(View v:choices)box(v,Math.round(dp(96)*scale),Math.round(dp(116)*scale));box(centre,Math.round(dp(84)*scale),Math.round(dp(84)*scale));}
         @Override protected void onLayout(boolean changed,int l,int t,int r,int b){float scale=Math.min(1,Math.min(getWidth()/(float)dp(310),getHeight()/(float)dp(420))),w=dp(310)*scale,h=dp(350)*scale,x=(getWidth()-w)/2,y=(getHeight()-h)/2;for(int i=0;i<5;i++)at(choices[i],x+points[i][0]*w,y+points[i][1]*h);at(centre,getWidth()/2f,getHeight()/2f);}
         @Override protected void onDraw(Canvas c){super.onDraw(c);orbit(c,getWidth()/2f,getHeight()/2f,Math.min(getWidth()*.21f,dp(65)));View chosen=choices[selected];float x=(chosen.getLeft()+chosen.getRight())/2f,y=chosen.getBottom()+dp(2);paint.setColor(accent);paint.setStrokeWidth(dp(2));paint.setStrokeCap(Paint.Cap.ROUND);c.drawLine(x-dp(14),y,x+dp(14),y,paint);}
